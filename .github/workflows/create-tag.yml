@@ -1,0 +1,40 @@
+name: Manual Tag on PR
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+jobs:
+  tag:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    # Solo permitimos que se ejecute si estamos en una rama de un PR (opcional)
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Necesario para ver tags anteriores
+
+      - name: Generate and Push Tag
+        run: |
+          # Configurar usuario
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Obtener la última etiqueta
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+          
+          # Lógica simple para incrementar la versión (v0.0.x)
+          VERSION=$(echo $LATEST_TAG | sed 's/v//')
+          MAJOR=$(echo $VERSION | cut -d. -f1)
+          MINOR=$(echo $VERSION | cut -d. -f2)
+          PATCH=$(echo $VERSION | cut -d. -f3)
+          NEW_PATCH=$((PATCH + 1))
+          NEW_TAG="v$MAJOR.$MINOR.$NEW_PATCH"
+
+          echo "Creando nueva etiqueta: $NEW_TAG"
+          
+          # Crear y subir tag
+          git tag $NEW_TAG
+          git push origin $NEW_TAG
