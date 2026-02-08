@@ -1,4 +1,4 @@
-name: Manual Tag on PR
+name: Auto Tag on Merge
 
 on:
   pull_request:
@@ -7,34 +7,39 @@ on:
 
 jobs:
   tag:
+    # Solo se ejecuta si el PR fue mergeado, no solo cerrado
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
-    # Solo permitimos que se ejecute si estamos en una rama de un PR (opcional)
+    
+    # IMPORTANTE: Permisos para escribir contenido y tags
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Necesario para ver tags anteriores
+          fetch-depth: 0 # Trae todo el historial para encontrar el último tag
 
       - name: Generate and Push Tag
         run: |
-          # Configurar usuario
+          # 1. Configurar identidad
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Obtener la última etiqueta
+          # 2. Obtener el último tag o empezar en v0.0.0
           LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
           
-          # Lógica simple para incrementar la versión (v0.0.x)
-          VERSION=$(echo $LATEST_TAG | sed 's/v//')
-          MAJOR=$(echo $VERSION | cut -d. -f1)
-          MINOR=$(echo $VERSION | cut -d. -f2)
-          PATCH=$(echo $VERSION | cut -d. -f3)
+          # 3. Parsear la versión (asumiendo formato vX.Y.Z)
+          VERSION=${LATEST_TAG#v}
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
+          
+          # 4. Incrementar el Patch
           NEW_PATCH=$((PATCH + 1))
           NEW_TAG="v$MAJOR.$MINOR.$NEW_PATCH"
 
-          echo "Creando nueva etiqueta: $NEW_TAG"
+          echo "Nueva etiqueta detectada: $NEW_TAG"
           
-          # Crear y subir tag
+          # 5. Crear tag local y subirlo al remoto
           git tag $NEW_TAG
           git push origin $NEW_TAG
