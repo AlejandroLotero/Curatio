@@ -1,0 +1,16 @@
+name: Delete merged branch
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  delete_branch:
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'developer'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete source branch
+        run: |
+          branch_name=${{ github.event.pull_request.head.ref }}
+          echo "Deleting branch $branch_name"
+          git push origin --delete $branch_name

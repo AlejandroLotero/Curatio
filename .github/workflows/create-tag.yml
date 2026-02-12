@@ -1,40 +1,68 @@
-name: Manual Tag on PR
+name: Auto Tag and Release
 
 on:
   pull_request:
     types: [closed]
-    branches: [main]
+    branches:
+      - main
+      - developer
+  workflow_dispatch:
 
 jobs:
-  tag:
-    if: github.event.pull_request.merged == true
+  tag_and_release:
+    if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
-    # Solo permitimos que se ejecute si estamos en una rama de un PR (opcional)
+    permissions:
+      contents: write # Necesario para crear tags y releases
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Necesario para ver tags anteriores
+          fetch-depth: 0
 
-      - name: Generate and Push Tag
+      - name: Generate Tag
+        id: create_tag # Le damos un ID para usar el tag más adelante
         run: |
-          # Configurar usuario
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Obtener la última etiqueta
-          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+          # 1. Obtener el último tag estable (que no sea -dev)
+          LATEST_TAG=$(git tag -l "v*" | grep -v "-dev" | sort -V | tail -n1)
+          if [ -z "$LATEST_TAG" ]; then LATEST_TAG="v0.0.0"; fi
           
-          # Lógica simple para incrementar la versión (v0.0.x)
-          VERSION=$(echo $LATEST_TAG | sed 's/v//')
-          MAJOR=$(echo $VERSION | cut -d. -f1)
-          MINOR=$(echo $VERSION | cut -d. -f2)
-          PATCH=$(echo $VERSION | cut -d. -f3)
+          # 2. Calcular nueva versión
+          VERSION=${LATEST_TAG#v}
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
           NEW_PATCH=$((PATCH + 1))
-          NEW_TAG="v$MAJOR.$MINOR.$NEW_PATCH"
-
-          echo "Creando nueva etiqueta: $NEW_TAG"
           
-          # Crear y subir tag
+          # 3. Identificar rama destino
+          DEST_BRANCH=${{ github.base_ref || github.ref_name }}
+
+          if [ "$DEST_BRANCH" == "developer" ]; then
+            NEW_TAG="v$MAJOR.$MINOR.$NEW_PATCH-dev"
+          else
+            NEW_TAG="v$MAJOR.$MINOR.$NEW_PATCH"
+          fi
+
+          # 4. Crear y subir Tag
           git tag $NEW_TAG
           git push origin $NEW_TAG
+          
+          # Guardar el tag en una variable de salida para el siguiente paso
+          echo "tag_name=$NEW_TAG" >> $GITHUB_OUTPUT
+          echo "dest_branch=$DEST_BRANCH" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        # Solo crea la Release si la rama destino es 'main'
+        if: steps.create_tag.outputs.dest_branch == 'main'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.create_tag.outputs.tag_name }}
+          name: Release ${{ steps.create_tag.outputs.tag_name }}
+          body: |
+            ## ¿Qué hay de nuevo?
+            - Merge automático realizado en la rama `main`.
+            - Los cambios de este tag ya están disponibles.
+          draft: false
+          prerelease: false
