@@ -1,0 +1,47 @@
+@import url(tokens.css);
+/*Son roles de la interfaz*/
+
+:root {
+
+    /*=========BRAND=============*/
+
+    --color-brand: var(--color-primary-400);
+    --color-brand-hover: var(--color-primary-900); /*Generalmente es de un tono mas alto que el brand*/
+    --color-brand-soft: var(--color-primary-300);
+    
+
+
+     /*=========BACKGROUND=============*/
+
+     --color-background : var(--color-gray-100); /*Fondo principal estructural*/
+     /*lo que está por encima del fondo se llama surface, ejemplo los menus desplegables*/
+     --color-surface: var(--white); /*fondo de modales, cards, containers*/
+     --color-surface-muted: var(--color-gray-200); /*Zonas diferencias o secundarias con menos importancia*/
+
+
+     /*========TEXT============*/
+
+     --color-text-primary: var(--color-black); /*Color principal de lectura, titulos, texto base del documento*/
+     --color-text-secondary: var(--color-gray-500); /* textos menos dominantes*/
+     --color-text-muted: var(--color-gray-400); /*texto muteado, aun no está activa la accion. texto deshabilitado*/
+     --color-text-inverse: var(--color-white); /*Color invertido  para el color principal del texto*/
+
+    /*==========BORDER======================*/
+
+    --color-border: var(--color-secundary-600); /*Borde principal de todos los componentes*/
+    --color-border-strong: var(--color-gray-400); /*Bordes más fuertes*/
+    --color-warning: var(--color-yellow-300); /*alertas*/
+
+
+    /*==========================================*/
+    /*Ya no dependemos de nombres de color ,
+     dependemos es de intención */
+    /*==========================================*/
+
+
+    
+
+
+     
+
+}
