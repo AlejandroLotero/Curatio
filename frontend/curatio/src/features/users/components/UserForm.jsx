@@ -6,23 +6,22 @@ export default function UserForm() {
       {/*Formulario para crear el usuario */}
 
       <form>
-        <Input label="Nombre y Apellidos" 
+        {/* <Input label="Nombre y Apellidos" 
                 placeholder="Juan Rivera"
                 
         
         >
           
-        </Input>
+        </Input> */}
 
-         <Input label="Correo electrónico" type="email" placeholder="Ingrese su correo" />
+         <Input label="Correo electrónico" 
+         type="email" placeholder="Ingrese su correo" 
+         />
 
-        <Input label="Contraseña" type="password" placeholder="Ingrese su contraseña" />
-
-        <Input label="Fecha de nacimiento" type="date" />
-
-        <Input label="Teléfono" type="tel" placeholder="Ingrese su número de teléfono" />
-
-        <Input label="Edad" type="number" placeholder="Ingrese su edad" />
+        <Input label="Contraseña" type="password" 
+        placeholder="Ingrese su contraseña"
+        />
+      
       </form>
     </div>
   );

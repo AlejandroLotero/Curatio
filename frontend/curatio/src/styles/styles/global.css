@@ -1,0 +1,16 @@
+
+@import url(tokens.css);
+@import url(semantic.css);
+/* @import url(base.css); */
+@import "tailwindcss";
+
+
+@theme {
+
+    --color-brando: var(--color-brand);
+    --color-brand-hover: var(--color-brand-hover);
+    --color-brand-softt: var(--color-brand-soft);
+    --color-background:var(--color-background);
+    
+
+}

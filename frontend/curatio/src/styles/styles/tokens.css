@@ -1,0 +1,86 @@
+/*Se ingresa n las variables tal y como se planearon en la guía de estilos */
+
+
+:root {
+    /*Primary Color */
+
+    --color-primary-950: #222145;
+    --color-primary-900: #393B76;
+    --color-primary-800: #3D3D8F;
+    --color-primary-700: #4C4BB7;
+    --color-primary-600: #5B5BD0;
+    --color-primary-500: #767EDE;
+    --color-primary-400: #919EE8;
+    --color-primary-300: #B0BFF1;
+    --color-primary-200: #CED8F7;
+    --color-primary-100: #E4EAFB;
+    --color-primary-50:  #F0F4FD;
+
+
+   /*Secundary color*/
+
+    --color-secundary-950: #141F1E;
+    --color-secundary-900: #2A3736;
+    --color-secundary-800: #2F403F;
+    --color-secundary-700: #364F4D;
+    --color-secundary-600: #41605D;
+    --color-secundary-500: #537975;
+    --color-secundary-400: #6D948F;
+    --color-secundary-300: #94B4AF;
+    --color-secundary-200: #BDD2CE;
+    --color-secundary-100: #DEE9E7;
+    --color-secundary-50: #F5F8F7;
+
+    /*Terciary Color*/
+    --color-secundary-950: #172554;
+    --color-secundary-900: #1E378A;
+    --color-secundary-800: #1E3FAF;
+    --color-secundary-700: #1D48D8;
+    --color-secundary-600: #2552EB;
+    --color-secundary-500: #3B66F6;
+    --color-secundary-400: #6083FA;
+    --color-secundary-300: #93ABFD;
+    --color-secundary-200: #BFCDFE;
+    --color-secundary-100: #DBE3FE;
+    --color-secundary-50: #EFF3FF;
+
+
+    /*Basic color*/
+    --white: #fff;
+    --black: #000;
+    --gray-950: #101010;
+    --gray-900: #262626;
+    --gray-800: #3b3b3b;
+    --gray-700: #515151;
+    --gray-600:#676767;
+    --gray-500: #7d7d7d;
+    --gray-400: #929292;
+    --gray-300:#A8A8A8;
+    --gray-200:#BEBEBE;
+    --gray-100: #D4D4D4;
+    --gray-50: #E9E9E9;
+
+    /*Typographic*/
+
+    --main-font:Roboto, Lora;
+
+
+    /*Font size*/
+    --fs-xxxxl: 8.0rem;
+    --fs-xxxl: 6.4rem;
+    --fs-xxl: 4.8rem;
+    --fs-xl: 4.0rem;
+    --fs-lg: 3.2rem;
+    --fs-md: 2.4rem;
+    --fs-sm: 2.0rem;
+    --fs-xs: 1.6rem;
+    --fs-xxs: 1.4rem;
+    --fs-xxxs: 1.2rem;
+
+
+
+
+
+
+
+}
