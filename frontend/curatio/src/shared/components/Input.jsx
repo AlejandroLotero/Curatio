@@ -38,7 +38,7 @@ export default function Input({ label, type = "text", ...props }) {
           "
           onMouseDown = {(e) => {
           e.preventDefault();
-          e.currentTarget.next.Sibling.focus();
+          e.currentTarget.nextSibling.focus();
         
         }}
       
