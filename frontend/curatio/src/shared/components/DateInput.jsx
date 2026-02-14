@@ -1,0 +1,2 @@
+//Se crea archivo para el componente de fecha, para evitar que se repita el mismo código en varios lugares, y para tener un componente reutilizable
+//Se agrega ya que este input lleva iconos y estilos diferentes a los demás inputs en algunos casos, lo recomienda "EL AMIGO" 

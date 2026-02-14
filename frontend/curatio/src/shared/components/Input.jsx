@@ -38,7 +38,7 @@ export default function Input({ label, type = "text", ...props }) {
           "
           onMouseDown = {(e) => {
           e.preventDefault();
-          e.currentTarget.next.Sibling.focus();
+          e.currentTarget.nextSibling.focus();
         
         }}
       
@@ -50,21 +50,21 @@ export default function Input({ label, type = "text", ...props }) {
           type={type}
           className="
           relative
-           w-full
-           h-10
-           rounded-md
-           border
-           border-black
-           px-4
-           text-base
+          w-full
+          h-10
+          rounded-md
+          border
+          border-black
+          px-4
+          text-base
 
-           focus:outline-none
-           focus:ring-1
+          focus:outline-none
+          focus:ring-1
 
-           focus:ring-green-800
-           focus:border-green-800
+          focus:ring-green-800
+          focus:border-green-800
           
-           "
+          "
           {...props}
         />
       </div>
