@@ -1,0 +1,46 @@
+@import url(tokens.css);
+@import url(semantic.css);
+/* @import url(base.css); */
+@import "tailwindcss";
+
+
+@theme {
+
+    /*brand*/
+    --color-brand: var(--semantic-brand);
+    --color-brand-hover: var(--semantic-brand-hover);
+    --color-brand-softt: var(--semantic-brand-soft);
+    --color-background:var(--semantic-background);
+    --color-surface: var(--semantic-surface);
+    --color-surface-muted: var(--semantic-surface-muted);
+    --color-text-primary: var(--semantic-text-primary);
+    --color-text-secondary: var(--semantic-text-secondary);
+    --color-text-muted: var(--semantic-text-muted);
+    --color-text-inverse: var(--semantic-text-inverse);
+    --color-border: var(--semantic-border); 
+    --color-border-strong: var(--semantic-border-strong:);
+    --color-warning: var( --semantic-warning);
+
+
+    --color-label: var(--semantic-text-label);
+
+    --font-body: var(--font-body);
+    --font-text-secondary: var(--font-text-secondary);
+
+
+    --font-label-weight: var(--font-weight-medium); 
+    --font-weight-label: var(--font-label-weight);
+    --font-weight-heading: var(--font-heading-weight);
+
+
+   /*Typography*/
+    --text-small: var(--fs-size-small);
+    --text-med: var (--fs-xxxs-med);
+    --text-mostsmall: var(--fs-size-mostsmall);
+
+
+    /*Font weight*/ 
+
+    
+
+}
