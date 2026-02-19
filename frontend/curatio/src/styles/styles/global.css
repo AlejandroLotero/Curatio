@@ -21,6 +21,25 @@
     --color-border: var(--color-border); 
     --color-border-strong: var(--color-border-strong:);
     --color-warning: var( --color-warning);
+
+       --color-label: var(--semantic-text-label);
+
+    --font-body: var(--font-body);
+    --font-text-secondary: var(--font-text-secondary);
+
+
+    --font-label-weight: var(--font-weight-medium); 
+    --font-weight-label: var(--font-label-weight);
+    --font-weight-heading: var(--font-heading-weight);
+
+
+   /*Typography*/
+    --text-small: var(--fs-size-small);
+    --text-med: var (--fs-xxxs-med);
+    --text-mostsmall: var(--fs-size-mostsmall);
+
+
+    /*Font weight*/ 
     
 
 }

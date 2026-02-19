@@ -1,4 +1,4 @@
-import Input from "../../../shared/components/Input";
+import Input from "@/shared/components/Input";
 
 export default function UserForm() {
   return (
@@ -21,6 +21,27 @@ export default function UserForm() {
         <Input label="Contraseña" type="password" 
         placeholder="Ingrese su contraseña"
         />
+
+
+         <div className="flex items-center  justify-center gap-12">
+          <Button 
+          variant="secondary" 
+          size="sm"
+          onClick={() => console.log("Esto es cancelar")}
+          >
+
+            Cancelar
+          </Button>
+
+          <Button 
+          variant="primary" 
+          size="dm"
+          onClick={() => console.log("Esto es Guadar")}
+          
+          >
+            Guardar{" "}
+          </Button>
+        </div>
       
       </form>
     </div>
