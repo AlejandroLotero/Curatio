@@ -28,9 +28,18 @@
 
     /*==========BORDER======================*/
 
-    --color-border: var(--color-secundary-600); /*Borde principal de todos los componentes*/
-    --color-border-strong: var(--color-gray-400); /*Bordes más fuertes*/
-    --color-warning: var(--color-yellow-300); /*alertas*/
+    /* --color-border: var(--color-secundary-600); /*Borde principal de todos los componentes*/
+    /* --color-border-strong: var(--color-gray-400); Bordes más fuertes */
+    --semantic-warning: var(--color-yellow-300); /*alertas*/
+
+    --semantic-border: var(--color-green-500);/*Borde principal*/
+    --semantic-border-strong: var(--color-black);/*Bordes mas fuertes, */
+
+    /*STATE*/
+
+    --fs-size-small: var(--fs-xxxs);
+    --fs-size-med: var(--fs-xxxs-med); /*12px*/
+    --fs-size-mostsmall: var(--fs-xxxxs); /*8px*/
 
 
     /*==========================================*/

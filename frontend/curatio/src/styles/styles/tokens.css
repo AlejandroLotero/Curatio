@@ -65,7 +65,7 @@
     --main-font:Roboto, Lora;
 
 
-    /*Font size*/
+    /* Font size
     --fs-xxxxl: 8.0rem;
     --fs-xxxl: 6.4rem;
     --fs-xxl: 4.8rem;
@@ -75,7 +75,22 @@
     --fs-sm: 2.0rem;
     --fs-xs: 1.6rem;
     --fs-xxs: 1.4rem;
-    --fs-xxxs: 1.2rem;
+    --fs-xxxs: 1.2rem; */
+
+        /*Font size*/
+    --fs-xxxxl: 5rem;   /* 128px */
+    --fs-xxxl: 4rem;    /* 102.4px */
+    --fs-xxl: 3rem;     /* 76.8px */
+    --fs-xl: 2.5rem;      /* 64px */
+    --fs-lg: 2rem;      /* 51.2px */
+    --fs-md: 1.5rem;      /* 38.4px */
+    --fs-sm: 1.25rem;      /* 32px */
+    --fs-xs: 1rem;      /* Base */
+    --fs-xxs: 0.875rem;     /* 22.4px */
+
+    --fs-xxxs: 1.0rem;    /* 16px */
+    --fs-xxxs-med: 0.75rem; /* 12px */
+    --fs-xxxxs: 0.5rem;   /* 8px */
 
 
 
