@@ -46,6 +46,11 @@
     /*Ya no dependemos de nombres de color ,
      dependemos es de intención */
     /*==========================================*/
+    /* Buttons semantic roles */
+    --semantic-button-primary-bg: var(--color-secundary-400:);
+    --semantic-button-primary-border: var(--color-button-primary-border);
+    --semantic-button-secondary-bg: var(--color-button-secondary-bg);
+    --semantic-button-secondary-border: var(--color-button-secondary-border);
 
 
     

@@ -8,8 +8,20 @@ export default function Button({
 }) {
 
     const variants = {
-        primary : "bg-brand text-inverse hover:bg-brand-hover",
-        secondary: "border border-border bg-brand-surface text-text-primary hover:bg-brand-soft"
+        primary : `
+        bg-[var(--color-button-primary-bg)]
+        text-[var(--color-text-inverse)]
+        border
+        border-[var(--color-button-primary-border)]
+        hover:bg-[var(--color-brand-hover)]
+      `,
+        secondary:`
+        bg-[var(--color-button-secondary-bg)]
+        text-[var(--color-text-primary)]
+        border
+        border-[var(--color-button-secondary-border)]
+        hover:bg-[var(--color-surface-muted)]
+        `,
     }
 
     const sizes = {
@@ -45,8 +57,9 @@ export default function Button({
         className={`
                 relative
                 inline-flex items-center justify-center
-                rounded-md
+                rounded-full
                 transition-colors
+                font-medium
                 ${variants[variant]}
                 ${sizes[size]}
             

@@ -32,17 +32,17 @@
     --color-secundary-50: #F5F8F7;
 
     /*Terciary Color*/
-    --color-secundary-950: #172554;
-    --color-secundary-900: #1E378A;
-    --color-secundary-800: #1E3FAF;
-    --color-secundary-700: #1D48D8;
-    --color-secundary-600: #2552EB;
-    --color-secundary-500: #3B66F6;
-    --color-secundary-400: #6083FA;
-    --color-secundary-300: #93ABFD;
-    --color-secundary-200: #BFCDFE;
-    --color-secundary-100: #DBE3FE;
-    --color-secundary-50: #EFF3FF;
+    --color-tertiary-950: #172554;
+    --color-tertiary-900: #1E378A;
+    --color-tertiary-800: #1E3FAF;
+    --color-tertiary-700: #1D48D8;
+    --color-tertiary-600: #2552EB;
+    --color-tertiary-500: #3B66F6;
+    --color-tertiary-400: #6083FA;
+    --color-tertiary-300: #93ABFD;
+    --color-tertiary-200: #BFCDFE;
+    --color-tertiary-100: #DBE3FE;
+    --color-tertiary-50: #EFF3FF;
 
 
     /*Basic color*/
@@ -91,6 +91,14 @@
     --fs-xxxs: 1.0rem;    /* 16px */
     --fs-xxxs-med: 0.75rem; /* 12px */
     --fs-xxxxs: 0.5rem;   /* 8px */
+
+
+    /* Buttons custom colors */
+--color-button-primary-bg: #2F6F67;
+--color-button-primary-border: #245A53;
+
+--color-button-secondary-bg: #E0E0E0;
+--color-button-secondary-border: #8A8A8A;
 
 
 
