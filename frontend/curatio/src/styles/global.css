@@ -41,6 +41,11 @@
 
     /*Font weight*/ 
 
+    /*Buttons colors*/
+    --color-button-primary-bg: var(--semantic-button-primary-bg);
+    --color-button-primary-border: var(--semantic-button-primary-border);
+    --color-button-secondary-bg: var(--semantic-button-secondary-bg);
+    --color-button-secondary-border: var(--semantic-button-secondary-border);
     
 
 }
