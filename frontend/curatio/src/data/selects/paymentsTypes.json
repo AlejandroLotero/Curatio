@@ -1,0 +1,17 @@
+[
+    {
+        "id": "debito",
+        "label": "Tarjeta Debito"
+    },
+
+    {
+        "id": "Credito",
+        "label": "Tarjeta Debito"
+    },
+
+    {
+        "id": "Transferencia",
+        "label": "Transferencia"
+    }
+
+]
