@@ -1,12 +1,19 @@
-
-export default function ProfilePage () {
-
+export default function ProfilePage (){
     return(
+        <div>
+            <h1>Perfil de usuario</h1>
+            <p>Desde aqui puede gestionar su perfil</p>
+        </div> 
 
-        <section>
-            <h1>Estoy en perfil</h1>
-
-            <p>Aqui puedo gestionar mi perfil</p>
-        </section>
-    )
+    ) 
 }
+
+// const ProfilePages = () => {
+//     <section>
+//         <h1 className="text-h1">
+//             Perfil de usuario
+//         </h1>
+
+//     </section>
+// }
+

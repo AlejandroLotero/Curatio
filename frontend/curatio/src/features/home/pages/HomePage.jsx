@@ -1,34 +1,22 @@
+//import heroBg from "../../../assets/imagen-hero.jpg"
+import heroBg from "../../../assets/images/imagen-hero.jpg";
+import imageAdmin from "../../../assets/images/image-admin.jpg";
 
-//página pública
+export default function HomePage(){
 
+    return(
+        <section
+            className="relative min-h-screen w-full flex items-center justify-center text-black"
+            style={{
+                backgroundImage: `url(${imageAdmin})`, 
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+            }}>
+            <div className="absolute inset-0 bg-cover bg-center"></div>
 
-//página pública
+            <div className="relative z-10 text-center text-white">
 
-import heroBfg from "@/assets/images/imagen-hero.jpg";
-
-export default function HomePage() {
-
-
-    return (
-      <section
-        className="relative min-h-screen w-full flex items-center justify-center text-black"
-        style={{
-          backgroundImage: `url(${heroBfg})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        <div className="absolute inset-0  bg-white/20"></div>
-
-        <div className="relative z-10 text-center">
-          <h1 className="text-h1 font-heading ">
-            Bienvenidos a mi página
-          </h1>
-          <p>
-            Texto de relleno 
-          </p>
-        </div>
-      </section>
-    );
-
+            </div>
+        </section>
+    )
 }

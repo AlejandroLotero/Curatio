@@ -1,0 +1,18 @@
+[
+    {
+        "id": "admin",
+        "label":"Administrador"
+    },
+    {
+        "id": "farm",
+        "label":"Farmacéutica"
+    },
+    {
+        "id": "cliente",
+        "label":"Cliente"
+    },
+    {
+        "id": "invitado",
+        "label":"Invitado"
+    }
+]

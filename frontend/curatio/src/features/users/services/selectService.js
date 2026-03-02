@@ -1,30 +1,12 @@
-
-export async function getDocumentTypes () {
-
-    const response = await fetch("/src/data/selects/documentTypes.json");
-
+export async function getDocumentTypes() {
+    // Con fetch: el archivo debe estar en public/data/selects/documentTypes.json
+    const response = await fetch("/data/selects/documentTypes.json");
     return response.json();
 }
 
-
-
-export async function getSaleTypes () {
-
-    const response = await fetch("/src/data/selects/saleTypes.json");
-
-    return response.json();
-}
-
-export async function getStatusCarTypes () {
-
-    const response = await fetch("/src/data/selects/statusCarTypes.json");
-
-    return response.json();
-}
-
-export async function getPaymentsTypes () {
-
-    const response = await fetch("/src/data/selects/paymentsTypes.json");
-
+/*FUNCION ASINCRONA PARA LLAMADA DE ROLES*/
+export async function getRoles() {
+    // Con fetch: el archivo debe estar en public/data/selects/roles.json
+    const response = await fetch("/data/selects/roles.json");
     return response.json();
 }
