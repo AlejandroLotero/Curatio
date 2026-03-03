@@ -1,9 +1,9 @@
-
+/*@import url(token.css); */
 /*Son roles de la interfaz*/
 
-:root {
+:root{
 
-      /* BRAND */
+    /* BRAND */
 
     --semantic-brand: var(--color-white);
     --semantic-brand-hover: var(--color-primary-900); /*Generalmente es de un tono mas alto*/
@@ -59,18 +59,17 @@
 
     /*BACKGROUND COLOR*/
 
-    --semantic-bgcolor: var(--color-primary-400);  
+    --semantic-bgcolor: var(--color-primary-400);
 
-
-    /*==========================================*/
-    /*Ya no dependemos de nombres de color ,
-     dependemos es de intención */
-    /*==========================================*/
+  
 
 
     
 
+    /*YA NO DEPENDEMOS DE NOMBRES DE COLOR,
+        DEPENDEMOS DE INTENCIÓN
+    */
 
-     
+
 
 }
