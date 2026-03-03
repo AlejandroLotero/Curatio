@@ -7,6 +7,7 @@ import LoginPage from "@/features/auth/pages/LoginPage";
 import ForgotPasswordPage from "@/features/auth/pages/ForgotPasswordPage"
 import TokenPasswordPage from "@/features/auth/pages/TokenPasswordPage"
 import ResetPasswordPage from "@/features/auth/pages/ResetPasswordPage"
+import MedForm from "@/features/products/Medform"
 
 const router = createBrowserRouter([
 
@@ -35,7 +36,7 @@ const router = createBrowserRouter([
 
             {
                 path: "products",
-                element: <h1 className = "p-4"> Productos </h1>
+                element: <MedForm/>
             },
 
             {
