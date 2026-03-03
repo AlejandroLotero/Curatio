@@ -1,0 +1,36 @@
+PRODUCTOS	
+
+Página: CreateProductPage
+Ubicación: src/features/products/pages
+Responsable: Lo define el equipo
+Descripción: Vista para registrar un nuevo producto.
+	
+Página: EditProductPage
+Ubicación: src/features/products/pages
+Responsable: Lo define el equipo
+Descripción: Vista para editar la información de un producto existente.	
+	
+Página: ProductDetailPage
+Ubicación: src/features/products/pages
+Responsable: Lo define el equipo
+Descripción: Vista para consultar información detallada del producto.	
+	
+Página: ProductListPage
+Ubicación: src/features/products/pages
+Responsable: Lo define el equipo
+Descripción: Lista de productos con opción de editar y cambiar estado.	
+	
+Página: ProductReportPage
+Ubicación: src/features/products/pages
+Responsable: Lo define el equipo
+Descripción: Vista para generar y visualizar reportes de productos con filtros.	
+	
+Componente: ProductForm
+Ubicación: src/features/products/components
+Responsable: Lo define el equipo
+Descripción: Formulario reutilizable obligatorio para crear y editar productos.	
+	
+Componente: ProductTable
+Ubicación: src/features/products/components
+Responsable: Lo define el equipo
+Descripción: Tabla reutilizable para visualizar productos con acciones de edición y cambio de estado.	

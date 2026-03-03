@@ -1,50 +1,24 @@
 import { useState, useEffect } from "react";
 import Input from "../../shared/components/Input";
 import Select from "../../shared/components/Select";
+import Toast from "../../shared/components/Toast";
+import CreatePharmaceuticalFormForm from "./components/CreatePharmaceuticalFormForm";
+import CreatePresentationForm from "./components/CreatePresentationForm";
+import CreateAdministrationRouteForm from "./components/CreateAdministrationRouteForm";
+import CreateLaboratoryForm from "./components/CreateLaboratoryForm";
+import CreateSupplierForm from "./components/CreateSupplierForm";
+import CreateStatusForm from "./components/CreateStatusForm";
+import pharmaceuticalFormsData from "../../data/medjson/pharmaceuticalForms.json";
+import presentationsData from "../../data/medjson/presentations.json";
+import administrationRoutesData from "../../data/medjson/administrationRoutes.json";
+import laboratoriesData from "../../data/medjson/laboratories.json";
+import suppliersData from "../../data/medjson/suppliers.json";
+import statusOptionsData from "../../data/medjson/statusOptions.json";
 import "../../styles/tokens.css";
 import "../../styles/semantic.css";
 
-const PHARMACEUTICAL_FORMS = [
-  { value: "tableta", label: "Tableta" },
-  { value: "capsula", label: "Cápsula" },
-  { value: "suspension", label: "Suspensión" },
-  { value: "inyectable", label: "Inyectable" },
-  { value: "topico", label: "Tópico" },
-];
-
-const PRESENTATIONS = [
-  { value: "blister", label: "Blister" },
-  { value: "frasco", label: "Frasco" },
-  { value: "ampolla", label: "Ampolla" },
-  { value: "tubo", label: "Tubo" },
-];
-
-const ADMINISTRATION_ROUTES = [
-  { value: "oral", label: "Oral" },
-  { value: "inyectable", label: "Inyectable" },
-  { value: "topico", label: "Tópico" },
-  { value: "rectal", label: "Rectal" },
-  { value: "intramuscular", label: "Intramuscular" },
-];
-
-const LABORATORIES = [
-  { value: "pfizer", label: "Pfizer" },
-  { value: "novartis", label: "Novartis" },
-  { value: "bayer", label: "Bayer" },
-  { value: "roche", label: "Roche" },
-];
-
-const SUPPLIERS = [
-  { value: "supplier1", label: "Proveedor 1" },
-  { value: "supplier2", label: "Proveedor 2" },
-  { value: "supplier3", label: "Proveedor 3" },
-];
-
-const STATUS_OPTIONS = [
-  { value: "activo", label: "Activo" },
-  { value: "inactivo", label: "Inactivo" },
-  { value: "descontinuado", label: "Descontinuado" },
-];
+import "../../styles/tokens.css";
+import "../../styles/semantic.css";
 
 export default function MedForm({ onSubmit, onBack, initialData = null }) {
   const [formData, setFormData] = useState({
@@ -63,10 +37,66 @@ export default function MedForm({ onSubmit, onBack, initialData = null }) {
     purchasePrice: "",
     salePrice: "",
     supplier: "",
-    status: "activo",
+    status: "",
   });
 
   const [errors, setErrors] = useState({});
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  
+  // Estados para los modales
+  const [openModals, setOpenModals] = useState({
+    form: false,
+    presentation: false,
+    route: false,
+    laboratory: false,
+    supplier: false,
+    status: false,
+  });
+
+
+  // Estados para los arrays dinámicos - cargados desde localStorage o JSONs
+  const [pharmaceuticalForms, setPharmaceuticalForms] = useState([]);
+  const [presentations, setPresentations] = useState([]);
+  const [administrationRoutes, setAdministrationRoutes] = useState([]);
+  const [laboratories, setLaboratories] = useState([]);
+  const [suppliers, setSuppliers] = useState([]);
+  const [statusOptions, setStatusOptions] = useState([]);
+
+  // Cargar datos desde localStorage o JSONs en el montaje
+  useEffect(() => {
+    // Cargar o inicializar desde localStorage
+    const loadedForms = localStorage.getItem("pharmaceuticalForms") ? 
+      JSON.parse(localStorage.getItem("pharmaceuticalForms")) : 
+      pharmaceuticalFormsData;
+    
+    const loadedPresentations = localStorage.getItem("presentations") ? 
+      JSON.parse(localStorage.getItem("presentations")) : 
+      presentationsData;
+    
+    const loadedRoutes = localStorage.getItem("administrationRoutes") ? 
+      JSON.parse(localStorage.getItem("administrationRoutes")) : 
+      administrationRoutesData;
+    
+    const loadedLaboratories = localStorage.getItem("laboratories") ? 
+      JSON.parse(localStorage.getItem("laboratories")) : 
+      laboratoriesData;
+    
+    const loadedSuppliers = localStorage.getItem("suppliers") ? 
+      JSON.parse(localStorage.getItem("suppliers")) : 
+      suppliersData;
+    
+    const loadedStatus = localStorage.getItem("statusOptions") ? 
+      JSON.parse(localStorage.getItem("statusOptions")) : 
+      statusOptionsData;
+
+    setPharmaceuticalForms(loadedForms);
+    setPresentations(loadedPresentations);
+    setAdministrationRoutes(loadedRoutes);
+    setLaboratories(loadedLaboratories);
+    setSuppliers(loadedSuppliers);
+    setStatusOptions(loadedStatus);
+  }, []);
 
   useEffect(() => {
     if (initialData) {
@@ -74,8 +104,78 @@ export default function MedForm({ onSubmit, onBack, initialData = null }) {
     }
   }, [initialData]);
 
+  const toggleModal = (modalKey) => {
+    setOpenModals((prev) => ({
+      ...prev,
+      [modalKey]: !prev[modalKey],
+    }));
+  };
+
+  const handleAddPharmaceuticalForm = (newForm) => {
+    const updated = [...pharmaceuticalForms, newForm];
+    setPharmaceuticalForms(updated);
+    localStorage.setItem("pharmaceuticalForms", JSON.stringify(updated));
+  };
+
+  const handleAddPresentation = (newPresentation) => {
+    const updated = [...presentations, newPresentation];
+    setPresentations(updated);
+    localStorage.setItem("presentations", JSON.stringify(updated));
+  };
+
+  const handleAddAdministrationRoute = (newRoute) => {
+    const updated = [...administrationRoutes, newRoute];
+    setAdministrationRoutes(updated);
+    localStorage.setItem("administrationRoutes", JSON.stringify(updated));
+  };
+
+  const handleAddLaboratory = (newLaboratory) => {
+    const updated = [...laboratories, newLaboratory];
+    setLaboratories(updated);
+    localStorage.setItem("laboratories", JSON.stringify(updated));
+  };
+
+  const handleAddSupplier = (newSupplier) => {
+    const updated = [...suppliers, newSupplier];
+    setSuppliers(updated);
+    localStorage.setItem("suppliers", JSON.stringify(updated));
+  };
+
+  const handleAddStatus = (newStatus) => {
+    const updated = [...statusOptions, newStatus];
+    setStatusOptions(updated);
+    localStorage.setItem("statusOptions", JSON.stringify(updated));
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
+    
+    // Manejar opciones especiales de "agregar nuevo"
+    if (value === "add_new_form") {
+      toggleModal("form");
+      return;
+    }
+    if (value === "add_new_presentation") {
+      toggleModal("presentation");
+      return;
+    }
+    if (value === "add_new_route") {
+      toggleModal("route");
+      return;
+    }
+    if (value === "add_new_lab") {
+      toggleModal("laboratory");
+      return;
+    }
+    if (value === "add_new_supplier") {
+      toggleModal("supplier");
+      return;
+    }
+    if (value === "add_new_status") {
+      toggleModal("status");
+      return;
+    }
+    
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -108,6 +208,30 @@ export default function MedForm({ onSubmit, onBack, initialData = null }) {
     e.preventDefault();
     if (validateForm()) {
       onSubmit?.(formData);
+      setToastMessage("Operación exitosa, medicamento creado exitosamente");
+      setShowToast(true);
+      
+      // Limpiar formulario después de 1.5 segundos
+      setTimeout(() => {
+        setFormData({
+          medicationId: "",
+          medicationName: "",
+          pharmaceuticalForm: "",
+          presentation: "",
+          concentration: "",
+          description: "",
+          administrationRoute: "",
+          laboratory: "",
+          lote: "",
+          manufactureDate: "",
+          expirationDate: "",
+          stock: "",
+          purchasePrice: "",
+          salePrice: "",
+          supplier: "",
+          status: "",
+        });
+      }, 1500);
     }
   };
 
@@ -138,7 +262,7 @@ export default function MedForm({ onSubmit, onBack, initialData = null }) {
                 name="medicationId"
                 value={formData.medicationId}
                 onChange={handleChange}
-                className="w-full h-12 p-3 rounded-lg focus:outline-none"
+                className="w-full h-12 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
@@ -157,7 +281,7 @@ export default function MedForm({ onSubmit, onBack, initialData = null }) {
                 name="medicationName"
                 value={formData.medicationName}
                 onChange={handleChange}
-                className="w-full h-12 p-3 rounded-lg focus:outline-none"
+                className="w-full h-12 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
@@ -174,7 +298,7 @@ export default function MedForm({ onSubmit, onBack, initialData = null }) {
                 name="pharmaceuticalForm"
                 value={formData.pharmaceuticalForm}
                 onChange={handleChange}
-                className="w-full h-12 p-3 rounded-lg focus:outline-none"
+                className="w-full h-12 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
@@ -182,9 +306,10 @@ export default function MedForm({ onSubmit, onBack, initialData = null }) {
                 }}
               >
                 <option value="">Seleccionar...</option>
-                {PHARMACEUTICAL_FORMS.map(form => (
+                {pharmaceuticalForms.map(form => (
                   <option key={form.value} value={form.value}>{form.label}</option>
                 ))}
+                <option value="add_new_form" style={{ color: "var(--color-primary-500)", fontWeight: "bold" }}>+ Agregar nueva forma</option>
               </select>
             </div>
 
@@ -196,7 +321,7 @@ export default function MedForm({ onSubmit, onBack, initialData = null }) {
                 name="presentation"
                 value={formData.presentation}
                 onChange={handleChange}
-                className="w-full h-12 p-3 rounded-lg focus:outline-none"
+                className="w-full h-12 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
@@ -204,9 +329,10 @@ export default function MedForm({ onSubmit, onBack, initialData = null }) {
                 }}
               >
                 <option value="">Seleccionar...</option>
-                {PRESENTATIONS.map(pres => (
+                {presentations.map(pres => (
                   <option key={pres.value} value={pres.value}>{pres.label}</option>
                 ))}
+                <option value="add_new_presentation" style={{ color: "var(--color-primary-500)", fontWeight: "bold" }}>+ Agregar nueva presentación</option>
               </select>
             </div>
 
@@ -220,7 +346,7 @@ export default function MedForm({ onSubmit, onBack, initialData = null }) {
                 name="concentration"
                 value={formData.concentration}
                 onChange={handleChange}
-                className="w-full h-12 p-3 rounded-lg focus:outline-none"
+                className="w-full h-12 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
@@ -239,7 +365,7 @@ export default function MedForm({ onSubmit, onBack, initialData = null }) {
                 name="description"
                 value={formData.description}
                 onChange={handleChange}
-                className="w-full h-12 p-3 rounded-lg focus:outline-none"
+                className="w-full h-12 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
@@ -247,17 +373,6 @@ export default function MedForm({ onSubmit, onBack, initialData = null }) {
                 }}
               />
             </div>
-
-            <button
-              type="button"
-              className="w-full h-10 rounded font-medium text-sm"
-              style={{
-                backgroundColor: "var(--color-primary-300)",
-                color: "var(--semantic-text-primary)"
-              }}
-            >
-              + Nueva Forma Farmacéutica
-            </button>
           </div>
 
           {/* COLUMNA 2 - CENTRO */}
@@ -270,7 +385,7 @@ export default function MedForm({ onSubmit, onBack, initialData = null }) {
                 name="administrationRoute"
                 value={formData.administrationRoute}
                 onChange={handleChange}
-                className="w-full h-12 p-3 rounded-lg focus:outline-none"
+                className="w-full h-12 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
@@ -278,9 +393,10 @@ export default function MedForm({ onSubmit, onBack, initialData = null }) {
                 }}
               >
                 <option value="">Seleccionar...</option>
-                {ADMINISTRATION_ROUTES.map(route => (
+                {administrationRoutes.map(route => (
                   <option key={route.value} value={route.value}>{route.label}</option>
                 ))}
+                <option value="add_new_route" style={{ color: "var(--color-primary-500)", fontWeight: "bold" }}>+ Agregar nueva vía</option>
               </select>
             </div>
 
@@ -292,7 +408,7 @@ export default function MedForm({ onSubmit, onBack, initialData = null }) {
                 name="laboratory"
                 value={formData.laboratory}
                 onChange={handleChange}
-                className="w-full h-12 p-3 rounded-lg focus:outline-none"
+                className="w-full h-12 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
@@ -300,9 +416,10 @@ export default function MedForm({ onSubmit, onBack, initialData = null }) {
                 }}
               >
                 <option value="">Seleccionar...</option>
-                {LABORATORIES.map(lab => (
+                {laboratories.map(lab => (
                   <option key={lab.value} value={lab.value}>{lab.label}</option>
                 ))}
+                <option value="add_new_lab" style={{ color: "var(--color-primary-500)", fontWeight: "bold" }}>+ Agregar nuevo laboratorio</option>
               </select>
             </div>
 
@@ -316,7 +433,7 @@ export default function MedForm({ onSubmit, onBack, initialData = null }) {
                 name="lote"
                 value={formData.lote}
                 onChange={handleChange}
-                className="w-full h-12 p-3 rounded-lg focus:outline-none"
+                className="w-full h-12 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
@@ -335,7 +452,7 @@ export default function MedForm({ onSubmit, onBack, initialData = null }) {
                 name="manufactureDate"
                 value={formData.manufactureDate}
                 onChange={handleChange}
-                className="w-full h-12 p-3 rounded-lg focus:outline-none"
+                className="w-full h-12 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
@@ -354,7 +471,7 @@ export default function MedForm({ onSubmit, onBack, initialData = null }) {
                 name="expirationDate"
                 value={formData.expirationDate}
                 onChange={handleChange}
-                className="w-full h-12 p-3 rounded-lg focus:outline-none"
+                className="w-full h-12 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
@@ -362,17 +479,6 @@ export default function MedForm({ onSubmit, onBack, initialData = null }) {
                 }}
               />
             </div>
-
-            <button
-              type="button"
-              className="w-full h-10 rounded font-medium text-sm"
-              style={{
-                backgroundColor: "var(--color-primary-300)",
-                color: "var(--semantic-text-primary)"
-              }}
-            >
-              + Nuevo Laboratorio
-            </button>
           </div>
 
           {/* COLUMNA 3 - DERECHA */}
@@ -387,7 +493,7 @@ export default function MedForm({ onSubmit, onBack, initialData = null }) {
                 name="stock"
                 value={formData.stock}
                 onChange={handleChange}
-                className="w-full h-12 p-3 rounded-lg focus:outline-none"
+                className="w-full h-12 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
@@ -406,7 +512,7 @@ export default function MedForm({ onSubmit, onBack, initialData = null }) {
                 name="purchasePrice"
                 value={formData.purchasePrice}
                 onChange={handleChange}
-                className="w-full h-12 p-3 rounded-lg focus:outline-none"
+                className="w-full h-12 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
@@ -425,7 +531,7 @@ export default function MedForm({ onSubmit, onBack, initialData = null }) {
                 name="salePrice"
                 value={formData.salePrice}
                 onChange={handleChange}
-                className="w-full h-12 p-3 rounded-lg focus:outline-none"
+                className="w-full h-12 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
@@ -442,7 +548,7 @@ export default function MedForm({ onSubmit, onBack, initialData = null }) {
                 name="supplier"
                 value={formData.supplier}
                 onChange={handleChange}
-                className="w-full h-12 p-3 rounded-lg focus:outline-none"
+                className="w-full h-12 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
@@ -450,9 +556,10 @@ export default function MedForm({ onSubmit, onBack, initialData = null }) {
                 }}
               >
                 <option value="">Seleccionar...</option>
-                {SUPPLIERS.map(sup => (
+                {suppliers.map(sup => (
                   <option key={sup.value} value={sup.value}>{sup.label}</option>
                 ))}
+                <option value="add_new_supplier" style={{ color: "var(--color-primary-500)", fontWeight: "bold" }}>+ Agregar nuevo proveedor</option>
               </select>
             </div>
 
@@ -464,29 +571,19 @@ export default function MedForm({ onSubmit, onBack, initialData = null }) {
                 name="status"
                 value={formData.status}
                 onChange={handleChange}
-                className="w-full h-12 p-3 rounded-lg focus:outline-none"
+                className="w-full h-12 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
                   backgroundColor: "var(--color-primary-50)"
                 }}
               >
-                {STATUS_OPTIONS.map(status => (
+                {statusOptions.map(status => (
                   <option key={status.value} value={status.value}>{status.label}</option>
                 ))}
+                <option value="add_new_status" style={{ color: "var(--color-primary-500)", fontWeight: "bold" }}>+ Agregar nuevo estado</option>
               </select>
             </div>
-
-            <button
-              type="button"
-              className="w-full h-10 rounded font-medium text-sm"
-              style={{
-                backgroundColor: "var(--color-primary-300)",
-                color: "var(--semantic-text-primary)"
-              }}
-            >
-              + Nuevo Proveedor
-            </button>
           </div>
 
           {/* BOTONES - FILA COMPLETA */}
@@ -515,6 +612,45 @@ export default function MedForm({ onSubmit, onBack, initialData = null }) {
           </div>
         </form>
       </div>
+
+      {/* MODALES */}
+      <CreatePharmaceuticalFormForm
+        isOpen={openModals.form}
+        onClose={() => toggleModal("form")}
+        onAdd={handleAddPharmaceuticalForm}
+      />
+      <CreatePresentationForm
+        isOpen={openModals.presentation}
+        onClose={() => toggleModal("presentation")}
+        onAdd={handleAddPresentation}
+      />
+      <CreateAdministrationRouteForm
+        isOpen={openModals.route}
+        onClose={() => toggleModal("route")}
+        onAdd={handleAddAdministrationRoute}
+      />
+      <CreateLaboratoryForm
+        isOpen={openModals.laboratory}
+        onClose={() => toggleModal("laboratory")}
+        onAdd={handleAddLaboratory}
+      />
+      <CreateSupplierForm
+        isOpen={openModals.supplier}
+        onClose={() => toggleModal("supplier")}
+        onAdd={handleAddSupplier}
+      />
+      <CreateStatusForm
+        isOpen={openModals.status}
+        onClose={() => toggleModal("status")}
+        onAdd={handleAddStatus}
+      />
+
+      {/* TOAST PARA MEDICAMENTO CREADO */}
+      <Toast
+        isVisible={showToast}
+        message={toastMessage}
+        onClose={() => setShowToast(false)}
+      />
     </div>
   );
 }

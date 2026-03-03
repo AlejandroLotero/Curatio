@@ -1,0 +1,8 @@
+[
+  { "value": "tableta", "label": "Tableta" },
+  { "value": "capsula", "label": "Cápsula" },
+  { "value": "suspension", "label": "Suspensión" },
+  { "value": "inyectable", "label": "Inyectable" },
+  { "value": "topico", "label": "Tópico" },
+  { "value": "pastilla", "label": "Pastilla" }
+]

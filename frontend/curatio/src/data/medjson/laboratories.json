@@ -1,0 +1,6 @@
+[
+  { "value": "pfizer", "label": "Pfizer" },
+  { "value": "novartis", "label": "Novartis" },
+  { "value": "bayer", "label": "Bayer" },
+  { "value": "roche", "label": "Roche" }
+]

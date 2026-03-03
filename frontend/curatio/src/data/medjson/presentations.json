@@ -1,0 +1,6 @@
+[
+  { "value": "blister", "label": "Blister" },
+  { "value": "frasco", "label": "Frasco" },
+  { "value": "ampolla", "label": "Ampolla" },
+  { "value": "tubo", "label": "Tubo" }
+]

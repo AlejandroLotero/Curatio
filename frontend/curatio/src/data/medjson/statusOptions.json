@@ -1,0 +1,5 @@
+[
+  { "value": "activo", "label": "Activo" },
+  { "value": "inactivo", "label": "Inactivo" },
+  { "value": "descontinuado", "label": "Descontinuado" }
+]
