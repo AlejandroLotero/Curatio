@@ -34,7 +34,7 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
     purchasePrice: "",
     salePrice: "",
     supplier: "",
-    status: "",
+    status: "Activo",
   });
 
   const [errors, setErrors] = useState({});
@@ -226,7 +226,7 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
           purchasePrice: "",
           salePrice: "",
           supplier: "",
-          status: "",
+          status: "Activo",
         });
       }, 1500);
     }

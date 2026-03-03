@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Plus, Search, Trash2, Edit2, Eye } from "lucide-react";
+import { Plus, Search, Trash2, Edit2, Eye, Check, X } from "lucide-react";
 import Toast from "../../../shared/components/Toast";
 import "../../../styles/tokens.css";
 import "../../../styles/semantic.css";
@@ -133,6 +133,18 @@ export default function ProductListPage() {
           >
             <Plus size={20} />
             Crear Medicamento
+          </button>
+
+          {/* Botón Reportes */}
+          <button
+            onClick={() => navigate("/products/reports")}
+            className="flex items-center gap-2 px-6 py-2.5 rounded-lg font-semibold hover:opacity-90 transition whitespace-nowrap"
+            style={{
+              backgroundColor: "var(--color-primary-200)",
+              color: "var(--semantic-text-primary)",
+            }}
+          >
+            📊 Reportes
           </button>
         </div>
 
@@ -270,13 +282,19 @@ export default function ProductListPage() {
                     </td>
                     <td className="px-6 py-4 text-sm">
                       <span
-                        className="px-3 py-1 rounded-full text-xs font-semibold"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition"
                         style={{
-                          backgroundColor: getStatusColor(medicamento.status),
-                          color: "white",
+                          backgroundColor: (medicamento.status === "Activo" || !medicamento.status) ? "#E6F9F1" : "#FFE6E6",
+                          color: (medicamento.status === "Activo" || !medicamento.status) ? "#14AE5C" : "#FF4444",
+                          border: `1.5px solid ${(medicamento.status === "Activo" || !medicamento.status) ? "#14AE5C" : "#FF4444"}`
                         }}
                       >
-                        {medicamento.status || "-"}
+                        {(medicamento.status === "Activo" || !medicamento.status) ? (
+                          <Check size={14} strokeWidth={3} />
+                        ) : (
+                          <X size={14} strokeWidth={3} />
+                        )}
+                        {medicamento.status || "Activo"}
                       </span>
                     </td>
                     <td className="px-6 py-4">

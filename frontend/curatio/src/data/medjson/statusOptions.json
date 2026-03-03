@@ -1,5 +1,5 @@
 [
-  { "value": "activo", "label": "Activo" },
-  { "value": "inactivo", "label": "Inactivo" },
-  { "value": "descontinuado", "label": "Descontinuado" }
+  { "value": "Activo", "label": "Activo" },
+  { "value": "Inactivo", "label": "Inactivo" },
+  { "value": "Descontinuado", "label": "Descontinuado" }
 ]
