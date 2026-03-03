@@ -62,7 +62,8 @@
 
     /*Typographic*/
 
-    --main-font:Roboto, Lora;
+    --font-roboto: "Roboto";
+    --font-lora: "Lora";
 
 
     /* Font size

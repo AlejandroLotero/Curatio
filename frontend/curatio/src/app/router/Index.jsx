@@ -1,8 +1,12 @@
 import {createBrowserRouter} from "react-router-dom";
 import MainLayout from "@/shared/layout/MainLayout";
 import ProfilePage from "@/features/users/pages/ProfilePage";
-import HomePage from "../../features/home/pages/HomePage";
-import AuthLayout from "../../shared/layout/AuthLayout";
+import HomePage from "@/features/home/pages/HomePage";
+import AuthLayout from "@/shared/layout/AuthLayout";
+import LoginPage from "@/features/auth/pages/LoginPage";
+import ForgotPasswordPage from "@/features/auth/pages/ForgotPasswordPage"
+import TokenPasswordPage from "@/features/auth/pages/TokenPasswordPage"
+import ResetPasswordPage from "@/features/auth/pages/ResetPasswordPage"
 
 const router = createBrowserRouter([
 
@@ -50,23 +54,23 @@ const router = createBrowserRouter([
 
                 // index: true,
                 path:"login",
-                element: <AuthLayout/>
+                element: <LoginPage/>
 
             },
 
             {
                 path: "forgot-password",
-                element: <h1 className = "p-4"> Recuperar contraseña   </h1>
+                element: <ForgotPasswordPage/>
             },
 
             {
                 path: "reset-password",
-                element: <h1 className = "p-4"> Cambiar mi contraseña   </h1>
+                element: <ResetPasswordPage></ResetPasswordPage>
             },
 
             {
-                path: "products",
-                element: <h1 className = "p-4"> Productos </h1>
+                path: "send-token",
+                element: <TokenPasswordPage></TokenPasswordPage>
             },
 
             {
