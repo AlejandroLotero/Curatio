@@ -6,7 +6,7 @@
 export default function Input({ label, type = "text", ...props }) {
   return (
     <div className="w-[320px]">
-      {/*label */}
+      {/* label */}
       {label && (
         <label
           className="block
@@ -21,8 +21,7 @@ export default function Input({ label, type = "text", ...props }) {
         </label>
       )}
 
-      {/*Contenerdor del input */}
-
+      {/* Contenedor del input */}
       <div
       className="
       relative
@@ -34,8 +33,8 @@ export default function Input({ label, type = "text", ...props }) {
         {/* Area interactiva invisible (48px) */}
         <div
           className="
-          absolute
-          inset-0
+            absolute
+            inset-0
           "
           onMouseDown = {(e) => {
           e.preventDefault();

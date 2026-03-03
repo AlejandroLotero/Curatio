@@ -50,10 +50,23 @@ const router = createBrowserRouter([
             },
 
             {
-                path: "suppliers",
-                element: <h1 className = "p-4"> Proveedor   </h1>
-            },
-
+                    path:"suppliers",
+                    element: <Outlet />,
+                    children: [
+                        {
+                            index: true,
+                            element: <Navigate to="datos-basicos" replace />
+                        },
+                        {
+                            path: "datos-basicos",
+                            element: <CreateFormSuppliers />
+                        },
+                        {
+                            path: "datos-contacto",
+                            element: <DatosContactoSuppliers />
+                        }
+                    ]
+                },
             {
                 path: "products",
                 element: <h1 className = "p-4"> Productos </h1>
