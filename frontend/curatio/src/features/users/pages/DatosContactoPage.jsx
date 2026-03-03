@@ -4,11 +4,12 @@ import { Link } from "react-router-dom";
 
 export default function DatosContactoPage() {
   return (
-    <div>
+    <div className="flex justify-center items-center min-h-[60vh] p-4">
       <form
         className="
+      w-full max-w-md
       px-6 py-12 
-      grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4 
+      grid grid-cols-1 gap-4 
       bg-white/70 dark:bg-neutral-900/20 
       backdrop-blur-md 
       shadow-xl 
@@ -63,7 +64,7 @@ export default function DatosContactoPage() {
               Cancelar
             </Buttom>
 
-            <Link to="/crear-usuario/rol">
+            <Link to="/accounts/rol">
               <Buttom
                 variant="primary"
                 size="sm"

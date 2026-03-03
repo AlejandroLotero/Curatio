@@ -33,7 +33,7 @@ const Navbar = ({variant = "solid"}) => {
               </Link>
             </li>
             <li>
-              <Link to="/cursos" className="hover:text-primary transition">
+              <Link to="/accounts/datos-basicos" className="hover:text-primary transition">
                 Usuarios
               </Link>
             </li>

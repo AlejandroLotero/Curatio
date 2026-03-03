@@ -1,4 +1,7 @@
 //Creacion de componente input
+//Modificacion del classname del label para que tome el 
+// color de texto definido en el diseño (text-label) de 
+// global.css
 
 export default function Input({ label, type = "text", ...props }) {
   return (
@@ -6,12 +9,13 @@ export default function Input({ label, type = "text", ...props }) {
       {/*label */}
       {label && (
         <label
-          className="block 
-                            mb-1
-                            text-label
-                            font-body
-                            font-heading
-                            text-mostsmall"
+          className="block
+                              mb-1
+                              text-label
+                              font-body
+                              font-heading
+                              text-mostsmall
+                              "
         >
           {label}
         </label>
@@ -20,26 +24,34 @@ export default function Input({ label, type = "text", ...props }) {
       {/*Contenerdor del input */}
 
       <div
-        className="
+      className="
       relative
       h-12
       flex
       items-center
-      "
-      >
+      " >
+
         {/* Area interactiva invisible (48px) */}
         <div
           className="
           absolute
           inset-0
           "
-          onMouseDown={(e) => {
-            e.preventDefault();
-            e.currentTarget.nextSibling.focus();
-          }}
+          onMouseDown = {(e) => {
+          e.preventDefault();
+          e.currentTarget.nextSibling.focus();
+        
+        }}
+      
         />
 
-        {/* Input visual*/}
+        {/* Input visual
+        JHONIER- SE AGREGA LA PROPIEDAD placeholder:text-label
+        para que el placeholder tome el color definido en el diseño
+        (text-label) de global.css se deja en color negro ya que es
+        el mismo que manejamos en el diseño, se modifican los bordes
+        y los bordes de la propiedad focus se agregan tambien las 
+        propiedades a los inputs*/}
 
         <input
           type={type}
@@ -48,8 +60,8 @@ export default function Input({ label, type = "text", ...props }) {
           w-full
           h-10
           rounded-md
-          border        
-      
+          border
+          border-border-strong
           px-4
           text-label
           font-body
@@ -57,8 +69,7 @@ export default function Input({ label, type = "text", ...props }) {
           text-small
 
           
-          placeholder:-color-border
-          placeholder:-color-border
+          placeholder:text-label
           placeholder:text-small
           placeholder:font-body
           placeholder:text-font-heading
@@ -68,7 +79,7 @@ export default function Input({ label, type = "text", ...props }) {
           focus:outline-none
           focus:ring-1
 
-          focus:ring-color-border
+          focus:ring-border
           focus:border-border
           
           "

@@ -1,41 +1,49 @@
-export default function Select({ label, name, options = [] }) {
-  return (
-    <div className="w-[320px]">
-      {/* label si es label tiene contenido es (thurty)true, si no, es false(falsy) y no muestra el label */}
-      {label && (
-        <label
-          className="
-                block
-                     mb-1
-                     text-label
-                     font-body
-                     font-heading
-                     text-mostsmall"
-        >
-          {label}
-        </label>
-      )}
+export default function Select({
+    label,
+    name,
+    options = [],
+    placeholder,
+}) {
+    return (
+        <div className="w-[320px]">
+            {/*Si el label tiene contenido es igual a truthy si no es falsy  */}
+            { label && (
+            <label className="
+            block
+            mb-1
+            text-mostsmall
+            text-label
+            font-weight
+            font-body
+            font-heading
+            ">
+                {label}
+            </label>
+            )}
 
-      <select
-        name={name}
-        className="
+            <select
+            name={name}
+            className="
                 w-full
-                h-12
+                h-8
                 rounded-md
                 border
-                border-border
-                px-4
-                                
-                "
-      >
-        <option value="">Seleccione</option>
+                border-strong
+                text-center
+            ">
 
-        {options.map((opt) => (
-          <option key={opt.id} value={opt.id}>
-            {opt.label}
-          </option>
-        ))}
-      </select>
-    </div>
-  );
-}
+
+                <option value="">{placeholder}</option>
+
+                {options.map((option) =>  (
+                    <option key={option.id} value={option.id}>
+                        {option.label}
+                    </option>
+                ))}
+            </select>            
+        </div>
+
+
+    );
+};
+
