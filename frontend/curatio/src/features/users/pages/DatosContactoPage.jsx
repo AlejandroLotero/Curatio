@@ -17,7 +17,7 @@ export default function DatosContactoPage() {
       rounded-3xl"
       >
         {/* ================= DATOS DE CONTACTO ================= */}
-        <section className="grid gap-4 p-4 border rounded-xl">
+        <section className="flex flex-col items-center gap-4 p-4 border rounded-xl">
           <h2
             className="
           text-center 
@@ -55,7 +55,7 @@ export default function DatosContactoPage() {
             name="confirmEmail"
           />
 
-          <div className="flex justify-between mt-6">
+          <div className="flex justify-between w-full max-w-[320px] mt-6">
             <Buttom
               variant="secondary"
               size="sm"

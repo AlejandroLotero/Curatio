@@ -30,6 +30,7 @@ export default function Select({
                 border
                 border-strong
                 text-center
+                text-black
             ">
 
 
