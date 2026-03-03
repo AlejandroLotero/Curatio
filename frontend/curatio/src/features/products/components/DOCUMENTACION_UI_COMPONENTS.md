@@ -297,9 +297,9 @@ style={{
 ---
 
 ## 📚 Archivos Relacionados
-- Components: `src/shared/components/Toast.jsx`, `src/shared/components/Modal.jsx`
+- Components: `src/shared/components/Toast.jsx`, `src/shared/components/Modal.jsx`, `src/features/products/components/ProductForm.jsx`
 - Estilos: `src/styles/tokens.css`, `src/styles/semantic.css`
-- Ejemplos: `src/features/products/Medform.jsx`
+- Ejemplos: `src/features/products/components/ProductForm.jsx`
 
 ---
 

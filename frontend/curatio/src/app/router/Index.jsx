@@ -7,7 +7,11 @@ import LoginPage from "@/features/auth/pages/LoginPage";
 import ForgotPasswordPage from "@/features/auth/pages/ForgotPasswordPage"
 import TokenPasswordPage from "@/features/auth/pages/TokenPasswordPage"
 import ResetPasswordPage from "@/features/auth/pages/ResetPasswordPage"
-import MedForm from "@/features/products/Medform"
+import ProductListPage from "@/features/products/pages/ProductListPage";
+import CreateProductPage from "@/features/products/pages/CreateProductPage";
+import EditProductPage from "@/features/products/pages/EditProductPage";
+import ProductDetailPage from "@/features/products/pages/ProductDetailPage";
+import ProductReportPage from "@/features/products/pages/ProductReportPage";
 
 const router = createBrowserRouter([
 
@@ -36,7 +40,27 @@ const router = createBrowserRouter([
 
             {
                 path: "products",
-                element: <MedForm/>
+                element: <ProductListPage/>
+            },
+
+            {
+                path: "products/create",
+                element: <CreateProductPage/>
+            },
+
+            {
+                path: "products/reports",
+                element: <ProductReportPage/>
+            },
+
+            {
+                path: "products/:id",
+                element: <ProductDetailPage/>
+            },
+
+            {
+                path: "products/:id/edit",
+                element: <EditProductPage/>
             },
 
             {
