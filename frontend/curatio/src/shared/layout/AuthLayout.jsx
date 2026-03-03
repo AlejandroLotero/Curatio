@@ -1,9 +1,6 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "@/shared/layout/NavBar";
 
-import UserForm from "@/features/users/components/UserForm"
-
-// import heroBfg from "@/assets/images/carro.jpg";
 
 import heroBfg from "@/assets/images/imagen-hero.jpg";
 
@@ -23,10 +20,11 @@ export default function AuthLayout() {
             
     
 
-        {/* Contenido externo que se inyecta */}
-      <main className="mx-auto">
+        {/* Contenido externo que se inyecta de forma automatica con Outlet */}
+      <main className="mx-auto ">
        
-        <UserForm></UserForm>
+         <Outlet />       
+        
       </main>
     </div>
   );
