@@ -3,7 +3,7 @@
 
 :root{
 
-    /* BRAND */
+      /* BRAND */
 
     --semantic-brand: var(--color-white);
     --semantic-brand-hover: var(--color-primary-900); /*Generalmente es de un tono mas alto*/
@@ -53,6 +53,13 @@
     /*BOTONES*/
     --semantic-action-primary-bg: var(--color-secondary-800);
     --semantic-action-primary-hover-bg: var(--color-secondary-200);
+
+    --semantic-action-secondary-bg: var(--color-gray-800);
+    --semantic-action-secondary-hover-bg: var(--color-gray-200);
+
+    /*BACKGROUND COLOR*/
+
+    --semantic-bgcolor: var(--color-primary-400);  
 
     --semantic-action-secondary-bg: var(--color-gray-800);
     --semantic-action-secondary-hover-bg: var(--color-gray-200);
