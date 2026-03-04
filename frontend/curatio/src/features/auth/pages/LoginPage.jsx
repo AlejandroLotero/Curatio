@@ -19,7 +19,6 @@ export default function LoginPage() {
       // Simulación
       await new Promise((r) => setTimeout(r, 700));
 
-    
       navigate("/");
     } catch (err) {
       console.error(err);
@@ -30,22 +29,25 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-5 w-125 flex items-center justify-center px-4 py-10 relative overflow-hidden">
-      {/* Fondo con “luces” suaves */}
-      <div className="pointer-events-none absolute -top-40 -left-40 h-96 w-96 rounded-full blur-3xl opacity-30 bg-white" />
-      <div className="pointer-events-none absolute -bottom-40 -right-40 h-96 w-96 rounded-full blur-3xl opacity-20 bg-white" />
-
-      {/* Card glass */}
+    <div className="flex items-center justify-center min-h-screen px-4 py-10">
       <div className="w-full max-w-md">
-        <div className="rounded-2xl bg-white/20 backdrop-blur-2xl shadow-[0_20px_80px_-20px_rgba(0,0,0,0.6)] border border-black/30">
-          <div className="px-7 py-8">
-            <LoginForm
-              onSubmit={handleLogin}
-              loading={loading}
-              error={error}
-              onForgotPassword={() => navigate("/forgot-password")}
-            />
-          </div>
+        <div
+          className="
+            rounded-3xl
+            border border-border
+            bg-white/70 dark:bg-neutral-900/20
+            backdrop-blur-md
+            shadow-xl
+            ring-1 ring-border
+            px-6 py-8 sm:px-8 sm:py-10
+          "
+        >
+          <LoginForm
+            onSubmit={handleLogin}
+            loading={loading}
+            error={error}
+            onForgotPassword={() => navigate("/forgot-password")}
+          />
         </div>
       </div>
     </div>

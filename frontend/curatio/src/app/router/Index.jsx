@@ -1,4 +1,4 @@
-import {createBrowserRouter} from "react-router-dom";
+import {createBrowserRouter, Navigate, Outlet} from "react-router-dom";
 import MainLayout from "@/shared/layout/MainLayout";
 import ProfilePage from "@/features/users/pages/ProfilePage";
 import HomePage from "@/features/home/pages/HomePage";
@@ -12,6 +12,11 @@ import CreateProductPage from "@/features/products/pages/CreateProductPage";
 import EditProductPage from "@/features/products/pages/EditProductPage";
 import ProductDetailPage from "@/features/products/pages/ProductDetailPage";
 import ProductReportPage from "@/features/products/pages/ProductReportPage";
+import DatosBasicosPage from "@/features/users/pages/DatosBasicosPage";
+import DatosContactoPage from "@/features/users/pages/DatosContactoPage";
+import RolPage from "@/features/users/pages/RolPage";
+import CreateFormSuppliers from "@/features/suppliers/pages/CreateSuppliersDatosBasicos";
+import DatosContactoSuppliers from "@/features/suppliers/pages/CreateSuppliersDatosContacto";
 
 const router = createBrowserRouter([
 
@@ -30,14 +35,45 @@ const router = createBrowserRouter([
 
             {
                 path: "accounts",
-                element: <h1 className = "p-4"> Cuentas   </h1>
+                element: <Outlet />,
+                children: [
+                    {
+                        index: true,
+                        element: <Navigate to="/accounts/datos-basicos" replace />
+                    },
+                    {
+                        path: "datos-basicos",
+                        element: <DatosBasicosPage />
+                    },
+                    {
+                        path: "contacto",
+                        element: <DatosContactoPage />
+                    },
+                    {
+                        path: "rol",
+                        element: <RolPage />
+                    }
+                ]
             },
 
             {
-                path: "suppliers",
-                element: <h1 className = "p-4"> Proveedor   </h1>
-            },
-
+                    path:"suppliers",
+                    element: <Outlet />,
+                    children: [
+                        {
+                            index: true,
+                            element: <Navigate to="datos-basicos" replace />
+                        },
+                        {
+                            path: "datos-basicos",
+                            element: <CreateFormSuppliers />
+                        },
+                        {
+                            path: "datos-contacto",
+                            element: <DatosContactoSuppliers />
+                        }
+                    ]
+                },
             {
                 path: "products",
                 element: <ProductListPage/>
