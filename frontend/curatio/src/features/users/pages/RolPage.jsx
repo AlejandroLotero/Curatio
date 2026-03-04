@@ -4,7 +4,7 @@ import Select from "@/shared/components/Select";
 import Modal from "@/shared/components/Modal";
 import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
-import { getRoles } from "../services/selectService";
+import { getRoles } from "../../users/services/selectService";
 
 export default function RolPage() {
   const [roles, setRoles] = useState([]);
