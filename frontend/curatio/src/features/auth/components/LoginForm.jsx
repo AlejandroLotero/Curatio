@@ -63,6 +63,10 @@ export default function LoginForm({
     });
   };
 
+  const inputClass =
+    "!text-label placeholder:text-text-muted w-full h-10 !border-0 !border-b-2 border-black/60 px-4 !rounded-none  " +
+    "focus:outline-none focus:!border-black transition-colors duration-200 !ring-0 ";
+
   return (
     <div className="flex flex-col items-center ">
       {/* Encabezado */}
@@ -93,9 +97,11 @@ export default function LoginForm({
             onChange={handleChange}
             onBlur={handleBlur}
             error={touched.email ? errors.email : ""}
+            className={`${inputClass}` }
+          
           />
           {touched.email && errors.email && (
-            <p className="mt-1 font-body text-mostsmall text-error">
+            <p className="mt-1 font-body text-red-600 text-mostsmall text-error">
               {errors.email}
             </p>
           )}
@@ -113,10 +119,11 @@ export default function LoginForm({
             error={touched.password ? errors.password : ""}
             showPassword={showPassword}
             onTogglePassword={() => setShowPassword((s) => !s)}
+            className={`${inputClass}` }
           />
 
           {touched.password && errors.password && (
-            <p className="mt-1 font-body text-mostsmall text-error">
+            <p className="mt-1 font-body text-red-600 text-mostsmall text-error">
               {errors.password}
             </p>
           )}

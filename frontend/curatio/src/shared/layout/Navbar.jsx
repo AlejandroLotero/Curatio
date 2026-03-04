@@ -2,6 +2,7 @@ import { Search, User, Cross } from "lucide-react";
 /*Nos enruta pero con react router*/
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import LogoutButton from "@/features/auth/components/LogoutButton";
 
 
 
@@ -9,21 +10,28 @@ const Navbar = ({variant = "solid"}) => {
     const [isOpen, setIsOpen] = useState(false);
   return (
     // Estos son los estilos del NavBar para que quede transparente
-    <nav className = {`w-full border-b transition-color duration-300${variant === "transparent" ? "bg-transparent border-transparent absolute top-0 left-0 z-30"
-      : "bg-background border-border"}`}>
-
-
+    <nav
+      className={`w-full border-b transition-color duration-300${
+        variant === "transparent"
+          ? "bg-transparent border-transparent absolute top-0 left-0 z-30"
+          : "bg-background border-border"
+      }`}
+    >
       <div className="mx-auto max-w-7xl px-4">
         <div className="flex h-16 items-center justify-between">
-          
           {/* Logo de marca */}
           <div className="flex items-center">
-            <Link to="/" className="flex items-center gap-2 text-tittles font-heading font-body text-label">
-              <Cross className="size-12 fill-label stroke-label [stroke-linecap:square] [stroke-linejoin:miter]" strokeWidth={2} />
+            <Link
+              to="/"
+              className="flex items-center gap-2 text-tittles font-heading font-body text-label"
+            >
+              <Cross
+                className="size-12 fill-label stroke-label [stroke-linecap:square] [stroke-linejoin:miter]"
+                strokeWidth={2}
+              />
               Curatio
             </Link>
           </div>
-
 
           {/* Links de navegación */}
           <ul className="hidden md:flex items-center gap-6 font-body font-heading text-small text-label">
@@ -33,12 +41,18 @@ const Navbar = ({variant = "solid"}) => {
               </Link>
             </li>
             <li>
-              <Link to="/accounts/datos-basicos" className="hover:text-primary transition">
+              <Link
+                to="/accounts/datos-basicos"
+                className="hover:text-primary transition"
+              >
                 Usuarios
               </Link>
             </li>
             <li>
-              <Link to="/suppliers/datos-basicos" className="hover:text-primary transition">
+              <Link
+                to="/suppliers/datos-basicos"
+                className="hover:text-primary transition"
+              >
                 Proveedores
               </Link>
             </li>
@@ -53,20 +67,21 @@ const Navbar = ({variant = "solid"}) => {
               </Link>
             </li>
             <li>
-              <Link to="/sales/factura-electronica" className="hover:text-primary transition">
+              <Link
+                to="/sales/factura-electronica"
+                className="hover:text-primary transition"
+              >
                 Ventas
               </Link>
             </li>
           </ul>
 
-
           {/* Sección derecha: búsqueda + usuario */}
           <div className="flex items-center gap-4">
-            
             {/* Buscador */}
             <div className="relative hidden sm:block text-black font-body">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-500" />
-            
+
               <input
                 type="text"
                 placeholder="Buscar..."
@@ -95,19 +110,18 @@ const Navbar = ({variant = "solid"}) => {
                       <Link
                         to="/login" /*"/perfil"*/
                         className="block px-4 py-2 hover:bg-surface rounded-t-3xl transition cursor-pointer"
-                        onClick={() => setIsOpen(false)}>
+                        onClick={() => setIsOpen(false)}
+                      >
                         Perfil
                       </Link>
                     </li>
                     <li>
-                      <button
-                        className="w-full text-center px-4 py-2 hover: hover:bg-surface rounded-b-3xl transition cursor-pointer"
-                        onClick={() => {
-                          setIsOpen(false);
-                          console.log("Cerrar sesión");
-                        }}>
+                      <LogoutButton
+                        className="w-full text-center px-4 py-2 hover:bg-surface rounded-b-3xl transition cursor-pointer"
+                        
+                      >
                         Cerrar sesión
-                      </button>
+                      </LogoutButton>
                     </li>
                   </ul>
                 </div>
