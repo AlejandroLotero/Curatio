@@ -8,6 +8,7 @@ import CreateAdministrationRouteForm from "./CreateAdministrationRouteForm";
 import CreateLaboratoryForm from "./CreateLaboratoryForm";
 import CreateSupplierForm from "./CreateSupplierForm";
 import CreateStatusForm from "./CreateStatusForm";
+import bgAllImg from "../../../assets/images/bgAll.jpg";
 import pharmaceuticalFormsData from "../../../data/medjson/pharmaceuticalForms.json";
 import presentationsData from "../../../data/medjson/presentations.json";
 import administrationRoutesData from "../../../data/medjson/administrationRoutes.json";
@@ -234,23 +235,29 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
 
   return (
     <div 
-      className="min-h-screen p-8"
-      style={{ 
-        backgroundColor: "var(--color-primary-50)"
+      className="min-h-screen p-8 bg-gradient-to-br from-primary-50 to-primary-100 dark:from-neutral-900 dark:to-neutral-800"
+      style={{
+        backgroundImage: `url(${bgAllImg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundAttachment: "fixed"
       }}
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         {/* TÍTULO */}
-        <h1 className="text-4xl font-bold text-center mb-12" style={{ color: "var(--semantic-text-primary)" }}>
+        <h1 className="text-subtittles font-bold text-center mb-12" style={{ color: "var(--semantic-text-primary)", fontFamily: "var(--font-body)" }}>
           GESTIÓN DE MEDICAMENTOS
         </h1>
 
         {/* FORMULARIO */}
-        <form onSubmit={handleSubmit} className="grid grid-cols-3 gap-6">
+        <form 
+          onSubmit={handleSubmit} 
+          className="p-8 rounded-3xl shadow-xl ring-1 ring-white/20 backdrop-blur-md bg-white/70 dark:bg-neutral-900/20 grid grid-cols-3 gap-6"
+        >
           {/* COLUMNA 1 - IZQUIERDA */}
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: "var(--semantic-text-label)" }}>
+              <label className="block text-sm font-medium mb-1" style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}>
                 ID del Medicamento (visual)
               </label>
               <input
@@ -262,14 +269,12 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
                 className="w-full h-12 p-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
-                  borderColor: "var(--color-primary-300)",
-                  backgroundColor: "var(--color-primary-50)"
-                }}
+                  borderColor: "var(--color-primary-300)", fontFamily: "var(--font-body)" }}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: "var(--semantic-text-label)" }}>
+              <label className="block text-sm font-medium mb-1" style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}>
                 Nombre
               </label>
               <input
@@ -281,14 +286,12 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
                 className="w-full h-12 p-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
-                  borderColor: "var(--color-primary-300)",
-                  backgroundColor: "var(--color-primary-50)"
-                }}
+                  borderColor: "var(--color-primary-300)", fontFamily: "var(--font-body)" }}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: "var(--semantic-text-label)" }}>
+              <label className="block text-sm font-medium mb-1" style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}>
                 Forma Farmacéutica
               </label>
               <select
@@ -300,8 +303,7 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
                   fontSize: "0.875rem",
-                  color: formData.pharmaceuticalForm ? "var(--semantic-text-primary)" : "var(--semantic-text-disabled)"
-                }}
+                  color: formData.pharmaceuticalForm ? "var(--semantic-text-primary)" : "var(--semantic-text-disabled)", fontFamily: "var(--font-body)" }}
               >
                 <option value="">Seleccionar...</option>
                 {pharmaceuticalForms.map(form => (
@@ -312,7 +314,7 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: "var(--semantic-text-label)" }}>
+              <label className="block text-sm font-medium mb-1" style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}>
                 Presentación
               </label>
               <select
@@ -324,8 +326,7 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
                   fontSize: "0.875rem",
-                  color: formData.presentation ? "var(--semantic-text-primary)" : "var(--semantic-text-disabled)"
-                }}
+                  color: formData.presentation ? "var(--semantic-text-primary)" : "var(--semantic-text-disabled)", fontFamily: "var(--font-body)" }}
               >
                 <option value="">Seleccionar...</option>
                 {presentations.map(pres => (
@@ -336,7 +337,7 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: "var(--semantic-text-label)" }}>
+              <label className="block text-sm font-medium mb-1" style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}>
                 Concentración
               </label>
               <input
@@ -348,14 +349,12 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
                 className="w-full h-12 p-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
-                  borderColor: "var(--color-primary-300)",
-                  backgroundColor: "var(--color-primary-50)"
-                }}
+                  borderColor: "var(--color-primary-300)", fontFamily: "var(--font-body)" }}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: "var(--semantic-text-label)" }}>
+              <label className="block text-sm font-medium mb-1" style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}>
                 Descripción
               </label>
               <input
@@ -367,9 +366,7 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
                 className="w-full h-12 p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
-                  borderColor: "var(--color-primary-300)",
-                  backgroundColor: "var(--color-primary-50)"
-                }}
+                  borderColor: "var(--color-primary-300)", fontFamily: "var(--font-body)" }}
               />
             </div>
           </div>
@@ -377,7 +374,7 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
           {/* COLUMNA 2 - CENTRO */}
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: "var(--semantic-text-label)" }}>
+              <label className="block text-sm font-medium mb-1" style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}>
                 Vía de administración
               </label>
               <select
@@ -389,8 +386,7 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
                   fontSize: "0.875rem",
-                  color: formData.administrationRoute ? "var(--semantic-text-primary)" : "var(--semantic-text-disabled)"
-                }}
+                  color: formData.administrationRoute ? "var(--semantic-text-primary)" : "var(--semantic-text-disabled)", fontFamily: "var(--font-body)" }}
               >
                 <option value="">Seleccionar...</option>
                 {administrationRoutes.map(route => (
@@ -401,7 +397,7 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: "var(--semantic-text-label)" }}>
+              <label className="block text-sm font-medium mb-1" style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}>
                 Laboratorio
               </label>
               <select
@@ -413,8 +409,7 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
                   fontSize: "0.875rem",
-                  color: formData.laboratory ? "var(--semantic-text-primary)" : "var(--semantic-text-disabled)"
-                }}
+                  color: formData.laboratory ? "var(--semantic-text-primary)" : "var(--semantic-text-disabled)", fontFamily: "var(--font-body)" }}
               >
                 <option value="">Seleccionar...</option>
                 {laboratories.map(lab => (
@@ -425,7 +420,7 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: "var(--semantic-text-label)" }}>
+              <label className="block text-sm font-medium mb-1" style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}>
                 Lote
               </label>
               <input
@@ -437,14 +432,12 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
                 className="w-full h-12 p-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
-                  borderColor: "var(--color-primary-300)",
-                  backgroundColor: "var(--color-primary-50)"
-                }}
+                  borderColor: "var(--color-primary-300)", fontFamily: "var(--font-body)" }}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: "var(--semantic-text-label)" }}>
+              <label className="block text-sm font-medium mb-1" style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}>
                 Fecha de fabricación
               </label>
               <input
@@ -456,14 +449,12 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
                 className="w-full h-12 p-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
-                  borderColor: "var(--color-primary-300)",
-                  backgroundColor: "var(--color-primary-50)"
-                }}
+                  borderColor: "var(--color-primary-300)", fontFamily: "var(--font-body)" }}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: "var(--semantic-text-label)" }}>
+              <label className="block text-sm font-medium mb-1" style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}>
                 Fecha de vencimiento
               </label>
               <input
@@ -475,9 +466,7 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
                 className="w-full h-12 p-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
-                  borderColor: "var(--color-primary-300)",
-                  backgroundColor: "var(--color-primary-50)"
-                }}
+                  borderColor: "var(--color-primary-300)", fontFamily: "var(--font-body)" }}
               />
             </div>
           </div>
@@ -485,7 +474,7 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
           {/* COLUMNA 3 - DERECHA */}
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: "var(--semantic-text-label)" }}>
+              <label className="block text-sm font-medium mb-1" style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}>
                 Stock
               </label>
               <input
@@ -497,14 +486,12 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
                 className="w-full h-12 p-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
-                  borderColor: "var(--color-primary-300)",
-                  backgroundColor: "var(--color-primary-50)"
-                }}
+                  borderColor: "var(--color-primary-300)", fontFamily: "var(--font-body)" }}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: "var(--semantic-text-label)" }}>
+              <label className="block text-sm font-medium mb-1" style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}>
                 Precio de Compra
               </label>
               <input
@@ -516,14 +503,12 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
                 className="w-full h-12 p-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
-                  borderColor: "var(--color-primary-300)",
-                  backgroundColor: "var(--color-primary-50)"
-                }}
+                  borderColor: "var(--color-primary-300)", fontFamily: "var(--font-body)" }}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: "var(--semantic-text-label)" }}>
+              <label className="block text-sm font-medium mb-1" style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}>
                 Precio de venta
               </label>
               <input
@@ -535,14 +520,12 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
                 className="w-full h-12 p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
-                  borderColor: "var(--color-primary-300)",
-                  backgroundColor: "var(--color-primary-50)"
-                }}
+                  borderColor: "var(--color-primary-300)", fontFamily: "var(--font-body)" }}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: "var(--semantic-text-label)" }}>
+              <label className="block text-sm font-medium mb-1" style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}>
                 Proveedor
               </label>
               <select
@@ -554,8 +537,7 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
                   fontSize: "0.875rem",
-                  color: formData.supplier ? "var(--semantic-text-primary)" : "var(--semantic-text-disabled)"
-                }}
+                  color: formData.supplier ? "var(--semantic-text-primary)" : "var(--semantic-text-disabled)", fontFamily: "var(--font-body)" }}
               >
                 <option value="">Seleccionar...</option>
                 {suppliers.map(sup => (
@@ -566,7 +548,7 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: "var(--semantic-text-label)" }}>
+              <label className="block text-sm font-medium mb-1" style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}>
                 Estado
               </label>
               <select
@@ -578,8 +560,7 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
                   fontSize: "0.875rem",
-                  color: formData.status ? "var(--semantic-text-primary)" : "var(--semantic-text-disabled)"
-                }}
+                  color: formData.status ? "var(--semantic-text-primary)" : "var(--semantic-text-disabled)", fontFamily: "var(--font-body)" }}
               >
                 {statusOptions.map(status => (
                   <option key={status.value} value={status.value}>{status.label}</option>
@@ -596,8 +577,8 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
               onClick={onBack}
               className="px-8 py-3 rounded-full font-semibold hover:opacity-80 transition"
               style={{ 
-                backgroundColor: "var(--color-gray-100)",
-                color: "var(--semantic-text-primary)"
+                backgroundColor: "var(--color-button-secondary-bg)",
+                color: "var(--semantic-text-button-secondary)", fontFamily: "var(--font-body)"
               }}
             >
               Volver
@@ -607,7 +588,7 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
               className="px-8 py-3 rounded-full font-semibold hover:opacity-90 transition"
               style={{ 
                 backgroundColor: "var(--color-button-primary-bg)",
-                color: "var(--semantic-text-button-primary)"
+                color: "white", fontFamily: "var(--font-body)"
               }}
             >
               {initialData ? "Actualizar" : "Registrar"} Medicamento
@@ -657,3 +638,10 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
     </div>
   );
 }
+
+
+
+
+
+
+

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Plus, Search, Trash2, Edit2, Eye, Check, X } from "lucide-react";
 import Toast from "../../../shared/components/Toast";
+import heroBfg from "../../../assets/images/imagen-hero.jpg";
 import "../../../styles/tokens.css";
 import "../../../styles/semantic.css";
 
@@ -87,19 +88,24 @@ export default function ProductListPage() {
 
   return (
     <div
-      className="min-h-screen p-8"
-      style={{ backgroundColor: "var(--color-primary-50)" }}
+      className="min-h-screen p-8 bg-gradient-to-br from-primary-50 to-primary-100 dark:from-neutral-900 dark:to-neutral-800"
+      style={{
+        backgroundImage: `url(${heroBfg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundAttachment: "fixed"
+      }}
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-6xl mx-auto p-8 rounded-3xl shadow-xl ring-1 ring-white/20 backdrop-blur-md bg-white/70 dark:bg-neutral-900/20">
         {/* ENCABEZADO */}
         <div className="mb-8">
           <h1
-            className="text-4xl font-bold mb-2"
-            style={{ color: "var(--semantic-text-primary)" }}
+            className="text-subtittles font-bold mb-2"
+            style={{ color: "var(--semantic-text-primary)", fontFamily: "var(--font-body)" }}
           >
             MEDICAMENTOS
           </h1>
-          <p style={{ color: "var(--semantic-text-label)" }}>
+          <p style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}>
             Gestión y control de medicamentos
           </p>
         </div>
@@ -116,7 +122,7 @@ export default function ProductListPage() {
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-2.5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
               style={{
-                borderColor: "var(--color-primary-300)",
+                borderColor: "var(--color-primary-300)", fontFamily: "var(--font-body)",
                 backgroundColor: "white",
               }}
             />
@@ -128,7 +134,7 @@ export default function ProductListPage() {
             className="flex items-center gap-2 px-6 py-2.5 rounded-lg font-semibold hover:opacity-90 transition whitespace-nowrap"
             style={{
               backgroundColor: "var(--color-button-primary-bg)",
-              color: "var(--semantic-text-button-primary)",
+              color: "white", fontFamily: "var(--font-body)",
             }}
           >
             <Plus size={20} />
@@ -140,8 +146,8 @@ export default function ProductListPage() {
             onClick={() => navigate("/products/reports")}
             className="flex items-center gap-2 px-6 py-2.5 rounded-lg font-semibold hover:opacity-90 transition whitespace-nowrap"
             style={{
-              backgroundColor: "var(--color-primary-200)",
-              color: "var(--semantic-text-primary)",
+              backgroundColor: "var(--color-button-secondary-bg)",
+              color: "var(--semantic-text-button-secondary)", fontFamily: "var(--font-body)",
             }}
           >
             📊 Reportes
@@ -165,7 +171,7 @@ export default function ProductListPage() {
         {/* TABLA */}
         {loading ? (
           <div className="flex justify-center items-center h-64">
-            <p style={{ color: "var(--semantic-text-label)" }}>Cargando...</p>
+            <p style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}>Cargando...</p>
           </div>
         ) : filteredMedicamentos.length === 0 ? (
           <div
@@ -175,7 +181,7 @@ export default function ProductListPage() {
               border: "2px dashed var(--color-primary-300)",
             }}
           >
-            <p style={{ color: "var(--semantic-text-label)" }}>
+            <p style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}>
               {searchTerm
                 ? "No se encontraron medicamentos"
                 : "No hay medicamentos registrados aún"}
@@ -184,50 +190,50 @@ export default function ProductListPage() {
         ) : (
           <div
             className="overflow-x-auto rounded-lg border"
-            style={{ borderColor: "var(--color-primary-300)" }}
+            style={{ borderColor: "var(--color-primary-300)", fontFamily: "var(--font-body)" }}
           >
             <table className="w-full">
               <thead>
                 <tr style={{ backgroundColor: "var(--color-primary-100)" }}>
                   <th
                     className="px-6 py-3 text-left text-sm font-semibold"
-                    style={{ color: "var(--semantic-text-label)" }}
+                    style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}
                   >
                     ID
                   </th>
                   <th
                     className="px-6 py-3 text-left text-sm font-semibold"
-                    style={{ color: "var(--semantic-text-label)" }}
+                    style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}
                   >
                     Nombre
                   </th>
                   <th
                     className="px-6 py-3 text-left text-sm font-semibold"
-                    style={{ color: "var(--semantic-text-label)" }}
+                    style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}
                   >
                     Forma
                   </th>
                   <th
                     className="px-6 py-3 text-left text-sm font-semibold"
-                    style={{ color: "var(--semantic-text-label)" }}
+                    style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}
                   >
                     Laboratorio
                   </th>
                   <th
                     className="px-6 py-3 text-left text-sm font-semibold"
-                    style={{ color: "var(--semantic-text-label)" }}
+                    style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}
                   >
                     Stock
                   </th>
                   <th
                     className="px-6 py-3 text-left text-sm font-semibold"
-                    style={{ color: "var(--semantic-text-label)" }}
+                    style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}
                   >
                     Estado
                   </th>
                   <th
                     className="px-6 py-3 text-center text-sm font-semibold"
-                    style={{ color: "var(--semantic-text-label)" }}
+                    style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}
                   >
                     Acciones
                   </th>
@@ -247,13 +253,13 @@ export default function ProductListPage() {
                   >
                     <td
                       className="px-6 py-4 text-sm"
-                      style={{ color: "var(--semantic-text-primary)" }}
+                      style={{ color: "var(--semantic-text-primary)", fontFamily: "var(--font-body)" }}
                     >
                       {medicamento.medicationId}
                     </td>
                     <td
                       className="px-6 py-4 text-sm font-medium"
-                      style={{ color: "var(--semantic-text-primary)" }}
+                      style={{ color: "var(--semantic-text-primary)", fontFamily: "var(--font-body)" }}
                     >
                       {medicamento.medicationName}
                     </td>
@@ -354,3 +360,6 @@ export default function ProductListPage() {
     </div>
   );
 }
+
+
+
