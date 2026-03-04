@@ -61,6 +61,7 @@ export default function CreateFormSuppliers() {
 
           {/* Botones de acción */}
           <div className="flex justify-between w-full max-w-[320px] mt-6">
+            <Link to="/">
             <Button
               variant="secondary"
               size="sm"
@@ -68,6 +69,7 @@ export default function CreateFormSuppliers() {
             >
               Cancelar
             </Button>
+            </Link>
 
             <Link to="../datos-contacto">
               <Button
