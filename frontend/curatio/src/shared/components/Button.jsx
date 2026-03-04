@@ -3,7 +3,8 @@ export default function Buttom({
     variant = "primary",    //Define el estilo visual
     size = "md",
     type = "button",
-    children,       //Contenido que tiene el boton
+    children,
+    disabled= false,       //Contenido que tiene el boton
     ...props
 }) {
     const variants = {
@@ -31,6 +32,7 @@ export default function Buttom({
 
             <button
                 type={type}
+                disabled={disabled} 
                 className={
             `   relative
                 inline-flex items-center justify-center

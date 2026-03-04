@@ -1,13 +1,30 @@
 import { Search, User, Cross } from "lucide-react";
 /*Nos enruta pero con react router*/
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import {useEffect, useState } from "react";
 import LogoutButton from "@/features/auth/components/LogoutButton";
 
+const Navbar = ({ variant = "solid" }) => {
+  const [isOpen, setIsOpen] = useState(false);
 
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    localStorage.getItem("isLoggedIn") === "true",
+  );
 
-const Navbar = ({variant = "solid"}) => {
-    const [isOpen, setIsOpen] = useState(false);
+    useEffect(() => {
+    const syncAuth = () => {
+      setIsLoggedIn(localStorage.getItem("isLoggedIn") === "true");
+    };
+
+    window.addEventListener("auth-changed", syncAuth);
+    window.addEventListener("storage", syncAuth); // por si cambia en otra pestaña
+
+    return () => {
+      window.removeEventListener("auth-changed", syncAuth);
+      window.removeEventListener("storage", syncAuth);
+    };
+  }, []);
+
   return (
     // Estos son los estilos del NavBar para que quede transparente
     <nav
@@ -106,23 +123,42 @@ const Navbar = ({variant = "solid"}) => {
               {isOpen && (
                 <div className="h-28 text-label text-center absolute right-0 mt-2 w-48 bg-background bg-white/70 dark:bg-neutral-900/20 backdrop-blur-md shadow-xl ring-1 rounded-3xl">
                   <ul className="py-2 text-sm">
-                    <li>
-                      <Link
-                        to="/login" /*"/perfil"*/
-                        className="block px-4 py-2 hover:bg-surface rounded-t-3xl transition cursor-pointer"
-                        onClick={() => setIsOpen(false)}
-                      >
-                        Perfil
-                      </Link>
-                    </li>
-                    <li>
-                      <LogoutButton
-                        className="w-full text-center px-4 py-2 hover:bg-surface rounded-b-3xl transition cursor-pointer"
-                        
-                      >
-                        Cerrar sesión
-                      </LogoutButton>
-                    </li>
+                    {/* aqui inciia sesion no logueado */}
+                    {!isLoggedIn && (
+                      <li>
+                        <Link
+                          to="/login"
+                          className="block px-4 py-2 hover:bg-surface rounded-3xl transition cursor-pointer"
+                          onClick={() => setIsOpen(false)}
+                        >
+                          Iniciar sesión
+                        </Link>
+                      </li>
+                    )}
+
+                    {/* aqui ya  muestra cuando estoy logueado */}
+                    {isLoggedIn && (
+                      <>
+                        <li>
+                          <Link
+                            to="/perfil"
+                            className="block px-4 py-2 hover:bg-surface rounded-t-3xl transition cursor-pointer"
+                            onClick={() => setIsOpen(false)}
+                          >
+                            Perfil
+                          </Link>
+                        </li>
+
+                        <li>
+                          <LogoutButton
+                            className="w-full text-center px-4 py-2 hover:bg-surface rounded-b-3xl transition cursor-pointer"
+                            onClick={() => setIsOpen(false)}
+                          >
+                            Cerrar sesión
+                          </LogoutButton>
+                        </li>
+                      </>
+                    )}
                   </ul>
                 </div>
               )}
