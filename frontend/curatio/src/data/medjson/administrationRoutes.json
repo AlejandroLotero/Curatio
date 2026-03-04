@@ -1,7 +1,0 @@
-[
-  { "value": "oral", "label": "Oral" },
-  { "value": "inyectable", "label": "Inyectable" },
-  { "value": "topico", "label": "Tópico" },
-  { "value": "rectal", "label": "Rectal" },
-  { "value": "intramuscular", "label": "Intramuscular" }
-]

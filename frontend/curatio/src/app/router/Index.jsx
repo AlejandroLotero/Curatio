@@ -7,17 +7,13 @@ import LoginPage from "@/features/auth/pages/LoginPage";
 import ForgotPasswordPage from "@/features/auth/pages/ForgotPasswordPage"
 import TokenPasswordPage from "@/features/auth/pages/TokenPasswordPage"
 import ResetPasswordPage from "@/features/auth/pages/ResetPasswordPage"
-import ProductListPage from "@/features/products/pages/ProductListPage";
-import CreateProductPage from "@/features/products/pages/CreateProductPage";
-import EditProductPage from "@/features/products/pages/EditProductPage";
-import ProductDetailPage from "@/features/products/pages/ProductDetailPage";
-import ProductReportPage from "@/features/products/pages/ProductReportPage";
 import DatosBasicosPage from "@/features/users/pages/DatosBasicosPage";
 import DatosContactoPage from "@/features/users/pages/DatosContactoPage";
 import RolPage from "@/features/users/pages/RolPage";
 import CreateFormSuppliers from "@/features/suppliers/pages/CreateSuppliersDatosBasicos";
 import DatosContactoSuppliers from "@/features/suppliers/pages/CreateSuppliersDatosContacto";
 import FacturaElectronicaVentaPage from "@/features/sales/pages/FacturaElectronicaVentaPage";
+import ProductsPage from "@/features/products/pages/ProductsPage";
 
 const router = createBrowserRouter([
 
@@ -77,27 +73,7 @@ const router = createBrowserRouter([
                 },
             {
                 path: "products",
-                element: <CreateProductPage/>
-            },
-
-            {
-                path: "products/create",
-                element: <CreateProductPage/>
-            },
-
-            {
-                path: "products/reports",
-                element: <ProductReportPage/>
-            },
-
-            {
-                path: "products/:id",
-                element: <ProductDetailPage/>
-            },
-
-            {
-                path: "products/:id/edit",
-                element: <EditProductPage/>
+                element: <ProductsPage />
             },
 
             {

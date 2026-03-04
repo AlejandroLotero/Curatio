@@ -21,9 +21,17 @@ export default function DatosBasicosPage() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-primary-50 to-primary-100 dark:from-neutral-900 dark:to-neutral-800">
+    <div className="flex items-center justify-center min-h-screen text-label">
       <form
-        className="w-full max-w-md px-6 py-12 grid grid-cols-1 gap-4 bg-white dark:bg-neutral-900 shadow-xl ring-1 ring-primary-200 dark:ring-neutral-700 rounded-3xl"
+        className="
+      w-full max-w-md
+      px-6 py-12 
+      grid grid-cols-1 gap-4 
+      bg-white/70 dark:bg-neutral-900/20 
+      backdrop-blur-md 
+      shadow-xl 
+      ring-1 
+      rounded-3xl"
       >
         {/* ================= DATOS BASICOS ================= */}
         <section className="flex flex-col items-center gap-4 p-4 border rounded-xl">

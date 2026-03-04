@@ -25,30 +25,14 @@ export default function Modal({
       />
 
       {/* Contenido del modal */}
-      <div className="relative rounded-3xl shadow-xl ring-1 ring-primary-200 dark:ring-neutral-700 bg-white dark:bg-neutral-900 w-[400px] p-8 text-center z-10 animate-fadeIn">
+      <div className="relative bg-white rounded-2xl shadow-xl w-[400px] p-8 text-center z-10 animate-fadeIn">
         
         {title && (
-          <h2 
-            className="text-xl font-semibold mb-4"
-            style={{ 
-              color: "var(--color-black)",
-              fontFamily: "var(--font-body)"
-            }}
-          >
-            {title}
-          </h2>
+          <h2 className="text-xl font-semibold mb-4">{title}</h2>
         )}
 
         {message && (
-          <p 
-            className="mb-6"
-            style={{ 
-              color: "var(--color-black)",
-              fontFamily: "var(--font-body)"
-            }}
-          >
-            {message}
-          </p>
+          <p className="text-gray-600 mb-6">{message}</p>
         )}
 
         {children}
@@ -58,4 +42,3 @@ export default function Modal({
     document.body
   );
 }
-
