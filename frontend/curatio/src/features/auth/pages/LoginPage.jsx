@@ -19,7 +19,10 @@ export default function LoginPage() {
       // Simulación
       await new Promise((r) => setTimeout(r, 700));
 
-      navigate("/");
+       localStorage.setItem("isLoggedIn", "true");
+      window.dispatchEvent(new Event("auth-changed"));
+      navigate("/", { replace: true });
+      
     } catch (err) {
       console.error(err);
       setError("Credenciales incorrectas o error de conexión.");
