@@ -259,7 +259,7 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
                 name="medicationId"
                 value={formData.medicationId}
                 onChange={handleChange}
-                className="w-full h-12 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full h-12 p-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
@@ -278,7 +278,7 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
                 name="medicationName"
                 value={formData.medicationName}
                 onChange={handleChange}
-                className="w-full h-12 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full h-12 p-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
@@ -295,11 +295,12 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
                 name="pharmaceuticalForm"
                 value={formData.pharmaceuticalForm}
                 onChange={handleChange}
-                className="w-full h-12 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full h-12 p-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
-                  backgroundColor: "var(--color-primary-50)"
+                  fontSize: "0.875rem",
+                  color: formData.pharmaceuticalForm ? "var(--semantic-text-primary)" : "var(--semantic-text-disabled)"
                 }}
               >
                 <option value="">Seleccionar...</option>
@@ -318,11 +319,12 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
                 name="presentation"
                 value={formData.presentation}
                 onChange={handleChange}
-                className="w-full h-12 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full h-12 p-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
-                  backgroundColor: "var(--color-primary-50)"
+                  fontSize: "0.875rem",
+                  color: formData.presentation ? "var(--semantic-text-primary)" : "var(--semantic-text-disabled)"
                 }}
               >
                 <option value="">Seleccionar...</option>
@@ -343,7 +345,7 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
                 name="concentration"
                 value={formData.concentration}
                 onChange={handleChange}
-                className="w-full h-12 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full h-12 p-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
@@ -362,7 +364,7 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
                 name="description"
                 value={formData.description}
                 onChange={handleChange}
-                className="w-full h-12 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full h-12 p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
@@ -382,11 +384,12 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
                 name="administrationRoute"
                 value={formData.administrationRoute}
                 onChange={handleChange}
-                className="w-full h-12 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full h-12 p-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
-                  backgroundColor: "var(--color-primary-50)"
+                  fontSize: "0.875rem",
+                  color: formData.administrationRoute ? "var(--semantic-text-primary)" : "var(--semantic-text-disabled)"
                 }}
               >
                 <option value="">Seleccionar...</option>
@@ -405,11 +408,12 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
                 name="laboratory"
                 value={formData.laboratory}
                 onChange={handleChange}
-                className="w-full h-12 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full h-12 p-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
-                  backgroundColor: "var(--color-primary-50)"
+                  fontSize: "0.875rem",
+                  color: formData.laboratory ? "var(--semantic-text-primary)" : "var(--semantic-text-disabled)"
                 }}
               >
                 <option value="">Seleccionar...</option>
@@ -430,7 +434,7 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
                 name="lote"
                 value={formData.lote}
                 onChange={handleChange}
-                className="w-full h-12 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full h-12 p-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
@@ -449,7 +453,7 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
                 name="manufactureDate"
                 value={formData.manufactureDate}
                 onChange={handleChange}
-                className="w-full h-12 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full h-12 p-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
@@ -468,7 +472,7 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
                 name="expirationDate"
                 value={formData.expirationDate}
                 onChange={handleChange}
-                className="w-full h-12 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full h-12 p-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
@@ -485,12 +489,12 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
                 Stock
               </label>
               <input
-                type="text"
-                placeholder="Text"
+                type="number"
+                placeholder="0"
                 name="stock"
                 value={formData.stock}
                 onChange={handleChange}
-                className="w-full h-12 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full h-12 p-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
@@ -504,12 +508,12 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
                 Precio de Compra
               </label>
               <input
-                type="text"
-                placeholder="Text"
+                type="number"
+                placeholder="0"
                 name="purchasePrice"
                 value={formData.purchasePrice}
                 onChange={handleChange}
-                className="w-full h-12 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full h-12 p-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
@@ -523,12 +527,12 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
                 Precio de venta
               </label>
               <input
-                type="text"
-                placeholder="Text"
+                type="number"
+                placeholder="0"
                 name="salePrice"
                 value={formData.salePrice}
                 onChange={handleChange}
-                className="w-full h-12 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full h-12 p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
@@ -545,11 +549,12 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
                 name="supplier"
                 value={formData.supplier}
                 onChange={handleChange}
-                className="w-full h-12 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full h-12 p-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
-                  backgroundColor: "var(--color-primary-50)"
+                  fontSize: "0.875rem",
+                  color: formData.supplier ? "var(--semantic-text-primary)" : "var(--semantic-text-disabled)"
                 }}
               >
                 <option value="">Seleccionar...</option>
@@ -568,11 +573,12 @@ export default function ProductForm({ onSubmit, onBack, initialData = null }) {
                 name="status"
                 value={formData.status}
                 onChange={handleChange}
-                className="w-full h-12 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full h-12 p-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
                   borderWidth: "2px",
                   borderColor: "var(--color-primary-300)",
-                  backgroundColor: "var(--color-primary-50)"
+                  fontSize: "0.875rem",
+                  color: formData.status ? "var(--semantic-text-primary)" : "var(--semantic-text-disabled)"
                 }}
               >
                 {statusOptions.map(status => (
