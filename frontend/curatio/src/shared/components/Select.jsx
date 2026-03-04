@@ -15,22 +15,51 @@ export default function Select({
     return (
         <div className={wrapperClassName ?? "w-full"}>
             {label && (
-                <label className="block mb-1 text-mostsmall text-label font-weight font-body font-heading">
+                <label
+                    className="block
+                              mb-1
+                              text-label
+                              font-body
+                              font-heading
+                              font-weight
+                              text-mostsmall
+                              "
+                >
                     {label}
                 </label>
             )}
 
-            <select
-                name={name}
-                value={value}
-                onChange={onChange}
-                className={`
-                    w-full h-12 rounded-md border border-border-strong px-4
-                    text-label font-body font-heading text-small
-                    focus:outline-none focus:ring-1 focus:ring-border focus:border-border
-                    ${selectClassName ?? ""}
-                `}
+            <div
+                className="
+                    relative
+                    h-12
+                    flex
+                    items-center
+                "
             >
+                <select
+                    name={name}
+                    value={value}
+                    onChange={onChange}
+                    className={`
+                        relative
+                        w-full
+                        h-10
+                        rounded-md
+                        border
+                        border-border-strong
+                        px-4
+                        text-label
+                        font-body
+                        font-heading
+                        text-small
+                        focus:outline-none
+                        focus:ring-1
+                        focus:ring-border
+                        focus:border-border
+                        ${selectClassName ?? ""}
+                    `}
+                >
                 <option value="">{placeholder}</option>
                 {options.map((opt) => (
                     <option key={getOptValue(opt)} value={getOptValue(opt)}>
@@ -43,6 +72,7 @@ export default function Select({
                     </option>
                 ))}
             </select>
+            </div>
         </div>
     );
 }
