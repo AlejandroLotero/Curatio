@@ -57,7 +57,6 @@ export default function LoginForm({
 
     if (Object.keys(errors).length > 0) return;
 
-    
     onSubmit?.({
       email: form.email.trim(),
       password: form.password,
@@ -65,26 +64,26 @@ export default function LoginForm({
     });
   };
 
-  // Si tus clases son custom, déjalas. Si no, aquí hay una versión segura:
-  const inputClass =
-    "text-text-primary placeholder:text-text-muted w-full h-10 border-0 border-b-2 border-black/60 px-4 bg-transparent " +
-    "focus:outline-none focus:border-black transition-colors duration-200";
-
   return (
-    <div>
-      <div className="mb-6 text-center">
-        <h1 className="text-2xl font-body font-bold text-text-primary">CURATIO</h1>
-        <p className="text-sm text-text-primary mt-1 font-body">Iniciar Sesión.</p>
-      </div>
+    <div className="flex flex-col items-center">
+      {/* Encabezado */}
+      <header className="mb-6 text-center">
+        <h1 className="font-body font-heading text-tittles text-label">
+          CURATIO
+        </h1>
+        <p className="mt-1 font-body text-small text-text-primary">
+          Iniciar sesión
+        </p>
+      </header>
 
       {/* Error general del login (viene del padre) */}
       {error ? (
-        <div className="mb-4 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3">
-          <p className="text-sm text-red-700">{error}</p>
+        <div className="mb-4 w-full max-w-[320px] rounded-xl border border-error/40 bg-error/10 px-4 py-3">
+          <p className="font-body text-small text-error">{error}</p>
         </div>
       ) : null}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="flex w-full max-w-[320px] flex-col gap-4">
         <div>
           <Input
             label="Correo electrónico"
@@ -95,10 +94,12 @@ export default function LoginForm({
             onChange={handleChange}
             onBlur={handleBlur}
             error={touched.email ? errors.email : ""}
-            className={inputClass}
+            className="placeholder:text-placeholder"
           />
           {touched.email && errors.email && (
-            <p className="mt-1 text-xs text-red-600">{errors.email}</p>
+            <p className="mt-1 font-body text-mostsmall text-error">
+              {errors.email}
+            </p>
           )}
         </div>
 
@@ -112,31 +113,44 @@ export default function LoginForm({
             onChange={handleChange}
             onBlur={handleBlur}
             error={touched.password ? errors.password : ""}
-            className={`${inputClass} pr-12`}
+            className="pr-12 placeholder:text-placeholder"
           />
 
           <button
             type="button"
             onClick={() => setShowPassword((s) => !s)}
-            className="absolute right-3 top-9 text-gray-700 hover:text-black transition"
+            className="
+              absolute right-2 top-[3rem] flex h-9 w-9 -translate-y-1/2
+              items-center justify-center rounded-md
+              text-placeholder transition
+              hover:bg-surface hover:text-label
+              focus:outline-none focus-visible:ring-2 focus-visible:ring-border focus-visible:ring-offset-1
+            "
             aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+            tabIndex={0}
           >
-            {showPassword ? <EyeClosed className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+            {showPassword ? (
+              <EyeClosed className="size-5" aria-hidden />
+            ) : (
+              <Eye className="size-5" aria-hidden />
+            )}
           </button>
 
           {touched.password && errors.password && (
-            <p className="mt-1 text-xs text-red-600">{errors.password}</p>
+            <p className="mt-1 font-body text-mostsmall text-error">
+              {errors.password}
+            </p>
           )}
         </div>
 
         <div className="flex items-center justify-between">
-          <label className="flex items-center gap-2 text-sm text-text-primary select-none">
+          <label className="flex cursor-pointer items-center gap-2 font-body text-small text-text-primary select-none">
             <input
               type="checkbox"
               name="remember"
               checked={form.remember}
               onChange={handleChange}
-              className="h-4 w-4 rounded border-white/30 bg-transparent accent-primary"
+              className="size-4 rounded border-border bg-transparent accent-primary"
             />
             Recuérdame
           </label>
@@ -144,13 +158,13 @@ export default function LoginForm({
           <button
             type="button"
             onClick={onForgotPassword}
-            className="text-sm text-text-primary hover:text-white underline underline-offset-4"
+            className="font-body text-small text-label underline underline-offset-4 transition hover:text-text-primary"
           >
             ¿Olvidaste tu contraseña?
           </button>
         </div>
 
-        <div className="flex items-center justify-center gap-12 pt-2">
+        <div className="flex justify-between pt-2">
           <Button
             variant="secondary"
             size="sm"
@@ -170,22 +184,23 @@ export default function LoginForm({
 
         <div className="pt-4">
           <div className="flex items-center gap-3">
-            <div className="h-px flex-1 bg-black/70" />
-            <span className="text-xs text-text-primary">o</span>
-            <div className="h-px flex-1 bg-black/70" />
+            <div className="h-px flex-1 bg-border" />
+            <span className="font-body text-mostsmall text-text-primary">o</span>
+            <div className="h-px flex-1 bg-border" />
           </div>
 
           <button
             type="button"
             onClick={() => console.log("Ir a registrarse")}
-            className="mt-3 w-full text-sm text-text-primary hover:text-white transition"
+            className="mt-3 w-full font-body text-small text-text-primary transition hover:text-label"
           >
-            ¿No tienes cuenta? <span className="underline underline-offset-4">Crear una</span>
+            ¿No tienes cuenta?{" "}
+            <span className="underline underline-offset-4">Crear una</span>
           </button>
         </div>
       </form>
 
-      <p className="text-center text-xs text-text-primary mt-5">
+      <p className="mt-6 text-center font-body text-mostsmall text-text-muted">
         Al continuar aceptas nuestros Términos y Política de Privacidad.
       </p>
     </div>

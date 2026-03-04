@@ -1,7 +1,6 @@
 import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "@/shared/layout/NavBar";
-
-//import heroBfg from "@/assets/images/imagen-hero.jpg";
+import bgAll from "@/assets/images/bgAll.jpg";
 
 export default function MainLayout() {
   /*
@@ -17,29 +16,17 @@ export default function MainLayout() {
      * si la ruta es exactamente / => es transparente
      * si es cualquier otra ruta es solido
      * 
-     */
-    <div className="min-h-screen text-text-primary ">
+      */
+    <div className="relative min-h-screen text-text-primary overflow-hidden">
+      <div
+        className="pointer-events-none absolute inset-0 -z-10 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${bgAll})` }}
+      />
+      <div className="pointer-events-none absolute inset-0 -z-10" />
 
-        {/* para importar la imagen  */}
-       {/* <div
-        className="absolute inset-0 -z-10 bg-cover bg-center"
-        style={{ backgroundImage: `url(${heroBfg})` }}
-      /> */}
+      <Navbar variant={isHome ? "transparent" : "solid"} />
 
-      {/* Filtro */}
-      {/* <div className="absolute inset-0 -z-10 bg-black/40"></div> */}
-
-      {/* Navbar  */}
-      {/* para transpareny en toda parte */}
-      {/* <header className="relative z-20 ">
-        <Navbar variant="transparent" />
-      </header> */}
-
-      
-        <Navbar variant= {isHome ? "transparent" : "solid"} />
-    
-
-        {/* Contenido externo que se inyecta */}
+      {/* Contenido externo que se inyecta */}
       <main className="mx-auto">
         <Outlet />
       </main>
