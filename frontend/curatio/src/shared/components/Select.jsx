@@ -19,33 +19,27 @@ export default function Select({
             font-heading
             ">
                 {label}
-            </label>
+              </label>
             )}
 
             <select
-            name={name}
-            className="
-                w-full
-                h-8
-                rounded-md
-                border
-                border-strong
-                text-center
-                text-black
-            ">
-
-
-                <option value="">{placeholder}</option>
-
-                {options.map((option) =>  (
-                    <option key={option.id} value={option.id}>
-                        {option.label}
-                    </option>
-                ))}
-            </select>            
+              name={name}
+              className="w-full h-10 rounded-lg border px-4 focus:outline-none focus:ring-2"
+              style={{
+                borderColor: "var(--color-primary-300)",
+                color: "var(--semantic-text-primary)",
+                fontFamily: "var(--font-body)",
+                backgroundColor: "white",
+              }}
+            >
+              <option value="">{placeholder}</option>
+              {options.map((option) => (
+                <option key={option.id} value={option.id}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
         </div>
-
-
     );
 };
 

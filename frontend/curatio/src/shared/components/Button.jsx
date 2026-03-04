@@ -6,46 +6,59 @@ export default function Buttom({
     children,       //Contenido que tiene el boton
     ...props
 }) {
-    const variants = {
-        primary : "border border-border-strong bg-primarybtnbg text-primarybtntext font-body font-heading text-small hover:bg-primarybtnhoverbg hover:text-label hover:border-1",
-        secondary : "border border-border-strong bg-secondarybtnbg text-secondarybtntext font-secondary font-heading text-small hover:bg-secondarybtnhoverbg hover:text-primarybtntext",
-}
-
-        const sizes = {
-            sm :
-                `
-                h-9 px-3
-                before:absolute before:content-['']
-                before:-inset-y-[4px] before:-inset-x-[0px]
-                `,
-            md :
-                            `
-                h-10 px-4
-                before:absolute before:content-['']
-                before:-inset-y-[4px] before:-inset-x-[0px]
-                `,
+    const getVariantStyle = (variant) => {
+        if (variant === "primary") {
+            return {
+                backgroundColor: "var(--color-button-primary-bg)",
+                color: "white",
+                borderColor: "var(--color-button-primary-bg)",
+            };
+        } else if (variant === "secondary") {
+            return {
+                backgroundColor: "var(--color-gray-800)",
+                color: "var(--color-black)",
+                borderColor: "var(--color-gray-800)",
+            };
         }
+    };
 
+    const getHoverStyle = (variant) => {
+        if (variant === "primary") {
+            return {
+                "--hover-bg": "rgba(47, 111, 103, 0.9)",
+            };
+        } else if (variant === "secondary") {
+            return {
+                "--hover-bg": "rgba(224, 224, 224, 0.8)",
+            };
+        }
+    };
 
-        return (
+    const sizes = {
+        sm: "h-9 px-3",
+        md: "h-10 px-4",
+    };
 
-            <button
-                type={type}
-                className={
-            `   relative
+    return (
+        <button
+            type={type}
+            className={`
+                relative
                 inline-flex items-center justify-center
-                rounded-4xl
-                transition-colors
-                ${variants[variant]}
+                rounded-full
+                transition-all
+                font-semibold
+                border
+                hover:opacity-80
                 ${sizes[size]}
-                `}
-                {...props}
-            >
+            `}
+            style={{
+                ...getVariantStyle(variant),
+                fontFamily: "var(--font-body)",
+            }}
+            {...props}
+        >
             {children}
-
-
-
-
-            </button>
-        )
+        </button>
+    );
 };

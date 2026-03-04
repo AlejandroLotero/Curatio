@@ -1,7 +1,5 @@
 //Creacion de componente input
-//Modificacion del classname del label para que tome el 
-// color de texto definido en el diseño (text-label) de 
-// global.css
+//Componente Input actualizado con variables semánticas
 
 import { Eye, EyeClosed } from "lucide-react";
 //wrapperClassName: para agregar clases al contenedor del input
@@ -11,39 +9,25 @@ export default function Input({ label, type = "text", className, wrapperClassNam
       {/* label */}
       {label && (
         <label
-          className="block
-                              mb-1
-                              text-label
-                              font-body
-                              font-heading
-                              text-mostsmall
-                              "
+          className="block mb-1 text-sm font-semibold"
+          style={{
+            color: "var(--semantic-text-label)",
+            fontFamily: "var(--font-body)",
+          }}
         >
           {label}
         </label>
       )}
 
       {/* Contenedor del input */}
-      <div
-      className="
-      relative
-      h-12
-      flex
-      items-center
-      " >
-
+      <div className="relative h-12 flex items-center">
         {/* Area interactiva invisible (48px) */}
         <div
-          className="
-            absolute
-            inset-0
-          "
-          onMouseDown = {(e) => {
-          e.preventDefault();
-          e.currentTarget.nextSibling.focus();
-        
-        }}
-      
+          className="absolute inset-0"
+          onMouseDown={(e) => {
+            e.preventDefault();
+            e.currentTarget.nextSibling.focus();
+          }}
         />
 
         {/* Input visual */}
@@ -72,6 +56,12 @@ export default function Input({ label, type = "text", className, wrapperClassNam
           ${type === "password" && onTogglePassword ? "pr-12" : ""}
           ${className ?? ""}
           `}
+          style={{
+            borderColor: "var(--color-primary-300)",
+            color: "var(--semantic-text-primary)",
+            fontFamily: "var(--font-body)",
+            backgroundColor: "white",
+          }}
           {...props}
         />
 
