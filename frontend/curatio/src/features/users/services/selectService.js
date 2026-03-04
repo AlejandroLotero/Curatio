@@ -1,8 +1,14 @@
 
+import rolesData from "@/data/selects/roles.json";
+
 export async function getDocumentTypes () {
-
     const response = await fetch("/src/data/selects/documentTypes.json");
+    return response.json();
+}
 
+/*FUNCION ASINCRONA PARA LLAMADA DE ROLES*/
+export async function getRoles() {
+    const response = await fetch("/src/data/selects/roles.json");
     return response.json();
 }
 

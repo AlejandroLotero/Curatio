@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import Navbar from "@/shared/layout/NavBar";
 
 
-import heroBfg from "@/assets/images/imagen-hero.jpg";
+import heroBfg from "@/assets/images/bgAll.jpg";
 
 export default function AuthLayout() {
  

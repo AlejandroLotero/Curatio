@@ -45,7 +45,7 @@ export default function ProductDetailPage() {
         className="min-h-screen flex items-center justify-center"
         style={{ backgroundColor: "var(--color-primary-50)" }}
       >
-        <p style={{ color: "var(--semantic-text-label)" }}>Cargando...</p>
+        <p style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}>Cargando...</p>
       </div>
     );
   }
@@ -56,7 +56,7 @@ export default function ProductDetailPage() {
         className="min-h-screen flex items-center justify-center"
         style={{ backgroundColor: "var(--color-primary-50)" }}
       >
-        <p style={{ color: "var(--semantic-text-label)" }}>
+        <p style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}>
           Medicamento no encontrado
         </p>
       </div>
@@ -65,7 +65,7 @@ export default function ProductDetailPage() {
 
   return (
     <div
-      className="min-h-screen p-8"
+      className="min-h-screen p-8 bg-gradient-to-br from-primary-50 to-primary-100 dark:from-neutral-900 dark:to-neutral-800"
       style={{ backgroundColor: "var(--color-primary-50)" }}
     >
       <div className="max-w-4xl mx-auto">
@@ -85,11 +85,11 @@ export default function ProductDetailPage() {
           <div>
             <h1
               className="text-4xl font-bold"
-              style={{ color: "var(--semantic-text-primary)" }}
+              style={{ color: "var(--semantic-text-primary)", fontFamily: "var(--font-body)" }}
             >
               {medicamento.medicationName}
             </h1>
-            <p style={{ color: "var(--semantic-text-label)" }}>
+            <p style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}>
               ID: {medicamento.medicationId}
             </p>
           </div>
@@ -157,7 +157,7 @@ export default function ProductDetailPage() {
           >
             <h3
               className="text-lg font-semibold mb-4"
-              style={{ color: "var(--semantic-text-primary)" }}
+              style={{ color: "var(--semantic-text-primary)", fontFamily: "var(--font-body)" }}
             >
               Información de Precios
             </h3>
@@ -180,8 +180,9 @@ export default function ProductDetailPage() {
             onClick={() => navigate("/products")}
             className="px-8 py-3 rounded-full font-semibold hover:opacity-80 transition"
             style={{
-              backgroundColor: "var(--color-gray-100)",
-              color: "var(--semantic-text-primary)",
+              backgroundColor: "var(--color-gray-800)",
+              color: "var(--color-black)",
+              fontFamily: "var(--font-body)",
             }}
           >
             Volver
@@ -191,7 +192,8 @@ export default function ProductDetailPage() {
             className="flex items-center gap-2 px-8 py-3 rounded-full font-semibold hover:opacity-90 transition"
             style={{
               backgroundColor: "var(--color-button-primary-bg)",
-              color: "var(--semantic-text-button-primary)",
+              color: "white",
+              fontFamily: "var(--font-body)",
             }}
           >
             <Edit2 size={18} />
@@ -206,6 +208,7 @@ export default function ProductDetailPage() {
             style={{
               backgroundColor: "var(--color-primary-100)",
               color: "var(--semantic-text-label)",
+              fontFamily: "var(--font-body)",
             }}
           >
             {medicamento.createdAt && (
@@ -227,13 +230,13 @@ function DetailItem({ label, value }) {
     <div>
       <p
         className="text-sm font-semibold mb-2"
-        style={{ color: "var(--semantic-text-label)" }}
+        style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}
       >
         {label}
       </p>
       <p
         className="text-lg"
-        style={{ color: "var(--semantic-text-primary)" }}
+        style={{ color: "var(--semantic-text-primary)", fontFamily: "var(--font-body)" }}
       >
         {value || "-"}
       </p>
@@ -250,13 +253,13 @@ function PriceCard({ label, value }) {
     >
       <p
         className="text-sm font-semibold mb-2"
-        style={{ color: "var(--semantic-text-label)" }}
+        style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}
       >
         {label}
       </p>
       <p
         className="text-2xl font-bold"
-        style={{ color: "var(--color-primary-500)" }}
+        style={{ color: "var(--color-primary-500)", fontFamily: "var(--font-body)" }}
       >
         ${value || "0.00"}
       </p>

@@ -1,41 +1,41 @@
-export default function Select({ label, name, options = [] }) {
-  return (
-    <div className="w-[320px]">
-      {/* label si es label tiene contenido es (thurty)true, si no, es false(falsy) y no muestra el label */}
-      {label && (
-        <label
-          className="
-                block
-                     mb-1
-                     text-label
-                     font-body
-                     font-heading
-                     text-mostsmall"
-        >
-          {label}
-        </label>
-      )}
+export default function Select({
+    label,
+    name,
+    options = [],
+    placeholder,
+}) {
+    return (
+        <div className="w-[320px]">
+            {label && (
+              <label 
+                className="block mb-1 text-sm font-semibold"
+                style={{
+                  color: "var(--semantic-text-label)",
+                  fontFamily: "var(--font-body)",
+                }}
+              >
+                {label}
+              </label>
+            )}
 
-      <select
-        name={name}
-        className="
-                w-full
-                h-12
-                rounded-md
-                border
-                border-border
-                px-4
-                                
-                "
-      >
-        <option value="">Seleccione</option>
+            <select
+              name={name}
+              className="w-full h-10 rounded-lg border px-4 focus:outline-none focus:ring-2"
+              style={{
+                borderColor: "var(--color-primary-300)",
+                color: "var(--semantic-text-primary)",
+                fontFamily: "var(--font-body)",
+                backgroundColor: "white",
+              }}
+            >
+              <option value="">{placeholder}</option>
+              {options.map((option) => (
+                <option key={option.id} value={option.id}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+        </div>
+    );
+};
 
-        {options.map((opt) => (
-          <option key={opt.id} value={opt.id}>
-            {opt.label}
-          </option>
-        ))}
-      </select>
-    </div>
-  );
-}

@@ -1,72 +1,64 @@
-export default function Button({
-    variant = "primary",  //Define el estilo visual
+/*Creacion de componente*/
+export default function Buttom({
+    variant = "primary",    //Define el estilo visual
     size = "md",
     type = "button",
-    children,   //Es el contenido que tiene el boton
-    ...props 
-
+    children,       //Contenido que tiene el boton
+    ...props
 }) {
+    const getVariantStyle = (variant) => {
+        if (variant === "primary") {
+            return {
+                backgroundColor: "var(--color-button-primary-bg)",
+                color: "white",
+                borderColor: "var(--color-button-primary-bg)",
+            };
+        } else if (variant === "secondary") {
+            return {
+                backgroundColor: "var(--color-gray-800)",
+                color: "var(--color-black)",
+                borderColor: "var(--color-gray-800)",
+            };
+        }
+    };
 
-    const variants = {primary : `
-        bg-[var(--color-button-primary-bg)]
-        text-[var(--color-text-inverse)]
-        border
-        border-[var(--color-button-primary-border)]
-        hover:bg-[var(--color-brand-hover)]
-      `,
-        secondary:`
-        bg-[var(--color-button-secondary-bg)]
-        text-[var(--color-text-primary)]
-        border
-        border-[var(--color-button-secondary-border)]
-        hover:bg-[var(--color-surface-muted)]
-        `,
-    }
+    const getHoverStyle = (variant) => {
+        if (variant === "primary") {
+            return {
+                "--hover-bg": "rgba(47, 111, 103, 0.9)",
+            };
+        } else if (variant === "secondary") {
+            return {
+                "--hover-bg": "rgba(224, 224, 224, 0.8)",
+            };
+        }
+    };
 
     const sizes = {
-        /*small*/
-     sm:
-     
-        // "h-9 px-4 before: absolute",
-        `h-9 
-        px-3 
-        before: absolute before:content-['']
-        before: inset-y-[4px] before:inset-x-[0px]
-        
-        `,
-
-
-
-/*mediana */
-     md: 
-
-     `
-     h-10 
-     px-4 
-     before: absolute before:content-['']
-     before: inset-y-[4px] before:inset-x-[0px]
-     
-     
-     `
-    }
+        sm: "h-9 px-3",
+        md: "h-10 px-4",
+    };
 
     return (
-      <button
-        type={type}
-        className={`
+        <button
+            type={type}
+            className={`
                 relative
                 inline-flex items-center justify-center
                 rounded-full
-                transition-colors
-                font-medium
-                ${variants[variant]}
+                transition-all
+                font-semibold
+                border
+                hover:opacity-80
                 ${sizes[size]}
-            
             `}
-        {...props}
-      >
-        {children}
-      </button>
+            style={{
+                ...getVariantStyle(variant),
+                fontFamily: "var(--font-body)",
+            }}
+            {...props}
+        >
+            {children}
+        </button>
     );
-
 };

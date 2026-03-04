@@ -37,7 +37,7 @@ export default function CreateAdministrationRouteForm({ isOpen, onClose, onAdd }
       <Modal isOpen={isOpen} onClose={onClose} title="CREAR VÍA DE ADMINISTRACIÓN">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium mb-2" style={{ color: "var(--semantic-text-label)" }}>
+            <label className="block text-sm font-medium mb-2" style={{ color: "var(--color-black)", fontFamily: "var(--font-body)" }}>
               Nombre de la Vía
             </label>
             <input
@@ -46,17 +46,19 @@ export default function CreateAdministrationRouteForm({ isOpen, onClose, onAdd }
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className="w-full h-12 p-3 rounded-lg focus:outline-none"
+              className="w-full h-12 p-3 rounded-lg focus:outline-none placeholder:text-gray-600"
               style={{
                 borderWidth: "2px",
                 borderColor: "var(--color-primary-300)",
-                backgroundColor: "var(--color-primary-50)",
+                backgroundColor: "white",
+                fontFamily: "var(--font-body)",
+                color: "var(--color-black)"
               }}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2" style={{ color: "var(--semantic-text-label)" }}>
+            <label className="block text-sm font-medium mb-2" style={{ color: "var(--color-black)", fontFamily: "var(--font-body)" }}>
               Descripción
             </label>
             <textarea
@@ -64,12 +66,14 @@ export default function CreateAdministrationRouteForm({ isOpen, onClose, onAdd }
               name="description"
               value={formData.description}
               onChange={handleChange}
-              className="w-full p-3 rounded-lg focus:outline-none resize-none"
+              className="w-full p-3 rounded-lg focus:outline-none resize-none placeholder:text-gray-600"
               rows="4"
               style={{
                 borderWidth: "2px",
                 borderColor: "var(--color-primary-300)",
-                backgroundColor: "var(--color-primary-50)",
+                backgroundColor: "white",
+                fontFamily: "var(--font-body)",
+                color: "var(--color-black)"
               }}
             />
           </div>
@@ -80,8 +84,9 @@ export default function CreateAdministrationRouteForm({ isOpen, onClose, onAdd }
               onClick={onClose}
               className="px-8 py-2 rounded-full font-semibold hover:opacity-80 transition"
               style={{
-                backgroundColor: "var(--color-gray-100)",
-                color: "var(--semantic-text-primary)",
+                backgroundColor: "var(--color-gray-800)",
+                color: "var(--color-black)",
+                fontFamily: "var(--font-body)"
               }}
             >
               Cancelar
@@ -90,8 +95,9 @@ export default function CreateAdministrationRouteForm({ isOpen, onClose, onAdd }
               type="submit"
               className="px-8 py-2 rounded-full font-semibold hover:opacity-90 transition"
               style={{
-                backgroundColor: "var(--color-button-primary-bg)",
-                color: "var(--semantic-text-button-primary)",
+                backgroundColor: "var(--color-secondary-700)",
+                color: "white",
+                fontFamily: "var(--font-body)"
               }}
             >
               Crear Vía

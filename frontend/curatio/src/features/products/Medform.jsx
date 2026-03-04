@@ -593,8 +593,9 @@ export default function MedForm({ onSubmit, onBack, initialData = null }) {
               onClick={onBack}
               className="px-8 py-3 rounded-full font-semibold hover:opacity-80 transition"
               style={{ 
-                backgroundColor: "var(--color-gray-100)",
-                color: "var(--semantic-text-primary)"
+                backgroundColor: "var(--color-gray-800)",
+                color: "var(--color-black)",
+                fontFamily: "var(--font-body)"
               }}
             >
               Volver

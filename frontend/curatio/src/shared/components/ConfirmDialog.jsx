@@ -7,7 +7,10 @@ export default function ConfirmDialog({ isOpen, onClose, onConfirm, title, messa
       <div className="space-y-6">
         <p 
           className="text-center text-lg"
-          style={{ color: "var(--semantic-text-primary)" }}
+          style={{ 
+            color: "var(--semantic-text-primary)",
+            fontFamily: "var(--font-body)"
+          }}
         >
           {message}
         </p>
@@ -29,7 +32,7 @@ export default function ConfirmDialog({ isOpen, onClose, onConfirm, title, messa
             }}
             className="w-16 h-16 rounded-full flex items-center justify-center hover:opacity-80 transition"
             style={{
-              backgroundColor: "#14AE5C",
+              backgroundColor: "var(--color-button-primary-bg)",
             }}
           >
             <Check size={32} className="text-white" strokeWidth={3} />
@@ -40,8 +43,9 @@ export default function ConfirmDialog({ isOpen, onClose, onConfirm, title, messa
           onClick={onClose}
           className="w-full px-6 py-2 rounded-full font-semibold hover:opacity-80 transition"
           style={{
-            backgroundColor: "var(--color-gray-100)",
-            color: "var(--semantic-text-primary)",
+            backgroundColor: "var(--color-gray-800)",
+            color: "var(--color-black)",
+            fontFamily: "var(--font-body)"
           }}
         >
           Volver

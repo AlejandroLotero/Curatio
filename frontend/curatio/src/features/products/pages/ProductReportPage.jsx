@@ -94,28 +94,26 @@ export default function ProductReportPage() {
   if (loading) {
     return (
       <div
-        className="min-h-screen flex items-center justify-center"
-        style={{ backgroundColor: "var(--color-primary-50)" }}
+        className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100 dark:from-neutral-900 dark:to-neutral-800"
       >
-        <p style={{ color: "var(--semantic-text-label)" }}>Cargando...</p>
+        <p style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}>Cargando...</p>
       </div>
     );
   }
 
   return (
     <div
-      className="min-h-screen p-8"
-      style={{ backgroundColor: "var(--color-primary-50)" }}
+      className="min-h-screen p-8 bg-gradient-to-br from-primary-50 to-primary-100 dark:from-neutral-900 dark:to-neutral-800"
     >
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-6xl mx-auto p-8 rounded-3xl shadow-xl ring-1 ring-primary-200 dark:ring-neutral-700 bg-white dark:bg-neutral-900">
         {/* ENCABEZADO */}
         <div className="flex items-center gap-4 mb-8">
           <button
             onClick={() => navigate("/products")}
             className="p-2 rounded-lg hover:opacity-70 transition"
             style={{
-              backgroundColor: "var(--color-gray-100)",
-              color: "var(--semantic-text-primary)",
+              backgroundColor: "var(--color-gray-800)",
+              color: "var(--color-black)",
             }}
             title="Volver"
           >
@@ -123,12 +121,12 @@ export default function ProductReportPage() {
           </button>
           <div>
             <h1
-              className="text-4xl font-bold"
-              style={{ color: "var(--semantic-text-primary)" }}
+              className="text-subtittles font-bold"
+              style={{ color: "var(--semantic-text-primary)", fontFamily: "var(--font-body)" }}
             >
               REPORTES
             </h1>
-            <p style={{ color: "var(--semantic-text-label)" }}>
+            <p style={{ color: "var(--semantic-text-secondary)", fontFamily: "var(--font-body)" }}>
               Análisis y estadísticas de medicamentos
             </p>
           </div>
@@ -143,6 +141,8 @@ export default function ProductReportPage() {
             style={{
               borderColor: "var(--color-primary-300)",
               backgroundColor: "white",
+              color: "var(--semantic-text-primary)",
+              fontFamily: "var(--font-body)",
             }}
           >
             <option value="todos">Todos los medicamentos</option>
@@ -155,8 +155,9 @@ export default function ProductReportPage() {
             onClick={exportToCSV}
             className="flex items-center gap-2 px-6 py-2 rounded-lg font-semibold hover:opacity-90 transition"
             style={{
-              backgroundColor: "var(--color-button-primary-bg)",
-              color: "var(--semantic-text-button-primary)",
+              backgroundColor: "var(--color-secondary-700)",
+              color: "white",
+              fontFamily: "var(--font-body)",
             }}
           >
             <Download size={18} />
@@ -192,7 +193,7 @@ export default function ProductReportPage() {
               border: "2px dashed var(--color-primary-300)",
             }}
           >
-            <p style={{ color: "var(--semantic-text-label)" }}>
+            <p style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}>
               No hay datos para mostrar
             </p>
           </div>
@@ -206,43 +207,43 @@ export default function ProductReportPage() {
                 <tr style={{ backgroundColor: "var(--color-primary-100)" }}>
                   <th
                     className="px-6 py-3 text-left text-sm font-semibold"
-                    style={{ color: "var(--semantic-text-label)" }}
+                    style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}
                   >
                     ID
                   </th>
                   <th
                     className="px-6 py-3 text-left text-sm font-semibold"
-                    style={{ color: "var(--semantic-text-label)" }}
+                    style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}
                   >
                     Nombre
                   </th>
                   <th
                     className="px-6 py-3 text-left text-sm font-semibold"
-                    style={{ color: "var(--semantic-text-label)" }}
+                    style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}
                   >
                     Laboratorio
                   </th>
                   <th
                     className="px-6 py-3 text-right text-sm font-semibold"
-                    style={{ color: "var(--semantic-text-label)" }}
+                    style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}
                   >
                     Stock
                   </th>
                   <th
                     className="px-6 py-3 text-right text-sm font-semibold"
-                    style={{ color: "var(--semantic-text-label)" }}
+                    style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}
                   >
                     Precio Unit.
                   </th>
                   <th
                     className="px-6 py-3 text-right text-sm font-semibold"
-                    style={{ color: "var(--semantic-text-label)" }}
+                    style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}
                   >
                     Valor Total
                   </th>
                   <th
                     className="px-6 py-3 text-left text-sm font-semibold"
-                    style={{ color: "var(--semantic-text-label)" }}
+                    style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}
                   >
                     Estado
                   </th>
@@ -266,37 +267,37 @@ export default function ProductReportPage() {
                     >
                       <td
                         className="px-6 py-4 text-sm"
-                        style={{ color: "var(--semantic-text-primary)" }}
+                        style={{ color: "var(--semantic-text-primary)", fontFamily: "var(--font-body)" }}
                       >
                         {medicamento.medicationId}
                       </td>
                       <td
                         className="px-6 py-4 text-sm font-medium"
-                        style={{ color: "var(--semantic-text-primary)" }}
+                        style={{ color: "var(--semantic-text-primary)", fontFamily: "var(--font-body)" }}
                       >
                         {medicamento.medicationName}
                       </td>
                       <td
                         className="px-6 py-4 text-sm"
-                        style={{ color: "var(--semantic-text-secondary)" }}
+                        style={{ color: "var(--semantic-text-secondary)", fontFamily: "var(--font-body)" }}
                       >
                         {medicamento.laboratory || "-"}
                       </td>
                       <td
                         className="px-6 py-4 text-sm text-right font-semibold"
-                        style={{ color: "var(--semantic-text-primary)" }}
+                        style={{ color: "var(--semantic-text-primary)", fontFamily: "var(--font-body)" }}
                       >
                         {medicamento.stock}
                       </td>
                       <td
                         className="px-6 py-4 text-sm text-right"
-                        style={{ color: "var(--semantic-text-secondary)" }}
+                        style={{ color: "var(--semantic-text-secondary)", fontFamily: "var(--font-body)" }}
                       >
                         ${medicamento.salePrice || "0.00"}
                       </td>
                       <td
                         className="px-6 py-4 text-sm text-right font-semibold"
-                        style={{ color: "var(--color-primary-500)" }}
+                        style={{ color: "var(--color-primary-500)", fontFamily: "var(--font-body)" }}
                       >
                         ${valor.toFixed(2)}
                       </td>
@@ -306,9 +307,10 @@ export default function ProductReportPage() {
                           style={{
                             backgroundColor:
                               medicamento.status === "Activo"
-                                ? "#14AE5C"
+                                ? "var(--color-secondary-700)"
                                 : "#FF4444",
                             color: "white",
+                            fontFamily: "var(--font-body)"
                           }}
                         >
                           {medicamento.status || "-"}
@@ -338,13 +340,13 @@ function StatCard({ title, value, color }) {
     >
       <p
         className="text-sm font-semibold mb-2"
-        style={{ color: "var(--semantic-text-label)" }}
+        style={{ color: "var(--semantic-text-label)", fontFamily: "var(--font-body)" }}
       >
         {title}
       </p>
       <p
         className="text-3xl font-bold"
-        style={{ color }}
+        style={{ color, fontFamily: "var(--font-body)" }}
       >
         {value}
       </p>
