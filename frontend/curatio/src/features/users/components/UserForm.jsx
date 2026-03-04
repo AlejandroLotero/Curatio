@@ -43,6 +43,7 @@ export default function UserForm() {
       {/*Formulario para crear el usuario REALIZADO POR JHONIER G */}
       <form className=" 
       px-6 py-12 
+      text-label
       grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 
       bg-white/70 dark:bg-neutral-900/20 
       backdrop-blur-md 

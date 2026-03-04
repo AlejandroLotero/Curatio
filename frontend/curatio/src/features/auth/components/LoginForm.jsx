@@ -1,7 +1,6 @@
 import Input from "@/shared/components/Input";
 import Button from "@/shared/components/Button";
 import { useMemo, useState } from "react";
-import { Eye, EyeClosed } from "lucide-react";
 
 export default function LoginForm({
   onSubmit,
@@ -65,13 +64,13 @@ export default function LoginForm({
   };
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center ">
       {/* Encabezado */}
       <header className="mb-6 text-center">
         <h1 className="font-body font-heading text-tittles text-label">
           CURATIO
         </h1>
-        <p className="mt-1 font-body text-small text-text-primary">
+        <p className="mt-1 font-body text-small text-label">
           Iniciar sesión
         </p>
       </header>
@@ -94,7 +93,6 @@ export default function LoginForm({
             onChange={handleChange}
             onBlur={handleBlur}
             error={touched.email ? errors.email : ""}
-            className="placeholder:text-placeholder"
           />
           {touched.email && errors.email && (
             <p className="mt-1 font-body text-mostsmall text-error">
@@ -103,38 +101,19 @@ export default function LoginForm({
           )}
         </div>
 
-        <div className="relative">
+        <div>
           <Input
             label="Contraseña"
             placeholder="Ingresa tu contraseña"
-            type={showPassword ? "text" : "password"}
+            type="password"
             name="password"
             value={form.password}
             onChange={handleChange}
             onBlur={handleBlur}
             error={touched.password ? errors.password : ""}
-            className="pr-12 placeholder:text-placeholder"
+            showPassword={showPassword}
+            onTogglePassword={() => setShowPassword((s) => !s)}
           />
-
-          <button
-            type="button"
-            onClick={() => setShowPassword((s) => !s)}
-            className="
-              absolute right-2 top-[3rem] flex h-9 w-9 -translate-y-1/2
-              items-center justify-center rounded-md
-              text-placeholder transition
-              hover:bg-surface hover:text-label
-              focus:outline-none focus-visible:ring-2 focus-visible:ring-border focus-visible:ring-offset-1
-            "
-            aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
-            tabIndex={0}
-          >
-            {showPassword ? (
-              <EyeClosed className="size-5" aria-hidden />
-            ) : (
-              <Eye className="size-5" aria-hidden />
-            )}
-          </button>
 
           {touched.password && errors.password && (
             <p className="mt-1 font-body text-mostsmall text-error">
@@ -144,7 +123,7 @@ export default function LoginForm({
         </div>
 
         <div className="flex items-center justify-between">
-          <label className="flex cursor-pointer items-center gap-2 font-body text-small text-text-primary select-none">
+          <label className="flex cursor-pointer items-center gap-2 font-body text-small text-label select-none">
             <input
               type="checkbox"
               name="remember"
@@ -158,7 +137,7 @@ export default function LoginForm({
           <button
             type="button"
             onClick={onForgotPassword}
-            className="font-body text-small text-label underline underline-offset-4 transition hover:text-text-primary"
+            className="font-body text-small text-label underline underline-offset-4 transition hover:text-label"
           >
             ¿Olvidaste tu contraseña?
           </button>
@@ -185,14 +164,14 @@ export default function LoginForm({
         <div className="pt-4">
           <div className="flex items-center gap-3">
             <div className="h-px flex-1 bg-border" />
-            <span className="font-body text-mostsmall text-text-primary">o</span>
+            <span className="font-body text-mostsmall text-label">o</span>
             <div className="h-px flex-1 bg-border" />
           </div>
 
           <button
             type="button"
             onClick={() => console.log("Ir a registrarse")}
-            className="mt-3 w-full font-body text-small text-text-primary transition hover:text-label"
+            className="mt-3 w-full font-body text-small text-label transition hover:text-label"
           >
             ¿No tienes cuenta?{" "}
             <span className="underline underline-offset-4">Crear una</span>

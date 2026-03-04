@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { createPortal } from "react-dom";
 
 export default function Modal({
   isOpen,
@@ -14,7 +15,7 @@ export default function Modal({
 
   if (!isOpen) return null;
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       
       {/* Overlay oscuro */}
@@ -37,6 +38,7 @@ export default function Modal({
         {children}
 
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
