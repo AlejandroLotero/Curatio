@@ -32,7 +32,7 @@
 
   /*/*Nuevo creado por Jhonier para los textos de labes y placeholders*/
   --semantic-text-label: var(--color-black); /* Texto de labels según mi diseño */
-  --semantic-text-placeholder: var(--color-gray-700); /* Placeholders del login (gray-700), por ahora solo auth */
+  --semantic-text-placeholder: var(--color-gray-200); /* Placeholders del login (gray-700), por ahora solo auth */
   --semantic-text-button-secondary: var(--color-black); /* Color del texto de los botones secundarios */
   /*BORDER*/
     --semantic-border: var(--color-secondary-600);/*Borde principal*/

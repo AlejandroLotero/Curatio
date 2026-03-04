@@ -12,6 +12,7 @@ import DatosContactoPage from "@/features/users/pages/DatosContactoPage";
 import RolPage from "@/features/users/pages/RolPage";
 import CreateFormSuppliers from "@/features/suppliers/pages/CreateSuppliersDatosBasicos";
 import DatosContactoSuppliers from "@/features/suppliers/pages/CreateSuppliersDatosContacto";
+import FacturaElectronicaVentaPage from "@/features/sales/pages/FacturaElectronicaVentaPage";
 
 const router = createBrowserRouter([
 
@@ -72,6 +73,11 @@ const router = createBrowserRouter([
             {
                 path: "products",
                 element: <h1 className = "p-4"> Productos </h1>
+            },
+
+            {
+                path: "sales/factura-electronica",
+                element: <FacturaElectronicaVentaPage />
             },
 
             {

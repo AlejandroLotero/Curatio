@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 export default function DatosContactoPage() {
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className="flex items-center justify-center min-h-screen text-label">
       <form
         className="
       w-full max-w-md
@@ -56,13 +56,15 @@ export default function DatosContactoPage() {
           />
 
           <div className="flex justify-between w-full max-w-[320px] mt-6">
-            <Buttom
-              variant="secondary"
-              size="sm"
-              onClick={() => console.log("Oprimió cancelar")}
-            >
-              Cancelar
-            </Buttom>
+            <Link to= "/">
+              <Buttom
+                variant="secondary"
+                size="sm"
+                onClick={() => console.log("Oprimió cancelar")}
+              >
+                Cancelar
+              </Buttom>
+            </Link>
 
             <Link to="/accounts/rol">
               <Buttom

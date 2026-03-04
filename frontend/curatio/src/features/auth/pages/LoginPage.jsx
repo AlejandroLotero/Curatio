@@ -34,11 +34,12 @@ export default function LoginPage() {
         <div
           className="
             rounded-3xl
-            border border-border
+            border border-white
+            text-label
             bg-white/70 dark:bg-neutral-900/20
             backdrop-blur-md
             shadow-xl
-            ring-1 ring-border
+            ring-1 ring-white
             px-6 py-8 sm:px-8 sm:py-10
           "
         >

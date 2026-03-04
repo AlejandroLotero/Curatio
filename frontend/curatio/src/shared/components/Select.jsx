@@ -3,9 +3,10 @@ export default function Select({
     name,
     options = [],
     placeholder,
+    wrapperClassName,
 }) {
     return (
-        <div className="w-[320px]">
+        <div className={wrapperClassName ?? "w-[320px]"}>
             {/*Si el label tiene contenido es igual a truthy si no es falsy  */}
             { label && (
             <label className="

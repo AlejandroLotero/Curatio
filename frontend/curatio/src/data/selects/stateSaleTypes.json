@@ -1,0 +1,17 @@
+[
+    {
+        "id": "completada",
+        "label": "Completada"
+    },
+
+    {
+        "id": "anulada",
+        "label": "Anulada"
+    },
+
+    {
+        "id": "pendiente",
+        "label": "Pendiente"
+    }
+
+]

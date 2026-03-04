@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Eye, EyeClosed } from "lucide-react";
 
 import Input from "@/shared/components/Input";
 import Button from "@/shared/components/Button";
@@ -96,8 +95,8 @@ export default function ResetPasswordPage() {
 
   const inputClass =
     "w-full h-10 px-4 border-0 border-b-2 border-black/60 bg-transparent " +
-    "text-text-primary placeholder:text-text-muted " +
-    "focus:outline-none focus:border-black transition-colors duration-200";
+    "text-label placeholder:text-placeholder " +
+    "focus:outline-none focus:ring-0! focus:border-t-0! focus:border-x-0! focus:border-b-2! focus:border-b-black! transition-colors duration-200";
 
   return (
     <div className="min-h-[80vh] w-full flex items-center justify-center relative overflow-hidden">
@@ -109,15 +108,15 @@ export default function ResetPasswordPage() {
         <div className="rounded-3xl border border-white/20 bg-white/15 backdrop-blur-2xl shadow-[0_20px_80px_-20px_rgba(0,0,0,0.6)]">
           <div className="px-7 py-8">
             <div className="mb-6 text-center">
-              <h1 className="text-2xl font-body font-bold text-text-primary">CURATIO</h1>
-              <p className="text-sm text-text-primary/80 mt-1 font-body">
+              <h1 className="text-2xl font-body font-bold text-label">CURATIO</h1>
+              <p className="text-sm text-label/80 mt-1 font-body">
                 Restablecer contraseña
               </p>
             </div>
 
             {!success ? (
               <>
-                <p className="text-sm text-text-primary/80 mb-5 text-center">
+                <p className="text-sm text-label/80 mb-5 text-center">
                   Ingresa tu nueva contraseña y confírmala para finalizar.
                 </p>
 
@@ -129,26 +128,20 @@ export default function ResetPasswordPage() {
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                   {/* Nueva contraseña */}
-                  <div className="relative">
+                  <div>
                     <Input
                       label="Nueva contraseña"
                       placeholder="Ingresa tu nueva contraseña"
-                      type={show.password ? "text" : "password"}
+                      type="password"
                       name="password"
                       value={form.password}
                       onChange={handleChange}
                       onBlur={handleBlur}
                       className={`${inputClass} pr-12`}
                       error={touched.password ? errors.password : ""}
+                      showPassword={show.password}
+                      onTogglePassword={() => setShow((s) => ({ ...s, password: !s.password }))}
                     />
-                    <button
-                      type="button"
-                      onClick={() => setShow((s) => ({ ...s, password: !s.password }))}
-                      className="absolute right-3 top-9 text-gray-700 hover:text-black transition"
-                      aria-label={show.password ? "Ocultar contraseña" : "Mostrar contraseña"}
-                    >
-                      {show.password ? <EyeClosed className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                    </button>
 
                     {touched.password && errors.password && (
                       <p className="mt-1 text-xs text-red-600">{errors.password}</p>
@@ -156,32 +149,22 @@ export default function ResetPasswordPage() {
                   </div>
 
                   {/* Confirmar contraseña */}
-                  <div className="relative">
+                  <div>
                     <Input
                       label="Confirmar nueva contraseña"
                       placeholder="Confirma tu nueva contraseña"
-                      type={show.confirmPassword ? "text" : "password"}
+                      type="password"
                       name="confirmPassword"
                       value={form.confirmPassword}
                       onChange={handleChange}
                       onBlur={handleBlur}
                       className={`${inputClass} pr-12`}
                       error={touched.confirmPassword ? errors.confirmPassword : ""}
-                    />
-                    <button
-                      type="button"
-                      onClick={() =>
+                      showPassword={show.confirmPassword}
+                      onTogglePassword={() =>
                         setShow((s) => ({ ...s, confirmPassword: !s.confirmPassword }))
                       }
-                      className="absolute right-3 top-9 text-gray-700 hover:text-black transition"
-                      aria-label={show.confirmPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
-                    >
-                      {show.confirmPassword ? (
-                        <EyeClosed className="w-5 h-5" />
-                      ) : (
-                        <Eye className="w-5 h-5" />
-                      )}
-                    </button>
+                    />
 
                     {touched.confirmPassword && errors.confirmPassword && (
                       <p className="mt-1 text-xs text-red-600">{errors.confirmPassword}</p>
@@ -208,10 +191,10 @@ export default function ResetPasswordPage() {
             ) : (
               <div className="text-center space-y-4">
                 <div className="rounded-2xl bg-white/10 border border-white/15 p-4">
-                  <p className="text-sm text-text-primary">
+                  <p className="text-sm text-label">
                      Tu contraseña fue actualizada correctamente.
                   </p>
-                  <p className="text-xs text-text-primary/70 mt-2">
+                  <p className="text-xs text-label/70 mt-2">
                     Ya puedes iniciar sesión con tu nueva contraseña.
                   </p>
                 </div>
@@ -231,7 +214,7 @@ export default function ResetPasswordPage() {
           </div>
         </div>
 
-        <p className="text-center text-xs text-text-primary/80 mt-5">
+        <p className="text-center text-xs text-label/80 mt-5">
           Al continuar aceptas nuestros Términos y Política de Privacidad.
         </p>
       </div>
