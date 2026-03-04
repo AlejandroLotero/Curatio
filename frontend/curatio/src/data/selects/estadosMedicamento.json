@@ -1,0 +1,6 @@
+[
+  { "id": 1, "label": "Activo" },
+  { "id": 2, "label": "Vencido" },
+  { "id": 3, "label": "Agotado" },
+  { "id": 4, "label": "Suspendido" }
+]

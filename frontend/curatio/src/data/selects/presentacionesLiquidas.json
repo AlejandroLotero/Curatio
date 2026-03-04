@@ -1,0 +1,10 @@
+[
+  { "id": 1, "label": "Enema" },
+  { "id": 2, "label": "Emulsión" },
+  { "id": 3, "label": "Gotas" },
+  { "id": 4, "label": "Infusión / Concentrado para diluir" },
+  { "id": 5, "label": "Inyectable / Ampolla / Frasco ámpula" },
+  { "id": 6, "label": "Jarabe" },
+  { "id": 7, "label": "Solución oral" },
+  { "id": 8, "label": "Suspensión" }
+]

@@ -1,0 +1,18 @@
+[
+  { "id": 1, "label": "Bucal" },
+  { "id": 2, "label": "Cutánea" },
+  { "id": 3, "label": "Inhalatoria" },
+  { "id": 4, "label": "Intradérmica" },
+  { "id": 5, "label": "Intramuscular" },
+  { "id": 6, "label": "Intravenosa" },
+  { "id": 7, "label": "Nasal" },
+  { "id": 8, "label": "Oftálmica" },
+  { "id": 9, "label": "Oral" },
+  { "id": 10, "label": "Ótica" },
+  { "id": 11, "label": "Rectal" },
+  { "id": 12, "label": "Subcutánea" },
+  { "id": 13, "label": "Sublingual" },
+  { "id": 14, "label": "Transdérmica" },
+  { "id": 15, "label": "Uretral" },
+  { "id": 16, "label": "Vaginal" }
+]

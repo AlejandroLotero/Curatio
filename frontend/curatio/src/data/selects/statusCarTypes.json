@@ -1,0 +1,17 @@
+[
+    {
+        "id": "ACTIVE",
+        "label": "Activo"
+    },
+
+    {
+        "id": "CONFIRMED",
+        "label": "Confirmado"
+    },
+
+    {
+        "id": "CANCELLED",
+        "label": "cancelado"
+    }
+
+]

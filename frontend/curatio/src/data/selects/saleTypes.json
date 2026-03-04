@@ -1,0 +1,12 @@
+[
+    {
+        "id": "ADMIN",
+        "label": "Administrador"
+    },
+
+    {
+        "id": "FARMA",
+        "label": "Farmaceuta"
+    }
+
+]
