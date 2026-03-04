@@ -38,6 +38,7 @@ export default function Buttom({
                 inline-flex items-center justify-center
                 rounded-4xl
                 transition-colors
+                cursor-pointer
                 ${variants[variant]}
                 ${sizes[size]}
                 `}

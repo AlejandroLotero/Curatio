@@ -1,7 +1,9 @@
 import Input from "@/shared/components/Input";
 import Button from "@/shared/components/Button";
 import Select from "@/shared/components/Select";
-import { useEffect, useMemo, useState } from "react";
+import Modal from "@/shared/components/Modal";
+import { Link } from "react-router-dom";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   getFormasFarmaceuticas,
   getPresentacionesEspeciales,
@@ -15,6 +17,9 @@ import {
 } from "../services/selectServices";
 
 export default function ProductsPage() {
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const formRef = useRef(null);
   const [formasFarmaceuticas, setFormasFarmaceuticas] = useState([]);
   const [viasAdministracion, setViasAdministracion] = useState([]);
   const [laboratorios, setLaboratorios] = useState([]);
@@ -69,9 +74,20 @@ export default function ProductsPage() {
     setSelectedFormaId(e.target.value);
   };
 
+  const handleButtonSubmit = (e) => {
+    e.preventDefault();
+    setIsConfirmModalOpen(false);
+    setIsSuccessModalOpen(true);
+  };
+
+  const handleConfirmSave = () => {
+    formRef.current?.requestSubmit();
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen text-label px-4 py-6 sm:px-6 sm:py-8 w-full min-w-0 overflow-x-hidden">
       <form
+        ref={formRef}
         className="
           w-full max-w-full lg:max-w-5xl
           min-w-0
@@ -83,6 +99,7 @@ export default function ProductsPage() {
           ring-1
           rounded-2xl sm:rounded-3xl
         "
+        onSubmit={handleButtonSubmit}
       >
         <h2
           className="
@@ -92,7 +109,7 @@ export default function ProductsPage() {
             text-label
             col-span-full
             mb-2 sm:mb-4
-            break-words
+            wrap-break-word
           "
         >
           GESTIÓN DE MEDICAMENTOS
@@ -218,14 +235,65 @@ export default function ProductsPage() {
 
         {/* Fila inferior: descripción ya va en columna izquierda, aquí botones */}
         <div className="col-span-full flex flex-col-reverse sm:flex-row justify-between gap-3 sm:gap-0 w-full max-w-full mx-auto mt-6 min-w-0">
-          <Button variant="secondary" size="sm" type="button">
-            Volver
-          </Button>
-          <Button variant="primary" size="sm" type="submit">
+          <Link to="/">
+            <Button variant="secondary" size="sm" type="button">
+              Volver
+            </Button>
+          </Link>
+          <Button
+            variant="primary"
+            size="sm"
+            type="button"
+            onClick={() => setIsConfirmModalOpen(true)}
+          >
             Registrar Medicamento
           </Button>
         </div>
       </form>
+
+      {/* Modal de confirmación */}
+      <Modal
+        isOpen={isConfirmModalOpen}
+        onClose={() => setIsConfirmModalOpen(false)}
+        title="Confirmar registro"
+        message="¿Está seguro que desea registrar el medicamento con los datos ingresados?"
+      >
+        <div className="flex gap-4 justify-center">
+          <Button
+            variant="secondary"
+            size="sm"
+            type="button"
+            onClick={() => setIsConfirmModalOpen(false)}
+          >
+            Cancelar
+          </Button>
+          <Button
+            variant="primary"
+            size="sm"
+            type="button"
+            onClick={handleConfirmSave}
+          >
+            Confirmar
+          </Button>
+        </div>
+      </Modal>
+
+      {/* Modal de éxito */}
+      <Modal
+        isOpen={isSuccessModalOpen}
+        onClose={() => setIsSuccessModalOpen(false)}
+        title="Medicamento registrado"
+        message="El medicamento se ha registrado correctamente."
+      >
+        <div className="flex flex-col gap-4 items-center">
+          <Link
+            to="/"
+            className="border border-border-strong bg-primarybtnbg text-primarybtntext font-body font-heading text-small hover:bg-primarybtnhoverbg hover:text-label px-4 py-2 rounded-4xl transition-colors"
+          >
+            Volver al inicio
+          </Link>
+        </div>
+      </Modal>
     </div>
   );
 }
