@@ -21,7 +21,7 @@ export default function DatosBasicosPage() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-[60vh] p-4">
+    <div className="flex items-center justify-center min-h-screen">
       <form
         className="
       w-full max-w-md

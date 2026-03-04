@@ -10,8 +10,8 @@ import ResetPasswordPage from "@/features/auth/pages/ResetPasswordPage"
 import DatosBasicosPage from "@/features/users/pages/DatosBasicosPage";
 import DatosContactoPage from "@/features/users/pages/DatosContactoPage";
 import RolPage from "@/features/users/pages/RolPage";
-import CreateFormSuppliers from "@/features/suppliers/pages/CreateFormSuppliers";
-import DatosContactoSuppliers from "@/features/suppliers/pages/DatosContactoSuppliers";
+import CreateFormSuppliers from "@/features/suppliers/pages/CreateSuppliersDatosBasicos";
+import DatosContactoSuppliers from "@/features/suppliers/pages/CreateSuppliersDatosContacto";
 
 const router = createBrowserRouter([
 

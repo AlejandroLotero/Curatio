@@ -18,8 +18,8 @@ const Navbar = ({variant = "solid"}) => {
           
           {/* Logo de marca */}
           <div className="flex items-center">
-            <Link to="/" className="flex items-center gap-2 text-tittles font-heading font-body">
-              <Cross className="size-12 "/>
+            <Link to="/" className="flex items-center gap-2 text-tittles font-heading font-body text-label">
+              <Cross className="size-12 fill-label stroke-label [stroke-linecap:square] [stroke-linejoin:miter]" strokeWidth={2} />
               Curatio
             </Link>
           </div>
@@ -71,7 +71,7 @@ const Navbar = ({variant = "solid"}) => {
                 type="text"
                 placeholder="Buscar..."
                 className="pl-9 pr-4
-                  py-2.5 border rounded-lg text-body focus:outline-none focus:ring-2 focus:ring-primary"
+                  py-2.5 border rounded-lg text-body focus:outline-none focus:ring-2 focus:ring-primary border border-border-strong"
               />
             </div>
 
@@ -83,13 +83,13 @@ const Navbar = ({variant = "solid"}) => {
             <div className="relative">
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="flex items-center justify-center size-10 rounded-full border hover:bg-surface transition"
+                className="flex items-center justify-center size-10 rounded-full border hover:bg-surface transition border border-border-strong"
               >
                 <User className="size-5 cursor-pointer" />
               </button>
 
               {isOpen && (
-                <div className="h-28 text-center absolute right-0 mt-2 w-48 border bg-background bg-white/70 dark:bg-neutral-900/20 backdrop-blur-md shadow-xl ring-1 rounded-3xl">
+                <div className="h-28 text-label text-center absolute right-0 mt-2 w-48 bg-background bg-white/70 dark:bg-neutral-900/20 backdrop-blur-md shadow-xl ring-1 rounded-3xl">
                   <ul className="py-2 text-sm">
                     <li>
                       <Link

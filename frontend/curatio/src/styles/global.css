@@ -23,7 +23,8 @@
 
 /*Agregacion las nuevas variables de color, tipografia para los textos de labels y placeholders*/
 
-    --color-label: var(--semantic-text-label); /* Texto de labels y placeholder según el diseño */
+    --color-label: var(--semantic-text-label); /* Texto de labels según el diseño */
+    --color-placeholder: var(--semantic-text-placeholder); /* Placeholders del login (gray-700) */
 
     /*FUENTES DE TEXTO*/
 

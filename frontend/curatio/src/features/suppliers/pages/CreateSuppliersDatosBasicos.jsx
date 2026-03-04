@@ -23,11 +23,29 @@ export default function CreateFormSuppliers() {
 
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <div className="bg-transparent p-8 rounded-lg w-[400px] space-y-8">
+      <form
+        className="
+      w-full max-w-md
+      px-6 py-12 
+      grid grid-cols-1 gap-4 
+      bg-white/70 dark:bg-neutral-900/20 
+      backdrop-blur-md 
+      shadow-xl 
+      ring-1 
+      rounded-3xl"
+      >
         {/* DATOS BÁSICOS */}
-        <section>
-          <h2 className="text-xl font-bold text-center mb-6">Datos básicos</h2>
-          <div className="space-y-6 grid grid-cols-1">
+        <section className="flex flex-col items-center gap-4 p-4 border rounded-xl">
+          <h2
+            className="
+          text-center 
+          text-subtittles 
+          font-bold 
+          text-label"
+          >
+            Datos básicos
+          </h2>
+          <div className="space-y-6 grid grid-cols-1 w-full max-w-[320px]">
             <Input
               label="NIT: Ejemplo: 80000000-0"
               placeholder="80000000-0"
@@ -40,30 +58,30 @@ export default function CreateFormSuppliers() {
             <Input label="Razón social" placeholder="Mi Empresa S.A.S." />
             {/* <Select label="Tipos de documento" name="documentType" options={documentTypes}></Select> */}
           </div>
-        </section>
 
-        {/* Botones de acción */}
-        <div className="flex justify-center gap-4 mt-6">
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => console.log("Oprimió cancelar")}
-          >
-            Cancelar
-          </Button>
-
-          <Link to="../datos-contacto">
+          {/* Botones de acción */}
+          <div className="flex justify-between w-full max-w-[320px] mt-6">
             <Button
-              variant="primary"
-              size="md"
-              type="button"
-              onClick={() => console.log("Ir a datos de contacto")}
+              variant="secondary"
+              size="sm"
+              onClick={() => console.log("Oprimió cancelar")}
             >
-              Siguiente
+              Cancelar
             </Button>
-          </Link>
-        </div>
-      </div>
+
+            <Link to="../datos-contacto">
+              <Button
+                variant="primary"
+                size="sm"
+                type="button"
+                onClick={() => console.log("Ir a datos de contacto")}
+              >
+                Siguiente
+              </Button>
+            </Link>
+          </div>
+        </section>
+      </form>
     </div>
   );
 }

@@ -3,7 +3,7 @@
 // color de texto definido en el diseño (text-label) de 
 // global.css
 
-export default function Input({ label, type = "text", ...props }) {
+export default function Input({ label, type = "text", className, ...props }) {
   return (
     <div className="w-[320px]">
       {/* label */}
@@ -44,17 +44,10 @@ export default function Input({ label, type = "text", ...props }) {
       
         />
 
-        {/* Input visual
-        JHONIER- SE AGREGA LA PROPIEDAD placeholder:text-label
-        para que el placeholder tome el color definido en el diseño
-        (text-label) de global.css se deja en color negro ya que es
-        el mismo que manejamos en el diseño, se modifican los bordes
-        y los bordes de la propiedad focus se agregan tambien las 
-        propiedades a los inputs*/}
-
+        {/* Input visual */}
         <input
           type={type}
-          className="
+          className={`
           relative
           w-full
           h-10
@@ -66,22 +59,16 @@ export default function Input({ label, type = "text", ...props }) {
           font-body
           font-heading
           text-small
-
-          
           placeholder:text-label
           placeholder:text-small
           placeholder:font-body
-          placeholder:text-font-heading
-
-
-
+          placeholder:font-heading
           focus:outline-none
           focus:ring-1
-
           focus:ring-border
           focus:border-border
-          
-          "
+          ${className ?? ""}
+          `}
           {...props}
         />
       </div>
