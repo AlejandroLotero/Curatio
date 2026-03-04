@@ -73,6 +73,7 @@ export default function CartForm() {
 
       <form
         className="px-6 py-12 
+        text-label
         grid grid-cols-1
         bg-white/70
         dark:bg-neutral-500/20 backdrop-md

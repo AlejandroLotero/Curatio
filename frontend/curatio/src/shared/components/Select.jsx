@@ -3,17 +3,21 @@ export default function Select({
     name,
     options = [],
     placeholder,
+    wrapperClassName,
 }) {
     return (
-        <div className="w-[320px]">
-            {label && (
-              <label 
-                className="block mb-1 text-sm font-semibold"
-                style={{
-                  color: "var(--semantic-text-label)",
-                  fontFamily: "var(--font-body)",
-                }}
-              >
+        <div className={wrapperClassName ?? "w-[320px]"}>
+            {/*Si el label tiene contenido es igual a truthy si no es falsy  */}
+            { label && (
+            <label className="
+            block
+            mb-1
+            text-mostsmall
+            text-label
+            font-weight
+            font-body
+            font-heading
+            ">
                 {label}
               </label>
             )}

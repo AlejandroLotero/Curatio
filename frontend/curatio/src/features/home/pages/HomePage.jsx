@@ -4,7 +4,7 @@
 
 //página pública
 
-import heroBfg from "@/assets/images/bgAll.jpg";
+import bgAll from "@/assets/images/bgAll.jpg";
 
 export default function HomePage() {
 
@@ -13,7 +13,7 @@ export default function HomePage() {
       <section
         className="relative min-h-screen w-full flex items-center justify-center text-black"
         style={{
-          backgroundImage: `url(${heroBfg})`,
+          backgroundImage: `url(${bgAll})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}

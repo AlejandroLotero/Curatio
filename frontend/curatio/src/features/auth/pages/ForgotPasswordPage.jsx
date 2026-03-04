@@ -61,8 +61,8 @@ export default function ForgotPasswordPage() {
 
   const inputClass =
     "w-full h-10 px-4 border-0 border-b-2 border-black/60 bg-transparent " +
-    "text-text-primary placeholder:text-text-muted " +
-    "focus:outline-none focus:border-black transition-colors duration-200";
+    "text-label placeholder:text-placeholder " +
+    "focus:outline-none focus:ring-0! focus:border-t-0! focus:border-x-0! focus:border-b-2! focus:border-b-border! transition-colors duration-200";
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center px-4 py-10 bg-transparent relative overflow-hidden">
@@ -74,13 +74,13 @@ export default function ForgotPasswordPage() {
         <div className="rounded-3xl border border-white/20 bg-white/15 backdrop-blur-2xl shadow-[0_20px_80px_-20px_rgba(0,0,0,0.6)]">
           <div className="px-7 py-8">
             <div className="mb-6 text-left">
-              <h1 className="text-2xl font-body font-bold text-text-primary">RECUPERAR CONTRASEÑA</h1>
+              <h1 className="text-2xl font-body font-bold text-label">RECUPERAR CONTRASEÑA</h1>
              
             </div>
 
             {!sent ? (
               <>
-                <p className="text-sm text-text-primary/80 mb-5 text-center">
+                <p className="text-sm text-label/80 mb-5 text-center">
                  Por favor ingrese el correo electronico con el que se creo el usuario en esta aplicación
                 </p>
 
@@ -126,10 +126,10 @@ export default function ForgotPasswordPage() {
             ) : (
               <div className="text-center space-y-4">
                 <div className="rounded-2xl bg-white/10 border border-white/15 p-4">
-                  <p className="text-sm text-text-primary">
+                  <p className="text-sm text-label">
                     Si el correo existe, te enviamos un enlace para restablecer tu contraseña.
                   </p>
-                  <p className="text-xs text-text-primary/70 mt-2">
+                  <p className="text-xs text-label/70 mt-2">
                     Revisa también Spam
                   </p>
                 </div>
@@ -165,7 +165,7 @@ export default function ForgotPasswordPage() {
           </div>
         </div>
 
-        <p className="text-center text-xs text-text-primary/80 mt-5">
+        <p className="text-center text-xs text-label/80 mt-5">
           Al continuar aceptas nuestros Términos y Política de Privacidad.
         </p>
       </div>

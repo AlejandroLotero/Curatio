@@ -53,7 +53,7 @@ const Navbar = ({variant = "solid"}) => {
               </Link>
             </li>
             <li>
-              <Link to="/video" className="hover:text-primary transition">
+              <Link to="/sales/factura-electronica" className="hover:text-primary transition">
                 Ventas
               </Link>
             </li>
@@ -64,14 +64,14 @@ const Navbar = ({variant = "solid"}) => {
           <div className="flex items-center gap-4">
             
             {/* Buscador */}
-            <div className="relative hidden sm:block">
+            <div className="relative hidden sm:block text-black font-body">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-500" />
             
               <input
                 type="text"
                 placeholder="Buscar..."
                 className="pl-9 pr-4
-                  py-2.5 border rounded-lg text-body focus:outline-none focus:ring-2 focus:ring-primary border border-border-strong"
+                  py-2.5 border rounded-lg text-body placeholder:text-placeholder focus:outline-none focus:ring-1 focus:ring-black border-border-strong"
               />
             </div>
 

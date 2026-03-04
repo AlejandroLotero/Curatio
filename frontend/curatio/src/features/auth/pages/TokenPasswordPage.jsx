@@ -69,8 +69,8 @@ export default function TokenPasswordPage() {
 
   const inputClass =
     "w-full h-10 px-4 border-0 border-b-2 border-black/60 bg-transparent " +
-    "text-text-primary placeholder:text-text-muted " +
-    "focus:outline-none focus:border-black transition-colors duration-200";
+    "text-label placeholder:text-placeholder " +
+    "focus:outline-none focus:ring-0! focus:border-t-0! focus:border-x-0! focus:border-b-2! focus:border-b-black! transition-colors duration-200";
 
   return (
     <div className="min-h-[80vh] w-full flex items-center justify-center relative overflow-hidden">
@@ -82,13 +82,13 @@ export default function TokenPasswordPage() {
         <div className="rounded-3xl border border-white/20 bg-white/15 backdrop-blur-2xl shadow-[0_20px_80px_-20px_rgba(0,0,0,0.6)]">
           <div className="px-7 py-8">
             <div className="mb-6 text-center">
-              <h1 className="text-2xl font-body font-bold text-text-primary">CURATIO</h1>
-              <p className="text-sm text-text-primary/80 mt-1 font-body">
+              <h1 className="text-2xl font-body font-bold text-label">CURATIO</h1>
+              <p className="text-sm text-label/80 mt-1 font-body">
                 Verificar token
               </p>
             </div>
 
-            <p className="text-sm text-text-primary/80 mb-5 text-center">
+            <p className="text-sm text-label/80 mb-5 text-center">
               Por favor ingrese el TOKEN que le ha llegado a su correo electrónico
             </p>
 
@@ -134,7 +134,7 @@ export default function TokenPasswordPage() {
               <div className="pt-3 text-center">
                 <button
                   type="button"
-                  className="text-sm text-text-primary hover:text-black underline underline-offset-4"
+                  className="text-sm text-label hover:text-black underline underline-offset-4"
                   onClick={() => {
                     // aquí podrías reenviar token si lo implementas
                     console.log("Reenviar token");
@@ -147,7 +147,7 @@ export default function TokenPasswordPage() {
           </div>
         </div>
 
-        <p className="text-center text-xs text-text-primary/80 mt-5">
+        <p className="text-center text-xs text-label/80 mt-5">
           Al continuar aceptas nuestros Términos y Política de Privacidad.
         </p>
       </div>
