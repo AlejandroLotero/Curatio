@@ -4,7 +4,7 @@
 
 //página pública
 
-import heroBfg from "@/assets/images/imagen-hero.jpg";
+import heroBfg from "@/assets/images/bgAll.jpg";
 
 export default function HomePage() {
 
