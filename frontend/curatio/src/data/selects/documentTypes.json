@@ -1,5 +1,9 @@
 [
     {
+        "id": "NIT",
+        "label": "Número de Identificación Tributaria"
+    },
+    {
         "id": "C.C.",
         "label": "Cédula de ciudadanía"
     },

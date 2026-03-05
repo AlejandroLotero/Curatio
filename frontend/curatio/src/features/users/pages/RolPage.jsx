@@ -58,6 +58,7 @@ export default function RolPage() {
             name="roles"
             options={roles}
             placeholder="Seleccione un rol"
+            wrapperClassName="w-[320px]"
           />
 
           <Input

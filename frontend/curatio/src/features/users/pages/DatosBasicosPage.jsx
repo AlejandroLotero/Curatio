@@ -57,6 +57,7 @@ export default function DatosBasicosPage() {
             name="documentTypes"
             options={documentTypes}
             placeholder="Tipo de documento"
+            wrapperClassName="w-[320px]"
           />
 
           <Input
