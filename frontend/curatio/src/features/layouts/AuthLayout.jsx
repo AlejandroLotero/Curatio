@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import Navbar from "@/shared/layout/NavBar";
+import Navbar from "./NavBar";
 
 
 import heroBfg from "@/assets/images/bgAll.jpg";

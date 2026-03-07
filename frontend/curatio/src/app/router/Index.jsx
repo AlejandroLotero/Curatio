@@ -1,9 +1,9 @@
 import {createBrowserRouter, Navigate, Outlet} from "react-router-dom";
-import MainLayout from "@/shared/layout/MainLayout";
-import ProfilePage from "@/features/users/pages/ProfilePage";
+import {MainLayout} from "@/features/layouts";
+import {ProfilePage} from "@/features/users";
 import HomePage from "@/features/home/pages/HomePage";
-import AuthLayout from "@/shared/layout/AuthLayout";
-import LoginPage from "@/features/auth/pages/LoginPage";
+import {AuthLayout} from "@/features/layouts";
+import {LoginPage} from "@/features/auth";
 import ForgotPasswordPage from "@/features/auth/pages/ForgotPasswordPage"
 import TokenPasswordPage from "@/features/auth/pages/TokenPasswordPage"
 import ResetPasswordPage from "@/features/auth/pages/ResetPasswordPage"

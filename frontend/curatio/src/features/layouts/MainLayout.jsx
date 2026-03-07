@@ -1,5 +1,5 @@
 import { Outlet, useLocation } from "react-router-dom";
-import Navbar from "@/shared/layout/NavBar";
+import Navbar from "./NavBar";
 import bgAll from "@/assets/images/bgAll.jpg";
 
 export default function MainLayout() {
