@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Input from "../../../shared/components/Input";
 import Button from "../../../shared/components/Button";
 import Select from "@/shared/components/Select";
+import { CircleArrowLeft } from "lucide-react";
 // import selectService from "@/features/user/services/serviceSelect";
 // import { getDocumentTypes } from "../users/services/selectService";
 // import { useState, useEffect } from "react";
@@ -34,6 +35,14 @@ export default function CreateFormSuppliers() {
       ring-1 
       rounded-3xl"
       >
+
+        <Link
+        to="/"
+        className="absolute left-3 flex items-center justify-center w-12 h-12 rounded-full hover:bg-white/20 transition-colors group"
+      >
+        <CircleArrowLeft className="size-8 text-label group-hover:text-white transition-colors" />
+      </Link>
+
         {/* DATOS BÁSICOS */}
         <section className="flex flex-col items-center gap-4 p-4 border rounded-xl">
           <h2
