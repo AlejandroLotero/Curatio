@@ -5,6 +5,7 @@ import Modal from "@/shared/components/Modal";
 import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { getRoles } from "../../users/services/selectService";
+import { CircleArrowLeft } from "lucide-react";
 
 export default function RolPage() {
   const [roles, setRoles] = useState([]);
@@ -40,8 +41,16 @@ export default function RolPage() {
       shadow-xl 
       ring-1 
       rounded-3xl"
-        onSubmit={handleButtonSubmit}
-      >
+        onSubmit={handleButtonSubmit}>
+
+      <Link
+          to="/accounts/contacto"
+          className="absolute left-3 flex items-center justify-center w-12 h-12 rounded-full hover:bg-white/20 transition-colors group"
+        >
+          <CircleArrowLeft className="size-8 text-label group-hover:text-white transition-colors" />
+      </Link>
+
+
         {/* ================= ROL ================= */}
         <section className="flex flex-col items-center gap-4 p-4 border rounded-xl">
           <h2

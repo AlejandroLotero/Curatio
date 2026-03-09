@@ -7,11 +7,11 @@ import {LoginPage} from "@/features/auth";
 import ForgotPasswordPage from "@/features/auth/pages/ForgotPasswordPage"
 import TokenPasswordPage from "@/features/auth/pages/TokenPasswordPage"
 import ResetPasswordPage from "@/features/auth/pages/ResetPasswordPage"
-import DatosBasicosPage from "@/features/users/pages/DatosBasicosPage";
-import DatosContactoPage from "@/features/users/pages/DatosContactoPage";
+import BasicInformationPage from "@/features/users/pages/BasicInformationPage";
+import ContactInformationPage from "@/features/users/pages/ContactInformationPage";
 import RolPage from "@/features/users/pages/RolPage";
-import CreateFormSuppliers from "@/features/suppliers/pages/CreateSuppliersDatosBasicos";
-import DatosContactoSuppliers from "@/features/suppliers/pages/CreateSuppliersDatosContacto";
+import CreateFormSuppliers from "@/features/suppliers/pages/CreateSuppliersBasicInformation";
+import ContactInformationSuppliers from "@/features/suppliers/pages/CreateSuppliersContactInformation";
 import FacturaElectronicaVentaPage from "@/features/sales/pages/FacturaElectronicaVentaPage";
 import ProductsPage from "@/features/products/pages/ProductsPage";
 
@@ -40,11 +40,11 @@ const router = createBrowserRouter([
                     },
                     {
                         path: "datos-basicos",
-                        element: <DatosBasicosPage />
+                        element: <BasicInformationPage />
                     },
                     {
                         path: "contacto",
-                        element: <DatosContactoPage />
+                        element: <ContactInformationPage />
                     },
                     {
                         path: "rol",
@@ -67,7 +67,7 @@ const router = createBrowserRouter([
                         },
                         {
                             path: "datos-contacto",
-                            element: <DatosContactoSuppliers />
+                            element: <ContactInformationSuppliers />
                         }
                     ]
                 },

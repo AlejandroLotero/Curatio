@@ -17,13 +17,13 @@ export default function Buttom({
                 `
                 h-9 px-3
                 before:absolute before:content-['']
-                before:-inset-y-[4px] before:-inset-x-[0px]
+                before:-inset-y-[7px] before:-inset-x-[2px]
                 `,
             md :
                             `
                 h-10 px-4
                 before:absolute before:content-['']
-                before:-inset-y-[4px] before:-inset-x-[0px]
+                before:-inset-y-[7px] before:-inset-x-[0px]
                 `,
         }
 

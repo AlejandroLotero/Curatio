@@ -4,8 +4,9 @@ import Select from "@/shared/components/Select";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getDocumentTypes } from "../services/selectService";
+import { CircleArrowLeft } from "lucide-react";
 
-export default function DatosBasicosPage() {
+export default function BasicInformationPage() {
   const [documentTypes, setDocumentTypes] = useState([]);
 
   useEffect(() => {
@@ -22,8 +23,11 @@ export default function DatosBasicosPage() {
 
   return (
     <div className="flex items-center justify-center min-h-screen text-label">
+
+      
       <form
         className="
+      relative
       w-full max-w-md
       px-6 py-12 
       grid grid-cols-1 gap-4 
@@ -31,8 +35,16 @@ export default function DatosBasicosPage() {
       backdrop-blur-md 
       shadow-xl 
       ring-1 
-      rounded-3xl"
-      >
+      rounded-3xl">
+
+      <Link
+          to="/"
+          className="absolute left-3 flex items-center justify-center w-12 h-12 rounded-full hover:bg-white/20 transition-colors group"
+        >
+          <CircleArrowLeft className="size-8 text-label group-hover:text-white transition-colors" />
+      </Link>
+
+        
         {/* ================= DATOS BASICOS ================= */}
         <section className="flex flex-col items-center gap-4 p-4 border rounded-xl">
           <h2

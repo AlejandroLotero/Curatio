@@ -4,8 +4,9 @@ import { Link } from "react-router-dom";
 import Input from "../../../shared/components/Input";
 import Button from "../../../shared/components/Button";
 import Modal from "@/shared/components/Modal";
+import { CircleArrowLeft } from "lucide-react";
 
-export default function DatosContactoSuppliers() {
+export default function ContactInformationSuppliers() {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const formRef = useRef(null);
@@ -26,6 +27,7 @@ export default function DatosContactoSuppliers() {
 
   return (
     <div className="flex items-center justify-center min-h-screen text-label">
+
       <form
         ref={formRef}
         className="
@@ -37,8 +39,14 @@ export default function DatosContactoSuppliers() {
       shadow-xl 
       ring-1 
       rounded-3xl"
-        onSubmit={handleButtonSubmit}
+      onSubmit={handleButtonSubmit}>
+        <Link
+        to="/suppliers/datos-basicos"
+        className="absolute left-3 flex items-center justify-center w-12 h-12 rounded-full hover:bg-white/20 transition-colors group"
       >
+        <CircleArrowLeft className="size-8 text-label group-hover:text-white transition-colors" />
+      </Link>
+      
         {/* DATOS DE CONTACTO */}
         <section className="flex flex-col items-center gap-4 p-4 border rounded-xl">
           <h2
