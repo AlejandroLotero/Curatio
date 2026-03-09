@@ -1,6 +1,7 @@
 import Input from "@/shared/components/Input";
 import Buttom from "@/shared/components/Button";
 import { Link } from "react-router-dom";
+import { CircleArrowLeft } from "lucide-react";
 
 export default function DatosContactoPage() {
   return (
@@ -18,6 +19,10 @@ export default function DatosContactoPage() {
       >
         {/* ================= DATOS DE CONTACTO ================= */}
         <section className="flex flex-col items-center gap-4 p-4 border rounded-xl">
+        <Link to="/accounts/datos-basicos" className="self-start">
+          <CircleArrowLeft className="absolute top-4 left-4 text-label size-6 cursor-pointer" />
+        </Link>
+
           <h2
             className="
           text-center 

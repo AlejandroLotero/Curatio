@@ -5,6 +5,7 @@ import Modal from "@/shared/components/Modal";
 import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { getRoles } from "../../users/services/selectService";
+import { CircleArrowLeft } from "lucide-react";
 
 export default function RolPage() {
   const [roles, setRoles] = useState([]);
@@ -44,6 +45,9 @@ export default function RolPage() {
       >
         {/* ================= ROL ================= */}
         <section className="flex flex-col items-center gap-4 p-4 border rounded-xl">
+        <Link to="/accounts/contacto" className="self-start">
+          <CircleArrowLeft className="absolute top-4 left-4 text-label size-6 cursor-pointer" />
+        </Link>
           <h2
             className="
           text-center 
