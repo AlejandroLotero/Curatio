@@ -23,8 +23,11 @@ export default function BasicInformationPage() {
 
   return (
     <div className="flex items-center justify-center min-h-screen text-label">
+
+      
       <form
         className="
+      relative
       w-full max-w-md
       px-6 py-12 
       grid grid-cols-1 gap-4 
@@ -32,13 +35,18 @@ export default function BasicInformationPage() {
       backdrop-blur-md 
       shadow-xl 
       ring-1 
-      rounded-3xl"
-      >
+      rounded-3xl">
+
+      <Link
+          to="/"
+          className="absolute left-3 flex items-center justify-center w-12 h-12 rounded-full hover:bg-white/20 transition-colors group"
+        >
+          <CircleArrowLeft className="size-8 text-label group-hover:text-white transition-colors" />
+      </Link>
+
+        
         {/* ================= DATOS BASICOS ================= */}
         <section className="flex flex-col items-center gap-4 p-4 border rounded-xl">
-        <Link to="/" className="self-start">
-          <CircleArrowLeft className="absolute top-4 left-4 text-label size-6 cursor-pointer" />
-        </Link>
           <h2
             className="
           text-center 

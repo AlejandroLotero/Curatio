@@ -41,13 +41,18 @@ export default function RolPage() {
       shadow-xl 
       ring-1 
       rounded-3xl"
-        onSubmit={handleButtonSubmit}
-      >
+        onSubmit={handleButtonSubmit}>
+
+      <Link
+          to="/accounts/contacto"
+          className="absolute left-3 flex items-center justify-center w-12 h-12 rounded-full hover:bg-white/20 transition-colors group"
+        >
+          <CircleArrowLeft className="size-8 text-label group-hover:text-white transition-colors" />
+      </Link>
+
+
         {/* ================= ROL ================= */}
         <section className="flex flex-col items-center gap-4 p-4 border rounded-xl">
-        <Link to="/accounts/contacto" className="self-start">
-          <CircleArrowLeft className="absolute top-4 left-4 text-label size-6 cursor-pointer" />
-        </Link>
           <h2
             className="
           text-center 
