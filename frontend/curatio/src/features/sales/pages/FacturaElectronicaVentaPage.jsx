@@ -2,9 +2,11 @@ import Input from "@/shared/components/Input";
 import Buttom from "@/shared/components/Button";
 import Select from "@/shared/components/Select";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getStateSaleTypes, getPaymentsTypes } from "../services/selectServices";
 
 export default function FacturaElectronicaVentaPage() {
+  const navigate = useNavigate();
   const [stateSaleTypes, setStateSaleTypes] = useState([]);
   const [paymentsTypes, setPaymentsTypes] = useState([]);
 
@@ -113,7 +115,7 @@ export default function FacturaElectronicaVentaPage() {
 
         {/* Botones */}
         <div className="flex flex-col-reverse sm:flex-row justify-between gap-3 sm:gap-0 w-full max-w-full sm:max-w-[520px] mx-auto mt-6 min-w-0">
-          <Buttom variant="secondary" size="sm" type="button">
+          <Buttom variant="secondary" size="sm" type="button" onClick={() => navigate("/dashboard")}>
             Cancelar
           </Buttom>
           <Buttom variant="primary" size="sm" type="button">

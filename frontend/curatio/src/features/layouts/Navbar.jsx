@@ -11,9 +11,14 @@ const Navbar = ({ variant = "solid" }) => {
     localStorage.getItem("isLoggedIn") === "true",
   );
 
+  const [userEmail, setUserEmail] = useState(
+    localStorage.getItem("userEmail") || ""
+  );
+
     useEffect(() => {
     const syncAuth = () => {
       setIsLoggedIn(localStorage.getItem("isLoggedIn") === "true");
+      setUserEmail(localStorage.getItem("userEmail") || "");
     };
 
     window.addEventListener("auth-changed", syncAuth);
@@ -28,10 +33,10 @@ const Navbar = ({ variant = "solid" }) => {
   return (
     // Estos son los estilos del NavBar para que quede transparente
     <nav
-      className={`w-full border-b transition-color duration-300${
+      className={`w-full transition-color duration-300${
         variant === "transparent"
           ? "bg-transparent border-transparent absolute top-0 left-0 z-30"
-          : "bg-background border-border"
+          : "bg-background"
       }`}
     >
       <div className="mx-auto max-w-7xl px-4">
@@ -43,7 +48,7 @@ const Navbar = ({ variant = "solid" }) => {
               className="flex items-center gap-2 text-tittles font-heading font-body text-label"
             >
               <Cross
-                className="size-12 fill-label stroke-label [stroke-linecap:square] [stroke-linejoin:miter]"
+                className="size-8 fill-label stroke-label [stroke-linecap:square] [stroke-linejoin:miter]"
                 strokeWidth={2}
               />
               Curatio
@@ -51,10 +56,10 @@ const Navbar = ({ variant = "solid" }) => {
           </div>
 
           {/* Links de navegación */}
-          <ul className="hidden md:flex items-center gap-6 font-body font-heading text-small text-label">
+          <ul className="hidden md:flex items-center gap-8 font-body font-heading text-small text-label">
             <li>
               <Link to="/" className="hover:text-primary transition">
-                Gestion de grupos
+                Inicio
               </Link>
             </li>
             <li>
@@ -91,6 +96,16 @@ const Navbar = ({ variant = "solid" }) => {
                 Ventas
               </Link>
             </li>
+            {isLoggedIn && (
+              <li>
+                <Link
+                  to="/purchases"
+                  className="hover:text-primary transition"
+                >
+                  Mis Compras
+                </Link>
+              </li>
+            )}
           </ul>
 
           {/* Sección derecha: búsqueda + usuario */}
@@ -121,14 +136,14 @@ const Navbar = ({ variant = "solid" }) => {
               </button>
 
               {isOpen && (
-                <div className="h-28 text-label text-center absolute right-0 mt-2 w-48 bg-background bg-white/70 dark:bg-neutral-900/20 backdrop-blur-md shadow-xl ring-1 rounded-3xl">
-                  <ul className="py-2 text-sm">
+                <div className="text-label text-center absolute right-0 mt-2 w-56 z-50 bg-background bg-white/70 dark:bg-neutral-900/20 backdrop-blur-md shadow-xl ring-1 rounded-2xl">
+                  <ul className="py-1 text-sm">
                     {/* aqui inciia sesion no logueado */}
                     {!isLoggedIn && (
                       <li>
                         <Link
                           to="/login"
-                          className="block px-4 py-2 hover:bg-surface rounded-3xl transition cursor-pointer"
+                          className="block px-3 py-1 hover:bg-surface rounded-2xl transition cursor-pointer"
                           onClick={() => setIsOpen(false)}
                         >
                           Iniciar sesión
@@ -139,10 +154,14 @@ const Navbar = ({ variant = "solid" }) => {
                     {/* aqui ya  muestra cuando estoy logueado */}
                     {isLoggedIn && (
                       <>
+                        <li className="px-3 py-2 border-b border-border text-xs text-label text-center">
+                          <p className="truncate">{userEmail || "Usuario"}</p>
+                        </li>
+
                         <li>
                           <Link
                             to="/perfil"
-                            className="block px-4 py-2 hover:bg-surface rounded-t-3xl transition cursor-pointer"
+                            className="block px-3 py-1 hover:bg-surface transition cursor-pointer"
                             onClick={() => setIsOpen(false)}
                           >
                             Perfil
@@ -151,7 +170,7 @@ const Navbar = ({ variant = "solid" }) => {
 
                         <li>
                           <LogoutButton
-                            className="w-full text-center px-4 py-2 hover:bg-surface rounded-b-3xl transition cursor-pointer"
+                            className="w-full text-center px-3 py-1 hover:bg-surface rounded-b-2xl transition cursor-pointer"
                             onClick={() => setIsOpen(false)}
                           >
                             Cerrar sesión

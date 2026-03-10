@@ -17,7 +17,7 @@ export default function MainLayout() {
      * si es cualquier otra ruta es solido
      * 
       */
-    <div className="relative min-h-screen text-text-primary overflow-hidden">
+    <div className="relative min-h-screen text-text-primary overflow-auto">
       <div
         className="pointer-events-none absolute inset-0 -z-10 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${bgAll})` }}

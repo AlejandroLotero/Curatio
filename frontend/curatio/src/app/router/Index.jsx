@@ -2,6 +2,7 @@ import {createBrowserRouter, Navigate, Outlet} from "react-router-dom";
 import {MainLayout} from "@/features/layouts";
 import {ProfilePage} from "@/features/users";
 import HomePage from "@/features/home/pages/HomePage";
+import {DashboardPage} from "@/features/dashboard";
 import {AuthLayout} from "@/features/layouts";
 import {LoginPage} from "@/features/auth";
 import ForgotPasswordPage from "@/features/auth/pages/ForgotPasswordPage"
@@ -28,6 +29,11 @@ const router = createBrowserRouter([
                 path:"/",
                 element: <HomePage></HomePage>
 
+            },
+
+            {
+                path: "/dashboard",
+                element: <DashboardPage />
             },
 
             {

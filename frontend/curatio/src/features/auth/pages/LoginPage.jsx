@@ -20,8 +20,9 @@ export default function LoginPage() {
       await new Promise((r) => setTimeout(r, 700));
 
        localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("userEmail", email);
       window.dispatchEvent(new Event("auth-changed"));
-      navigate("/", { replace: true });
+      navigate("/dashboard", { replace: true });
       
     } catch (err) {
       console.error(err);
@@ -29,6 +30,10 @@ export default function LoginPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleCancel = () => {
+    navigate("/");
   };
 
   return (
@@ -52,6 +57,7 @@ export default function LoginPage() {
             loading={loading}
             error={error}
             onForgotPassword={() => navigate("/forgot-password")}
+            onCancel={handleCancel}
           />
         </div>
       </div>

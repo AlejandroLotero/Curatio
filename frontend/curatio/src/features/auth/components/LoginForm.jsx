@@ -1,5 +1,6 @@
 import Input from "@/shared/components/Input";
 import Button from "@/shared/components/Button";
+import Modal from "@/shared/components/Modal";
 import { useMemo, useState } from "react";
 
 export default function LoginForm({
@@ -7,6 +8,7 @@ export default function LoginForm({
   loading = false,
   error = "",
   onForgotPassword,
+  onCancel,
 }) {
   const [form, setForm] = useState({
     email: "",
@@ -15,6 +17,7 @@ export default function LoginForm({
   });
 
   const [showPassword, setShowPassword] = useState(false);
+  const [isConfirmCancelOpen, setIsConfirmCancelOpen] = useState(false);
 
   const [touched, setTouched] = useState({
     email: false,
@@ -155,10 +158,7 @@ export default function LoginForm({
             variant="secondary"
             size="sm"
             type="button"
-            onClick={() => {
-              setForm({ email: "", password: "", remember: true });
-              setTouched({ email: false, password: false });
-            }}
+            onClick={() => setIsConfirmCancelOpen(true)}
           >
             Cancelar
           </Button>
@@ -189,6 +189,35 @@ export default function LoginForm({
       <p className="mt-6 text-center font-body text-mostsmall text-text-muted">
         Al continuar aceptas nuestros Términos y Política de Privacidad.
       </p>
+
+      <Modal
+        isOpen={isConfirmCancelOpen}
+        onClose={() => setIsConfirmCancelOpen(false)}
+        title="Confirmar cancelación"
+        message="¿Estás seguro que deseas cancelar?"
+      >
+        <div className="flex gap-4 justify-center">
+          <Button
+            variant="secondary"
+            size="sm"
+            type="button"
+            onClick={() => setIsConfirmCancelOpen(false)}
+          >
+            Continuar
+          </Button>
+          <Button
+            variant="primary"
+            size="sm"
+            type="button"
+            onClick={() => {
+              setIsConfirmCancelOpen(false);
+              onCancel();
+            }}
+          >
+            Cancelar
+          </Button>
+        </div>
+      </Modal>
     </div>
   );
 }

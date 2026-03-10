@@ -1,4 +1,6 @@
 /*Creacion de componente*/
+import { useState } from "react";
+
 export default function Buttom({
     variant = "primary",    //Define el estilo visual
     size = "md",
@@ -7,41 +9,62 @@ export default function Buttom({
     disabled= false,       //Contenido que tiene el boton
     ...props
 }) {
+    const [isHovered, setIsHovered] = useState(false);
+    
     const variants = {
-        primary : "border border-border-strong bg-primarybtnbg text-primarybtntext font-body font-heading text-small hover:bg-primarybtnhoverbg hover:text-label hover:border-1",
-        secondary : "border border-border-strong bg-secondarybtnbg text-secondarybtntext font-secondary font-heading text-small hover:bg-secondarybtnhoverbg hover:text-primarybtntext",
+        primary : {
+            base: "border-2",
+            bg: "var(--color-primarybtnbg)",
+            text: "var(--color-primarybtntext)",
+            border: "var(--color-border-strong)",
+            hoverBg: "#3a7d71",
+        },
+        secondary : {
+            base: "border-2",
+            bg: "var(--color-secondarybtnbg)",
+            text: "var(--color-secondarybtntext)",
+            border: "var(--color-border-strong)",
+            hoverBg: "#3a6363",
+        }
 }
 
         const sizes = {
             sm :
                 `
-                h-9 px-3
-                before:absolute before:content-['']
-                before:-inset-y-[7px] before:-inset-x-[2px]
+                h-8 px-2
                 `,
             md :
                             `
-                h-10 px-4
-                before:absolute before:content-['']
-                before:-inset-y-[7px] before:-inset-x-[0px]
+                h-9 px-3
                 `,
         }
 
+        const selectedVariant = variants[variant];
 
         return (
 
             <button
                 type={type}
                 disabled={disabled} 
-                className={
-            `   relative
-                inline-flex items-center justify-center
-                rounded-4xl
-                transition-colors
-                cursor-pointer
-                ${variants[variant]}
-                ${sizes[size]}
+                className={`
+                    relative
+                    inline-flex items-center justify-center
+                    transition-colors
+                    cursor-pointer
+                    font-body font-heading text-small
+                    ${sizes[size]}
+                    ${selectedVariant.base}
                 `}
+                style={{
+                    backgroundColor: isHovered ? selectedVariant.hoverBg : selectedVariant.bg,
+                    color: selectedVariant.text,
+                    borderColor: selectedVariant.border,
+                    borderRadius: "20px",
+                }}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                onTouchStart={() => setIsHovered(true)}
+                onTouchEnd={() => setIsHovered(false)}
                 {...props}
             >
             {children}
