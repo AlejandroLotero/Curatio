@@ -117,7 +117,7 @@ const Navbar = ({ variant = "solid" }) => {
                 onClick={() => setIsOpen(!isOpen)}
                 className="flex items-center justify-center size-10 rounded-full border hover:bg-surface transition border border-border-strong"
               >
-                <User className="size-5 cursor-pointer" />
+                <User className="size-5 cursor-pointer text-label" />
               </button>
 
               {isOpen && (

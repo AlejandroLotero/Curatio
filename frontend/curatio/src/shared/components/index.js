@@ -6,3 +6,5 @@ export {default as Select} from "./Select";
 export {default as Toast} from "./Toast";
 export {default as ConfirmDialog} from "./ConfirmDialog";
 export {default as Input} from "./Input";
+export {default as AvatarUploader} from "./AvatarUploader";
+
