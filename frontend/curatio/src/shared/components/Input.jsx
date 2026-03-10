@@ -69,7 +69,7 @@ export default function Input({ label, type = "text", className, wrapperClassNam
           focus:ring-1
           focus:ring-border
           focus:border-border
-          hover:bg-surface/70
+          hover:bg-surface/50
           cursor-pointer
           ${type === "password" && onTogglePassword ? "pr-12" : ""}
           ${className ?? ""}

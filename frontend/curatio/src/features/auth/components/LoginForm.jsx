@@ -1,6 +1,5 @@
-import Input from "@/shared/components/Input";
-import Button from "@/shared/components/Button";
 import { useMemo, useState } from "react";
+import {Input,Button} from "@/shared/components"
 
 export default function LoginForm({
   onSubmit,
@@ -129,6 +128,10 @@ export default function LoginForm({
           )}
         </div>
 
+        <div>
+          {/* <Card></Card> */}
+        </div>
+
         <div className="flex items-center justify-between">
           <label className="flex cursor-pointer items-center gap-2 font-body text-small text-label select-none">
             <input
@@ -136,7 +139,7 @@ export default function LoginForm({
               name="remember"
               checked={form.remember}
               onChange={handleChange}
-              className="size-4 rounded border-border bg-transparent accent-primary"
+              className="size-4 rounded border-border bg-transparent accent-primary "
             />
             Recuérdame
           </label>
