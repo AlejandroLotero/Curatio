@@ -5,6 +5,7 @@ import {AuthLayout} from "@/features/layouts";
 import { ProfilePage, BasicInformationPage, ContactInformationPage, RolPage } from "@/features/users";
 import { LoginPage, ForgotPasswordPage, TokenPasswordPage, ResetPasswordPage } from "@/features/auth";
 import { CreateFormSuppliers, ContactInformationSuppliers } from "@/features/suppliers";
+import SupplierDetailPage from "@/features/suppliers/pages/SupplierDetailPage";
 import { ElectronicInvoiceSalesPage } from "@/features/sales";
 import { ProductsPage } from "@/features/products";
 
