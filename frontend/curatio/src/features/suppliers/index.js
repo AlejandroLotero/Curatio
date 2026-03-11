@@ -1,2 +1,2 @@
-export {default as CreateSuppliersDataBasic } from "./pages/CreateSuppliersDatosBasicos";
-export {default as CreateSuppliersDataContact } from "./pages/CreateSuppliersDatosContacto";
+export {default as CreateFormSuppliers } from "./pages/CreateSuppliersBasicInformation";
+export {default as ContactInformationSuppliers } from "./pages/CreateSuppliersContactInformation";

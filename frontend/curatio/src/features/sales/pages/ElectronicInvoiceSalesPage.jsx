@@ -4,7 +4,7 @@ import Select from "@/shared/components/Select";
 import { useEffect, useState } from "react";
 import { getStateSaleTypes, getPaymentsTypes } from "../services/selectServices";
 
-export default function FacturaElectronicaVentaPage() {
+export default function ElectronicInvoiceSalesPage() {
   const [stateSaleTypes, setStateSaleTypes] = useState([]);
   const [paymentsTypes, setPaymentsTypes] = useState([]);
 
@@ -39,10 +39,10 @@ export default function FacturaElectronicaVentaPage() {
             text-label
             col-span-full
             mb-2 sm:mb-4
-            break-words
+            wrap-break-word
           "
         >
-          FACTURA ELECTRONICA DE VENTA
+          RECIBO DE VENTA
         </h2>
 
         {/* Campos en columna única */}
@@ -62,7 +62,7 @@ export default function FacturaElectronicaVentaPage() {
         </div>
 
         {/* Campos financieros en grid 2 columnas */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-full sm:max-w-[520px] mx-auto min-w-0 items-start">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-full sm:max-w-130 mx-auto min-w-0 items-start">
           <Input
             label="Subtotal"
             placeholder="100000,00"
@@ -94,7 +94,7 @@ export default function FacturaElectronicaVentaPage() {
         </div>
 
         {/* Selects en grid 2 columnas */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-full sm:max-w-[520px] mx-auto min-w-0 items-start">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-full sm:max-w-130 mx-auto min-w-0 items-start">
           <Select
             label="Tipo de pago"
             name="paymentType"
@@ -112,7 +112,7 @@ export default function FacturaElectronicaVentaPage() {
         </div>
 
         {/* Botones */}
-        <div className="flex flex-col-reverse sm:flex-row justify-between gap-3 sm:gap-0 w-full max-w-full sm:max-w-[520px] mx-auto mt-6 min-w-0">
+        <div className="flex flex-col-reverse sm:flex-row justify-between gap-3 sm:gap-0 w-full max-w-full sm:max-w-130 mx-auto mt-6 min-w-0">
           <Buttom variant="secondary" size="sm" type="button">
             Cancelar
           </Buttom>
