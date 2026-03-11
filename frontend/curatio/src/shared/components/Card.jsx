@@ -1,13 +1,16 @@
-import Button from "./Button";
-import { useNavigate } from "react-router-dom";
 
-const Card = ({product, onComprarRoute = "/login"}) => {
+import { useNavigate } from "react-router-dom";
+import Button from "./Button";
+
+const Card = ({product, onComprarRoute}) => {
 
     const {title, image, price, description } = product;
     const navigate = useNavigate();
 
     const handleComprar = () => {
-        navigate(onComprarRoute);
+        if (onComprarRoute) {
+            navigate(onComprarRoute);
+        }
     };
 
     return (
@@ -42,16 +45,12 @@ const Card = ({product, onComprarRoute = "/login"}) => {
                     {description}
                 </p>
 
-                <p className="text-lg font-bold text-green-800 font-body">
+                <p className="text-2xl font-bold text-green-950 font-body">
 
                     {/* Esto agrega separadores de miles, lo que mejora la lectura.
                     toLocaleString() */}
                     ${price.toLocaleString()}
                 </p>
-
-                <Button variant="primary" size="md" className="w-full" onClick={handleComprar}>
-                    Comprar
-                </Button>
 
             </div>
         </div>
