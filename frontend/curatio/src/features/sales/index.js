@@ -1,0 +1,1 @@
+export {default as ElectronicInvoiceSalesPage} from "./pages/ElectronicInvoiceSalesPage";
