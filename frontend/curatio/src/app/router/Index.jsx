@@ -6,7 +6,8 @@ import { ProfilePage, BasicInformationPage, ContactInformationPage, RolPage } fr
 import { LoginPage, ForgotPasswordPage, TokenPasswordPage, ResetPasswordPage } from "@/features/auth";
 import { CreateFormSuppliers, ContactInformationSuppliers, SupplierDetailPage } from "@/features/suppliers";
 import { ElectronicInvoiceSalesPage } from "@/features/sales";
-import { ProductPage } from "@/features/products";
+import { ProductPage, ProductListPage, ProductDetailPage } from "@/features/products";
+import DashboardPage from "../../features/dashboard/pages/DashboardPage";
 
 const router = createBrowserRouter([
 
@@ -16,11 +17,14 @@ const router = createBrowserRouter([
         children: [
 
             {
-
                 // index: true,
                 path:"/",
                 element: <HomePage></HomePage>
-
+            },
+            {
+                // index: true,
+                path:"dashboard",
+                element: <DashboardPage/>
             },
 
             {
@@ -82,6 +86,14 @@ const router = createBrowserRouter([
             {
                 path: "sales/factura-electronica",
                 element: <ElectronicInvoiceSalesPage />
+            },
+            {
+                path: "products/listar",
+                element: <ProductListPage />
+            },
+            {
+                path: "products/detalle",
+                element: <ProductDetailPage />
             },
 
             {
