@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import {Input,Button} from "@/shared/components"
+import {useNavigate } from "react-router-dom";
 
 export default function LoginForm({
   onSubmit,
@@ -7,6 +8,9 @@ export default function LoginForm({
   error = "",
   onForgotPassword,
 }) {
+
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -147,7 +151,7 @@ export default function LoginForm({
           <button
             type="button"
             onClick={onForgotPassword}
-            className="font-body text-small text-label underline underline-offset-4 transition hover:text-label"
+            className="font-body text-[14px] text-label underline underline-offset-4 transition hover:text-label"
           >
             ¿Olvidaste tu contraseña?
           </button>
@@ -158,10 +162,7 @@ export default function LoginForm({
             variant="secondary"
             size="sm"
             type="button"
-            onClick={() => {
-              setForm({ email: "", password: "", remember: true });
-              setTouched({ email: false, password: false });
-            }}
+            onClick={() => navigate("/", { replace: true })}
           >
             Cancelar
           </Button>
@@ -189,7 +190,7 @@ export default function LoginForm({
         </div>
       </form>
 
-      <p className="mt-6 text-center font-body text-mostsmall text-text-muted">
+      <p className="mt-6 text-center font-body text-[14px] text-text-muted">
         Al continuar aceptas nuestros Términos y Política de Privacidad.
       </p>
     </div>
