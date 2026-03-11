@@ -12,6 +12,7 @@ import ContactInformationPage from "@/features/users/pages/ContactInformationPag
 import RolPage from "@/features/users/pages/RolPage";
 import CreateFormSuppliers from "@/features/suppliers/pages/CreateSuppliersBasicInformation";
 import ContactInformationSuppliers from "@/features/suppliers/pages/CreateSuppliersContactInformation";
+import SupplierDetailPage from "@/features/suppliers/pages/SupplierDetailPage";
 import FacturaElectronicaVentaPage from "@/features/sales/pages/FacturaElectronicaVentaPage";
 import ProductsPage from "@/features/products/pages/ProductsPage";
 
@@ -54,23 +55,27 @@ const router = createBrowserRouter([
             },
 
             {
-                    path:"suppliers",
-                    element: <Outlet />,
-                    children: [
-                        {
-                            index: true,
-                            element: <Navigate to="datos-basicos" replace />
-                        },
-                        {
-                            path: "datos-basicos",
-                            element: <CreateFormSuppliers />
-                        },
-                        {
-                            path: "datos-contacto",
-                            element: <ContactInformationSuppliers />
-                        }
-                    ]
-                },
+                path:"suppliers",
+                element: <Outlet />,
+                children: [
+                    {
+                        index: true,
+                        element: <Navigate to="datos-basicos" replace />
+                    },
+                    {
+                        path: "datos-basicos",
+                        element: <CreateFormSuppliers />
+                    },
+                    {
+                        path: "datos-contacto",
+                        element: <ContactInformationSuppliers />
+                    },
+                    {
+                        path: "detalle/:nit",
+                        element: <SupplierDetailPage />
+                    }
+                ]
+            },
             {
                 path: "products",
                 element: <ProductsPage />
