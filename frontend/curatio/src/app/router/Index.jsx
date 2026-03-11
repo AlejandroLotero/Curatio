@@ -4,8 +4,7 @@ import { AuthLayout } from "@/features/layouts";
 import { HomePage } from "@/features/home";
 import { ProfilePage, BasicInformationPage, ContactInformationPage, RolPage } from "@/features/users";
 import { LoginPage, ForgotPasswordPage, TokenPasswordPage, ResetPasswordPage } from "@/features/auth";
-import { CreateFormSuppliers, ContactInformationSuppliers } from "@/features/suppliers";
-import SupplierDetailPage from "@/features/suppliers/pages/SupplierDetailPage";
+import { CreateFormSuppliers, ContactInformationSuppliers, SupplierDetailPage } from "@/features/suppliers";
 import { ElectronicInvoiceSalesPage } from "@/features/sales";
 import { ProductPage } from "@/features/products";
 
@@ -69,7 +68,8 @@ const router = createBrowserRouter([
                         element: <ContactInformationSuppliers />
                     },
                     {
-                        path: "detalle/:nit",
+                        //Quite el /nit: para acceder solo con suppliers/detalle
+                        path: "detalle",
                         element: <SupplierDetailPage />
                     }
                 ]
