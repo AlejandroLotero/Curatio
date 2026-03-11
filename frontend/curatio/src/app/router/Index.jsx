@@ -1,19 +1,10 @@
 import {createBrowserRouter, Navigate, Outlet} from "react-router-dom";
 import {MainLayout} from "@/features/layouts";
-import {ProfilePage} from "@/features/users";
 import HomePage from "@/features/home/pages/HomePage";
 import {AuthLayout} from "@/features/layouts";
-import {LoginPage} from "@/features/auth";
-import ForgotPasswordPage from "@/features/auth/pages/ForgotPasswordPage"
-import TokenPasswordPage from "@/features/auth/pages/TokenPasswordPage"
-import ResetPasswordPage from "@/features/auth/pages/ResetPasswordPage"
-import BasicInformationPage from "@/features/users/pages/BasicInformationPage";
-import ContactInformationPage from "@/features/users/pages/ContactInformationPage";
-import RolPage from "@/features/users/pages/RolPage";
-import CreateFormSuppliers from "@/features/suppliers/pages/CreateSuppliersBasicInformation";
-import ContactInformationSuppliers from "@/features/suppliers/pages/CreateSuppliersContactInformation";
-import SupplierDetailPage from "@/features/suppliers/pages/SupplierDetailPage";
-import FacturaElectronicaVentaPage from "@/features/sales/pages/FacturaElectronicaVentaPage";
+import { ProfilePage, BasicInformationPage, ContactInformationPage, RolPage } from "@/features/users";
+import { LoginPage, ForgotPasswordPage, TokenPasswordPage, ResetPasswordPage } from "@/features/auth";
+import { CreateFormSuppliers, ContactInformationSuppliers } from "@/features/suppliers";
 import ProductsPage from "@/features/products/pages/ProductsPage";
 
 const router = createBrowserRouter([
@@ -83,7 +74,7 @@ const router = createBrowserRouter([
 
             {
                 path: "sales/factura-electronica",
-                element: <FacturaElectronicaVentaPage />
+                element: <ElectronicInvoiceSalesPage />
             },
 
             {
