@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { Edit2, ArrowLeft } from "lucide-react";
+import { useParams, useNavigate } from "react-router-dom";
+import { Edit2, ArrowLeft, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Button from "@/shared/components/Button";
 import bgAll from "@/assets/images/bgAll.jpg";
@@ -9,12 +9,13 @@ import "../../../styles/semantic.css";
 
 export default function ProductDetailPage() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [medicamento, setMedicamento] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     cargarMedicamento();
-  }, []);
+  }, [id]);
 
   const cargarMedicamento = () => {
     try {
@@ -25,8 +26,48 @@ export default function ProductDetailPage() {
         if (med) {
           setMedicamento(med);
         } else {
-          setMedicamento(null);
+          // Medicamento de prueba si no existe
+          setMedicamento({
+            id: id,
+            visualId: "MED-001",
+            nombre: "Medicamento de Prueba",
+            formaFarmaceutica: "Tableta",
+            presentacion: "Caja x 10",
+            concentracion: "500mg",
+            descripcion: "Este es un medicamento de prueba para visualizar el detalle",
+            viaAdministracion: "Oral",
+            laboratorio: "Laboratorio Test",
+            lote: "LT-12345",
+            fechaFabricacion: "2024-01-15",
+            fechaVencimiento: "2026-01-15",
+            stock: 100,
+            precioCompra: 5000,
+            precioVenta: 8990,
+            proveedor: "Proveedor Test",
+            estado: "Activo"
+          });
         }
+      } else {
+        // Si no hay medicamentos, mostrar medicamento de prueba
+        setMedicamento({
+          id: id,
+          visualId: "MED-001",
+          nombre: "Medicamento de Prueba",
+          formaFarmaceutica: "Tableta",
+          presentacion: "Caja x 10",
+          concentracion: "500mg",
+          descripcion: "Este es un medicamento de prueba para visualizar el detalle",
+          viaAdministracion: "Oral",
+          laboratorio: "Laboratorio Test",
+          lote: "LT-12345",
+          fechaFabricacion: "2024-01-15",
+          fechaVencimiento: "2026-01-15",
+          stock: 100,
+          precioCompra: 5000,
+          precioVenta: 8990,
+          proveedor: "Proveedor Test",
+          estado: "Activo"
+        });
       }
     } catch (error) {
       console.error("Error cargando medicamento:", error);
@@ -70,11 +111,14 @@ export default function ProductDetailPage() {
   }
 
   return (
-    <div className="relative min-h-screen w-full" style={{
-      backgroundImage: `url(${bgAll})`,
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-    }}>
+    <div
+      className="relative min-h-screen w-full"
+      style={{
+        backgroundImage: `url(${bgAll})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
       <div className="absolute inset-0 bg-white/20"></div>
       <div className="relative flex items-center justify-center min-h-screen text-label px-4 py-6 sm:px-6 sm:py-8 w-full min-w-0 overflow-x-hidden">
         <div
@@ -93,8 +137,8 @@ export default function ProductDetailPage() {
             borderColor: "var(--color-primary-200)",
           }}
         >
-        <h2
-          className="
+          <h2
+            className="
             text-center
             text-base sm:text-lg md:text-subtittles
             font-bold
@@ -103,50 +147,85 @@ export default function ProductDetailPage() {
             mb-2 sm:mb-4
             wrap-break-word
           "
-          style={{ color: "var(--color-black)", fontFamily: "var(--font-body)" }}
-        >
-          DETALLES DEL MEDICAMENTO
-        </h2>
+            style={{
+              color: "var(--color-black)",
+              fontFamily: "var(--font-body)",
+            }}
+          >
+            DETALLES DEL MEDICAMENTO
+          </h2>
 
-        {/* Columna izquierda */}
-        <div className="flex flex-col gap-4 w-full max-w-full mx-auto min-w-0">
-          <DetailField label="ID del Medicamento" value={medicamento.visualId} />
-          <DetailField label="Nombre" value={medicamento.nombre} />
-          <DetailField label="Forma Farmacéutica" value={medicamento.formaFarmaceutica} />
-          <DetailField label="Presentación" value={medicamento.presentacion} />
-          <DetailField label="Concentración" value={medicamento.concentracion} />
-          <DetailField label="Descripción" value={medicamento.descripcion} />
+          {/* Columna izquierda */}
+          <div className="flex flex-col gap-4 w-full max-w-full mx-auto min-w-0">
+            <DetailField
+              label="ID del Medicamento"
+              value={medicamento.visualId}
+            />
+            <DetailField label="Nombre" value={medicamento.nombre} />
+            <DetailField
+              label="Forma Farmacéutica"
+              value={medicamento.formaFarmaceutica}
+            />
+            <DetailField
+              label="Presentación"
+              value={medicamento.presentacion}
+            />
+            <DetailField
+              label="Concentración"
+              value={medicamento.concentracion}
+            />
+            <DetailField label="Descripción" value={medicamento.descripcion} />
+          </div>
+
+          {/* Columna central */}
+          <div className="flex flex-col gap-4 w-full max-w-full mx-auto min-w-0">
+            <DetailField
+              label="Vía de Administración"
+              value={medicamento.viaAdministracion}
+            />
+            <DetailField label="Laboratorio" value={medicamento.laboratorio} />
+            <DetailField label="Lote" value={medicamento.lote} />
+            <DetailField
+              label="Fecha de Fabricación"
+              value={medicamento.fechaFabricacion}
+            />
+            <DetailField
+              label="Fecha de Vencimiento"
+              value={medicamento.fechaVencimiento}
+            />
+          </div>
+
+          {/* Columna derecha */}
+          <div className="flex flex-col gap-4 w-full max-w-full mx-auto min-w-0">
+            <DetailField label="Stock" value={medicamento.stock} />
+            <DetailField
+              label="Precio de Compra"
+              value={`$${medicamento.precioCompra}`}
+            />
+            <DetailField
+              label="Precio de Venta"
+              value={`$${medicamento.precioVenta}`}
+            />
+            <DetailField label="Proveedor" value={medicamento.proveedor} />
+            <DetailField label="Estado" value={medicamento.estado} />
+          </div>
+
+          {/* Botones */}
+          <div className="col-span-full flex flex-col-reverse sm:flex-row justify-start gap-3 w-full max-w-full mx-auto mt-6 min-w-0">
+            <Link to="/products">
+              <Button variant="secondary" size="sm">
+                <ArrowLeft size={16} className="mr-2" />
+                Volver
+              </Button>
+            </Link>
+
+            <Link to="/products">
+              <Button variant="primary" size="md">
+                Editar
+              </Button>
+            </Link>
+          </div>
         </div>
-
-        {/* Columna central */}
-        <div className="flex flex-col gap-4 w-full max-w-full mx-auto min-w-0">
-          <DetailField label="Vía de Administración" value={medicamento.viaAdministracion} />
-          <DetailField label="Laboratorio" value={medicamento.laboratorio} />
-          <DetailField label="Lote" value={medicamento.lote} />
-          <DetailField label="Fecha de Fabricación" value={medicamento.fechaFabricacion} />
-          <DetailField label="Fecha de Vencimiento" value={medicamento.fechaVencimiento} />
-        </div>
-
-        {/* Columna derecha */}
-        <div className="flex flex-col gap-4 w-full max-w-full mx-auto min-w-0">
-          <DetailField label="Stock" value={medicamento.stock} />
-          <DetailField label="Precio de Compra" value={`$${medicamento.precioCompra}`} />
-          <DetailField label="Precio de Venta" value={`$${medicamento.precioVenta}`} />
-          <DetailField label="Proveedor" value={medicamento.proveedor} />
-          <DetailField label="Estado" value={medicamento.estado} />
-        </div>
-
-        {/* Botones */}
-        <div className="col-span-full flex flex-col-reverse sm:flex-row justify-start gap-3 w-full max-w-full mx-auto mt-6 min-w-0">
-          <Link to="/products">
-            <Button variant="secondary" size="sm">
-              <ArrowLeft size={16} className="mr-2" />
-              Volver
-            </Button>
-          </Link>
-        </div>
-
-      </div>
       </div>
     </div>
   );

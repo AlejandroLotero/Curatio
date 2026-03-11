@@ -85,7 +85,9 @@ export default function HomePage() {
           {products.map((product, index) => (
             <div key={index} className="flex flex-col items-center justify-center gap-4">
               <div onClick={() => handleCardClick(product)} style={{ cursor: "pointer" }} className="w-full">
-                <Card product={product} onComprarRoute="/sales/factura-electronica" />
+                <div className="bg-white/70 text-black rounded-2xl overflow-hidden shadow-lg w-80 mx-auto [&_h2]:text-black [&_p]:text-black [&_.text-cyan-200]:text-black backdrop-blur-[2px]">
+                  <Card product={product} onComprarRoute="/sales/factura-electronica" />
+                </div>
               </div>
               {/* Contador de items */}
               <div className="flex items-center gap-3">

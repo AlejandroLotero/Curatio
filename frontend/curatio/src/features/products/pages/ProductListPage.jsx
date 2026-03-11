@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Plus, Search, Trash2, Edit2, Eye, Check, X } from "lucide-react";
+import { Plus, Search, Trash2, Edit2, Check, X } from "lucide-react";
 import Button from "@/shared/components/Button";
 import Modal from "@/shared/components/Modal";
 import bgAll from "@/assets/images/bgAll.jpg";
@@ -227,9 +227,7 @@ export default function ProductListPage() {
                     <td className="px-6 py-4 text-sm"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold" style={{ backgroundColor: "transparent", color: "var(--color-black)" }}>-</span></td>
                     <td className="px-6 py-4">
                       <div className="flex gap-2 justify-center">
-                        <button disabled className="p-2 rounded-lg opacity-40" style={{ backgroundColor: "transparent", color: "var(--color-black)" }}><Eye size={16} /></button>
-                        {/* <button disabled className="p-2 rounded-lg opacity-40" style={{ backgroundColor: "transparent", color: "var(--color-black)" }}><Edit2 size={16} /></button>
-                        <button disabled className="p-2 rounded-lg opacity-40" style={{ backgroundColor: "transparent", color: "var(--color-black)" }}><Trash2 size={16} /></button> */}
+                        <button onClick={() => navigate("/products/1")} className="px-4 py-2 rounded-lg hover:opacity-90 transition text-sm font-semibold" style={{ backgroundColor: "var(--color-primarybtnbg)", color: "var(--color-primarybtntext)", border: "1px solid var(--color-border-strong)" }}>Ver Detalle</button>
                       </div>
                     </td>
                   </tr>
@@ -272,15 +270,12 @@ export default function ProductListPage() {
                         </td>
                         <td className="px-6 py-4">
                           <div className="flex gap-2 justify-center">
-                            <button onClick={() => navigate(`/products/${medicamento.id}`)} className="p-2 rounded-lg hover:opacity-70 transition" title="Ver detalles" style={{ backgroundColor: "transparent", color: "var(--color-black)" }}>
-                              <Eye size={16} />
-                            </button>
-                            {/* <button onClick={() => navigate(`/products/${medicamento.id}/edit`)} className="p-2 rounded-lg hover:opacity-70 transition" title="Editar" style={{ backgroundColor: "transparent", color: "var(--color-black)" }}>
-                              <Edit2 size={16} />
+                            <button onClick={() => navigate(`/products/${medicamento.id}`)} className="px-4 py-2 rounded-lg hover:opacity-70 transition text-sm font-semibold" title="Ver detalles" style={{ backgroundColor: "var(--color-primarybtnbg)", color: "var(--color-primarybtntext)", border: "1px solid var(--color-border-strong)" }}>
+                              Ver Detalle
                             </button>
                             <button onClick={() => handleDelete(medicamento)} className="p-2 rounded-lg hover:opacity-70 transition" title="Eliminar" style={{ backgroundColor: "transparent", color: "var(--color-black)" }}>
                               <Trash2 size={16} />
-                            </button> */}
+                            </button>
                           </div>
                         </td>
                       </tr>
