@@ -15,6 +15,8 @@ import CreateFormSuppliers from "@/features/suppliers/pages/CreateSuppliersBasic
 import ContactInformationSuppliers from "@/features/suppliers/pages/CreateSuppliersContactInformation";
 import FacturaElectronicaVentaPage from "@/features/sales/pages/FacturaElectronicaVentaPage";
 import ProductsPage from "@/features/products/pages/ProductsPage";
+import ProductDetailPage from "@/features/products/pages/ProductDetailPage";
+import ProductListPage from "@/features/products/pages/ProductListPage";
 
 const router = createBrowserRouter([
 
@@ -79,6 +81,21 @@ const router = createBrowserRouter([
                 },
             {
                 path: "products",
+                element: <ProductListPage />
+            },
+
+            {
+                path: "products/create",
+                element: <ProductsPage />
+            },
+
+            {
+                path: "products/:id",
+                element: <ProductDetailPage />
+            },
+
+            {
+                path: "products/:id/edit",
                 element: <ProductsPage />
             },
 

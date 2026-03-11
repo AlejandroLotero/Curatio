@@ -175,8 +175,8 @@ export default function HomePage() {
                   type="number"
                   value={quantity}
                   onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-                  className="w-16 text-center px-3 py-1 border rounded-lg"
-                  style={{ borderColor: "var(--color-primary-200)" }}
+                  className="w-20 h-12 text-center px-2 py-0 border rounded-lg font-bold"
+                  style={{ borderColor: "var(--color-primary-200)", MozAppearance: "textfield" }}
                 />
                 <button
                   onClick={() => setQuantity(quantity + 1)}

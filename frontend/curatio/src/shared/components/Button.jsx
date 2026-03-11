@@ -29,14 +29,11 @@ export default function Buttom({
 }
 
         const sizes = {
-            sm :
-                `
-                h-8 px-2
-                `,
-            md :
-                            `
-                h-9 px-3
-                `,
+            xs: "h-6 px-2 text-xs",
+            sm: "h-10 px-4 text-sm",
+            md: "h-12 px-6 text-base",
+            lg: "h-16 px-8 text-lg",
+            xl: "h-20 px-12 text-xl",
         }
 
         const selectedVariant = variants[variant];
@@ -51,8 +48,8 @@ export default function Buttom({
                     inline-flex items-center justify-center
                     transition-colors
                     cursor-pointer
-                    font-body font-heading text-small
-                    ${sizes[size]}
+                    font-body font-bold
+                    ${sizes[size] || sizes.md}
                     ${selectedVariant.base}
                 `}
                 style={{
