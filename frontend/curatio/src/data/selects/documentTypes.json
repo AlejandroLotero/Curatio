@@ -1,0 +1,25 @@
+[
+    {
+        "id": "NIT",
+        "label": "Número de Identificación Tributaria"
+    },
+    {
+        "id": "C.C.",
+        "label": "Cédula de ciudadanía"
+    },
+
+    {
+        "id": "T.I.",
+        "label": "Tarjeta de Identidad"
+    },
+
+    {
+        "id": "PPT",
+        "label": "Permiso por Protección Temporal"
+    },
+
+    {
+        "id": "PEP",
+        "label": "Permiso Especial de Permanencia"
+    }
+]

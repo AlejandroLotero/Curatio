@@ -1,0 +1,197 @@
+import { Search, User, Cross } from "lucide-react";
+/*Nos enruta pero con react router*/
+import { Link } from "react-router-dom";
+import {useEffect, useState } from "react";
+import LogoutButton from "@/features/auth/components/LogoutButton";
+
+const Navbar = ({ variant = "solid" }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    localStorage.getItem("isLoggedIn") === "true",
+  );
+
+  const [userEmail, setUserEmail] = useState(
+    localStorage.getItem("userEmail") || ""
+  );
+
+    useEffect(() => {
+    const syncAuth = () => {
+      setIsLoggedIn(localStorage.getItem("isLoggedIn") === "true");
+      setUserEmail(localStorage.getItem("userEmail") || "");
+    };
+
+    window.addEventListener("auth-changed", syncAuth);
+    window.addEventListener("storage", syncAuth); // por si cambia en otra pestaña
+
+    return () => {
+      window.removeEventListener("auth-changed", syncAuth);
+      window.removeEventListener("storage", syncAuth);
+    };
+  }, []);
+
+  return (
+    // Estos son los estilos del NavBar para que quede transparente
+    <nav
+      className={`w-full transition-color duration-300${
+        variant === "transparent"
+          ? "bg-transparent border-transparent absolute top-0 left-0 z-30"
+          : "bg-background"
+      }`}
+    >
+      <div className="mx-auto max-w-7xl px-4">
+        <div className="flex h-16 items-center justify-between">
+          {/* Logo de marca */}
+          <div className="flex items-center">
+            <Link
+              to="/"
+              className="flex items-center gap-2 text-tittles font-heading font-body text-label"
+            >
+              <Cross
+                className="size-8 fill-label stroke-label [stroke-linecap:square] [stroke-linejoin:miter]"
+                strokeWidth={2}
+              />
+              Curatio
+            </Link>
+          </div>
+
+          {/* Links de navegación */}
+          <ul className="hidden md:flex items-center gap-8 font-body font-heading text-small text-label">
+            <li>
+              <Link to="/" className="hover:text-primary transition">
+                Inicio
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/accounts/datos-basicos"
+                className="hover:text-primary transition"
+              >
+                Usuarios
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/suppliers/datos-basicos"
+                className="hover:text-primary transition"
+              >
+                Proveedores
+              </Link>
+            </li>
+            <li>
+              <Link to="/products" className="hover:text-primary transition">
+                Productos
+              </Link>
+            </li>
+            <li>
+              <Link to="/video" className="hover:text-primary transition">
+                Carrito
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/sales/factura-electronica"
+                className="hover:text-primary transition"
+              >
+                Ventas
+              </Link>
+            </li>
+            {isLoggedIn && (
+              <li>
+                <Link
+                  to="/purchases"
+                  className="hover:text-primary transition"
+                >
+                  Mis Compras
+                </Link>
+              </li>
+            )}
+          </ul>
+
+          {/* Sección derecha: búsqueda + usuario */}
+          <div className="flex items-center gap-4">
+            {/* Buscador */}
+            <div className="relative hidden sm:block text-black font-body">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-500" />
+
+              <input
+                type="text"
+                placeholder="Buscar..."
+                className="pl-9 pr-4
+                  py-2.5 border rounded-lg text-body placeholder:text-placeholder focus:outline-none focus:ring-1 focus:ring-black border-border-strong"
+              />
+            </div>
+
+            {/* Icono de usuario */}
+            {/* <button className="flex items-center justify-center size-10 rounded-full border hover:bg-gray-100 transition">
+              <User className="size-5" />
+            </button> */}
+
+            <div className="relative">
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="flex items-center justify-center size-10 rounded-full border hover:bg-surface transition border border-border-strong"
+              >
+                <User className="size-5 cursor-pointer" />
+              </button>
+
+              {isOpen && (
+                <div className="text-label text-center absolute right-0 mt-2 w-56 z-50 bg-background bg-white/70 dark:bg-neutral-900/20 backdrop-blur-md shadow-xl ring-1 rounded-2xl">
+                  <ul className="py-1 text-sm">
+                    {/* aqui inciia sesion no logueado */}
+                    {!isLoggedIn && (
+                      <li>
+                        <Link
+                          to="/login"
+                          className="block px-3 py-1 hover:bg-surface rounded-2xl transition cursor-pointer"
+                          onClick={() => setIsOpen(false)}
+                        >
+                          Iniciar sesión
+                        </Link>
+                      </li>
+                    )}
+
+                    {/* aqui ya  muestra cuando estoy logueado */}
+                    {isLoggedIn && (
+                      <>
+                        <li className="px-3 py-2 border-b border-border text-xs text-label text-center">
+                          <p className="truncate">{userEmail || "Usuario"}</p>
+                        </li>
+
+                        <li>
+                          <Link
+                            to="/perfil"
+                            className="block px-3 py-1 hover:bg-surface transition cursor-pointer"
+                            onClick={() => setIsOpen(false)}
+                          >
+                            Perfil
+                          </Link>
+                        </li>
+
+                        <li>
+                          <LogoutButton
+                            className="w-full text-center px-3 py-1 hover:bg-surface rounded-b-2xl transition cursor-pointer"
+                            onClick={() => setIsOpen(false)}
+                          >
+                            Cerrar sesión
+                          </LogoutButton>
+                        </li>
+                      </>
+                    )}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
+};
+
+export default Navbar;
+
+/*
+Para dirigirme o navegar a una ruta uso <Link/>
+Para ejecutar lógica se usa button.
+*/

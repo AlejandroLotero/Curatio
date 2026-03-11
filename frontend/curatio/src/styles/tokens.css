@@ -1,0 +1,96 @@
+/*Se ingresan las variables tal y como estan en la guia de estilos*/
+/*ACTUALIZACION DE VARIABLES CON LAS USADAS EN FIGMA*/
+:root {
+
+    /*Primary color*/
+    --color-primary-950: #070E13;
+    --color-primary-900: #122835;
+    --color-primary-800: #1E4257;
+    --color-primary-700: #2A5C7A;
+    --color-primary-600: #35769C;
+    --color-primary-500: #4190BE;
+    --color-primary-400: #63A4CA;
+    --color-primary-300: #96C2DB;
+    --color-primary-200: #A8CCE1;
+    --color-primary-100: #CAE0ED;
+    --color-primary-50: #ECF4F8;
+
+    /*secondary color*/
+
+    --color-secondary-950: #071212;
+    --color-secondary-900: #143431;
+    --color-secondary-800: #205551;
+    --color-secondary-700: #2D7670;
+    --color-secondary-600: #3A9890;
+    --color-secondary-500: #46B9AF;
+    --color-secondary-400: #67C5BE;
+    --color-secondary-300: #89D2CC;
+    --color-secondary-200: #AADFDA;
+    --color-secondary-100: #CBEBE9;
+    --color-secondary-50: #EDF8F7;
+
+    /*Terciario NO SE USA*/
+    --color-tertiary-950: #172554;
+    --color-tertiary-900: #1E378A;
+    --color-tertiary-800: #1E3FAF;
+    --color-tertiary-700: #1D48D8;
+    --color-tertiary-600: #2552EB;
+    --color-tertiary-500: #3B66F6;
+    --color-tertiary-400: #6083FA;
+    --color-tertiary-300: #93ABFD;
+    --color-tertiary-200: #BFCDFE;
+    --color-tertiary-100: #DBE3FE;
+    --color-tertiary-50: #EFF3FF;
+
+    /*Basicos*/
+
+    --color-white: #FFFFFF;
+    --color-black: #000000;
+    --color-gray-950: #F6F6F6;
+    --color-gray-900: #E9E9E9;
+    --color-gray-800: #D1D1D1;
+    --color-gray-700: #B8B8B8;
+    --color-gray-600: #9F9F9F;
+    --color-gray-500: #878787;
+    --color-gray-400: #6E6E6E;
+    --color-gray-300: #565656;
+    --color-gray-200: #3D3D3D;
+    --color-gray-100: #242424;
+    --color-gray-50:  #181818;
+
+    /*Typographic*/
+    
+    /*Se realiza correccion en el almacenado*/
+    --font-roboto: "Roboto";
+    --font-lora: "Lora";
+
+    /*Variants typhografic*/
+      /* Font weights */
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-bold: 700;
+
+
+    /*Font Size*/
+
+--fs-xxxxl: 8.0rem;   /* 128px */
+--fs-xxxl: 6.4rem;    /* 102.4px */
+--fs-xxl: 4.8rem;     /* 76.8px */
+--fs-xl: 4.0rem;      /* 64px */
+--fs-lg: 3.2rem;      /* 51.2px */
+--fs-md: 2.4rem;      /* 38.4px */
+--fs-sm: 2.0rem;      /* 32px */
+--fs-xs: 1.5rem;      /* 24px Modificada: Para subtitulos Jhonier*/
+--fs-xxs: 1.4rem;     /* 22.4px */
+
+/*Se ajusta variable a 16px (1rem) para que coincida con
+los estilos, por defecto viene 16 px, pero es mejor prevenir
+que lamentar*/
+
+--fs-xxxs: 1.0rem;    /* 16px */
+
+
+/*Se agrega variable para texto muy pequeño*/
+--fs-xxxxs: 0.5rem;   /* 8px */
+
+}

@@ -1,0 +1,76 @@
+/*@import url(token.css); */
+/*Son roles de la interfaz*/
+
+:root{
+
+    /* BRAND */
+
+    --semantic-brand: var(--color-white);
+    --semantic-brand-hover: var(--color-primary-900); /*Generalmente es de un tono mas alto*/
+    --semantic-brand-soft: var(--color-primary-300);
+
+    /*BACKGROUND*/
+
+  --semantic-background: var(--color-gray-100); /* Fondo de toda la aplicación */
+  --semantic-surface: var(--color-white); /* Fondo de modales, cards, containers */
+  --semantic-surface-muted: var(--color-gray-200); /* Zonas secundarias, con menos importancia */
+
+    /* TEXT */
+
+  --semantic-text-primary: var(--color-gray-900); /* Color principal de lectura, títulos, texto base del documento */
+  --semantic-text-secundary: var(--color-gray-700); /* Textos menos dominantes */
+  --semantic-text-muted: var(--color-gray-500); /* Textos deshabilitado por ejemplo */
+  --semantic-text-inverse: var(--color-gray-50); /* Textos invertido */
+  --semantic-text-button-primary: var(--color-white);/*Color del texto de los botones primarios*/
+  --semantic-text-button-secondary: var(--color-black);/*Color del texto de los botones
+
+  /*Se agregan fuentes y variantes a la semantica*/
+  --font-body: var(--font-roboto); /*Fuente principal para textos de lectura*/
+  --font-text-secondary: var(--font-lora); /*Fuente secundaria para textos de lectura, como citas o destacados*/
+  --font-label-weight: var(--font-weight-medium);
+  --font-heading-weight: var(--font-weight-bold);/*Peso para los textos de los labels y los headings, respectivamente*/
+
+  /*/*Nuevo creado por Jhonier para los textos de labes y placeholders*/
+  --semantic-text-label: var(--color-black); /* Texto de labels según mi diseño */
+  --semantic-text-placeholder: var(--color-gray-200); /* Placeholders del login (gray-700), por ahora solo auth */
+  --semantic-text-button-secondary: var(--color-black); /* Color del texto de los botones secundarios */
+  /*BORDER*/
+    --semantic-border: var(--color-secondary-600);/*Borde principal*/
+    --semantic-border-strong: var(--color-black);/*Bordes mas fuertes, */
+
+
+    /*STATE*/
+
+    --semantic-warning: var(--color-yellow-300);
+
+    /*TAMAÑO DE TEXTOS*/
+    --fs-text-tittles: var(--fs-sm); /*2rem 32 px*/
+    --fs-text-subtittles: var(--fs-xs); /*24px*/
+    --fs-size-small: var(--fs-xxxs); /*1rem 16 px*/
+    --fs-size-mostsmall: var(--fs-xxxxs); /*8px*/
+
+
+
+    /*BOTONES*/
+    --semantic-action-primary-bg: var(--color-secondary-800);
+    --semantic-action-primary-hover-bg: var(--color-secondary-200);
+
+    --semantic-action-secondary-bg: var(--color-gray-800);
+    --semantic-action-secondary-hover-bg: var(--color-gray-200);
+
+    /*BACKGROUND COLOR*/
+
+    --semantic-bgcolor: var(--color-primary-400);
+
+  
+
+
+    
+
+    /*YA NO DEPENDEMOS DE NOMBRES DE COLOR,
+        DEPENDEMOS DE INTENCIÓN
+    */
+
+
+
+}
