@@ -52,23 +52,27 @@ const router = createBrowserRouter([
             },
 
             {
-                    path:"suppliers",
-                    element: <Outlet />,
-                    children: [
-                        {
-                            index: true,
-                            element: <Navigate to="datos-basicos" replace />
-                        },
-                        {
-                            path: "datos-basicos",
-                            element: <CreateFormSuppliers />
-                        },
-                        {
-                            path: "datos-contacto",
-                            element: <ContactInformationSuppliers />
-                        }
-                    ]
-                },
+                path:"suppliers",
+                element: <Outlet />,
+                children: [
+                    {
+                        index: true,
+                        element: <Navigate to="datos-basicos" replace />
+                    },
+                    {
+                        path: "datos-basicos",
+                        element: <CreateFormSuppliers />
+                    },
+                    {
+                        path: "datos-contacto",
+                        element: <ContactInformationSuppliers />
+                    },
+                    {
+                        path: "detalle/:nit",
+                        element: <SupplierDetailPage />
+                    }
+                ]
+            },
             {
                 path: "products",
                 element: <ProductPage />
