@@ -1,10 +1,12 @@
 import Input from "@/shared/components/Input";
 import Buttom from "@/shared/components/Button";
 import Select from "@/shared/components/Select";
+import FileInput from "@/shared/components/FileInputCreateUser";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getDocumentTypes } from "../services/selectService";
 import { CircleArrowLeft } from "lucide-react";
+import avatar from "@/assets/images/avatar.png";
 
 export default function BasicInformationPage() {
   const [documentTypes, setDocumentTypes] = useState([]);
@@ -56,6 +58,16 @@ export default function BasicInformationPage() {
           >
             Datos basicos
           </h2>
+
+          <div className="flex flex-col items-center w-full [&>*]:flex [&>*]:flex-col [&>*]:items-center">
+            <FileInput
+              label="Foto de perfil"
+              accept="image/*"
+              defaultImage={avatar}
+              previewSize={128}
+              onUpload={(url) => console.log("Foto subida:", url)}
+            />
+          </div>
 
           <Input
             label="Nombre y Apellidos"

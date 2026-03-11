@@ -1,8 +1,6 @@
 import Input from "@/shared/components/Input";
 import Buttom from "@/shared/components/Button";
-import Card from "@/shared/components/Card";
-import profileImage from "@/assets/images/profileimage.png";
-import pfim2 from "@/assets/images/pfim2.png";
+import Card from "@/shared/components/CardProfile";
 import pf2 from "@/assets/images/pf2.png";
 import bgAll from "@/assets/images/bgAll.jpg";
 
