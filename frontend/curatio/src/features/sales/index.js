@@ -1,1 +1,1 @@
-export {default as ElectronicInvoiceSalesPage} from "./pages/FacturaElectronicaVentaPage"
+export {default as ElectronicInvoiceSalesPage} from "./pages/ElectronicInvoiceSalesPage";

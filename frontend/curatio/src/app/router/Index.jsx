@@ -1,12 +1,12 @@
 import {createBrowserRouter, Navigate, Outlet} from "react-router-dom";
-import {MainLayout} from "@/features/layouts";
-import HomePage from "@/features/home/pages/HomePage";
-import {AuthLayout} from "@/features/layouts";
+import { MainLayout } from "@/features/layouts";
+import { AuthLayout } from "@/features/layouts";
+import { HomePage } from "@/features/home";
 import { ProfilePage, BasicInformationPage, ContactInformationPage, RolPage } from "@/features/users";
 import { LoginPage, ForgotPasswordPage, TokenPasswordPage, ResetPasswordPage } from "@/features/auth";
 import { CreateFormSuppliers, ContactInformationSuppliers } from "@/features/suppliers";
 import { ElectronicInvoiceSalesPage } from "@/features/sales";
-import { ProductsPage } from "@/features/products";
+import { ProductPage } from "@/features/products";
 
 const router = createBrowserRouter([
 
@@ -42,7 +42,12 @@ const router = createBrowserRouter([
                     {
                         path: "rol",
                         element: <RolPage />
+                    },
+                    {
+                        path: "perfil",
+                        element: <ProfilePage />
                     }
+                    
                 ]
             },
 
@@ -70,7 +75,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "products",
-                element: <ProductsPage />
+                element: <ProductPage />
             },
 
             {
