@@ -1,6 +1,6 @@
 import DataTable from "@/shared/components/DataTable"
 import { SuppliersColumns } from "../table/SuppliersColumns"
-import suppliers from "../../../data/supplier/suppliers"
+import {suppliers} from "@/data/supplier/suppliers"
 
 export default function ListSupplierPage() {
 

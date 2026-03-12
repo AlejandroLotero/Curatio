@@ -97,11 +97,11 @@ export default function DataTable({ data, columns }) {
       </div>
 
       {/* ================== TABLA ================== */}
-      <div className="overflow-x-auto border rounded">
+      <div className="overflow-x-auto border rounded bg-gray-100">
         <table className="w-full">
 
           {/* ================== CABECERA ================== */}
-          <thead className="bg-white">
+          <thead className="bg-cyan-500 text-gray-700">
 
             {/* TanStack agrupa cabeceras automáticamente */}
             {table.getHeaderGroups().map(headerGroup => (
@@ -112,7 +112,7 @@ export default function DataTable({ data, columns }) {
 
                   <th
                     key={header.id}
-                    className="p-3 text-left border-b"
+                    className="p-3 text-left border-b border-gray-400 font-semibold"
                   >
 
                     {/* 
@@ -136,17 +136,17 @@ export default function DataTable({ data, columns }) {
           </thead>
 
           {/* ================== CUERPO DE LA TABLA ================== */}
-          <tbody>
+          <tbody className="bg-white text-gray-700">
 
             {/* Filas generadas por TanStack */}
             {table.getRowModel().rows.map(row => (
 
-              <tr key={row.id} className="hover:bg-amber-400">
+              <tr key={row.id} className="hover:bg-cyan-50 bg-white">
 
                 {/* Celdas visibles de cada fila */}
                 {row.getVisibleCells().map(cell => (
 
-                  <td key={cell.id} className="p-3 border-b">
+                  <td key={cell.id} className="p-3 border-b border-gray-300">
 
                     {/* Render dinámico del contenido de la celda */}
                     {flexRender(
