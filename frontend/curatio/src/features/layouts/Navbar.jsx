@@ -67,7 +67,7 @@ const Navbar = ({ variant = "solid" }) => {
             </li>
             <li>
               <Link
-                to="/suppliers/datos-basicos"
+                to="/suppliers/listar-proveedores"
                 className="hover:text-primary transition"
               >
                 Proveedores
