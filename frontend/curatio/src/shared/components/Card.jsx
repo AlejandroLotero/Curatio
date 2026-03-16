@@ -1,12 +1,14 @@
 const Card = ({product}) => {
 
     const {title, image, price, description } = product;
-
+/* Jhonier
+Cambio de color de la card a blanco con transparencia y blur, ademas de agregarle sombra y bordes redondeados ya que el diseño que traia no se veia bien.
+*/
     return (
         <div className="
             w-80
             text-text-inverse
-            dark:bg-neutral-950/70
+            bg-white/70 
             backdrop-blur-[2px]        
             shadow-lg
             rounded-2xl
@@ -33,7 +35,7 @@ const Card = ({product}) => {
                     {description}
                 </p>
 
-                <p className="text-lg font-bold text-cyan-200">
+                <p className="text-2xl font-bold text-label">
 
                     {/* Esto agrega separadores de miles, lo que mejora la lectura.
                     toLocaleString() */}
