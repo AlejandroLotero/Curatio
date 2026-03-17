@@ -7,6 +7,7 @@ import { CreateFormSuppliers, ContactInformationSuppliers, SupplierDetailPage } 
 import { ElectronicInvoiceSalesPage } from "@/features/sales";
 import { ProductPage, ProductListPage, ProductDetailPage } from "@/features/products";
 import DashboardPage from "../../features/dashboard/pages/DashboardPage";
+import { ListUserPage } from "@/features/users";
 import { HomePage, NewHomePage } from "@/features/home";
 import CartShopLayout from "../../features/layouts/CartShopLayout";
 import ListCartShopPage from "../../features/cartshop/page/ListCartShopPage";
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
                     {
                         path: "perfil",
                         element: <ProfilePage />
+                    },
+                    {
+                        path: "list",
+                        element: <ListUserPage />
                     }
                     
                 ]

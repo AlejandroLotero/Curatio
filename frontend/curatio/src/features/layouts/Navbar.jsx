@@ -59,7 +59,7 @@ const Navbar = ({ variant = "solid" }) => {
             </li>
             <li>
               <Link
-                to="/accounts/datos-basicos"
+                to="/accounts/list"
                 className="hover:text-primary transition"
               >
                 Usuarios
