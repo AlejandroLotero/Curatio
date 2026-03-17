@@ -8,6 +8,7 @@ import { CreateFormSuppliers, ContactInformationSuppliers, SupplierDetailPage } 
 import { ElectronicInvoiceSalesPage } from "@/features/sales";
 import { ProductPage, ProductListPage, ProductDetailPage } from "@/features/products";
 import DashboardPage from "../../features/dashboard/pages/DashboardPage";
+import { ListUserPage } from "@/features/users";
 
 const router = createBrowserRouter([
 
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
                     {
                         path: "perfil",
                         element: <ProfilePage />
+                    },
+                    {
+                        path: "list",
+                        element: <ListUserPage />
                     }
                     
                 ]
