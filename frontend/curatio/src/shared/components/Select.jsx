@@ -57,6 +57,8 @@ export default function Select({
                         focus:ring-1
                         focus:ring-border
                         focus:border-border
+                        hover:bg-surface/50
+                        cursor-pointer
                         ${selectClassName ?? ""}
                     `}
                 >

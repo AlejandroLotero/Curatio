@@ -20,7 +20,7 @@ export default function Buttom({
                 before:-inset-y-[7px] before:-inset-x-[2px]
                 `,
             md :
-                            `
+                `
                 h-10 px-4
                 before:absolute before:content-['']
                 before:-inset-y-[7px] before:-inset-x-[0px]

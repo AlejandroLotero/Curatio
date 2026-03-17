@@ -1,15 +1,16 @@
 import {createBrowserRouter, Navigate, Outlet} from "react-router-dom";
 import { MainLayout } from "@/features/layouts";
 import { AuthLayout } from "@/features/layouts";
-import { HomePage } from "@/features/home";
 import { ProfilePage, BasicInformationPage, ContactInformationPage, RolPage } from "@/features/users";
 import { LoginPage, ForgotPasswordPage, TokenPasswordPage, ResetPasswordPage } from "@/features/auth";
 import { CreateFormSuppliers, ContactInformationSuppliers, SupplierDetailPage } from "@/features/suppliers";
 import { ElectronicInvoiceSalesPage } from "@/features/sales";
-import { ProductPage, ListProductsPage, ProductDetailPage } from "@/features/products";
+import { ProductPage, ProductListPage, ProductDetailPage } from "@/features/products";
 import DashboardPage from "../../features/dashboard/pages/DashboardPage";
-import HomeboardPage from "../../features/dashboard/pages/HomeboardPage";
-
+import { ListUserPage } from "@/features/users";
+import { HomePage, NewHomePage } from "@/features/home";
+import CartShopLayout from "../../features/layouts/CartShopLayout";
+import ListCartShopPage from "../../features/cartshop/page/ListCartShopPage";
 
 const router = createBrowserRouter([
 
@@ -21,16 +22,16 @@ const router = createBrowserRouter([
             {
                 // index: true,
                 path:"/",
-                element: <HomePage></HomePage>
+                element: <NewHomePage/>
+            },
+            {
+                path:"/home",
+                element: <HomePage/>
             },
             {
                 // index: true,
                 path:"dashboard",
                 element: <DashboardPage/>
-            },
-            {
-                path:"homeboard",
-                element: <HomeboardPage/>
             },
 
             {
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
                     {
                         path: "perfil",
                         element: <ProfilePage />
+                    },
+                    {
+                        path: "list",
+                        element: <ListUserPage />
                     }
                     
                 ]
@@ -95,11 +100,46 @@ const router = createBrowserRouter([
             },
             {
                 path: "products/listar",
-                element: <ListProductsPage />
+                element: <ProductListPage />
             },
             {
-                path: "products/detalle/:id",
+                path: "products/detalle",
                 element: <ProductDetailPage />
+            },
+
+            {
+                path: "perfil",
+                element: <ProfilePage/>
+            },
+            
+        ]
+    },
+
+    {
+        element:<CartShopLayout/>,
+        children: [
+
+            {
+
+                // index: true,
+                path:"list-cartshop",
+                element: <ListCartShopPage/>
+
+            },
+
+            {
+                path: "forgot-password",
+                element: <ForgotPasswordPage/>
+            },
+
+            {
+                path: "reset-password",
+                element: <ResetPasswordPage></ResetPasswordPage>
+            },
+
+            {
+                path: "send-token",
+                element: <TokenPasswordPage></TokenPasswordPage>
             },
 
             {
