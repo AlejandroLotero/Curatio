@@ -33,7 +33,7 @@ export default function BasicInformationPage() {
       w-full max-w-md
       px-6 py-12 
       grid grid-cols-1 gap-4 
-      bg-white/70 dark:bg-neutral-900/20 
+      bg-white/70 dark:bg-neutral-900/20
       backdrop-blur-md 
       shadow-xl 
       ring-1 

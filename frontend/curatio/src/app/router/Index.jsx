@@ -1,13 +1,13 @@
 import {createBrowserRouter, Navigate, Outlet} from "react-router-dom";
 import { MainLayout } from "@/features/layouts";
 import { AuthLayout } from "@/features/layouts";
-import { HomePage } from "@/features/home";
 import { ProfilePage, BasicInformationPage, ContactInformationPage, RolPage } from "@/features/users";
 import { LoginPage, ForgotPasswordPage, TokenPasswordPage, ResetPasswordPage } from "@/features/auth";
 import { CreateFormSuppliers, ContactInformationSuppliers, SupplierDetailPage } from "@/features/suppliers";
 import { ElectronicInvoiceSalesPage } from "@/features/sales";
 import { ProductPage, ProductListPage, ProductDetailPage } from "@/features/products";
 import DashboardPage from "../../features/dashboard/pages/DashboardPage";
+import { HomePage, NewHomePage } from "@/features/home";
 import CartShopLayout from "../../features/layouts/CartShopLayout";
 import ListCartShopPage from "../../features/cartshop/page/ListCartShopPage";
 
@@ -21,7 +21,11 @@ const router = createBrowserRouter([
             {
                 // index: true,
                 path:"/",
-                element: <HomePage></HomePage>
+                element: <NewHomePage/>
+            },
+            {
+                path:"/home",
+                element: <HomePage/>
             },
             {
                 // index: true,
