@@ -6,8 +6,10 @@ import { ProfilePage, BasicInformationPage, ContactInformationPage, RolPage } fr
 import { LoginPage, ForgotPasswordPage, TokenPasswordPage, ResetPasswordPage } from "@/features/auth";
 import { CreateFormSuppliers, ContactInformationSuppliers, SupplierDetailPage } from "@/features/suppliers";
 import { ElectronicInvoiceSalesPage } from "@/features/sales";
-import { ProductPage, ProductListPage, ProductDetailPage } from "@/features/products";
+import { ProductPage, ListProductsPage, ProductDetailPage } from "@/features/products";
 import DashboardPage from "../../features/dashboard/pages/DashboardPage";
+import HomeboardPage from "../../features/dashboard/pages/HomeboardPage";
+
 
 const router = createBrowserRouter([
 
@@ -25,6 +27,10 @@ const router = createBrowserRouter([
                 // index: true,
                 path:"dashboard",
                 element: <DashboardPage/>
+            },
+            {
+                path:"homeboard",
+                element: <HomeboardPage/>
             },
 
             {
@@ -89,10 +95,10 @@ const router = createBrowserRouter([
             },
             {
                 path: "products/listar",
-                element: <ProductListPage />
+                element: <ListProductsPage />
             },
             {
-                path: "products/detalle",
+                path: "products/detalle/:id",
                 element: <ProductDetailPage />
             },
 
