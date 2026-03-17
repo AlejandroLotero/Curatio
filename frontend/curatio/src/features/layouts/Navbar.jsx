@@ -1,4 +1,4 @@
-import { Search, User, Cross } from "lucide-react";
+import { Search, User, Cross, ShoppingCart } from "lucide-react";
 /*Nos enruta pero con react router*/
 import { Link } from "react-router-dom";
 import {useEffect, useState } from "react";
@@ -79,7 +79,7 @@ const Navbar = ({ variant = "solid" }) => {
               </Link>
             </li>
             <li>
-              <Link to="/video" className="hover:text-primary transition">
+              <Link to="/list-cartshop" className="hover:text-primary transition">
                 Carrito
               </Link>
             </li>
@@ -96,15 +96,26 @@ const Navbar = ({ variant = "solid" }) => {
           {/* Sección derecha: búsqueda + usuario */}
           <div className="flex items-center gap-4">
             {/* Buscador */}
-            <div className="relative hidden sm:block text-black font-body">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-500" />
+            {/*Contenedor ajustado para que el buscador y el carrito se vean bien*/}
+            <div className="flex items-center gap-4">
+              <div className="relative hidden sm:block text-black font-body">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-500" />
 
-              <input
-                type="text"
-                placeholder="Buscar..."
-                className="pl-9 pr-4
-                  py-2.5 border rounded-lg text-body placeholder:text-placeholder focus:outline-none focus:ring-1 focus:ring-black border-border-strong"
-              />
+                <input
+                  type="text"
+                  placeholder="Buscar..."
+                  className="pl-9 pr-4
+                    py-2.5 border rounded-lg text-body placeholder:text-placeholder focus:outline-none focus:ring-1 focus:ring-black border-border-strong"
+                />
+              </div>
+
+              {/* Icono carrito */}
+              <button
+                type="button"
+                className="hidden sm:flex items-center justify-center size-10 rounded-full border hover:bg-surface transition border-border-strong ml-4"
+              >
+                <ShoppingCart className="size-5 text-label" />
+              </button>
             </div>
 
             {/* Icono de usuario */}

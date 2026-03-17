@@ -19,9 +19,10 @@ export default function LoginPage() {
       // Simulación
       await new Promise((r) => setTimeout(r, 700));
 
-       localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("isLoggedIn", "true");
       window.dispatchEvent(new Event("auth-changed"));
-      navigate("/", { replace: true });
+      // Redirige a la página pública HomePage después de iniciar sesión
+      navigate("/home", { replace: true });
       
     } catch (err) {
       console.error(err);
