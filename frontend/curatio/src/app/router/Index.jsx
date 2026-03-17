@@ -8,6 +8,8 @@ import { CreateFormSuppliers, ContactInformationSuppliers, SupplierDetailPage } 
 import { ElectronicInvoiceSalesPage } from "@/features/sales";
 import { ProductPage, ProductListPage, ProductDetailPage } from "@/features/products";
 import DashboardPage from "../../features/dashboard/pages/DashboardPage";
+import CartShopLayout from "../../features/layouts/CartShopLayout";
+import ListCartShopPage from "../../features/cartshop/page/ListCartShopPage";
 
 const router = createBrowserRouter([
 
@@ -94,6 +96,41 @@ const router = createBrowserRouter([
             {
                 path: "products/detalle",
                 element: <ProductDetailPage />
+            },
+
+            {
+                path: "perfil",
+                element: <ProfilePage/>
+            },
+            
+        ]
+    },
+
+    {
+        element:<CartShopLayout/>,
+        children: [
+
+            {
+
+                // index: true,
+                path:"list-cartshop",
+                element: <ListCartShopPage/>
+
+            },
+
+            {
+                path: "forgot-password",
+                element: <ForgotPasswordPage/>
+            },
+
+            {
+                path: "reset-password",
+                element: <ResetPasswordPage></ResetPasswordPage>
+            },
+
+            {
+                path: "send-token",
+                element: <TokenPasswordPage></TokenPasswordPage>
             },
 
             {
