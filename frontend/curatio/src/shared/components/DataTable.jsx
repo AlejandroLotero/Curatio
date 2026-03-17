@@ -1,4 +1,4 @@
-// Hooks y utilidades principales de TanStack Table
+// // Hooks y utilidades principales de TanStack Table
 import {
   useReactTable,          // Hook que crea la instancia de la tabla
   getCoreRowModel,        // Modelo base de filas (sin filtros ni paginación)

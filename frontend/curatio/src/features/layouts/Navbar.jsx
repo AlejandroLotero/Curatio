@@ -79,7 +79,7 @@ const Navbar = ({ variant = "solid" }) => {
               </Link>
             </li>
             <li>
-              <Link to="/video" className="hover:text-primary transition">
+              <Link to="/list-cartshop" className="hover:text-primary transition">
                 Carrito
               </Link>
             </li>
