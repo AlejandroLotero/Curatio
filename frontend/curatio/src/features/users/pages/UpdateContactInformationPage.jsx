@@ -3,7 +3,7 @@ import Buttom from "@/shared/components/Button";
 import { Link } from "react-router-dom";
 import { CircleArrowLeft } from "lucide-react";
 
-export default function DatosContactoPage() {
+export default function UpdateDatosContactoPage() {
   return (
     <div className="flex items-center justify-center min-h-screen text-label">
       <form
@@ -34,7 +34,7 @@ export default function DatosContactoPage() {
           font-bold 
           text-label"
           >
-            Datos de Contacto
+            Actualizar datos de contacto
           </h2>
 
           <Input
@@ -75,7 +75,7 @@ export default function DatosContactoPage() {
               </Buttom>
             </Link>
 
-            <Link to="/accounts/rol">
+            <Link to="/accounts/editar-rol">
               <Buttom
                 variant="primary"
                 size="sm"
