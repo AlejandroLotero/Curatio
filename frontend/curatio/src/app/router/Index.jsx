@@ -11,6 +11,7 @@ import { ListUserPage } from "@/features/users";
 import { HomePage, NewHomePage } from "@/features/home";
 import CartShopLayout from "../../features/layouts/CartShopLayout";
 import ListCartShopPage from "../../features/cartshop/page/ListCartShopPage";
+import path from "path";
 
 const router = createBrowserRouter([
 
@@ -111,44 +112,50 @@ const router = createBrowserRouter([
                 path: "perfil",
                 element: <ProfilePage/>
             },
-            
-        ]
+            {
+                    path:"cartshop",
+                    element: <CartShopLayout />,
+                    children: [
+
+
+                        {
+
+                            // index: true,
+                            path:"list-cartshop",
+                            element: <ListCartShopPage/>
+
+                        },
+
+                        {
+                            path: "forgot-password",
+                            element: <ForgotPasswordPage/>
+                        },
+
+                        {
+                            path: "reset-password",
+                            element: <ResetPasswordPage></ResetPasswordPage>
+                        },
+
+                        {
+                            path: "send-token",
+                            element: <TokenPasswordPage></TokenPasswordPage>
+                        },
+
+                        {
+                            path: "perfil",
+                            element: <ProfilePage/>
+                        },
+                    
+                        
+                    ]
+                }
+            ]
     },
-
-    {
-        element:<CartShopLayout/>,
-        children: [
-
-            {
-
-                // index: true,
-                path:"list-cartshop",
-                element: <ListCartShopPage/>
-
-            },
-
-            {
-                path: "forgot-password",
-                element: <ForgotPasswordPage/>
-            },
-
-            {
-                path: "reset-password",
-                element: <ResetPasswordPage></ResetPasswordPage>
-            },
-
-            {
-                path: "send-token",
-                element: <TokenPasswordPage></TokenPasswordPage>
-            },
-
-            {
-                path: "perfil",
-                element: <ProfilePage/>
-            },
             
-        ]
-    },
+                        
+                    
+    
+                  
 
     {
         element:<AuthLayout/>,
