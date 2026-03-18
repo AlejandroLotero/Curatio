@@ -65,7 +65,7 @@ export default function UpdateDatosContactoPage() {
           />
 
           <div className="flex justify-between w-full max-w-[320px] mt-6">
-            <Link to= "accounts/list">
+            <Link to= "/accounts/list">
               <Buttom
                 variant="secondary"
                 size="sm"

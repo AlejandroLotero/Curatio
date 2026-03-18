@@ -138,7 +138,7 @@ export default function UpdateRolPage() {
       >
         <div className="flex flex-col gap-4 items-center">
           <Link
-            to="/"
+            to="/accounts/list"
             className="border border-border-strong bg-primarybtnbg text-primarybtntext font-body font-heading text-small hover:bg-primarybtnhoverbg hover:text-label px-4 py-2 rounded-4xl transition-colors"
           >
             Ir al inicio

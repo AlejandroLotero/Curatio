@@ -84,7 +84,7 @@ export default function RolPage() {
 
           <div className="flex justify-between w-full max-w-[320px] mt-6">
             <Link
-              to="accounts/list"
+              to="/accounts/list"
               className="inline-flex items-center justify-center h-9 px-3 border border-border-strong bg-secondarybtnbg text-secondarybtntext font-heading text-small hover:bg-secondarybtnhoverbg hover:text-primarybtntext rounded-4xl transition-colors"
               >
               Cancelar
