@@ -93,7 +93,7 @@ export default function ProductsPage() {
           min-w-0
           px-4 py-8 sm:px-6 sm:py-12
           grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6
-          bg-white/70 dark:bg-neutral-900/20
+          bg-white/30
           backdrop-blur-md
           shadow-xl
           ring-1
@@ -104,13 +104,14 @@ export default function ProductsPage() {
         <h2
           className="
             text-center
-            text-base sm:text-lg md:text-subtittles
+            text-3xl
             font-bold
             text-label
             col-span-full
             mb-2 sm:mb-4
             wrap-break-word
           "
+          style={{ fontFamily: "var(--font-body)" }}
         >
           GESTIÓN DE MEDICAMENTOS
         </h2>
@@ -235,7 +236,7 @@ export default function ProductsPage() {
 
         {/* Fila inferior: descripción ya va en columna izquierda, aquí botones */}
         <div className="col-span-full flex flex-col-reverse sm:flex-row justify-between gap-3 sm:gap-0 w-full max-w-full mx-auto mt-6 min-w-0">
-          <Link to="/">
+          <Link to="/products/listar">
             <Button variant="secondary" size="sm" type="button">
               Volver
             </Button>

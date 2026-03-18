@@ -1,44 +1,60 @@
-import laptop from "@/assets/images/card-laptop.png";
-import monitor from "@/assets/images/card-monitor.png";
-import mouse from "@/assets/images/card-mouse.png";
-import teclado from "@/assets/images/card-teclado.png";
+import acetaminofen from "@/assets/images/acetaminofen.png";
+import bisbacter from "@/assets/images/bisbacter.png";
+import hidrocortisona from "@/assets/images/hidrocortisona.png";
+import amoxicilina from "@/assets/images/amoxicilina.png";
+import ibuprofeno from "@/assets/images/ibuprofeno.png";
+import jarabeAcetaminofen from "@/assets/images/jarabe-acetaminofem.png";
 
 export const products = [
     {
 
         id: 1,
-        title: "Laptop Profesional",
-        price: 3500000,
-        descripcion: "Laptop de alto rendimiento para desarrollo y diseño",
-        image: laptop,
-        category: "perifericos"
+        title: "Acetaminofén 500 mg",
+        price: 4500,
+        description: "Analgesico y antipirético indicado para el alivio del dolor leve a moderado y la fiebre.",
+        image: acetaminofen,
+        category: "analgésicos"
     },
     {
 
         id: 2,
-        title: "Monitor 27 pulgadas",
-        price: 1200000,
-        descripcion: "Monitor IPS ideal para programación y edición",
-        image: monitor,
-        category: "perifericos"
+        title: "Bisbacter suspensión",
+        price: 12500,
+        description: "Suspensión oral para el tratamiento de molestias gastrointestinales leves.",
+        image: bisbacter,
+        category: "gastrointestinal"
     },
     {
 
         id: 3,
-        title: "Mouse",
-        price: 80000,
-        descripcion: "Mouse ergonómico, la mejor calidad y precio",
-        image: mouse,
-        category: "perifericos"
+        title: "Hidrocortisona crema",
+        price: 18900,
+        description: "Crema tópica antiinflamatoria para afecciones leves de la piel.",
+        image: hidrocortisona,
+        category: "dermatológicos"
     },
     {
-
         id: 4,
-        title: "Teclado Gamer",
-        price: 50000,
-        descripcion: "Teclado mecánico con iluminación RGB.",
-        image: teclado,
-        category: "perifericos"
+        title: "Amoxicilina 500 mg",
+        price: 23000,
+        description: "Antibiótico de amplio espectro para el tratamiento de infecciones bacterianas.",
+        image: amoxicilina,
+        category: "antibióticos"
+    },
+    {
+        id: 5,
+        title: "Ibuprofeno 800 mg",
+        price: 18000,
+        description: "Antiinflamatorio no esteroideo (AINE) para dolor moderado e inflamación.",
+        image: ibuprofeno,
+        category: "analgésicos"
+    },
+    {
+        id: 6,
+        title: "Acetaminofén jarabe niños",
+        price: 14500,
+        description: "Jarabe pediátrico para el alivio de fiebre y dolor en niños.",
+        image: jarabeAcetaminofen,
+        category: "pediátricos"
     }
-   
-]
+];

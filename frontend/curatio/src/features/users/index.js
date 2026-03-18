@@ -3,3 +3,5 @@ export { default as BasicInformationPage } from "./pages/BasicInformationPage";
 export { default as ContactInformationPage } from "./pages/ContactInformationPage";
 export { default as ProfilePage } from "./pages/ProfilePage";
 export { default as RolPage } from "./pages/RolPage";
+export { default as ListUserPage } from "./pages/ListUserPage";
+export { default as DataTableUser } from "./components/DataTableUser";

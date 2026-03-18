@@ -1,6 +1,6 @@
-const Card = ({product}) => {
+const Card = ({ product, hidePrice = false }) => {
 
-    const {title, image, price, description } = product;
+    const { title, image, price, description } = product;
 
     return (
         <div className="
@@ -33,12 +33,11 @@ const Card = ({product}) => {
                     {description}
                 </p>
 
-                <p className="text-lg font-bold text-cyan-200">
-
-                    {/* Esto agrega separadores de miles, lo que mejora la lectura.
-                    toLocaleString() */}
-                    ${price.toLocaleString()}
-                </p>
+                {!hidePrice && (
+                    <p className="text-lg font-bold text-cyan-200">
+                        ${price.toLocaleString()}
+                    </p>
+                )}
 
             </div>
         </div>

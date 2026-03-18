@@ -5,7 +5,7 @@
 //página pública
 
 import { useState } from "react";
-//import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ChevronLeft, Minus, Plus, ShoppingCart } from "lucide-react";
 import bgAll from "@/assets/images/bgAll.jpg";
 import Card from "../components/Cards";
@@ -21,12 +21,12 @@ import hidrocortisona from "@/assets/images/hidrocortisona.png";
 
 
 export default function HomePage() {
+  const navigate = useNavigate();
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [cartItems, setCartItems] = useState({});
-  const [showAddedNotification, setShowAddedNotification] = useState(false);
-  //const navigate = useNavigate();
+  //const [showAddedNotification, setShowAddedNotification] = useState(false);
 
   // Array de productos
   const products = [
@@ -57,11 +57,7 @@ export default function HomePage() {
   };
 
   const handleComprarClick = (product, quantity) => {
-    console.log(`Comprando ${quantity} de ${product.title}`);
-    setShowAddedNotification(true);
-    setTimeout(() => {
-      setShowAddedNotification(false);
-    }, 3000);
+    navigate("/login");
   };
 
   return (
@@ -206,8 +202,8 @@ export default function HomePage() {
           </div>
         </Modal>
 
-        {/* Modal de notificación: Agregado al carrito */}
-        <Modal
+        {/* Modal de notificación: Agregado al carrito - NO USADO EN HOMEBOARD */}
+        {/* <Modal
           isOpen={showAddedNotification}
           onClose={() => setShowAddedNotification(false)}
           backgroundColor="bg-white/40 dark:bg-neutral-900/90"
@@ -222,7 +218,7 @@ export default function HomePage() {
               Tu producto ha sido añadido correctamente
             </p>
           </div>
-        </Modal>
+        </Modal> */}
       </div>
     </section>
   );

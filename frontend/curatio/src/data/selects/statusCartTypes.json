@@ -1,17 +1,17 @@
 [
     {
         "id": "ACTIVE",
-        "label": "Activo"
+        "label": "ACTIVO"
     },
 
     {
         "id": "CONFIRMED",
-        "label": "Confirmado"
+        "label": "CONFIRMADO"
     },
 
     {
         "id": "CANCELLED",
-        "label": "cancelado"
+        "label": "CANCELADO"
     }
 
 ]

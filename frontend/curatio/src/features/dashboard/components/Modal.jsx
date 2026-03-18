@@ -7,6 +7,8 @@ export default function Modal({
   title,
   message,
   children,
+  width = "w-[400px]",
+  backgroundColor = "dark:bg-neutral-900/85",
 }) {
   // Evita scroll del fondo cuando el modal está abierto
   useEffect(() => {
@@ -25,7 +27,7 @@ export default function Modal({
       />
 
       {/* Contenido del modal */}
-      <div className="bg-white/50 backdrop-blur-sm outline-none focus:ring-1">
+      <div className={`relative ${backgroundColor} backdrop-blur-[2px] rounded-2xl shadow-xl ${width} p-8 text-center z-10 animate-fadeIn`}>
         
         {title && (
           <h2 className="text-xl font-semibold mb-4">{title}</h2>
