@@ -5,7 +5,7 @@ import { ProfilePage, BasicInformationPage, ContactInformationPage, RolPage } fr
 import { LoginPage, ForgotPasswordPage, TokenPasswordPage, ResetPasswordPage } from "@/features/auth";
 import { CreateFormSuppliers, ContactInformationSuppliers, SupplierDetailPage } from "@/features/suppliers";
 import { ElectronicInvoiceSalesPage } from "@/features/sales";
-import { ProductPage, ProductListPage, ProductDetailPage } from "@/features/products";
+import { ProductsPage, ProductDetailPage, ListProductsPage } from "../../features/products"
 import DashboardPage from "../../features/dashboard/pages/DashboardPage";
 import { ListUserPage } from "@/features/users";
 import { HomePage, NewHomePage } from "@/features/home";
@@ -91,7 +91,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "products",
-                element: <ProductPage />
+                element: <ProductsPage />
             },
 
             {
@@ -100,7 +100,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "products/listar",
-                element: <ProductListPage />
+                element: <ListProductsPage />
             },
             {
                 path: "products/detalle",
