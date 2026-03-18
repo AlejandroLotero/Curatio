@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { getRoles } from "../../users/services/selectService";
 import { CircleArrowLeft } from "lucide-react";
 
-export default function UpdateRolPage() {
+export default function RolPage() {
   const [roles, setRoles] = useState([]);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
@@ -60,7 +60,7 @@ export default function UpdateRolPage() {
           font-bold 
           text-label"
           >
-            Rol
+            Actualizar Rol
           </h2>
 
           <Select
@@ -84,7 +84,7 @@ export default function UpdateRolPage() {
 
           <div className="flex justify-between w-full max-w-[320px] mt-6">
             <Link
-              to="/accounts/list"
+              to="accounts/list"
               className="inline-flex items-center justify-center h-9 px-3 border border-border-strong bg-secondarybtnbg text-secondarybtntext font-heading text-small hover:bg-secondarybtnhoverbg hover:text-primarybtntext rounded-4xl transition-colors"
               >
               Cancelar
@@ -96,7 +96,7 @@ export default function UpdateRolPage() {
               type="button"
               onClick={() => setIsConfirmModalOpen(true)}
             >
-              Crear usuario
+              Actualizar
             </Buttom>
           </div>
         </section>
@@ -106,8 +106,8 @@ export default function UpdateRolPage() {
       <Modal
         isOpen={isConfirmModalOpen}
         onClose={() => setIsConfirmModalOpen(false)}
-        title="Confirmar creación de usuario"
-        message="¿Está seguro que desea crear el usuario con los datos ingresados?"
+        title="Confirmar actualización de datos del usuario"
+        message="¿Está seguro que desea actualizar los datos del usuario?"
       >
         <div className="flex gap-4 justify-center">
           <Buttom
@@ -133,12 +133,12 @@ export default function UpdateRolPage() {
       <Modal
         isOpen={isSuccessModalOpen}
         onClose={() => setIsSuccessModalOpen(false)}
-        title="Usuario creado"
-        message="El usuario se ha creado correctamente."
+        title="Usuario actualizado"
+        message="El usuario se ha actualizado correctamente."
       >
         <div className="flex flex-col gap-4 items-center">
           <Link
-            to="/"
+            to="/accounts/list"
             className="border border-border-strong bg-primarybtnbg text-primarybtntext font-body font-heading text-small hover:bg-primarybtnhoverbg hover:text-label px-4 py-2 rounded-4xl transition-colors"
           >
             Ir al inicio

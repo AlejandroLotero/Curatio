@@ -2,13 +2,14 @@ import Input from "@/shared/components/Input";
 import Buttom from "@/shared/components/Button";
 import Select from "@/shared/components/Select";
 import FileInput from "@/shared/components/FileInputCreateUser";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getDocumentTypes } from "../services/selectService";
 import { CircleArrowLeft } from "lucide-react";
 import avatar from "@/assets/images/avatar.png";
 
-export default function BasicInformationPage() {
+export default function UpdateBasicInformationPage() {
+  const { id } = useParams();
   const [documentTypes, setDocumentTypes] = useState([]);
 
   useEffect(() => {
@@ -20,7 +21,7 @@ export default function BasicInformationPage() {
   };
 
   const handleDocumentBlur = (e) => {
-    console.log("Número de documento", e.target.value);
+    console.log("Usuario id", id, "- Número de documento", e.target.value);
   };
 
   return (
@@ -53,7 +54,7 @@ export default function BasicInformationPage() {
           font-bold 
           text-label"
           >
-            Datos basicos
+            Actualizar datos basicos
           </h2>
 
           <div className="flex flex-col items-center w-full [&>*]:flex [&>*]:flex-col [&>*]:items-center">
@@ -100,7 +101,7 @@ export default function BasicInformationPage() {
               </Buttom>
             </Link>
 
-            <Link to="/accounts/contacto">
+            <Link to="/accounts/editar-datos-contacto">
               <Buttom
                 variant="primary"
                 size="sm"

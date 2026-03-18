@@ -1,7 +1,7 @@
 //Si necesito realizer la celda de las acciones de la Fila de los productos el componente debe llamarse.
 
 // Iconos usados en los botones de acciones
-import { Pencil, Trash2 } from "lucide-react";
+import { Eye, Pencil, Trash2 } from "lucide-react";
 
 // Hook de React Router para navegar programáticamente entre rutas
 import { useNavigate } from "react-router-dom";
@@ -20,9 +20,13 @@ export default function UserRowActions({ user }) {
   // Acción para editar el usuario
   // Redirige a la página de edición usando el id del usuario
   const handleEdit = () => {
-    navigate(`/users/${user.id}/edit`);
+    navigate(`/accounts/editar-datos-basicos/${user.id}`); // Redirige a la página de edición de datos básicos
   };
   
+  const handleView = () => {
+    navigate(`/accounts/perfil/${user.id}`);
+  };
+
 
   // Acción para eliminar el usuario
   // Actualmente solo imprime en consola el id
@@ -34,6 +38,14 @@ export default function UserRowActions({ user }) {
   return (
     // Contenedor de los botones de acciones
     <div className="flex gap-2">
+
+      {/* Botón ver */}
+      <button
+        onClick={handleView}
+        className="p-1 rounded hover:bg-white/80 transition-colors duration-400"
+      >
+        <Eye size={16} />
+      </button>
 
       {/* Botón editar */}
             <button

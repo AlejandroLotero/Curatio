@@ -1,7 +1,7 @@
 import {createBrowserRouter, Navigate, Outlet} from "react-router-dom";
 import { MainLayout } from "@/features/layouts";
 import { AuthLayout } from "@/features/layouts";
-import { ProfilePage, BasicInformationPage, ContactInformationPage, RolPage } from "@/features/users";
+import { ProfilePage, BasicInformationPage, ContactInformationPage, RolPage, UpdateBasicInformationPage, UpdateContactInformationPage, UpdateRolPage } from "@/features/users";
 import { LoginPage, ForgotPasswordPage, TokenPasswordPage, ResetPasswordPage } from "@/features/auth";
 import { CreateFormSuppliers, ContactInformationSuppliers, SupplierDetailPage } from "@/features/suppliers";
 import { ElectronicInvoiceSalesPage } from "@/features/sales";
@@ -12,7 +12,6 @@ import { ListUserPage } from "@/features/users";
 import { HomePage, NewHomePage } from "@/features/home";
 import CartShopLayout from "../../features/layouts/CartShopLayout";
 import ListCartShopPage from "../../features/cartshop/page/ListCartShopPage";
-import path from "path";
 
 const router = createBrowserRouter([
 
@@ -61,10 +60,25 @@ const router = createBrowserRouter([
                         element: <ProfilePage />
                     },
                     {
+                        path: "perfil/:id",
+                        element: <ProfilePage />
+                    },
+                    {
                         path: "list",
                         element: <ListUserPage />
-                    }
-                    
+                    },
+                    {
+                        path: "editar-datos-basicos/:id",
+                        element: <UpdateBasicInformationPage />
+                    },
+                    {
+                        path: "editar-datos-contacto",
+                        element: <UpdateContactInformationPage />
+                    },
+                    {
+                        path: "editar-rol",
+                        element: <UpdateRolPage />
+                    },                    
                 ]
             },
 
