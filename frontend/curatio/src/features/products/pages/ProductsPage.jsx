@@ -15,11 +15,13 @@ import {
   getLaboratorios,
   getEstadosMedicamento,
 } from "../services/selectServices";
+import { ProductSchema } from "../schemas/ProductSchemas";
 
 export default function ProductsPage() {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const formRef = useRef(null);
+  const [errors, setErrors] = useState({});
   const [formasFarmaceuticas, setFormasFarmaceuticas] = useState([]);
   const [viasAdministracion, setViasAdministracion] = useState([]);
   const [laboratorios, setLaboratorios] = useState([]);
@@ -76,6 +78,24 @@ export default function ProductsPage() {
 
   const handleButtonSubmit = (e) => {
     e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+    const payload = Object.fromEntries(formData.entries());
+
+    const result = ProductSchema.safeParse(payload);
+    if (!result.success) {
+      const fieldErrors = {};
+      result.error.issues.forEach((issue) => {
+        const field = issue.path[0];
+        fieldErrors[field] = issue.message;
+      });
+      setErrors(fieldErrors);
+      setIsConfirmModalOpen(false);
+      setIsSuccessModalOpen(false);
+      return;
+    }
+
+    setErrors({});
     setIsConfirmModalOpen(false);
     setIsSuccessModalOpen(true);
   };
@@ -123,12 +143,14 @@ export default function ProductsPage() {
             placeholder="ID Medicamento (visual)"
             name="visualId"
             wrapperClassName="w-full min-w-0"
+            error={errors.visualId}
           />
           <Input
             label="Nombre"
             placeholder="Digite el nombre del medicamento"
             name="nombre"
             wrapperClassName="w-full min-w-0"
+            error={errors.nombre}
           />
           <Select
             label="Forma Farmacéutica"
@@ -137,6 +159,7 @@ export default function ProductsPage() {
             placeholder="Forma Farmacéutica"
             wrapperClassName="w-full min-w-0"
             onChange={handleFormaChange}
+            error={errors.formaFarmaceutica}
           />
           <Select
             label="Presentación"
@@ -144,18 +167,21 @@ export default function ProductsPage() {
             options={presentacionesOptions}
             placeholder="Presentación"
             wrapperClassName="w-full min-w-0"
+            error={errors.presentacion}
           />
           <Input
             label="Concentración"
             placeholder="Concentración del medicamento"
             name="concentracion"
             wrapperClassName="w-full min-w-0"
+            error={errors.concentracion}
           />
           <Input
             label="Descripción"
             placeholder="Añade una descripción"
             name="descripcion"
             wrapperClassName="w-full min-w-0"
+            error={errors.descripcion}
           />
         </div>
 
@@ -167,6 +193,7 @@ export default function ProductsPage() {
             options={viasAdministracion}
             placeholder="Vía de Administración"
             wrapperClassName="w-full min-w-0"
+            error={errors.viaAdministracion}
           />
           <Select
             label="Laboratorio"
@@ -174,24 +201,28 @@ export default function ProductsPage() {
             options={laboratorios}
             placeholder="Laboratorio"
             wrapperClassName="w-full min-w-0"
+            error={errors.laboratorio}
           />
           <Input
             label="Lote"
             placeholder="Digite el lote del medicamento"
             name="lote"
             wrapperClassName="w-full min-w-0"
+            error={errors.lote}
           />
           <Input
             label="Fecha de Fabricación"
             placeholder="AAAA-MM-DD"
             name="fechaFabricacion"
             wrapperClassName="w-full min-w-0"
+            error={errors.fechaFabricacion}
           />
           <Input
             label="Fecha de Vencimiento"
             placeholder="AAAA-MM-DD"
             name="fechaVencimiento"
             wrapperClassName="w-full min-w-0"
+            error={errors.fechaVencimiento}
           />
         </div>
 
@@ -203,6 +234,7 @@ export default function ProductsPage() {
             name="stock"
             type="number"
             wrapperClassName="w-full min-w-0"
+            error={errors.stock}
           />
           <Input
             label="Precio de Compra"
@@ -210,6 +242,7 @@ export default function ProductsPage() {
             name="precioCompra"
             type="number"
             wrapperClassName="w-full min-w-0"
+            error={errors.precioCompra}
           />
           <Input
             label="Precio de Venta"
@@ -217,6 +250,7 @@ export default function ProductsPage() {
             name="precioVenta"
             type="number"
             wrapperClassName="w-full min-w-0"
+            error={errors.precioVenta}
           />
           <Select
             label="Proveedor"
@@ -224,6 +258,7 @@ export default function ProductsPage() {
             options={[]}
             placeholder="Proveedor"
             wrapperClassName="w-full min-w-0"
+            error={errors.proveedor}
           />
           <Select
             label="Estado"
@@ -231,6 +266,7 @@ export default function ProductsPage() {
             options={estadosMedicamento}
             placeholder="Estado"
             wrapperClassName="w-full min-w-0"
+            error={errors.estado}
           />
         </div>
 

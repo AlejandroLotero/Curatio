@@ -24,9 +24,9 @@ export default function ListSupplierPage() {
           </div>
 
           <div className="flex flex-wrap items-center justify-end gap-2">
-            <Link to="/accounts/datos-basicos">
+            <Link to="/suppliers/datos-basicos">
               <Button variant="primary" size="sm">
-                Crear usuario
+                Crear proveedor
               </Button>
             </Link>
             <Button variant="secondary" size="sm" type="button">
