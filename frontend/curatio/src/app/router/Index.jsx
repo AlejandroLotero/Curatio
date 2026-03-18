@@ -5,7 +5,7 @@ import { ProfilePage, BasicInformationPage, ContactInformationPage, RolPage } fr
 import { LoginPage, ForgotPasswordPage, TokenPasswordPage, ResetPasswordPage } from "@/features/auth";
 import { CreateFormSuppliers, ContactInformationSuppliers, SupplierDetailPage } from "@/features/suppliers";
 import { ElectronicInvoiceSalesPage } from "@/features/sales";
-import { ProductsPage, ProductDetailPage, ListProductsPage } from "../../features/products"
+import { ProductsPage, ProductDetailPage, ListProductsPage } from "@/features/products"
 import DashboardPage from "../../features/dashboard/pages/DashboardPage";
 import { ListUserPage } from "@/features/users";
 import { HomePage, NewHomePage } from "@/features/home";
