@@ -7,6 +7,7 @@ import { CreateFormSuppliers, ContactInformationSuppliers, SupplierDetailPage } 
 import { ElectronicInvoiceSalesPage } from "@/features/sales";
 import { ProductsPage, ProductDetailPage, ListProductsPage } from "@/features/products"
 import DashboardPage from "../../features/dashboard/pages/DashboardPage";
+import ListSupplierPage from "../../features/suppliers/pages/ListSupplierPage";
 import { ListUserPage } from "@/features/users";
 import { HomePage, NewHomePage } from "@/features/home";
 import CartShopLayout from "../../features/layouts/CartShopLayout";
@@ -78,6 +79,10 @@ const router = createBrowserRouter([
                     {
                         path: "datos-basicos",
                         element: <CreateFormSuppliers />
+                    },
+                    {
+                        path: "listar-proveedores",
+                        element: <ListSupplierPage />
                     },
                     {
                         path: "datos-contacto",
