@@ -2,66 +2,14 @@ import Input from "@/shared/components/Input";
 import Buttom from "@/shared/components/Button";
 import Select from "@/shared/components/Select";
 import FileInput from "@/shared/components/FileInputCreateUser";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getDocumentTypes } from "../services/selectService";
 import { CircleArrowLeft } from "lucide-react";
 import avatar from "@/assets/images/avatar.png";
-import { UserSchema } from "../schemas/UserSchemas";
 
-export default function BasicInformationPage() {
-  const navigate = useNavigate();
-
-  const [formData, setFormData] = useState({
-    fullnames: "",
-    documentType: "",
-    documentNumber: "",
-    address: "",
-    phoneNumber: "",
-    email: "",
-    confirmEmail: "",
-    roles: "",
-    startDate: "",
-    endDate: "",
-  });
-
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-// Seleccionar los campos que se van a validar
-    const basicSchema = UserSchema.pick({
-      fullnames: true,
-      documentType: true,
-      documentNumber: true,
-    });
-
-    // Validar los datos
-    const result = basicSchema.safeParse(formData);
-    if (!result.success) {
-      const fieldErrors = {};
-      result.error.issues.forEach((issue) => {
-        const field = issue.path[0];
-        fieldErrors[field] = issue.message;
-        });
-      setErrors(fieldErrors);
-      return;
-    }
-    setErrors({});
-    // Redirigir a la siguiente página una vez que los datos sean válidos
-    navigate("/accounts/contacto", { state: result.data });
-  };
-
-  const [errors, setErrors] = useState({});
-
+export default function UpdateBasicInformationPage() {
+  const { id } = useParams();
   const [documentTypes, setDocumentTypes] = useState([]);
 
   useEffect(() => {
@@ -73,13 +21,12 @@ export default function BasicInformationPage() {
   };
 
   const handleDocumentBlur = (e) => {
-    console.log("Número de documento", e.target.value);
+    console.log("Usuario id", id, "- Número de documento", e.target.value);
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen text-label">
       <form
-        onSubmit={handleSubmit}
         className="
       relative
       w-full max-w-md
@@ -107,7 +54,7 @@ export default function BasicInformationPage() {
           font-bold 
           text-label"
           >
-            Datos basicos
+            Actualizar datos basicos
           </h2>
 
           <div className="flex flex-col items-center w-full [&>*]:flex [&>*]:flex-col [&>*]:items-center">
@@ -123,21 +70,16 @@ export default function BasicInformationPage() {
           <Input
             label="Nombre y Apellidos"
             placeholder="Juan Rivera Grisales"
-            name="fullnames"
-            onChange={handleChange}
-            error={errors.fullnames}
-            value={formData.fullnames}
+            name="fullNames"
+            onChange={handleNameChange}
           />
 
           <Select
             label="Tipos de documento"
-            name="documentType"
+            name="documentTypes"
             options={documentTypes}
             placeholder="Tipo de documento"
             wrapperClassName="w-[320px]"
-            error={errors.documentType}
-            value={formData.documentType}
-            onChange={handleChange}
           />
 
           <Input
@@ -146,9 +88,6 @@ export default function BasicInformationPage() {
             type="number"
             name="documentNumber"
             onBlur={handleDocumentBlur}
-            error={errors.documentNumber}
-            value={formData.documentNumber}
-            onChange={handleChange}
           />
 
           <div className="flex justify-between w-full max-w-[320px] mt-6">
@@ -162,9 +101,16 @@ export default function BasicInformationPage() {
               </Buttom>
             </Link>
 
-            <Buttom variant="primary" size="sm" type="submit">
-              Siguiente
-            </Buttom>
+            <Link to="/accounts/editar-datos-contacto">
+              <Buttom
+                variant="primary"
+                size="sm"
+                type="button"
+                onClick={() => console.log("Oprimió siguiente")}
+              >
+                Siguiente
+              </Buttom>
+            </Link>
           </div>
         </section>
       </form>

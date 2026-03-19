@@ -3,8 +3,11 @@ import Buttom from "@/shared/components/Button";
 import Card from "@/shared/components/CardProfile";
 import pf2 from "@/assets/images/pf2.png";
 import bgAll from "@/assets/images/bgAll.jpg";
+import { Link, useParams } from "react-router-dom";
+
 
 export default function ProfilePage() {
+  const { id } = useParams();
   return (
     <div
       className="min-h-screen flex items-center justify-center text-label px-6 bg-cover bg-center"
@@ -102,12 +105,18 @@ export default function ProfilePage() {
 
             {/* Botones */}
             <div className="mt-8 flex gap-4 w-full max-w-md justify-between">
-              <Buttom variant="secondary" size="sm" type="button">
+              <Link
+                to="/accounts/list">
+                <Buttom variant="secondary" size="sm" type="button">
                 Cancelar
               </Buttom>
-              <Buttom variant="primary" size="sm" type="button">
+              </Link>
+              <Link to={id ? `/accounts/editar-datos-basicos/${id}` : "/accounts/list"}>
+                <Buttom variant="primary" size="sm" type="button">
                 Editar
               </Buttom>
+              </Link>
+
             </div>
           </div>
         </div>

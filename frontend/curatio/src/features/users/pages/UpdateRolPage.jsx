@@ -3,71 +3,23 @@ import Buttom from "@/shared/components/Button";
 import Select from "@/shared/components/Select";
 import Modal from "@/shared/components/Modal";
 import { useEffect, useState, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { getRoles } from "../../users/services/selectService";
 import { CircleArrowLeft } from "lucide-react";
-import { UserSchema } from "../schemas/UserSchemas";
 
-export default function UpdateRolPage() {
+export default function RolPage() {
   const [roles, setRoles] = useState([]);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const formRef = useRef(null);
 
-  const location = useLocation();
-  const prevData = location.state ?? {};
-
-  const [formData, setFormData] = useState({
-    ...prevData,
-    roles: "",
-    startDate: "",
-    endDate: "",
-  });
-
-  const [errors, setErrors] = useState({});
-
   useEffect(() => {
     getRoles().then(setRoles);
   }, []);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
   const handleButtonSubmit = (e) => {
     e.preventDefault();
-
-    const rolSchema = UserSchema.pick({
-      roles: true,
-      startDate: true,
-      endDate: true,
-    });
-
-    // Inputs type="date" devuelven string "YYYY-MM-DD"
-    const payload = {
-      ...formData,
-      startDate: formData.startDate ? new Date(formData.startDate) : formData.startDate,
-      endDate: formData.endDate ? new Date(formData.endDate) : formData.endDate,
-    };
-
-    const result = rolSchema.safeParse(payload);
-
-    if (!result.success) {
-      const fieldErrors = {};
-      result.error.issues.forEach((issue) => {
-        const field = issue.path[0];
-        fieldErrors[field] = issue.message;
-      });
-      setErrors(fieldErrors);
-      setIsConfirmModalOpen(false);
-      return;
-    }
-
-    setErrors({});
+    console.log("Crear usuario - Datos del formulario", e.target);
     setIsConfirmModalOpen(false);
     setIsSuccessModalOpen(true);
   };
@@ -108,7 +60,7 @@ export default function UpdateRolPage() {
           font-bold 
           text-label"
           >
-            Rol
+            Actualizar Rol
           </h2>
 
           <Select
@@ -116,27 +68,18 @@ export default function UpdateRolPage() {
             options={roles}
             placeholder="Seleccione un rol"
             wrapperClassName="w-[320px]"
-            value={formData.roles}
-            onChange={handleChange}
-            error={errors.roles}
           />
 
           <Input
             label="Fecha de inicio"
             type="date"
             name="startDate"
-            value={formData.startDate}
-            onChange={handleChange}
-            error={errors.startDate}
           />
 
           <Input
             label="Fecha de fin"
             type="date"
             name="endDate"
-            value={formData.endDate}
-            onChange={handleChange}
-            error={errors.endDate}
           />
 
           <div className="flex justify-between w-full max-w-[320px] mt-6">
@@ -153,7 +96,7 @@ export default function UpdateRolPage() {
               type="button"
               onClick={() => setIsConfirmModalOpen(true)}
             >
-              Crear usuario
+              Actualizar
             </Buttom>
           </div>
         </section>
@@ -163,8 +106,8 @@ export default function UpdateRolPage() {
       <Modal
         isOpen={isConfirmModalOpen}
         onClose={() => setIsConfirmModalOpen(false)}
-        title="Confirmar creación de usuario"
-        message="¿Está seguro que desea crear el usuario con los datos ingresados?"
+        title="Confirmar actualización de datos del usuario"
+        message="¿Está seguro que desea actualizar los datos del usuario?"
       >
         <div className="flex gap-4 justify-center">
           <Buttom
@@ -190,8 +133,8 @@ export default function UpdateRolPage() {
       <Modal
         isOpen={isSuccessModalOpen}
         onClose={() => setIsSuccessModalOpen(false)}
-        title="Usuario creado"
-        message="El usuario se ha creado correctamente."
+        title="Usuario actualizado"
+        message="El usuario se ha actualizado correctamente."
       >
         <div className="flex flex-col gap-4 items-center">
           <Link

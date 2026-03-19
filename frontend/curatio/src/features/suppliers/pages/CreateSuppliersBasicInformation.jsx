@@ -1,30 +1,58 @@
 //Creación de Formulario de Creación de Proveedores - Datos básicos
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Input from "../../../shared/components/Input";
 import Button from "../../../shared/components/Button";
-import Select from "@/shared/components/Select";
 import { CircleArrowLeft } from "lucide-react";
-// import selectService from "@/features/user/services/serviceSelect";
-// import { getDocumentTypes } from "../users/services/selectService";
-// import { useState, useEffect } from "react";
+import { useState } from "react";
+import { SupplierSchema } from "../schemas/SupplierSchemas";
 
 export default function CreateFormSuppliers() {
-  //   const[documentTypes, setDocumentTypes] = useState([])
+  const navigate = useNavigate();
 
-  // useEffect (() =>{
-  //     getDocumentTypes().then(setDocumentTypes);
-  // },[]);
+  const [formData, setFormData] = useState({
+    nit: "",
+    fullnames: "",
+    supplierSocialReason: "",
+  });
 
-  const handleNitChange = (e) => {
-    console.log("NIT del proveedor: ", e.target.value);
-    if (e.target.value === "") {
-      console.log("Este campo no puede estar vacío");
+  const [errors, setErrors] = useState({});
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const basicSchema = SupplierSchema.pick({
+      nit: true,
+      fullnames: true,
+      supplierSocialReason: true,
+    });
+
+    const result = basicSchema.safeParse(formData);
+    if (!result.success) {
+      const fieldErrors = {};
+      result.error.issues.forEach((issue) => {
+        const field = issue.path[0];
+        fieldErrors[field] = issue.message;
+      });
+      setErrors(fieldErrors);
+      return;
     }
+
+    setErrors({});
+    navigate("../datos-contacto", { state: result.data });
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen text-label">
       <form
+        onSubmit={handleSubmit}
         className="
       w-full max-w-md
       px-6 py-12 
@@ -58,13 +86,27 @@ export default function CreateFormSuppliers() {
             <Input
               label="NIT: Ejemplo: 80000000-0"
               placeholder="80000000-0"
-              onChange={handleNitChange}
+              name="nit"
+              value={formData.nit}
+              onChange={handleChange}
+              error={errors.nit}
             />
             <Input
               label="Nombre del proveedor"
               placeholder="Juan Rivera"
+              name="fullnames"
+              value={formData.fullnames}
+              onChange={handleChange}
+              error={errors.fullnames}
             />
-            <Input label="Razón social" placeholder="Mi Empresa S.A.S." />
+            <Input
+              label="Razón social"
+              placeholder="Mi Empresa S.A.S."
+              name="supplierSocialReason"
+              value={formData.supplierSocialReason}
+              onChange={handleChange}
+              error={errors.supplierSocialReason}
+            />
             {/* <Select label="Tipos de documento" name="documentType" options={documentTypes}></Select> */}
           </div>
 
@@ -78,16 +120,9 @@ export default function CreateFormSuppliers() {
               Cancelar
             </Button>
 
-            <Link to="../datos-contacto">
-              <Button
-                variant="primary"
-                size="sm"
-                type="button"
-                onClick={() => console.log("Ir a datos de contacto")}
-              >
-                Siguiente
-              </Button>
-            </Link>
+            <Button variant="primary" size="sm" type="submit">
+              Siguiente
+            </Button>
           </div>
         </section>
       </form>

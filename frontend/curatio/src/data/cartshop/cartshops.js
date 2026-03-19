@@ -426,4 +426,12 @@ export const cartshops = [
     unit_value: "23000",
     subtotal: "23000",
   },
+  {
+    id: 51,
+    invoice_number: "FAC-050",
+    product: "MILANTA LIQUIDA",
+    amount: "1",
+    unit_value: "23000",
+    subtotal: "23000",
+  },
 ];
