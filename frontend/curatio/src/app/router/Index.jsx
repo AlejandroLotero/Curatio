@@ -123,7 +123,7 @@ const router = createBrowserRouter([
                 element: <ListProductsPage />
             },
             {
-                path: "products/detalle",
+                path: "products/detalle/:id",
                 element: <ProductDetailPage />
             },
 

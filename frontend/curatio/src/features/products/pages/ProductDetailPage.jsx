@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import Button from "@/shared/components/Button";
-import { products } from "@/data/product/products";
+import { listProducts } from "@/data/product/listProducts";
 import "../../../styles/tokens.css";
 import "../../../styles/semantic.css";
 
@@ -18,7 +18,7 @@ export default function ProductDetailPage() {
 
   const cargarMedicamento = () => {
     try {
-      const med = products.find((m) => m.id == id);
+      const med = listProducts.find((m) => m.id == id);
       if (med) {
         setMedicamento(med);
       } else {
