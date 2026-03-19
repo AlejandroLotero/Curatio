@@ -1,10 +1,12 @@
 import  DataTable  from "../components/DataTable"
 import { ProductColumns } from "../table/ProductColumns"
-import { products } from "@/data/product/products"
+import { listProducts } from "@/data/product/listProducts"
 import { Button } from "@/shared/components"
 import Select from "@/shared/components/Select"
 import { useNavigate } from "react-router-dom"
 import { useState, useMemo } from "react"
+import ProductReportConfigModal from "../reports/components/ProductReportConfigModal"
+
 
 export default function ListProductsPage() {
   const navigate = useNavigate()
@@ -13,26 +15,27 @@ export default function ListProductsPage() {
   const [filterLaboratorio, setFilterLaboratorio] = useState("")
   const [searchTerm, setSearchTerm] = useState("")
   const [pageSize, setPageSize] = useState(5)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   // Obtener opciones únicas para los filtros
   const viasAdministracion = useMemo(() => {
-    const vias = [...new Set(products.map(p => p.administration_guide))];
+    const vias = [...new Set(listProducts.map(p => p.administration_guide))];
     return vias.map((via) => ({ id: via, label: via }));
   }, []);
 
   const estados = useMemo(() => {
-    const est = [...new Set(products.map(p => p.state))];
+    const est = [...new Set(listProducts.map(p => p.state))];
     return est.map((estado) => ({ id: estado, label: estado }));
   }, []);
 
   const laboratorios = useMemo(() => {
-    const labs = [...new Set(products.map(p => p.laboratory))];
+    const labs = [...new Set(listProducts.map(p => p.laboratory))];
     return labs.map((lab) => ({ id: lab, label: lab }));
   }, []);
 
   // Filtrar productos según los filtros seleccionados
   const filteredProducts = useMemo(() => {
-    return products.filter(product => {
+    return listProducts.filter(product => {
       const matchVia = !filterVia || product.administration_guide === filterVia;
       const matchEstado = !filterEstado || product.state === filterEstado;
       const matchLaboratorio = !filterLaboratorio || product.laboratory === filterLaboratorio;
@@ -96,6 +99,13 @@ export default function ListProductsPage() {
           >
             Crear Medicamento
           </Button>
+          <Button
+            size="sm"
+            onClick={() => setIsModalOpen(true)}
+            disabled={false}
+          >
+            Generar Reporte
+          </Button>
           <select
             value={pageSize}
             onChange={(e) => setPageSize(Number(e.target.value))}
@@ -111,11 +121,16 @@ export default function ListProductsPage() {
       </div>
 
       <DataTable
-        data={filteredProducts}
+        data={listProducts}
         columns={ProductColumns}
         globalFilter={searchTerm}
         onGlobalFilterChange={setSearchTerm}
         pageSize={pageSize}
+      />
+
+      <ProductReportConfigModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
       />
 
     </div>

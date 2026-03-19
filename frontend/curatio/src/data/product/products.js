@@ -14,6 +14,7 @@ export const products = [
         description: "Analgesico y antipirético indicado para el alivio del dolor leve a moderado y la fiebre.",
         image: acetaminofen,
         category: "analgésicos"
+        
     },
     {
 
