@@ -32,7 +32,7 @@ export default function ReportConfigModal({
   const [scope, setScope] = useState("all");
 
 
-  // Estado para filtro por documento
+  // Estado para filtro por NIT
   const [documentNumber, setDocumentNumber] = useState("");
 
 
@@ -98,7 +98,7 @@ export default function ReportConfigModal({
 
         {/* Título */}
         <h2 className="mb-6 text-xl font-semibold text-label">
-          Generar reporte de usuarios
+          Generar reporte de proveedores
         </h2>
 
 
@@ -154,21 +154,21 @@ export default function ReportConfigModal({
             value={scope}
             onChange={(e) => setScope(e.target.value)}
             options={[
-              { label: "Todos los usuarios", value: "all" },
-              { label: "Filtrar por documento", value: "document" },
+              { label: "Todos los proveedores", value: "all" },
+              { label: "Filtrar por NIT", value: "nit" },
             ]}
           />
         </div>
 
 
-        {/* Campo condicional para filtro por documento */}
-        {scope === "document" && (
+        {/* Campo condicional para filtro por NIT */}
+        {scope === "nit" && (
           <div className="mb-4">
             <Input
-              label="Número de documento"
+              label="NIT"
               value={documentNumber}
               onChange={(e) => setDocumentNumber(e.target.value)}
-              placeholder="Ingrese número de documento"
+              placeholder="Ingrese NIT"
             />
           </div>
         )}

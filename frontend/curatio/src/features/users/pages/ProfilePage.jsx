@@ -37,13 +37,14 @@ export default function ProfilePage() {
 
           {/* Formulario con labels */}
           <div className="w-full flex flex-col items-center">
-            <div className="flex flex-col gap-3 w-full max-w-md">
+            <div className="grid grid-cols-2 gap-x-4 w-full">
               <Input
                 label="Nombres y apellidos:"
                 wrapperClassName="w-full"
                 className="bg-surface/60"
                 value="Juan Rivera"
                 readOnly
+                
               />
               <Input
                 label="Tipo de Documento:"

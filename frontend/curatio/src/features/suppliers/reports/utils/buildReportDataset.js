@@ -1,10 +1,10 @@
 // Función utilitaria para construir el dataset de un reporte (tabla)
 // Patrón: transformación de datos (input → output listo para exportar)
 export function buildReportDataset({
-  users,           // Array de usuarios origen
+  users,           // Array origen
   selectedFields,  // Campos seleccionados para el reporte [{ key, label }]
-  scope,           // Alcance del reporte: "all" | "document"
-  documentNumber   // Número de documento para filtrar (si aplica)
+  scope,           // Alcance del reporte: "all" | "nit"
+  documentNumber   // NIT para filtrar (si aplica)
 }) {
 
 
@@ -12,10 +12,10 @@ export function buildReportDataset({
   let filteredUsers = [...users];
 
 
-  // Filtro por alcance: si es por documento, se aplica filtro específico
-  if (scope === "document" && documentNumber) {
+  // Filtro por alcance: si es por NIT, se aplica filtro específico
+  if (scope === "nit" && documentNumber) {
     filteredUsers = filteredUsers.filter(
-      (user) => String(user.document ?? "") === String(documentNumber)
+      (user) => String(user.nit ?? "") === String(documentNumber)
     );
   }
 
@@ -26,7 +26,7 @@ export function buildReportDataset({
 
 
   // Construcción de filas del reporte
-  // Cada usuario se transforma en un array de valores según los campos seleccionados
+  // Cada registro se transforma en un array de valores según los campos seleccionados
   const rows = filteredUsers.map((user) =>
     selectedFields.map((field) => {
       const value = user[field.key]; // Acceso dinámico a la propiedad

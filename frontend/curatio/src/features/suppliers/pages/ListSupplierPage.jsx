@@ -3,8 +3,17 @@ import { Button } from "@/shared/components"
 import { Link } from "react-router-dom"
 import { SuppliersColumns } from "../table/SuppliersColumns"
 import {suppliers} from "../../../data/supplier/suppliers"
+import { useState } from "react"
+import ReportConfigModal from "../reports/components/ReportConfigModal"
 
 export default function ListSupplierPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [reportFormat, setReportFormat] = useState("pdf")
+
+  const handleOpenReportModal = (format) => {
+    setReportFormat(format)
+    setIsModalOpen(true)
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
@@ -29,11 +38,12 @@ export default function ListSupplierPage() {
                 Crear proveedor
               </Button>
             </Link>
-            <Button variant="secondary" size="sm" type="button">
-              Exportar en Excel
-            </Button>
-            <Button variant="secondary" size="sm" type="button">
-              Exportar en PDF
+            <Button
+              variant="secondary"
+              size="sm"
+              type="button"
+              onClick={() => handleOpenReportModal()}>
+              Generar reporte
             </Button>
           </div>
         </div>
@@ -43,6 +53,15 @@ export default function ListSupplierPage() {
           data={suppliers}
           columns={SuppliersColumns}
         />
+
+        {isModalOpen && (
+          <ReportConfigModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            initialFormat={reportFormat}
+            usersSource={suppliers}
+          />
+        )}
 
       </div>
     </div>
