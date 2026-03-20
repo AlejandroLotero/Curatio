@@ -5,7 +5,9 @@ import { ProfilePage, BasicInformationPage, ContactInformationPage, RolPage } fr
 import { LoginPage, ForgotPasswordPage, TokenPasswordPage, ResetPasswordPage } from "@/features/auth";
 import { CreateFormSuppliers, ContactInformationSuppliers, SupplierDetailPage } from "@/features/suppliers";
 import { ElectronicInvoiceSalesPage } from "@/features/sales";
-import { ProductPage, ListProductsPage, ProductDetailPage } from "@/features/products";
+import { ProductPage } from "@/features/products";
+import { ListProductsPage, ProductDetailPage, EditProductPage } from "@/features/products/admin/pages";
+import ProductsDetailPage from "@/features/products/pages/ProductDetailPage";
 import DashboardPage from "../../features/dashboard/pages/DashboardPage";
 import { ListUserPage } from "@/features/users";
 import { HomePage, NewHomePage } from "@/features/home";
@@ -93,7 +95,10 @@ const router = createBrowserRouter([
                 path: "products",
                 element: <ProductPage />
             },
-
+            {
+                path: "products/detail/:id",
+                element: <ProductsDetailPage />
+            },
             {
                 path: "sales/factura-electronica",
                 element: <ElectronicInvoiceSalesPage />
@@ -105,6 +110,10 @@ const router = createBrowserRouter([
             {
                 path: "products/detalle/:id",
                 element: <ProductDetailPage />
+            },
+            {
+                path: "products/editar/:id",
+                element: <EditProductPage />
             },
 
             {

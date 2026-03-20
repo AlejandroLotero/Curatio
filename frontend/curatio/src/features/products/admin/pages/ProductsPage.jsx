@@ -2,6 +2,7 @@ import Input from "@/shared/components/Input";
 import Button from "@/shared/components/Button";
 import Select from "@/shared/components/Select";
 import Modal from "@/shared/components/Modal";
+import ProductFileInput from "@/features/products/components/ProductFileInput";
 import { Link } from "react-router-dom";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
@@ -14,7 +15,7 @@ import {
   getViasAdministracion,
   getLaboratorios,
   getEstadosMedicamento,
-} from "../services/selectServices";
+} from "../../services/selectServices";
 
 export default function ProductsPage() {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
@@ -113,7 +114,7 @@ export default function ProductsPage() {
           "
           style={{ fontFamily: "var(--font-body)" }}
         >
-          GESTIÓN DE MEDICAMENTOS
+          GESTIÓN DE PRODUCTOS
         </h2>
 
         {/* Columna izquierda */}
@@ -234,6 +235,14 @@ export default function ProductsPage() {
           />
         </div>
 
+        {/* FileInput para imagen */}
+        <div className="col-span-full mt-3">
+          <ProductFileInput
+            label="Imagen del Medicamento"
+            onUpload={(url) => console.log("Imagen cargada:", url)}
+          />
+        </div>
+
         {/* Fila inferior: descripción ya va en columna izquierda, aquí botones */}
         <div className="col-span-full flex flex-col-reverse sm:flex-row justify-between gap-3 sm:gap-0 w-full max-w-full mx-auto mt-6 min-w-0">
           <Link to="/products/listar">
@@ -247,7 +256,7 @@ export default function ProductsPage() {
             type="button"
             onClick={() => setIsConfirmModalOpen(true)}
           >
-            Registrar Medicamento
+            Registrar Producto
           </Button>
         </div>
       </form>
