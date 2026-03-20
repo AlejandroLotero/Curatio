@@ -94,8 +94,9 @@ const NewHomePage = () => {
                 size="md"
                 type="button"
                 onClick={handlePrevSlide}
+                className = "bg-transparent"
               >
-                <ChevronLeft className="w-6 h-6" />
+                <ChevronLeft className="w-8 h-8" />
               </Button>
             </div>
 
@@ -124,8 +125,9 @@ const NewHomePage = () => {
                 size="md"
                 type="button"
                 onClick={handleNextSlide}
+                className = "bg-transparent"
               >
-                <ChevronRight className="w-6 h-6" />
+                <ChevronRight className="w-8 h-8" />
               </Button>
             </div>
           </div>
@@ -142,14 +144,15 @@ const NewHomePage = () => {
               <Card product={product} />
 
               <div className="flex items-center justify-between gap-4">
-                <div className="flex items-center gap-3 bg-white rounded-2xl p-1">
+                <div className="flex items-center gap-3 bg-white/50  border-none border-gray-200 rounded-2xl p-2">
                   <Button
                     variant="secondary"
                     size="md"
                     type="button"
                     onClick={() => handleDecrease(product.id)}
+                    className = "bg-transparent"
                   >
-                    <Minus className="w-4 h-4" />
+                    <Minus className="w-6 h-6" />
                   </Button>
 
                   <span className="min-w-[2rem] text-center font-semibold">
@@ -161,8 +164,9 @@ const NewHomePage = () => {
                     size="md"
                     type="button"
                     onClick={() => handleIncrease(product.id)}
+                    className = "bg-transparent"
                   >
-                    <Plus className="w-4 h-4" />
+                    <Plus className="w-6 h-6" />
                   </Button>
                 </div>
 

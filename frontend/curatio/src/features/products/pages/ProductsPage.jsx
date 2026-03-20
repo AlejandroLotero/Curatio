@@ -133,7 +133,7 @@ export default function ProductsPage() {
           "
           style={{ fontFamily: "var(--font-body)" }}
         >
-          GESTIÓN DE MEDICAMENTOS
+          GESTIÓN DE PRODUCTOS
         </h2>
 
         {/* Columna izquierda */}
@@ -283,7 +283,7 @@ export default function ProductsPage() {
             type="button"
             onClick={() => setIsConfirmModalOpen(true)}
           >
-            Registrar Medicamento
+            Registrar Producto
           </Button>
         </div>
       </form>

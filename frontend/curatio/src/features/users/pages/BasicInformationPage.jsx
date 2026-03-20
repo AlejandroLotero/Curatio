@@ -110,7 +110,7 @@ export default function BasicInformationPage() {
             Datos basicos
           </h2>
 
-          <div className="flex flex-col items-center w-full [&>*]:flex [&>*]:flex-col [&>*]:items-center">
+          <div className="flex flex-col items-center w-max ">
             <FileInput
               label="Foto de perfil"
               accept="image/*"
