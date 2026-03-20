@@ -45,7 +45,7 @@ export default function FileInput({
 
   return (
     //Contenedor del file input y la preview centrada
-    <div className="space-y-3 flex flex-col items-center w-full">
+    <div className="space-y-3 flex flex-col items-center w-full gap-6">
       <label
       //Se ajusta el label para que se vea centrado
         className="block text-mostsmall font-body font-heading text-label w-full text-center"
