@@ -40,18 +40,18 @@ export default function ListUserPage() {
             variant="secondary"
             size="sm"
             type="button"
-            onClick={() => handleOpenReportModal("excel")}
+            onClick={() => handleOpenReportModal()}
           >
-            Exportar en Excel
+            Generar Reporte
           </Button>
-          <Button
+          {/* <Button
             variant="secondary"
             size="sm"
             type="button"
             onClick={() => handleOpenReportModal("pdf")}
           >
             Exportar en PDF
-          </Button>
+          </Button> */}
         </div>
       </div>
 

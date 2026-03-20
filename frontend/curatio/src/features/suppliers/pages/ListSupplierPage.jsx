@@ -42,17 +42,8 @@ export default function ListSupplierPage() {
               variant="secondary"
               size="sm"
               type="button"
-              onClick={() => handleOpenReportModal("excel")}
-            >
-              Exportar en Excel
-            </Button>
-            <Button
-              variant="secondary"
-              size="sm"
-              type="button"
-              onClick={() => handleOpenReportModal("pdf")}
-            >
-              Exportar en PDF
+              onClick={() => handleOpenReportModal()}>
+              Generar reporte
             </Button>
           </div>
         </div>
