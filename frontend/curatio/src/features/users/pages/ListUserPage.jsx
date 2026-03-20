@@ -3,8 +3,17 @@ import { DataTableUser } from "@/features/users"
 import { UserColumns } from "../table/UserColumns"
 import { users } from "@/data/user/users"
 import { Button } from "@/shared/components"
+import { useState } from "react"
+import ReportConfigModal from "../reports/components/ReportConfigModal"
 
 export default function ListUserPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [reportFormat, setReportFormat] = useState("pdf")
+
+  const handleOpenReportModal = (format) => {
+    setReportFormat(format)
+    setIsModalOpen(true)
+  }
 
   return (
     <div className="p-6">
@@ -27,10 +36,20 @@ export default function ListUserPage() {
               Crear usuario
             </Button>
           </Link>
-          <Button variant="secondary" size="sm" type="button">
+          <Button
+            variant="secondary"
+            size="sm"
+            type="button"
+            onClick={() => handleOpenReportModal("excel")}
+          >
             Exportar en Excel
           </Button>
-          <Button variant="secondary" size="sm" type="button">
+          <Button
+            variant="secondary"
+            size="sm"
+            type="button"
+            onClick={() => handleOpenReportModal("pdf")}
+          >
             Exportar en PDF
           </Button>
         </div>
@@ -40,6 +59,15 @@ export default function ListUserPage() {
         data={users}
         columns={UserColumns}
       />
+
+      {isModalOpen && (
+        <ReportConfigModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          initialFormat={reportFormat}
+          usersSource={users}
+        />
+      )}
 
     </div>
   )
