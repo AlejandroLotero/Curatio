@@ -33,7 +33,7 @@ const Navbar = ({ variant = "solid" }) => {
     <nav
       className={`w-full border-b transition-color duration-300${
         variant === "transparent"
-          ? "bg-transparent border-transparent absolute top-0 left-0 z-30"
+          ? "bg-transparent border-transparent absolute top-0 left-0 z-100"
           : "bg-background border-border"
       }`}
     >

@@ -112,13 +112,18 @@ export default function CreateFormSuppliers() {
 
           {/* Botones de acción */}
           <div className="flex justify-between w-full max-w-[320px] mt-6">
-            <Button
+            <Link to= "/suppliers/listar-proveedores">
+                <Button
               variant="secondary"
               size="sm"
               onClick={() => console.log("Oprimió cancelar")}
             >
               Cancelar
             </Button>
+            </Link>
+
+            
+            
 
             <Button variant="primary" size="sm" type="submit">
               Siguiente

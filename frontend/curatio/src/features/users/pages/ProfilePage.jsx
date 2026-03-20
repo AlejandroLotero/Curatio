@@ -13,7 +13,7 @@ export default function ProfilePage() {
       className="min-h-screen flex items-center justify-center text-label px-6 bg-cover bg-center"
       style={{ backgroundImage: `url(${bgAll})` }}
     >
-      <div className="w-full max-w-5xl flex gap-16 items-center">
+      <div className="w-full max-w-5xl grid grid-cols-2 gap-16 items-center">
         {/* Columna izquierda: avatar en Card */}
         <div className="flex flex-col items-center">
           <div className="text-center [&_h2]:text-primarybtntext">
@@ -44,7 +44,6 @@ export default function ProfilePage() {
                 className="bg-surface/60"
                 value="Juan Rivera"
                 readOnly
-                
               />
               <Input
                 label="Tipo de Documento:"

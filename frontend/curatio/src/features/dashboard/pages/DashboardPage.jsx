@@ -66,7 +66,7 @@ export default function HomePage() {
 
   return (
     <section
-      className="relative min-h-screen w-full text-black"
+      className="relative min-h-screen w-full z-10 text-black"
       style={{
         backgroundImage: `url(${bgAll})`,
         backgroundSize: "cover",

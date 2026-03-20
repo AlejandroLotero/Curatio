@@ -10,7 +10,7 @@ export const products = [
 
         id: 1,
         title: "Acetaminofén 500 mg",
-        price: 4500,
+        price: 11000,
         description: "Analgesico y antipirético indicado para el alivio del dolor leve a moderado y la fiebre.",
         image: acetaminofen,
         category: "analgésicos"
