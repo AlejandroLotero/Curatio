@@ -3,6 +3,7 @@ import { Search, User, Cross, ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
 import {useEffect, useState } from "react";
 import LogoutButton from "@/features/auth/components/LogoutButton";
+import { useCart } from "@/features/cartshop/context/CartContext";
 
 const Navbar = ({ variant = "solid" }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,6 +11,8 @@ const Navbar = ({ variant = "solid" }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(
     localStorage.getItem("isLoggedIn") === "true",
   );
+
+  const { cartCount } = useCart();
 
     useEffect(() => {
     const syncAuth = () => {
@@ -30,7 +33,7 @@ const Navbar = ({ variant = "solid" }) => {
     <nav
       className={`w-full border-b transition-color duration-300${
         variant === "transparent"
-          ? "bg-transparent border-transparent absolute top-0 left-0 z-30"
+          ? "bg-transparent border-transparent absolute top-0 left-0 z-100"
           : "bg-background border-border"
       }`}
     >
@@ -67,7 +70,7 @@ const Navbar = ({ variant = "solid" }) => {
             </li>
             <li>
               <Link
-                to="/suppliers/datos-basicos"
+                to="/suppliers/listar-proveedores"
                 className="hover:text-primary transition"
               >
                 Proveedores
@@ -79,7 +82,7 @@ const Navbar = ({ variant = "solid" }) => {
               </Link>
             </li>
             <li>
-              <Link to="/list-cartshop" className="hover:text-primary transition">
+              <Link to="/cartshop/list-cartshop" className="hover:text-primary transition">
                 Carrito
               </Link>
             </li>
@@ -112,9 +115,14 @@ const Navbar = ({ variant = "solid" }) => {
               {/* Icono carrito */}
               <button
                 type="button"
-                className="hidden sm:flex items-center justify-center size-10 rounded-full border hover:bg-surface transition border-border-strong ml-4"
+                className="relative hidden sm:flex items-center justify-center size-10 rounded-full border hover:bg-surface transition border-border-strong ml-4"
               >
                 <ShoppingCart className="size-5 text-label" />
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-[10px] font-bold text-white">
+                  {cartCount}
+                </span>
+              )}
               </button>
             </div>
 

@@ -45,7 +45,7 @@ export default function FileInput({
 
   return (
     //Contenedor del file input y la preview centrada
-    <div className="space-y-3 flex flex-col items-center w-full">
+    <div className="space-y-3 flex flex-col items-center w-full gap-4">
       <label
       //Se ajusta el label para que se vea centrado
         className="block text-mostsmall font-body font-heading text-label w-full text-center"
@@ -55,7 +55,7 @@ export default function FileInput({
 
 
       {/* Input oculto + botón "Elegir archivo" y mensaje debajo */}
-      <div className="flex flex-col items-center w-full">
+      <div className="flex flex-col items-center w-full gap-6">
         <input
           ref={inputRef}
           type="file"
@@ -73,12 +73,7 @@ export default function FileInput({
         >
           Elegir archivo
         </button>
-        <p
-          id="file-status" //Se le asigna un id al p que muestra el nombre del archivo
-          className="mt-2 text-small font-body text-label text-center" //Se ajusta el estilo del p que muestra el nombre del archivo
-        >
-          {file ? file.name : "No se ha seleccionado ningún archivo"} {/*Se muestra el nombre del archivo o un mensaje de que no se ha seleccionado ningún archivo */}
-        </p>
+       
       </div>
 
       {/* //Se muestra la imagen de la preview o la imagen por defecto se ajusta rounded para que se vea mas cuadrado*/}

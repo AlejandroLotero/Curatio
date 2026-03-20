@@ -2,8 +2,12 @@ const Card = ({product}) => {
 
     const {title, image, price, description } = product;
 
+
+        
+
     return (
-        <div className="
+      <div
+        className="
             w-80
             text-text-inverse
             dark:bg-neutral-950/70
@@ -15,33 +19,24 @@ const Card = ({product}) => {
             transition-shadow
             duration-700      
         
-        ">
+        "
+      >
+        <img src={image} image={title} className="w-full h-48 object-contain" />
 
-            <img
-            src= {image}
-            image= {title}
-            className="w-full h-48 object-contain" 
-            />
+        <div className="p-5 space-y-3">
+          <h2 className="text-xl font-semibold">{title}</h2>
 
-            <div className="p-5 space-y-3">
+          <p className="text-sm">{description}</p>
 
-                <h2 className="text-xl font-semibold">
-                    {title}
-                </h2>
-
-                <p className="text-sm">
-                    {description}
-                </p>
-
-                <p className="text-lg font-bold text-cyan-200">
-
-                    {/* Esto agrega separadores de miles, lo que mejora la lectura.
-                    toLocaleString() */}
-                    ${price.toLocaleString()}
-                </p>
-
-            </div>
+          <p className="text-lg font-bold text-cyan-200">
+            {price.toLocaleString("es-CO", {
+              style: "currency",
+              currency: "COP",
+              minimumFractionDigits: 0,
+            })}
+          </p>
         </div>
+      </div>
     );
 }
 

@@ -22,7 +22,7 @@ export default function MainLayout() {
         className="pointer-events-none absolute inset-0 -z-10 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${bgAll})` }}
       />
-      <div className="pointer-events-none absolute inset-0 -z-10" />
+      <div className="pointer-events-none absolute inset-0 " />
 
       <Navbar variant={isHome ? "transparent" : "solid"} />
 

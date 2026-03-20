@@ -100,7 +100,7 @@ export default function HomePage() {
                 />
                 <button
                   onClick={() => setCartItems({...cartItems, [index]: (cartItems[index] || 1) + 1})}
-                  className="p-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition"
+                  className="p-2 rounded-lg bg-gray-100 hover:bg-gray-100/80 transition"
                 >
                   <Plus size={18} style={{ color: "var(--color-black)" }} />
                 </button>

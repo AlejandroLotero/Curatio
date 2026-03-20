@@ -5,3 +5,6 @@ export { default as ProfilePage } from "./pages/ProfilePage";
 export { default as RolPage } from "./pages/RolPage";
 export { default as ListUserPage } from "./pages/ListUserPage";
 export { default as DataTableUser } from "./components/DataTableUser";
+export { default as UpdateBasicInformationPage } from "./pages/UpdateBasicInformationPage";
+export { default as UpdateContactInformationPage } from "./pages/UpdateContactInformationPage";
+export { default as UpdateRolPage } from "./pages/UpdateRolPage";

@@ -5,19 +5,21 @@
 
 import { Eye, EyeClosed } from "lucide-react";
 //wrapperClassName: para agregar clases al contenedor del input
-export default function Input({ label, type = "text", className, wrapperClassName, showPassword, onTogglePassword, ...props }) {
+export default function Input({ label, type = "text", error, className, wrapperClassName, showPassword, onTogglePassword, ...props }) {
   return (
     <div className={wrapperClassName ?? "w-[320px]"}>
       {/* label */}
       {label && (
         <label
-          className="block
+          className={`        block
                               mb-1
                               text-label
                               font-body
                               font-heading
                               text-mostsmall
-                              "
+                              ${error ? "text-red-600" : "text-label"}`}
+
+                              
         >
           {label}
         </label>
@@ -73,6 +75,7 @@ export default function Input({ label, type = "text", className, wrapperClassNam
           cursor-pointer
           ${type === "password" && onTogglePassword ? "pr-12" : ""}
           ${className ?? ""}
+          ${error ? "text-red-600" : "border-border-strong"}
           `}
           {...props}
         />
@@ -89,6 +92,7 @@ export default function Input({ label, type = "text", className, wrapperClassNam
           </button>
         )}
       </div>
+      {error && <p className="text-mostsmall text-red-600 mt-1">{error}</p>}
     </div>
   );
 }

@@ -3,14 +3,17 @@ import Buttom from "@/shared/components/Button";
 import Card from "@/shared/components/CardProfile";
 import pf2 from "@/assets/images/pf2.png";
 import bgAll from "@/assets/images/bgAll.jpg";
+import { Link, useParams } from "react-router-dom";
+
 
 export default function ProfilePage() {
+  const { id } = useParams();
   return (
     <div
       className="min-h-screen flex items-center justify-center text-label px-6 bg-cover bg-center"
       style={{ backgroundImage: `url(${bgAll})` }}
     >
-      <div className="w-full max-w-5xl flex gap-16 items-center">
+      <div className="w-full max-w-5xl grid grid-cols-2 gap-16 items-center">
         {/* Columna izquierda: avatar en Card */}
         <div className="flex flex-col items-center">
           <div className="text-center [&_h2]:text-primarybtntext">
@@ -34,7 +37,7 @@ export default function ProfilePage() {
 
           {/* Formulario con labels */}
           <div className="w-full flex flex-col items-center">
-            <div className="flex flex-col gap-3 w-full max-w-md">
+            <div className="grid grid-cols-2 gap-x-4 w-full">
               <Input
                 label="Nombres y apellidos:"
                 wrapperClassName="w-full"
@@ -102,12 +105,18 @@ export default function ProfilePage() {
 
             {/* Botones */}
             <div className="mt-8 flex gap-4 w-full max-w-md justify-between">
-              <Buttom variant="secondary" size="sm" type="button">
+              <Link
+                to="/accounts/list">
+                <Buttom variant="secondary" size="sm" type="button">
                 Cancelar
               </Buttom>
-              <Buttom variant="primary" size="sm" type="button">
+              </Link>
+              <Link to={id ? `/accounts/editar-datos-basicos/${id}` : "/accounts/list"}>
+                <Buttom variant="primary" size="sm" type="button">
                 Editar
               </Buttom>
+              </Link>
+
             </div>
           </div>
         </div>

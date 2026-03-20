@@ -1,14 +1,15 @@
 import {createBrowserRouter, Navigate, Outlet} from "react-router-dom";
 import { MainLayout } from "@/features/layouts";
 import { AuthLayout } from "@/features/layouts";
-import { ProfilePage, BasicInformationPage, ContactInformationPage, RolPage } from "@/features/users";
+import { ProfilePage, BasicInformationPage, ContactInformationPage, RolPage, UpdateBasicInformationPage, UpdateContactInformationPage, UpdateRolPage } from "@/features/users";
 import { LoginPage, ForgotPasswordPage, TokenPasswordPage, ResetPasswordPage } from "@/features/auth";
 import { CreateFormSuppliers, ContactInformationSuppliers, SupplierDetailPage } from "@/features/suppliers";
 import { ElectronicInvoiceSalesPage } from "@/features/sales";
-import { ProductPage } from "@/features/products";
-import { ListProductsPage, ProductDetailPage, EditProductPage } from "@/features/products/admin/pages";
+// import { ProductPage } from "@/features/products";
+import { ProductsPage, ListProductsPage, ProductDetailPage, EditProductPage } from "@/features/products/admin/pages";
 import ProductsDetailPage from "@/features/products/pages/ProductDetailPage";
 import DashboardPage from "../../features/dashboard/pages/DashboardPage";
+import ListSupplierPage from "../../features/suppliers/pages/ListSupplierPage";
 import { ListUserPage } from "@/features/users";
 import { HomePage, NewHomePage } from "@/features/home";
 import CartShopLayout from "../../features/layouts/CartShopLayout";
@@ -61,10 +62,25 @@ const router = createBrowserRouter([
                         element: <ProfilePage />
                     },
                     {
+                        path: "perfil/:id",
+                        element: <ProfilePage />
+                    },
+                    {
                         path: "list",
                         element: <ListUserPage />
-                    }
-                    
+                    },
+                    {
+                        path: "editar-datos-basicos/:id",
+                        element: <UpdateBasicInformationPage />
+                    },
+                    {
+                        path: "editar-datos-contacto",
+                        element: <UpdateContactInformationPage />
+                    },
+                    {
+                        path: "editar-rol",
+                        element: <UpdateRolPage />
+                    },                    
                 ]
             },
 
@@ -81,6 +97,10 @@ const router = createBrowserRouter([
                         element: <CreateFormSuppliers />
                     },
                     {
+                        path: "listar-proveedores",
+                        element: <ListSupplierPage />
+                    },
+                    {
                         path: "datos-contacto",
                         element: <ContactInformationSuppliers />
                     },
@@ -93,7 +113,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "products",
-                element: <ProductPage />
+                element: <ProductsPage />
             },
             {
                 path: "products/detail/:id",
@@ -120,44 +140,50 @@ const router = createBrowserRouter([
                 path: "perfil",
                 element: <ProfilePage/>
             },
-            
-        ]
+            {
+                    path:"cartshop",
+                    element: <CartShopLayout />,
+                    children: [
+
+
+                        {
+
+                            // index: true,
+                            path:"list-cartshop",
+                            element: <ListCartShopPage/>
+
+                        },
+
+                        {
+                            path: "forgot-password",
+                            element: <ForgotPasswordPage/>
+                        },
+
+                        {
+                            path: "reset-password",
+                            element: <ResetPasswordPage></ResetPasswordPage>
+                        },
+
+                        {
+                            path: "send-token",
+                            element: <TokenPasswordPage></TokenPasswordPage>
+                        },
+
+                        {
+                            path: "perfil",
+                            element: <ProfilePage/>
+                        },
+                    
+                        
+                    ]
+                }
+            ]
     },
-
-    {
-        element:<CartShopLayout/>,
-        children: [
-
-            {
-
-                // index: true,
-                path:"list-cartshop",
-                element: <ListCartShopPage/>
-
-            },
-
-            {
-                path: "forgot-password",
-                element: <ForgotPasswordPage/>
-            },
-
-            {
-                path: "reset-password",
-                element: <ResetPasswordPage></ResetPasswordPage>
-            },
-
-            {
-                path: "send-token",
-                element: <TokenPasswordPage></TokenPasswordPage>
-            },
-
-            {
-                path: "perfil",
-                element: <ProfilePage/>
-            },
             
-        ]
-    },
+                        
+                    
+    
+                  
 
     {
         element:<AuthLayout/>,

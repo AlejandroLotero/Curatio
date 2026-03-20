@@ -16,11 +16,16 @@ import Checkbox from "@/shared/components/Checkbox";
 
 
 // Componente modal para configuración de reportes
-export default function ReportConfigModal({ isOpen, onClose }) {
+export default function ReportConfigModal({
+  isOpen,
+  onClose,
+  initialFormat = "pdf",
+  usersSource
+}) {
 
 
   // Estado del formato de salida
-  const [format, setFormat] = useState("pdf");
+  const [format, setFormat] = useState(initialFormat);
 
 
   // Estado del alcance del reporte
@@ -35,7 +40,6 @@ export default function ReportConfigModal({ isOpen, onClose }) {
   const [selectedFields, setSelectedFields] = useState(() =>
     userReportFields.filter((f) => f.default) // Solo campos marcados por defecto
   );
-
 
   // Control de render: si el modal no está abierto, no se monta en el DOM
   if (!isOpen) return null;
@@ -74,6 +78,7 @@ export default function ReportConfigModal({ isOpen, onClose }) {
       selectedFields,
       scope,
       documentNumber,
+      usersSource
     });
 
 
@@ -92,7 +97,7 @@ export default function ReportConfigModal({ isOpen, onClose }) {
 
 
         {/* Título */}
-        <h2 className="mb-6 text-xl font-semibold">
+        <h2 className="mb-6 text-xl font-semibold text-label">
           Generar reporte de usuarios
         </h2>
 
@@ -113,11 +118,11 @@ export default function ReportConfigModal({ isOpen, onClose }) {
 
         {/* Selección de campos */}
         <div className="mb-4">
-          <p className="mb-2 font-medium">Campos del reporte</p>
+          <p className="mb-2 font-medium text-label">Campos del reporte</p>
 
 
           {/* Grid de checkboxes */}
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-2 text-label">
             {userReportFields.map((field) => {
 
 

@@ -54,10 +54,10 @@ export default function ProductDetailPage() {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <p className="text-label mb-4">Medicamento no encontrado</p>
+          <p className="text-label mb-4">Producto no encontrado</p>
           <Link to="/products/listar">
             <Button variant="primary" size="sm">
-              Volver a medicamentos
+              Volver a productos
             </Button>
           </Link>
         </div>
@@ -95,7 +95,7 @@ export default function ProductDetailPage() {
           "
           style={{ color: "var(--color-black)", fontFamily: "var(--font-body)" }}
         >
-          DETALLES DEL MEDICAMENTO
+          DETALLES DEL PRODUCTO
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
