@@ -1,45 +1,39 @@
+import {
+  getPharmaceuticalForms,
+  getPresentations,
+  getAdministrationRoutes,
+  getLaboratories,
+  getMedicationStatuses,
+  getActiveSuppliers,
+} from "@/lib/http/catalogs";
+import { adaptCatalogItems } from "@/lib/adapters/medicationAdapter";
+
 export async function getFormasFarmaceuticas() {
-  const response = await fetch("/src/data/selects/formasFarmaceuticas.json");
-  return response.json();
+  const response = await getPharmaceuticalForms();
+  return adaptCatalogItems(response);
 }
 
-export async function getPresentacionesEspeciales() {
-  const response = await fetch("/src/data/selects/presentacionesEspeciales.json");
-  return response.json();
-}
-
-export async function getPresentacionesGaseosas() {
-  const response = await fetch("/src/data/selects/presentacionesGaseosas.json");
-  return response.json();
-}
-
-export async function getPresentacionesLiquidas() {
-  const response = await fetch("/src/data/selects/presentacionesLiquidas.json");
-  return response.json();
-}
-
-export async function getPresentacionesSemisolidas() {
-  const response = await fetch("/src/data/selects/presentacionesSemisolidas.json");
-  return response.json();
-}
-
-export async function getPresentacionesSolidas() {
-  const response = await fetch("/src/data/selects/presentacionesSolidas.json");
-  return response.json();
+export async function getPresentacionesByForma(formaId) {
+  const response = await getPresentations(formaId);
+  return adaptCatalogItems(response);
 }
 
 export async function getViasAdministracion() {
-  const response = await fetch("/src/data/selects/viasAdministracion.json");
-  return response.json();
+  const response = await getAdministrationRoutes();
+  return adaptCatalogItems(response);
 }
 
 export async function getLaboratorios() {
-  const response = await fetch("/src/data/selects/laboratorios.json");
-  return response.json();
+  const response = await getLaboratories();
+  return adaptCatalogItems(response);
 }
 
 export async function getEstadosMedicamento() {
-  const response = await fetch("/src/data/selects/estadosMedicamento.json");
-  return response.json();
+  const response = await getMedicationStatuses();
+  return adaptCatalogItems(response);
 }
 
+export async function getProveedoresActivos() {
+  const response = await getActiveSuppliers();
+  return adaptCatalogItems(response);
+}

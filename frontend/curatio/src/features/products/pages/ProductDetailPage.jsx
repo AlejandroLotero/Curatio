@@ -1,209 +1,123 @@
-import { useState } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
-import { Plus, Minus, ArrowLeft } from "lucide-react";
-import { Button } from "@/shared/components";
-import Modal from "@/shared/components/Modal";
-import { listProducts } from "@/data/product/listProducts";
+import { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
+import Button from "@/shared/components/Button";
+import { getMedicationById } from "@/lib/http/medications";
+import { adaptMedicationDetail } from "@/lib/adapters/medicationAdapter";
+import "../../../styles/tokens.css";
+import "../../../styles/semantic.css";
 
-export default function ProductsDetailPage() {
+export default function ProductDetailPage() {
   const { id } = useParams();
-  const navigate = useNavigate();
-  const [quantity, setQuantity] = useState(1);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [medicamento, setMedicamento] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const product = listProducts.find((p) => p.id == id);
+  useEffect(() => {
+    const cargarMedicamento = async () => {
+      try {
+        setLoading(true);
+        const response = await getMedicationById(id);
+        const med = adaptMedicationDetail(response?.data?.medication);
+        setMedicamento(med);
+      } catch (error) {
+        console.error("Error cargando medicamento:", error);
+        setMedicamento(null);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  if (!product) {
+    cargarMedicamento();
+  }, [id]);
+
+  const DetailField = ({ label, value }) => (
+    <div className="flex flex-col gap-2">
+      <label className="text-sm font-semibold text-label" style={{ color: "var(--color-black)", fontFamily: "var(--font-body)" }}>
+        {label}
+      </label>
+      <p className="p-3 rounded-lg bg-cyan-50 text-label" style={{ color: "var(--color-black)", fontFamily: "var(--font-body)", border: "1px solid var(--color-primary-200)" }}>
+        {value || "—"}
+      </p>
+    </div>
+  );
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p className="text-label">Cargando...</p>
+      </div>
+    );
+  }
+
+  if (!medicamento) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <p className="text-xl mb-4">Producto no encontrado</p>
-          <Button variant="primary" size="md" onClick={() => navigate("/")}>
-            Volver al inicio
-          </Button>
+          <p className="text-label mb-4">Medicamento no encontrado</p>
+          <Link to="/products/listar">
+            <Button variant="primary" size="sm">
+              Volver a medicamentos
+            </Button>
+          </Link>
         </div>
       </div>
     );
   }
 
-  const handleAddToCart = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
   return (
-    <div className="min-h-screen pt-24 pb-12 bggall font-roboto">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Botón Volver */}
-        <Link
-          to="/"
-          className="inline-flex items-center justify-center w-12 h-12 mb-8 text-label hover:opacity-70 transition-colors"
-          title="Volver"
+    <div className="relative min-h-screen w-full">
+      <div className="relative flex items-center justify-center min-h-screen text-label px-4 py-6 sm:px-6 sm:py-8 w-full min-w-0 overflow-x-hidden">
+        <div
+          className="
+            w-full max-w-5xl
+            min-w-0
+            px-4 py-8 sm:px-6 sm:py-12
+            flex flex-col gap-6
+            bg-white/30
+            backdrop-blur-md
+            border
+            rounded-lg
+            shadow-xl
+            ring-1
+          "
+          style={{ borderColor: "var(--color-primary-200)" }}
         >
-          <ArrowLeft size={24} />
-        </Link>
+          <h2
+            className="text-center text-4xl font-bold text-label wrap-break-word"
+            style={{ color: "var(--color-black)", fontFamily: "var(--font-body)" }}
+          >
+            DETALLES DEL MEDICAMENTO
+          </h2>
 
-        {/* Contenedor principal */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 bgformglass rounded-lg p-6 sm:p-10 shadow-lg border-2 border-black">
-          {/* Columna izquierda: Imagen */}
-          <div className="flex items-center justify-center">
-            <div className="w-full aspect-square bg-gradient-to-br from-cyan-100 to-blue-100 rounded-lg flex items-center justify-center overflow-hidden">
-              <img
-                src={`/assets/images/productos/${product.id}.jpg`}
-                alt={product.nameproduct}
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  e.target.src =
-                    "https://via.placeholder.com/400?text=" +
-                    encodeURIComponent(product.nameproduct);
-                }}
-              />
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <DetailField label="ID" value={medicamento.visualId} />
+            <DetailField label="Medicamento" value={medicamento.nameproduct} />
+            <DetailField label="Forma Farmacéutica" value={medicamento.formaFarmaceutica} />
+            <DetailField label="Presentación" value={medicamento.presentacion} />
+            <DetailField label="Concentración" value={medicamento.concentration} />
+            <DetailField label="Descripción" value={medicamento.descripcion} />
+            <DetailField label="Vía de Administración" value={medicamento.administration_guide} />
+            <DetailField label="Laboratorio" value={medicamento.laboratory} />
+            <DetailField label="Lote" value={medicamento.lote} />
+            <DetailField label="Fecha de Fabricación" value={medicamento.fechaFabricacion} />
+            <DetailField label="Fecha de Vencimiento" value={medicamento.fechaVencimiento} />
+            <DetailField label="Stock" value={medicamento.stock} />
+            <DetailField label="Precio de Compra" value={`$${medicamento.precioCompra}`} />
+            <DetailField label="Precio de Venta" value={`$${medicamento.precioVenta}`} />
+            <DetailField label="Proveedor" value={medicamento.proveedor} />
+            <DetailField label="Estado" value={medicamento.state} />
           </div>
 
-          {/* Columna derecha: Información */}
-          <div className="flex flex-col justify-between">
-            {/* Encabezado */}
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold mb-2 text-label">
-                {product.nameproduct}
-              </h1>
-              <p className="text-sm text-label mb-4">
-                Laboratorio: <span className="font-semibold">{product.laboratory}</span>
-              </p>
-
-              {/* Precio destacado */}
-              <div className="bg-gradient-to-r from-[var(--color-secondary-600)] to-[var(--color-secondary-400)] text-white p-4 rounded-lg mb-6">
-                <p className="text-sm mb-1 text-label">Precio:</p>
-                <p className="text-3xl font-bold text-label">${product.precioVenta}</p>
-              </div>
-
-              {/* Stock */}
-              <div className="mb-6">
-                <p
-                  className={`text-sm font-semibold text-label ${
-                    product.stock > 0 ? "text-green-600" : "text-red-600"
-                  }`}
-                >
-                  {product.stock > 0
-                    ? `✓ ${product.stock} unidades disponibles`
-                    : "Agotado"}
-                </p>
-              </div>
-
-              {/* Descripción */}
-              <div className="mb-6">
-                <h2 className="text-lg font-semibold mb-2 text-label">Descripción</h2>
-                <p className="text-label leading-relaxed">
-                  {product.descripcion}
-                </p>
-              </div>
-
-              {/* Información técnica */}
-              <div className="grid grid-cols-2 gap-4 mb-6 p-4 bg-gray-600 rounded-lg">
-                <div>
-                  <p className="text-xs text-label mb-1">Forma</p>
-                  <p className="font-semibold text-sm text-label">
-                    {product.formaFarmaceutica}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xs text-label mb-1">Presentación</p>
-                  <p className="font-semibold text-sm text-label">{product.presentacion}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-label mb-1">Concentración</p>
-                  <p className="font-semibold text-sm text-label">{product.concentration}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-label mb-1">Vía</p>
-                  <p className="font-semibold text-sm text-label">
-                    {product.administration_guide}
-                  </p>
-                </div>
-              </div>
-
-              {/* Información adicional */}
-              <div className="space-y-2 mb-6 text-sm text-label">
-                <p>
-                  <span className="font-semibold">Lote:</span> {product.lote}
-                </p>
-                <p>
-                  <span className="font-semibold">Vencimiento:</span>{" "}
-                  {product.fechaVencimiento}
-                </p>
-              </div>
-            </div>
-
-            {/* Acciones de compra */}
-            <div className="space-y-4 pt-6 border-t">
-              {/* Selector de cantidad */}
-              <div className="flex items-center gap-4">
-                <span className="text-sm font-semibold text-label">Cantidad:</span>
-                <div className="flex items-center gap-2 bg-transparent rounded-lg p-1">
-                  <button
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="p-2 hover:bg-gray-200 rounded transition text-black"
-                    disabled={quantity <= 1}
-                  >
-                    <Minus size={18} />
-                  </button>
-                  <span className="w-12 text-center font-semibold text-label">
-                    {quantity}
-                  </span>
-                  <button
-                    onClick={() =>
-                      setQuantity(Math.min(product.stock, quantity + 1))
-                    }
-                    className="p-2 hover:bg-gray-200 rounded transition text-black"
-                    disabled={quantity >= product.stock}
-                  >
-                    <Plus size={18} />
-                  </button>
-                </div>
-              </div>
-
-              {/* Botón Agregar al carrito */}
-              <Button
-                variant="primary"
-                size="sm"
-                onClick={handleAddToCart}
-                disabled={product.stock === 0}
-                className="bg-green-800 hover:bg-green-700 text-label rounded-lg"
-              >
-                {product.stock > 0 ? "Agregar al carrito" : "Agotado"}
+          <div className="flex w-full pt-4">
+            <Link to="/products/listar">
+              <Button variant="secondary" size="sm">
+                <ArrowLeft size={16} className="mr-2" />
+                Volver
               </Button>
-            </div>
+            </Link>
           </div>
         </div>
       </div>
-
-      {/* Modal de confirmación */}
-      <Modal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        title="Producto agregado"
-        message={`Has agregado ${quantity} unidad(es) de ${product.nameproduct} a tu carrito.`}
-      >
-        <div className="flex justify-center gap-4">
-          <Button variant="secondary" size="md" onClick={handleCloseModal}>
-            Continuar comprando
-          </Button>
-          <Button
-            variant="primary"
-            size="md"
-            onClick={() => {
-              handleCloseModal();
-              navigate("/");
-            }}
-          >
-            Ir al carrito
-          </Button>
-        </div>
-      </Modal>
     </div>
   );
 }

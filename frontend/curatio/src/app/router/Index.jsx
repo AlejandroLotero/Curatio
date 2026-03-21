@@ -1,226 +1,224 @@
-import {createBrowserRouter, Navigate, Outlet} from "react-router-dom";
+import { createBrowserRouter, Navigate, Outlet } from "react-router-dom";
 import { MainLayout } from "@/features/layouts";
 import { AuthLayout } from "@/features/layouts";
-import { ProfilePage, BasicInformationPage, ContactInformationPage, RolPage, UpdateBasicInformationPage, UpdateContactInformationPage, UpdateRolPage } from "@/features/users";
-import { LoginPage, ForgotPasswordPage, TokenPasswordPage, ResetPasswordPage } from "@/features/auth";
-import { CreateFormSuppliers, ContactInformationSuppliers, SupplierDetailPage } from "@/features/suppliers";
+import {
+  ProfilePage,
+  BasicInformationPage,
+  ContactInformationPage,
+  RolPage,
+  UpdateBasicInformationPage,
+  UpdateContactInformationPage,
+  UpdateRolPage,
+} from "@/features/users";
+import {
+  LoginPage,
+  ForgotPasswordPage,
+  TokenPasswordPage,
+  ResetPasswordPage,
+} from "@/features/auth";
+import {
+  CreateFormSuppliers,
+  ContactInformationSuppliers,
+  SupplierDetailPage,
+} from "@/features/suppliers";
 import { ElectronicInvoiceSalesPage } from "@/features/sales";
-// import { ProductPage } from "@/features/products";
-import { ProductsPage, ListProductsPage, ProductDetailPage, EditProductPage } from "@/features/products/admin/pages";
-import ProductsDetailPage from "@/features/products/pages/ProductDetailPage";
+import {
+  ProductsPage,
+  ProductDetailPage,
+  ListProductsPage,
+} from "@/features/products";
 import DashboardPage from "../../features/dashboard/pages/DashboardPage";
 import ListSupplierPage from "../../features/suppliers/pages/ListSupplierPage";
 import { ListUserPage } from "@/features/users";
 import { HomePage, NewHomePage } from "@/features/home";
 import CartShopLayout from "../../features/layouts/CartShopLayout";
 import ListCartShopPage from "../../features/cartshop/page/ListCartShopPage";
+import ProtectedRoute from "@/app/router/ProtectedRoute";
 
 const router = createBrowserRouter([
 
-    {
-        
-        element:<MainLayout/>,
+  {
+        element: <AuthLayout />,
         children: [
+          {
+            // index: true,
+            path: "login",
+            element: <LoginPage />,
+          },
 
-            {
-                // index: true,
-                path:"/",
-                element: <NewHomePage/>
-            },
-            {
-                path:"/home",
-                element: <HomePage/>
-            },
-            {
-                // index: true,
-                path:"dashboard",
-                element: <DashboardPage/>
-            },
+          {
+            path: "forgot-password",
+            element: <ForgotPasswordPage />,
+          },
 
-            {
-                path: "accounts",
-                element: <Outlet />,
-                children: [
-                    {
-                        index: true,
-                        element: <Navigate to="/accounts/datos-basicos" replace />
-                    },
-                    {
-                        path: "datos-basicos",
-                        element: <BasicInformationPage />
-                    },
-                    {
-                        path: "contacto",
-                        element: <ContactInformationPage />
-                    },
-                    {
-                        path: "rol",
-                        element: <RolPage />
-                    },
-                    {
-                        path: "perfil",
-                        element: <ProfilePage />
-                    },
-                    {
-                        path: "perfil/:id",
-                        element: <ProfilePage />
-                    },
-                    {
-                        path: "list",
-                        element: <ListUserPage />
-                    },
-                    {
-                        path: "editar-datos-basicos/:id",
-                        element: <UpdateBasicInformationPage />
-                    },
-                    {
-                        path: "editar-datos-contacto",
-                        element: <UpdateContactInformationPage />
-                    },
-                    {
-                        path: "editar-rol",
-                        element: <UpdateRolPage />
-                    },                    
-                ]
-            },
+          {
+            path: "reset-password",
+            element: <ResetPasswordPage></ResetPasswordPage>,
+          },
 
-            {
-                path:"suppliers",
-                element: <Outlet />,
-                children: [
-                    {
-                        index: true,
-                        element: <Navigate to="datos-basicos" replace />
-                    },
-                    {
-                        path: "datos-basicos",
-                        element: <CreateFormSuppliers />
-                    },
-                    {
-                        path: "listar-proveedores",
-                        element: <ListSupplierPage />
-                    },
-                    {
-                        path: "datos-contacto",
-                        element: <ContactInformationSuppliers />
-                    },
-                    {
-                        //Quite el /nit: para acceder solo con suppliers/detalle
-                        path: "detalle",
-                        element: <SupplierDetailPage />
-                    }
-                ]
-            },
-            {
-                path: "products",
-                element: <ProductsPage />
-            },
-            {
-                path: "products/detail/:id",
-                element: <ProductsDetailPage />
-            },
-            {
-                path: "sales/factura-electronica",
-                element: <ElectronicInvoiceSalesPage />
-            },
-            {
-                path: "products/listar",
-                element: <ListProductsPage />
-            },
-            {
-                path: "products/detalle/:id",
-                element: <ProductDetailPage />
-            },
-            {
-                path: "products/editar/:id",
-                element: <EditProductPage />
-            },
+          {
+            path: "send-token",
+            element: <TokenPasswordPage></TokenPasswordPage>,
+          },
 
-            {
+          {
+            path: "perfil",
+            element: <ProfilePage />,
+          },
+        ],
+      },
+  {
+    element: <ProtectedRoute />,
+    children: [
+      {
+        element: <MainLayout />,
+        children: [
+          {
+            // index: true,
+            path: "/",
+            element: <NewHomePage />,
+          },
+          {
+            path: "/home",
+            element: <HomePage />,
+          },
+          {
+            // index: true,
+            path: "dashboard",
+            element: <DashboardPage />,
+          },
+
+          {
+            path: "accounts",
+            element: <Outlet />,
+            children: [
+              {
+                index: true,
+                element: <Navigate to="/accounts/datos-basicos" replace />,
+              },
+              {
+                path: "datos-basicos",
+                element: <BasicInformationPage />,
+              },
+              {
+                path: "contacto",
+                element: <ContactInformationPage />,
+              },
+              {
+                path: "rol",
+                element: <RolPage />,
+              },
+              {
                 path: "perfil",
-                element: <ProfilePage/>
-            },
-            {
-                    path:"cartshop",
-                    element: <CartShopLayout />,
-                    children: [
+                element: <ProfilePage />,
+              },
+              {
+                path: "perfil/:id",
+                element: <ProfilePage />,
+              },
+              {
+                path: "list",
+                element: <ListUserPage />,
+              },
+              {
+                path: "editar-datos-basicos/:id",
+                element: <UpdateBasicInformationPage />,
+              },
+              {
+                path: "editar-datos-contacto",
+                element: <UpdateContactInformationPage />,
+              },
+              {
+                path: "editar-rol",
+                element: <UpdateRolPage />,
+              },
+            ],
+          },
 
+          {
+            path: "suppliers",
+            element: <Outlet />,
+            children: [
+              {
+                index: true,
+                element: <Navigate to="datos-basicos" replace />,
+              },
+              {
+                path: "datos-basicos",
+                element: <CreateFormSuppliers />,
+              },
+              {
+                path: "listar-proveedores",
+                element: <ListSupplierPage />,
+              },
+              {
+                path: "datos-contacto",
+                element: <ContactInformationSuppliers />,
+              },
+              {
+                //Quite el /nit: para acceder solo con suppliers/detalle
+                path: "detalle",
+                element: <SupplierDetailPage />,
+              },
+            ],
+          },
+          {
+            path: "products",
+            element: <ProductsPage />,
+          },
 
-                        {
+          {
+            path: "sales/factura-electronica",
+            element: <ElectronicInvoiceSalesPage />,
+          },
+          {
+            path: "products/listar",
+            element: <ListProductsPage />,
+          },
+          {
+            path: "products/detalle/:id",
+            element: <ProductDetailPage />,
+          },
 
-                            // index: true,
-                            path:"list-cartshop",
-                            element: <ListCartShopPage/>
-
-                        },
-
-                        {
-                            path: "forgot-password",
-                            element: <ForgotPasswordPage/>
-                        },
-
-                        {
-                            path: "reset-password",
-                            element: <ResetPasswordPage></ResetPasswordPage>
-                        },
-
-                        {
-                            path: "send-token",
-                            element: <TokenPasswordPage></TokenPasswordPage>
-                        },
-
-                        {
-                            path: "perfil",
-                            element: <ProfilePage/>
-                        },
-                    
-                        
-                    ]
-                }
-            ]
-    },
-            
-                        
-                    
-    
-                  
-
-    {
-        element:<AuthLayout/>,
-        children: [
-
-            {
-
+          {
+            path: "perfil",
+            element: <ProfilePage />,
+          },
+          {
+            path: "cartshop",
+            element: <CartShopLayout />,
+            children: [
+              {
                 // index: true,
-                path:"login",
-                element: <LoginPage/>
+                path: "list-cartshop",
+                element: <ListCartShopPage />,
+              },
 
-            },
-
-            {
+              {
                 path: "forgot-password",
-                element: <ForgotPasswordPage/>
-            },
+                element: <ForgotPasswordPage />,
+              },
 
-            {
+              {
                 path: "reset-password",
-                element: <ResetPasswordPage></ResetPasswordPage>
-            },
+                element: <ResetPasswordPage></ResetPasswordPage>,
+              },
 
-            {
+              {
                 path: "send-token",
-                element: <TokenPasswordPage></TokenPasswordPage>
-            },
+                element: <TokenPasswordPage></TokenPasswordPage>,
+              },
 
-            {
+              {
                 path: "perfil",
-                element: <ProfilePage/>
-            },
-            
-        ]
-    }
-])
-
-
+                element: <ProfilePage />,
+              },
+            ],
+          },
+        ],
+      }      
+    ],
+  },
+]);
 
 export default router;

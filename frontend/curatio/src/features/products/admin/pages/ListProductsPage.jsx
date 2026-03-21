@@ -1,60 +1,80 @@
-import  DataTable  from "../../components/DataTable"
-import { ProductColumns } from "../../table/ProductColumns"
-import { listProducts } from "@/data/product/listProducts"
-import { Button } from "@/shared/components"
-import Select from "@/shared/components/Select"
-import { useNavigate } from "react-router-dom"
-import { useState, useMemo } from "react"
-import ProductReportConfigModal from "../../reports/components/ProductReportConfigModal"
-
+import DataTable from "../components/DataTable";
+import { ProductColumns } from "../table/ProductColumns";
+import { Button } from "@/shared/components";
+import Select from "@/shared/components/Select";
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import ProductReportConfigModal from "../reports/components/ProductReportConfigModal";
+import { getMedications } from "@/lib/http/medications";
+import { adaptMedicationToListItem } from "@/lib/adapters/medicationAdapter";
+import {
+  getViasAdministracion,
+  getEstadosMedicamento,
+  getLaboratorios,
+} from "../services/selectServices";
 
 export default function ListProductsPage() {
-  const navigate = useNavigate()
-  const [filterVia, setFilterVia] = useState("")
-  const [filterEstado, setFilterEstado] = useState("")
-  const [filterLaboratorio, setFilterLaboratorio] = useState("")
-  const [searchTerm, setSearchTerm] = useState("")
-  const [pageSize, setPageSize] = useState(5)
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const navigate = useNavigate();
 
-  // Obtener opciones únicas para los filtros
-  const viasAdministracion = useMemo(() => {
-    const vias = [...new Set(listProducts.map(p => p.administration_guide))];
-    return vias.map((via) => ({ id: via, label: via }));
+  const [filterVia, setFilterVia] = useState("");
+  const [filterEstado, setFilterEstado] = useState("");
+  const [filterLaboratorio, setFilterLaboratorio] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [pageSize, setPageSize] = useState(5);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [products, setProducts] = useState([]);
+  const [viasAdministracion, setViasAdministracion] = useState([]);
+  const [estados, setEstados] = useState([]);
+  const [laboratorios, setLaboratorios] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    getViasAdministracion().then(setViasAdministracion);
+    getEstadosMedicamento().then(setEstados);
+    getLaboratorios().then(setLaboratorios);
   }, []);
 
-  const estados = useMemo(() => {
-    const est = [...new Set(listProducts.map(p => p.state))];
-    return est.map((estado) => ({ id: estado, label: estado }));
-  }, []);
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        setLoading(true);
 
-  const laboratorios = useMemo(() => {
-    const labs = [...new Set(listProducts.map(p => p.laboratory))];
-    return labs.map((lab) => ({ id: lab, label: lab }));
-  }, []);
+        const response = await getMedications({
+          search: searchTerm,
+          administrationRoute: filterVia,
+          laboratory: filterLaboratorio,
+          status: filterEstado,
+          page: 1,
+          pageSize: 200,
+        });
 
-  // Filtrar productos según los filtros seleccionados
-  const filteredProducts = useMemo(() => {
-    return listProducts.filter(product => {
-      const matchVia = !filterVia || product.administration_guide === filterVia;
-      const matchEstado = !filterEstado || product.state === filterEstado;
-      const matchLaboratorio = !filterLaboratorio || product.laboratory === filterLaboratorio;
-      return matchVia && matchEstado && matchLaboratorio;
-    });
-  }, [filterVia, filterEstado, filterLaboratorio])
+        const items = (response?.data?.results ?? []).map(adaptMedicationToListItem);
+        setProducts(items);
+      } catch (error) {
+        console.error("Error loading medications:", error);
+        setProducts([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProducts();
+  }, [searchTerm, filterVia, filterEstado, filterLaboratorio]);
 
   const handleCreateProduct = () => {
-    navigate("/products")
-  }
+    navigate("/products");
+  };
 
   return (
     <div className="p-6">
-
-      <h1 className="text-5xl font-bold text-center mb-6 text-label" style={{ fontFamily: "var(--font-body)" }}>
-        Gestión de Productos 
+      <h1
+        className="text-5xl font-bold text-center mb-6 text-label"
+        style={{ fontFamily: "var(--font-body)" }}
+      >
+        Gestion de Medicamentos
       </h1>
 
-      {/* Filtros */}
       <div className="flex flex-wrap gap-3 mb-6 items-center justify-between">
         <div className="flex flex-wrap gap-3 items-center">
           <input
@@ -64,6 +84,7 @@ export default function ListProductsPage() {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="border rounded px-2 py-2 bg-gray-900 text-gray-50"
           />
+
           <Select
             label=""
             options={viasAdministracion}
@@ -72,6 +93,7 @@ export default function ListProductsPage() {
             onChange={(e) => setFilterVia(e.target.value)}
             wrapperClassName="min-w-fit"
           />
+
           <Select
             label=""
             options={estados}
@@ -80,6 +102,7 @@ export default function ListProductsPage() {
             onChange={(e) => setFilterEstado(e.target.value)}
             wrapperClassName="min-w-fit"
           />
+
           <Select
             label=""
             options={laboratorios}
@@ -89,28 +112,22 @@ export default function ListProductsPage() {
             wrapperClassName="min-w-fit"
           />
         </div>
-        
+
         <div className="flex gap-2 items-center">
-          <Button
-            size="sm"
-            onClick={handleCreateProduct}
-            disabled={false}
-          >
-            Crear Producto
+          <Button size="sm" onClick={handleCreateProduct}>
+            Crear Medicamento
           </Button>
-          <Button
-            size="sm"
-            onClick={() => setIsModalOpen(true)}
-            disabled={false}
-          >
+
+          <Button size="sm" onClick={() => setIsModalOpen(true)}>
             Generar Reporte
           </Button>
+
           <select
             value={pageSize}
             onChange={(e) => setPageSize(Number(e.target.value))}
             className="border rounded px-2 py-2 bg-gray-900 text-gray-50"
           >
-            {[5, 7, 10, 20, 50].map(size => (
+            {[5, 7, 10, 20, 50].map((size) => (
               <option key={size} value={size}>
                 {size} filas
               </option>
@@ -119,19 +136,36 @@ export default function ListProductsPage() {
         </div>
       </div>
 
+      {loading && <div className="mb-4 text-label">Loading medications...</div>}
+
       <DataTable
-        data={filteredProducts}
+        data={products}
         columns={ProductColumns}
         globalFilter={searchTerm}
         onGlobalFilterChange={setSearchTerm}
         pageSize={pageSize}
+        meta={{
+          statuses: estados,
+          onStatusChanged: (productId, newStatus) => {
+            setProducts((prev) =>
+              prev.map((item) =>
+                item.id === productId
+                  ? {
+                      ...item,
+                      state: newStatus.label,
+                      stateId: newStatus.id,
+                    }
+                  : item
+              )
+            );
+          },
+        }}
       />
 
-      <ProductReportConfigModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
+      <ProductReportConfigModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
       />
-
     </div>
-  )
+  );
 }
