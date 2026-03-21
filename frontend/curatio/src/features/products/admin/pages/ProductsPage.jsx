@@ -16,8 +16,8 @@ import {
   getLaboratorios,
   getEstadosMedicamento,
 } from "../../services/selectServices";
-// } from "../services/selectServices";
-import { ProductSchema } from "../schemas/ProductSchemas";
+
+import { ProductSchema } from "../../schemas/ProductSchemas";
 
 export default function ProductsPage() {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
