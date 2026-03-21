@@ -2,6 +2,7 @@ import Input from "@/shared/components/Input";
 import Button from "@/shared/components/Button";
 import Select from "@/shared/components/Select";
 import Modal from "@/shared/components/Modal";
+import ProductFileInput from "@/features/products/components/ProductFileInput";
 import { Link } from "react-router-dom";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
@@ -14,8 +15,9 @@ import {
   getViasAdministracion,
   getLaboratorios,
   getEstadosMedicamento,
-} from "../services/selectServices";
-import { ProductSchema } from "../schemas/ProductSchemas";
+} from "../../services/selectServices";
+
+import { ProductSchema } from "../../schemas/ProductSchemas";
 
 export default function ProductsPage() {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
@@ -267,6 +269,14 @@ export default function ProductsPage() {
             placeholder="Estado"
             wrapperClassName="w-full min-w-0"
             error={errors.estado}
+          />
+        </div>
+
+        {/* FileInput para imagen */}
+        <div className="col-span-full mt-3">
+          <ProductFileInput
+            label="Imagen del Medicamento"
+            onUpload={(url) => console.log("Imagen cargada:", url)}
           />
         </div>
 

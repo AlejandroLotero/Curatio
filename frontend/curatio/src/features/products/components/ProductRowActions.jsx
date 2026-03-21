@@ -22,7 +22,7 @@ export default function ProductRowActions({ product }) {
   // Acción para editar el producto
   // Redirige a la página de edición usando el id del producto
   const handleEdit = () => {
-    navigate(`/products/${product.id}/edit`);
+    navigate(`/products/editar/${product.id}`);
   };
 
   // Acción para eliminar el producto
@@ -39,7 +39,7 @@ export default function ProductRowActions({ product }) {
       {/* Botón ver detalles */}
       <button
         onClick={handleView}
-        className="p-1 rounded hover:bg-blue-100 text-blue-600 transition"
+        className="p-1 rounded hover:bg-gray-300 text-black transition"
         title="Ver detalles"
       >
         <Eye size={16} /> {/* Icono de ver */}
@@ -48,20 +48,20 @@ export default function ProductRowActions({ product }) {
       {/* Botón editar */}
       <button
         onClick={handleEdit}
-        className="p-1 rounded hover:bg-amber-100 text-amber-600 transition"
+        className="p-1 rounded hover:bg-gray-300 text-black transition"
         title="Editar"
       >
         <Pencil size={16} /> {/* Icono de editar */}
       </button>
 
       {/* Botón eliminar */}
-      <button
+      {/* <button
         onClick={handleDelete}
-        className="p-1 rounded hover:bg-red-100 text-red-600 transition"
+        className="p-1 rounded hover:bg-red-200 text-red-900 transition"
         title="Eliminar"
       >
-        <Trash2 size={16} /> {/* Icono de eliminar */}
-      </button>
+        <Trash2 size={16} /> 
+      </button> */}
 
     </div>
   );

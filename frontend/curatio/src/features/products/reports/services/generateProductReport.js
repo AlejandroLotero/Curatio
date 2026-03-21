@@ -1,5 +1,5 @@
 // Fuente de datos de productos (mock o fuente centralizada)
-import { products } from "@/data/product/products";
+import { listProducts } from "@/data/product/listProducts";
 
 
 // Utilidad para transformar datos en dataset de reporte
@@ -23,7 +23,7 @@ export function generateProductReport({
 
   // Construcción del dataset (desacoplado de la UI)
   const { headers, rows } = buildProductReportDataset({
-    products,
+    products: listProducts,
     selectedFields,
     scope,
     laboratoryFilter
