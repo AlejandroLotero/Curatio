@@ -339,6 +339,7 @@ import Input from "@/shared/components/Input";
 import Button from "@/shared/components/Button";
 import Select from "@/shared/components/Select";
 import Modal from "@/shared/components/Modal";
+import ProductFileInput from "@/features/products/components/ProductFileInput";
 import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 

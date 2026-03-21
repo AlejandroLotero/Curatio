@@ -78,7 +78,7 @@ export default function ProductRowActions({ product }) {
   };
 
   const handleEdit = () => {
-    navigate(`/products/${product.id}/edit`);
+    navigate(`/products/editar/${product.id}`);
   };
 
   const handleDelete = () => {
@@ -89,7 +89,7 @@ export default function ProductRowActions({ product }) {
     <div className="flex gap-2">
       <button
         onClick={handleView}
-        className="p-1 rounded hover:bg-blue-100 text-blue-600 transition"
+        className="p-1 rounded hover:bg-gray-300 text-black transition"
         title="Ver detalles"
       >
         <Eye size={16} />
@@ -97,7 +97,7 @@ export default function ProductRowActions({ product }) {
 
       <button
         onClick={handleEdit}
-        className="p-1 rounded hover:bg-amber-100 text-amber-600 transition"
+        className="p-1 rounded hover:bg-gray-300 text-black transition"
         title="Editar"
       >
         <Pencil size={16} />
@@ -105,7 +105,7 @@ export default function ProductRowActions({ product }) {
 
       <button
         onClick={handleDelete}
-        className="p-1 rounded hover:bg-red-100 text-red-600 transition"
+        className="p-1 rounded hover:bg-red-200 text-red-900 transition"
         title="Eliminar"
       >
         <Trash2 size={16} />
