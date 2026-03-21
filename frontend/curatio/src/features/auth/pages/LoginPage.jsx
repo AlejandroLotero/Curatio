@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LoginForm from "@/features/auth/components/LoginForm";
+import { useAuth } from "@/features/auth/context/AuthContext";
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const { signIn } = useAuth();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -13,28 +15,23 @@ export default function LoginPage() {
       setError("");
       setLoading(true);
 
-      // TODO: aquí va tu llamada real a backend
-      console.log("Login payload:", { email, password, remember });
-
-      // Simulación
-      await new Promise((r) => setTimeout(r, 700));
-
-      localStorage.setItem("isLoggedIn", "true");
-      window.dispatchEvent(new Event("auth-changed"));
-      // Redirige a la página pública HomePage después de iniciar sesión
+      await signIn({ email, password, remember });
+      // temporal, borrar 
+      alert("Login successful");
       navigate("/home", { replace: true });
-      
+     
     } catch (err) {
       console.error(err);
-      setError("Credenciales incorrectas o error de conexión.");
+      setError(
+        err?.error?.message || "Invalid credentials or connection error."
+      );
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen px-4 py-10">     
-
+    <div className="flex items-center justify-center min-h-screen px-4 py-10">
       <div className="w-full max-w-md">
         <div
           className="

@@ -4,7 +4,9 @@ import {
   getCoreRowModel,        // Modelo base de filas (sin filtros ni paginación)
   flexRender,             // Permite renderizar contenido dinámico de columnas
   getPaginationRowModel,  // Modelo de filas con paginación
-  getFilteredRowModel     // Modelo de filas filtradas
+  getFilteredRowModel,     // Modelo de filas filtradas
+ 
+
 } from "@tanstack/react-table"
 
 // Hook de React para manejar estado
@@ -20,7 +22,7 @@ import { Button } from "@/shared/components"
 // - globalFilter: (opcional) filtro global controlado desde fuera
 // - onGlobalFilterChange: (opcional) callback cuando cambia el filtro
 // - pageSize: (opcional) tamaño de página controlado desde fuera
-export default function DataTable({ data, columns, globalFilter: externalGlobalFilter, onGlobalFilterChange, pageSize: externalPageSize }) {
+export default function DataTable({ data, columns, globalFilter: externalGlobalFilter, onGlobalFilterChange, pageSize: externalPageSize, meta }) {
 
   // ================== ESTADO DE PAGINACIÓN ==================
   // pageIndex → página actual
@@ -46,6 +48,7 @@ export default function DataTable({ data, columns, globalFilter: externalGlobalF
 
     // Definición de columnas
     columns,
+    meta,
 
     // Estado controlado de la tabla
     state: {
