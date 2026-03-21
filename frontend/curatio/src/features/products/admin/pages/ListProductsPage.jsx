@@ -1,17 +1,17 @@
-import DataTable from "../components/DataTable";
-import { ProductColumns } from "../table/ProductColumns";
+import DataTable from "../../components/DataTable";
+import { ProductColumns } from "../../table/ProductColumns";
 import { Button } from "@/shared/components";
 import Select from "@/shared/components/Select";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import ProductReportConfigModal from "../reports/components/ProductReportConfigModal";
+import ProductReportConfigModal from "../../reports/components/ProductReportConfigModal";
 import { getMedications } from "@/lib/http/medications";
 import { adaptMedicationToListItem } from "@/lib/adapters/medicationAdapter";
 import {
   getViasAdministracion,
   getEstadosMedicamento,
   getLaboratorios,
-} from "../services/selectServices";
+} from "../../services/selectServices";
 
 export default function ListProductsPage() {
   const navigate = useNavigate();
