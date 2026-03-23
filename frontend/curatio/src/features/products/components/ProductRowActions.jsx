@@ -67,48 +67,59 @@
 //   );
 // }
 
-import { Eye, Pencil, Trash2 } from "lucide-react";
+// Iconos usados en los botones de acciones permitidas
+import { Eye, Pencil } from "lucide-react";
+
+// Hook de React Router para navegación programática
 import { useNavigate } from "react-router-dom";
 
+/**
+ * ProductRowActions
+ * -----------------
+ * Acciones disponibles por fila para medicamentos/productos.
+ *
+ * Regla aplicada:
+ * - NO se permite acción de eliminar en el listado.
+ * - Solo se deja ver detalle y editar.
+ */
 export default function ProductRowActions({ product }) {
+  // Hook para navegar a otras rutas
   const navigate = useNavigate();
 
+  /**
+   * Navega al detalle del medicamento.
+   */
   const handleView = () => {
     navigate(`/products/detalle/${product.id}`);
   };
 
+  /**
+   * Navega a edición del medicamento.
+   * La ruta puede ajustarse luego cuando cierres edición real.
+   */
   const handleEdit = () => {
-    navigate(`/products/editar/${product.id}`);
-  };
-
-  const handleDelete = () => {
-    console.log("Pending real action for medication:", product.id);
+    navigate(`/products/${product.id}/edit`);
   };
 
   return (
+    // Contenedor de acciones disponibles
     <div className="flex gap-2">
+      {/* Acción: ver detalle */}
       <button
         onClick={handleView}
-        className="p-1 rounded hover:bg-gray-300 text-black transition"
+        className="p-1 rounded hover:bg-blue-100 text-blue-600 transition"
         title="Ver detalles"
       >
         <Eye size={16} />
       </button>
 
+      {/* Acción: editar */}
       <button
         onClick={handleEdit}
-        className="p-1 rounded hover:bg-gray-300 text-black transition"
+        className="p-1 rounded hover:bg-amber-100 text-amber-600 transition"
         title="Editar"
       >
         <Pencil size={16} />
-      </button>
-
-      <button
-        onClick={handleDelete}
-        className="p-1 rounded hover:bg-red-200 text-red-900 transition"
-        title="Eliminar"
-      >
-        <Trash2 size={16} />
       </button>
     </div>
   );
