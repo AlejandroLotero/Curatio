@@ -66,6 +66,15 @@ export function AuthProvider({ children }) {
     let isMounted = true;
 
     const bootstrap = async () => {
+      // try {
+      //   const response = await getCurrentSession();
+      //   if (!isMounted) return;
+
+      //   setUser(adaptBackendUserToUi(response?.data?.user));
+      // } catch (error) {
+      //   if (!isMounted) return;
+      //   setUser(null);
+      // } finally {
       try {
         const response = await getCurrentSession();
         if (!isMounted) return;
@@ -73,6 +82,8 @@ export function AuthProvider({ children }) {
         setUser(adaptBackendUserToUi(response?.data?.user));
       } catch (error) {
         if (!isMounted) return;
+
+    
         setUser(null);
       } finally {
         if (isMounted) {

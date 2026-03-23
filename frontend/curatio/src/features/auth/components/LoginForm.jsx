@@ -24,7 +24,21 @@ export default function LoginForm({
     password: false,
   });
 
-  const errors = useMemo(() => {
+  // const errors = useMemo(() => {
+  //   const next = {};
+  //   const email = form.email.trim();
+  //   const password = form.password;
+
+  //   if (!email) next.email = "El correo es obligatorio.";
+  //   else if (!/^\S+@\S+\.\S+$/.test(email)) next.email = "Ingresa un correo válido.";
+
+  //   if (!password) next.password = "La contraseña es obligatoria.";
+  //   else if (password.length < 6) next.password = "Mínimo 6 caracteres.";
+
+  //   return next;
+  // }, [form.email, form.password]);
+
+    const errors = useMemo(() => {
     const next = {};
     const email = form.email.trim();
     const password = form.password;
@@ -33,7 +47,8 @@ export default function LoginForm({
     else if (!/^\S+@\S+\.\S+$/.test(email)) next.email = "Ingresa un correo válido.";
 
     if (!password) next.password = "La contraseña es obligatoria.";
-    else if (password.length < 6) next.password = "Mínimo 6 caracteres.";
+    else if (password.length < 8) next.password = "Mínimo 8 caracteres.";
+    else if (password.length > 10) next.password = "Máximo 10 caracteres.";
 
     return next;
   }, [form.email, form.password]);

@@ -157,16 +157,27 @@
 
 import Input from "@/shared/components/Input";
 import Button from "@/shared/components/Button";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { CircleArrowLeft } from "lucide-react";
 import { ContactInformationSchema } from "../schemas/UserSchemas";
 import { useCreateUserWizard } from "../context/CreateUserWizardContext";
 
 /**
- * Paso 2 del wizard: contacto.
+ * ContactInformationPage
+ * ----------------------
+ * Paso 2 del wizard de creación de usuario.
+ *
+ * Importante:
+ * - Se recupera el diseño anterior
+ * - Se mantiene la lógica nueva con contexto global
+ * - Ya no depende de location.state
  */
 export default function ContactInformationPage() {
   const navigate = useNavigate();
 
+  /**
+   * Estado global del wizard.
+   */
   const {
     formData,
     updateFormData,
@@ -176,17 +187,24 @@ export default function ContactInformationPage() {
   } = useCreateUserWizard();
 
   /**
-   * Actualiza datos de contacto.
+   * Maneja cambios de inputs.
+   * Todos los datos quedan en el contexto del wizard.
    */
   const handleChange = (e) => {
     const { name, value } = e.target;
-    updateFormData({ [name]: value });
+
+    updateFormData({
+      [name]: value,
+    });
   };
 
   /**
-   * Valida solo paso 2 y navega al paso 3.
+   * Valida únicamente el paso 2.
+   * Si todo está correcto, avanza al paso 3.
    */
-  const handleNext = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
     const result = ContactInformationSchema.safeParse({
       address: formData.address,
       phoneNumber: formData.phoneNumber,
@@ -197,6 +215,7 @@ export default function ContactInformationPage() {
 
     if (!result.success) {
       const fieldErrors = {};
+
       result.error.issues.forEach((issue) => {
         const field = issue.path[0];
         fieldErrors[field] = issue.message;
@@ -211,82 +230,121 @@ export default function ContactInformationPage() {
   };
 
   return (
-    <div className="p-6">
-      <div className="max-w-3xl mx-auto bg-white/70 backdrop-blur-md rounded-3xl p-6 shadow-xl">
-        <h1 className="text-2xl font-bold text-center text-label mb-6">
-          Datos de contacto
-        </h1>
+    <div className="flex items-center justify-center min-h-screen text-label">
+      <form
+        onSubmit={handleSubmit}
+        className="
+          relative
+          w-full max-w-md
+          px-6 py-12
+          grid grid-cols-1 gap-4
+          bg-white/70 dark:bg-neutral-900/20
+          backdrop-blur-md
+          shadow-xl
+          ring-1
+          rounded-3xl
+        "
+      >
+        {/* Botón visual de volver al paso anterior */}
+        <Link
+          to="/accounts/datos-basicos"
+          className="absolute left-3 flex items-center justify-center w-12 h-12 rounded-full hover:bg-white/20 transition-colors group"
+        >
+          <CircleArrowLeft className="size-8 text-label group-hover:text-white transition-colors" />
+        </Link>
 
+        {/* Error general si existiera */}
         {generalError ? (
-          <div className="mb-4 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-700">
-            {generalError}
+          <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3">
+            <p className="text-sm text-red-700">{generalError}</p>
           </div>
         ) : null}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* ================= DATOS DE CONTACTO ================= */}
+        <section className="flex flex-col items-center gap-4 p-4 border rounded-xl">
+          <h2
+            className="
+              text-center
+              text-subtittles
+              font-bold
+              text-label
+            "
+          >
+            Datos de Contacto
+          </h2>
+
+          {/* Dirección */}
           <Input
-            label="Dirección"
+            label="Direccion"
+            placeholder="Calle 123 #45-67"
             name="address"
             value={formData.address}
             onChange={handleChange}
             error={errors.address}
           />
 
+          {/* Teléfono principal */}
           <Input
-            label="Teléfono"
+            label="Numero de telefono"
+            placeholder="123456789"
+            type="tel"
             name="phoneNumber"
             value={formData.phoneNumber}
             onChange={handleChange}
             error={errors.phoneNumber}
           />
 
+          {/* Teléfono secundario */}
           <Input
-            label="Teléfono secundario"
+            label="Telefono secundario"
+            placeholder="Opcional"
+            type="tel"
             name="secondaryPhone"
             value={formData.secondaryPhone}
             onChange={handleChange}
             error={errors.secondaryPhone}
           />
 
+          {/* Correo */}
           <Input
-            label="Correo electrónico"
-            name="email"
+            label="Correo electronico"
+            placeholder="juan@ejemplo.com"
             type="email"
+            name="email"
             value={formData.email}
             onChange={handleChange}
             error={errors.email}
           />
 
+          {/* Confirmar correo */}
           <Input
-            label="Confirmar correo electrónico"
-            name="confirmEmail"
+            label="Confirmar correo electronico"
+            placeholder="juan@ejemplo.com"
             type="email"
+            name="confirmEmail"
             value={formData.confirmEmail}
             onChange={handleChange}
             error={errors.confirmEmail}
           />
-        </div>
 
-        <div className="mt-8 flex justify-between">
-          <Button
-            variant="secondary"
-            size="sm"
-            type="button"
-            onClick={() => navigate("/accounts/datos-basicos")}
-          >
-            Anterior
-          </Button>
+          {/* Botones */}
+          <div className="flex justify-between w-full max-w-[320px] mt-6">
+            <Link to="/accounts/list">
+              <Button
+                variant="secondary"
+                size="sm"
+                type="button"
+              >
+                Cancelar
+              </Button>
+            </Link>
 
-          <Button
-            variant="primary"
-            size="sm"
-            type="button"
-            onClick={handleNext}
-          >
-            Siguiente
-          </Button>
-        </div>
-      </div>
+            <Button variant="primary" size="sm" type="submit">
+              Siguiente
+            </Button>
+          </div>
+        </section>
+      </form>
     </div>
   );
 }
