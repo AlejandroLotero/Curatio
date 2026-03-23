@@ -9,4 +9,6 @@ export {default as Input} from "./Input";
 export {default as AvatarUploader} from "./AvatarUploader";
 export {default as StatusSwitch}  from "./StatusSwitch";
 export {default as Checkbox} from "./Checkbox";
+export {Dropdown, DropdownTrigger, DropdownContent, DropdownItem} from "./Dropdown";
+export { IconButton} from "./IconButton"
 
