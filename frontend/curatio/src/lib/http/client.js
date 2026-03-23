@@ -13,18 +13,40 @@ function getCookie(name) {
 }
 
 /**
+ * Determina si el body enviado es FormData.
+ * Esto es importante porque:
+ * - FormData NO debe serializarse con JSON.stringify
+ * - FormData NO debe forzar Content-Type manualmente
+ */
+function isFormDataBody(value) {
+  return typeof FormData !== "undefined" && value instanceof FormData;
+}
+
+/**
  * Cliente base para requests fetch.
+ *
+ * Soporta:
+ * - JSON
+ * - FormData
+ * - credenciales con cookies/sesión
+ * - CSRF automático para métodos mutables
  */
 async function request(path, options = {}) {
   const url = `${BASE_URL}${path}`;
-
-  const headers = {
-    "Content-Type": "application/json",
-    ...(options.headers || {}),
-  };
-
   const method = options.method || "GET";
   const csrfToken = getCookie("csrftoken");
+
+  /**
+   * Si el body es FormData:
+   * - no se debe poner Content-Type manualmente
+   * - el navegador agrega el boundary correcto
+   */
+  const bodyIsFormData = isFormDataBody(options.body);
+
+  const headers = {
+    ...(bodyIsFormData ? {} : { "Content-Type": "application/json" }),
+    ...(options.headers || {}),
+  };
 
   // CSRF solo para métodos mutables
   if (csrfToken && !["GET", "HEAD", "OPTIONS"].includes(method)) {
@@ -76,26 +98,47 @@ export async function bootstrapCsrf() {
 }
 
 export const httpClient = {
+  /**
+   * GET simple
+   */
   get: (path) => request(path, { method: "GET" }),
 
+  /**
+   * POST:
+   * - si recibe FormData, lo envía directo
+   * - si recibe objeto normal, lo serializa a JSON
+   */
   post: (path, data) =>
     request(path, {
       method: "POST",
-      body: JSON.stringify(data),
+      body: isFormDataBody(data) ? data : JSON.stringify(data),
     }),
 
+  /**
+   * PUT:
+   * - si recibe FormData, lo envía directo
+   * - si recibe objeto normal, lo serializa a JSON
+   */
   put: (path, data) =>
     request(path, {
       method: "PUT",
-      body: JSON.stringify(data),
+      body: isFormDataBody(data) ? data : JSON.stringify(data),
     }),
 
+  /**
+   * PATCH:
+   * - si recibe FormData, lo envía directo
+   * - si recibe objeto normal, lo serializa a JSON
+   */
   patch: (path, data) =>
     request(path, {
       method: "PATCH",
-      body: JSON.stringify(data),
+      body: isFormDataBody(data) ? data : JSON.stringify(data),
     }),
 
+  /**
+   * DELETE simple
+   */
   delete: (path) =>
     request(path, {
       method: "DELETE",

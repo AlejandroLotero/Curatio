@@ -173,22 +173,36 @@
 // }
 
 import Input from "@/shared/components/Input";
-import Select from "@/shared/components/Select";
 import Button from "@/shared/components/Button";
+import Select from "@/shared/components/Select";
 import FileInput from "@/shared/components/FileInputcreateUser";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { getDocumentTypes } from "../services/selectService";
+import { CircleArrowLeft } from "lucide-react";
+import avatar from "@/assets/images/avatar.png";
 import { BasicInformationSchema } from "../schemas/UserSchemas";
 import { useCreateUserWizard } from "../context/CreateUserWizardContext";
-import { useState } from "react";
 
 /**
- * Paso 1 del wizard: datos básicos.
+ * BasicInformationPage
+ * --------------------
+ * Paso 1 del wizard de creación de usuario.
+ *
+ * Importante:
+ * - Se conserva el diseño anterior
+ * - Se mantiene la lógica nueva del wizard
+ * - Los datos viven en el contexto global
+ * - La navegación sigue siendo /accounts/contacto
  */
 export default function BasicInformationPage() {
   const navigate = useNavigate();
 
+  /**
+   * Estado global del wizard.
+   * Aquí ya no usamos location.state porque ahora
+   * toda la información vive en el contexto compartido.
+   */
   const {
     formData,
     updateFormData,
@@ -198,8 +212,14 @@ export default function BasicInformationPage() {
     setGeneralError,
   } = useCreateUserWizard();
 
+  /**
+   * Catálogo de tipos de documento.
+   */
   const [documentTypes, setDocumentTypes] = useState([]);
 
+  /**
+   * Carga de tipos de documento al montar la vista.
+   */
   useEffect(() => {
     const loadDocumentTypes = async () => {
       try {
@@ -215,24 +235,34 @@ export default function BasicInformationPage() {
   }, [setGeneralError]);
 
   /**
-   * Cambios de input/select
+   * Maneja cambios de inputs y selects.
+   * Actualiza el contexto del wizard.
    */
   const handleChange = (e) => {
     const { name, value } = e.target;
-    updateFormData({ [name]: value });
+
+    updateFormData({
+      [name]: value,
+    });
   };
 
   /**
-   * Cambio real de archivo de foto.
+   * Maneja cambio real de archivo para la foto.
+   * El archivo se guarda temporalmente en el contexto.
    */
   const handleFileChange = (file) => {
-    updateFormData({ photoFile: file });
+    updateFormData({
+      photoFile: file,
+    });
   };
 
   /**
-   * Valida solo paso 1 y navega al paso 2.
+   * Valida solo los datos del paso 1.
+   * Si todo está correcto, avanza al paso 2.
    */
-  const handleNext = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
     const result = BasicInformationSchema.safeParse({
       fullNames: formData.fullNames,
       documentTypes: formData.documentTypes,
@@ -242,6 +272,7 @@ export default function BasicInformationPage() {
 
     if (!result.success) {
       const fieldErrors = {};
+
       result.error.issues.forEach((issue) => {
         const field = issue.path[0];
         fieldErrors[field] = issue.message;
@@ -256,77 +287,116 @@ export default function BasicInformationPage() {
   };
 
   return (
-    <div className="p-6">
-      <div className="max-w-3xl mx-auto bg-white/70 backdrop-blur-md rounded-3xl p-6 shadow-xl">
-        <h1 className="text-2xl font-bold text-center text-label mb-6">
-          Datos básicos
-        </h1>
+    <div className="flex items-center justify-center min-h-screen text-label">
+      <form
+        onSubmit={handleSubmit}
+        className="
+          relative
+          w-full max-w-md
+          px-6 py-12
+          grid grid-cols-1 gap-4
+          bg-white/70 dark:bg-neutral-900/20
+          backdrop-blur-md
+          shadow-xl
+          ring-1
+          rounded-3xl
+        "
+      >
+        {/* Botón visual de volver */}
+        <Link
+          to="/accounts/list"
+          className="absolute left-3 flex items-center justify-center w-12 h-12 rounded-full hover:bg-white/20 transition-colors group"
+        >
+          <CircleArrowLeft className="size-8 text-label group-hover:text-white transition-colors" />
+        </Link>
 
+        {/* Error general si ocurre algo al cargar catálogos */}
         {generalError ? (
-          <div className="mb-4 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-700">
-            {generalError}
+          <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3">
+            <p className="text-sm text-red-700">{generalError}</p>
           </div>
         ) : null}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* ================= DATOS BÁSICOS ================= */}
+        <section className="flex flex-col items-center gap-4 p-4 border rounded-xl">
+          <h2
+            className="
+              text-center
+              text-subtittles
+              font-bold
+              text-label
+            "
+          >
+            Datos basicos
+          </h2>
+
+          {/* Foto de perfil */}
+          <div className="flex flex-col items-center w-max">
+            <FileInput
+              label="Foto de perfil"
+              accept="image/png, image/jpeg"
+              defaultImage={avatar}
+              previewSize={128}
+              onFileChange={handleFileChange}
+            />
+            {errors.photoFile ? (
+              <p className="text-mostsmall text-red-600 mt-1">
+                {errors.photoFile}
+              </p>
+            ) : null}
+          </div>
+
+          {/* Nombre */}
           <Input
             label="Nombre y Apellidos"
+            placeholder="Juan Rivera Grisales"
             name="fullNames"
             value={formData.fullNames}
             onChange={handleChange}
             error={errors.fullNames}
           />
 
+          {/* Tipo de documento */}
           <Select
-            label="Tipo de documento"
+            label="Tipos de documento"
             name="documentTypes"
+            options={documentTypes}
+            placeholder="Tipo de documento"
+            wrapperClassName="w-[320px]"
             value={formData.documentTypes}
             onChange={handleChange}
-            options={documentTypes}
-            placeholder="Seleccione"
             error={errors.documentTypes}
           />
 
+          {/* Número de documento */}
           <Input
-            label="Número de documento"
+            label="Numero de documento"
+            placeholder="123456789"
+            type="number"
             name="documentNumber"
             value={formData.documentNumber}
             onChange={handleChange}
             error={errors.documentNumber}
           />
 
-          <div className="md:col-span-2">
-            <FileInput
-              label="Foto de perfil"
-              accept="image/png, image/jpeg"
-              onFileChange={handleFileChange}
-            />
-            {errors.photoFile ? (
-              <p className="text-mostsmall text-red-600 mt-1">{errors.photoFile}</p>
-            ) : null}
+          {/* Botones */}
+          <div className="flex justify-between w-full max-w-[320px] mt-6">
+            <Link to="/accounts/list">
+              <Button
+                variant="secondary"
+                size="sm"
+                type="button"
+              >
+                Cancelar
+              </Button>
+            </Link>
+
+            <Button variant="primary" size="sm" type="submit">
+              Siguiente
+            </Button>
           </div>
-        </div>
-
-        <div className="mt-8 flex justify-between">
-          <Button
-            variant="secondary"
-            size="sm"
-            type="button"
-            onClick={() => navigate("/accounts/list")}
-          >
-            Cancelar
-          </Button>
-
-          <Button
-            variant="primary"
-            size="sm"
-            type="button"
-            onClick={handleNext}
-          >
-            Siguiente
-          </Button>
-        </div>
-      </div>
+        </section>
+      </form>
     </div>
   );
 }

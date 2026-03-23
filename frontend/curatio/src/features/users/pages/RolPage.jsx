@@ -211,18 +211,25 @@ import Input from "@/shared/components/Input";
 import Button from "@/shared/components/Button";
 import Modal from "@/shared/components/Modal";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { CircleArrowLeft } from "lucide-react";
 import { getRoles } from "../services/selectService";
 import { RoleInformationSchema } from "../schemas/UserSchemas";
 import { useCreateUserWizard } from "../context/CreateUserWizardContext";
 
 /**
- * Paso 3 del wizard: rol y fechas.
- * Aquí se hace el submit final en una sola transacción.
+ * RolPage
+ * -------
+ * Paso 3 del wizard de creación de usuario.
+ *
  */
 export default function RolPage() {
   const navigate = useNavigate();
 
+  /**
+   * Estado global del wizard.
+   * Aquí vive toda la información de los pasos 1, 2 y 3.
+   */
   const {
     formData,
     updateFormData,
@@ -236,9 +243,19 @@ export default function RolPage() {
     resetWizard,
   } = useCreateUserWizard();
 
+  /**
+   * Catálogo de roles.
+   */
   const [roles, setRoles] = useState([]);
+
+  /**
+   * Estado del modal de confirmación.
+   */
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
+  /**
+   * Carga inicial de roles desde la fuente configurada.
+   */
   useEffect(() => {
     const loadRoles = async () => {
       try {
@@ -253,15 +270,20 @@ export default function RolPage() {
   }, []);
 
   /**
-   * Actualiza valores del paso.
+   * Maneja cambios del paso actual.
+   * Actualiza el contexto global del wizard.
    */
   const handleChange = (e) => {
     const { name, value } = e.target;
-    updateFormData({ [name]: value });
+
+    updateFormData({
+      [name]: value,
+    });
   };
 
   /**
-   * Valida este paso y abre confirmación.
+   * Valida únicamente este paso antes de abrir
+   * el modal de confirmación final.
    */
   const handleOpenConfirm = () => {
     const result = RoleInformationSchema.safeParse({
@@ -272,6 +294,7 @@ export default function RolPage() {
 
     if (!result.success) {
       const fieldErrors = {};
+
       result.error.issues.forEach((issue) => {
         const field = issue.path[0];
         fieldErrors[field] = issue.message;
@@ -286,7 +309,9 @@ export default function RolPage() {
   };
 
   /**
-   * Ejecuta submit final del wizard.
+   * Ejecuta el submit final del wizard.
+   * Si todo sale bien, el modal de éxito se controla
+   * desde el propio contexto.
    */
   const handleConfirmCreate = async () => {
     const result = await submitWizard();
@@ -297,7 +322,8 @@ export default function RolPage() {
   };
 
   /**
-   * Cierra éxito y limpia wizard.
+   * Cierra el flujo de éxito, limpia el wizard
+   * y redirige al listado de usuarios.
    */
   const handleSuccessClose = () => {
     setIsSuccess(false);
@@ -306,29 +332,60 @@ export default function RolPage() {
   };
 
   return (
-    <div className="p-6">
-      <div className="max-w-3xl mx-auto bg-white/70 backdrop-blur-md rounded-3xl p-6 shadow-xl">
-        <h1 className="text-2xl font-bold text-center text-label mb-6">
-          Rol
-        </h1>
+    <div className="flex items-center justify-center min-h-screen text-label">
+      <div
+        className="
+          relative
+          w-full max-w-md
+          px-6 py-12
+          grid grid-cols-1 gap-4
+          bg-white/70 dark:bg-neutral-900/20
+          backdrop-blur-md
+          shadow-xl
+          ring-1
+          rounded-3xl
+        "
+      >
+        {/* Botón visual para volver al paso anterior */}
+        <Link
+          to="/accounts/contacto"
+          className="absolute left-3 flex items-center justify-center w-12 h-12 rounded-full hover:bg-white/20 transition-colors group"
+        >
+          <CircleArrowLeft className="size-8 text-label group-hover:text-white transition-colors" />
+        </Link>
 
+        {/* Error general si el contexto lo reporta */}
         {generalError ? (
-          <div className="mb-4 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-700">
-            {generalError}
+          <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3">
+            <p className="text-sm text-red-700">{generalError}</p>
           </div>
         ) : null}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* ================= ROL ================= */}
+        <section className="flex flex-col items-center gap-4 p-4 border rounded-xl">
+          <h2
+            className="
+              text-center
+              text-subtittles
+              font-bold
+              text-label
+            "
+          >
+            Rol
+          </h2>
+
+          {/* Selección de rol */}
           <Select
-            label="Rol"
             name="roles"
-            value={formData.roles}
-            onChange={handleChange}
             options={roles}
             placeholder="Seleccione un rol"
+            wrapperClassName="w-[320px]"
+            value={formData.roles}
+            onChange={handleChange}
             error={errors.roles}
           />
 
+          {/* Fecha de inicio */}
           <Input
             label="Fecha de inicio"
             type="date"
@@ -338,6 +395,7 @@ export default function RolPage() {
             error={errors.startDate}
           />
 
+          {/* Fecha de fin */}
           <Input
             label="Fecha de fin"
             type="date"
@@ -346,35 +404,42 @@ export default function RolPage() {
             onChange={handleChange}
             error={errors.endDate}
           />
-        </div>
 
-        <div className="mt-8 flex justify-between">
-          <Button
-            variant="secondary"
-            size="sm"
-            type="button"
-            onClick={() => navigate("/accounts/contacto")}
-          >
-            Anterior
-          </Button>
+          {/* Botones principales */}
+          <div className="flex justify-between w-full max-w-[320px] mt-6">
+            <Link
+              to="/accounts/list"
+              className="
+                inline-flex items-center justify-center
+                h-9 px-3
+                border border-border-strong
+                bg-secondarybtnbg text-secondarybtntext
+                font-heading text-small
+                hover:bg-secondarybtnhoverbg hover:text-primarybtntext
+                rounded-4xl transition-colors
+              "
+            >
+              Cancelar
+            </Link>
 
-          <Button
-            variant="primary"
-            size="sm"
-            type="button"
-            onClick={handleOpenConfirm}
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? "Creando..." : "Crear usuario"}
-          </Button>
-        </div>
+            <Button
+              variant="primary"
+              size="sm"
+              type="button"
+              onClick={handleOpenConfirm}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Creando..." : "Crear usuario"}
+            </Button>
+          </div>
+        </section>
       </div>
 
-      {/* Confirmación */}
+      {/* ================= MODAL DE CONFIRMACIÓN ================= */}
       <Modal
         isOpen={isConfirmModalOpen}
         onClose={() => setIsConfirmModalOpen(false)}
-        title="Confirmar creación"
+        title="Confirmar creación de usuario"
         message="¿Está seguro que desea crear el usuario con los datos ingresados?"
       >
         <div className="flex gap-4 justify-center">
@@ -400,14 +465,14 @@ export default function RolPage() {
         </div>
       </Modal>
 
-      {/* Éxito */}
+      {/* ================= MODAL DE ÉXITO ================= */}
       <Modal
         isOpen={isSuccess}
         onClose={handleSuccessClose}
         title="Usuario creado"
-        message="El usuario fue creado correctamente. La contraseña fue enviada al correo registrado."
+        message="El usuario se ha creado correctamente. La contraseña fue enviada al correo registrado."
       >
-        <div className="flex justify-center">
+        <div className="flex flex-col gap-4 items-center">
           <Button
             variant="primary"
             size="sm"

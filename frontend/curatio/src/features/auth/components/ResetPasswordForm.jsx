@@ -23,16 +23,46 @@ export default function ResetPasswordForm({
     confirmPassword: false,
   });
 
-  const errors = useMemo(() => {
+  // const errors = useMemo(() => {
+  //   const next = {};
+  //   const password = form.password;
+  //   const confirm = form.confirmPassword;
+
+  //   if (!password) next.password = "La nueva contraseña es obligatoria.";
+  //   else if (password.length < 6) next.password = "Mínimo 6 caracteres.";
+
+  //   if (!confirm) next.confirmPassword = "Confirma tu nueva contraseña.";
+  //   else if (confirm !== password) next.confirmPassword = "Las contraseñas no coinciden.";
+
+  //   return next;
+  // }, [form.password, form.confirmPassword]);
+
+    const errors = useMemo(() => {
     const next = {};
     const password = form.password;
     const confirm = form.confirmPassword;
 
-    if (!password) next.password = "La nueva contraseña es obligatoria.";
-    else if (password.length < 6) next.password = "Mínimo 6 caracteres.";
+    if (!password) {
+      next.password = "La nueva contraseña es obligatoria.";
+    } else if (password.length < 8) {
+      next.password = "Mínimo 8 caracteres.";
+    } else if (password.length > 10) {
+      next.password = "Máximo 10 caracteres.";
+    } else if (!/[A-Z]/.test(password)) {
+      next.password = "Debe contener al menos una mayúscula.";
+    } else if (!/[a-z]/.test(password)) {
+      next.password = "Debe contener al menos una minúscula.";
+    } else if (!/[0-9]/.test(password)) {
+      next.password = "Debe contener al menos un número.";
+    } else if (!/[^A-Za-z0-9]/.test(password)) {
+      next.password = "Debe contener al menos un carácter especial.";
+    }
 
-    if (!confirm) next.confirmPassword = "Confirma tu nueva contraseña.";
-    else if (confirm !== password) next.confirmPassword = "Las contraseñas no coinciden.";
+    if (!confirm) {
+      next.confirmPassword = "Confirma tu nueva contraseña.";
+    } else if (confirm !== password) {
+      next.confirmPassword = "Las contraseñas no coinciden.";
+    }
 
     return next;
   }, [form.password, form.confirmPassword]);
