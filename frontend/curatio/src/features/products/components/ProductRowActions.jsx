@@ -98,7 +98,7 @@ export default function ProductRowActions({ product }) {
    * La ruta puede ajustarse luego cuando cierres edición real.
    */
   const handleEdit = () => {
-    navigate(`/products/${product.id}/edit`);
+    navigate(`/products/editar/${product.id}`);
   };
 
   return (
@@ -107,7 +107,7 @@ export default function ProductRowActions({ product }) {
       {/* Acción: ver detalle */}
       <button
         onClick={handleView}
-        className="p-1 rounded hover:bg-blue-100 text-blue-600 transition"
+        className="p-1 rounded hover:bg-gray-200 text-black transition"
         title="Ver detalles"
       >
         <Eye size={16} />
@@ -116,7 +116,7 @@ export default function ProductRowActions({ product }) {
       {/* Acción: editar */}
       <button
         onClick={handleEdit}
-        className="p-1 rounded hover:bg-amber-100 text-amber-600 transition"
+        className="p-1 rounded hover:bg-gray-200 text-black transition"
         title="Editar"
       >
         <Pencil size={16} />

@@ -221,10 +221,10 @@ const router = createBrowserRouter([
             path: "/products/detalle/:id",
             element: <ProductDetailPage />,
           },
-            {
-                path: "products/editar/:id",
-                element: <EditProductPage />
-            },
+          {
+            path: "/products/editar/:id",
+            element: <EditProductPage />
+          },
           
 
           /**
