@@ -75,7 +75,7 @@ const Navbar = ({ variant = "solid" }) => {
             </li>
             <li>
               <Link
-                to="/sales/factura-electronica"
+                to="/sales/list"
                 className="hover:text-primary transition"
               >
                 Ventas
