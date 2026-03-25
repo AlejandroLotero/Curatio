@@ -1,11 +1,13 @@
-const Card = ({product}) => {
+const Card = ({product, onClick}) => {
 
     const {title, image, price, description } = product;
 /* Jhonier
 Cambio de color de la card a blanco con transparencia y blur, ademas de agregarle sombra y bordes redondeados ya que el diseño que traia no se veia bien.
 */
     return (
-        <div className="
+        <div 
+            onClick={onClick}
+            className="
             w-80
             text-text-inverse
             bg-white/70 
@@ -15,7 +17,8 @@ Cambio de color de la card a blanco con transparencia y blur, ademas de agregarl
             overflow-hidden
             hover:shadow-black
             transition-shadow
-            duration-700      
+            duration-700
+            cursor-pointer      
         
         ">
 

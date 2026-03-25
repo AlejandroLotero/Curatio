@@ -39,6 +39,7 @@ import { HomePage, NewHomePage } from "@/features/home";
 import CartShopLayout from "@/features/layouts/CartShopLayout";
 import ListCartShopPage from "@/features/cartshop/page/ListCartShopPage";
 import ProtectedRoute from "@/app/router/ProtectedRoute";
+import ProductShowPage from "@/features/products/pages/ProductShowPage";
 
 
 /**
@@ -212,14 +213,10 @@ const router = createBrowserRouter([
             path: "/products/listar",
             element: <ListProductsPage />,
           },
-            {
-                path: "products/detail/:id",
-                element: <ProductShowPage />
-            },
-            {
-                path: "sales/factura-electronica",
-                element: <ElectronicInvoiceSalesPage />
-            },
+          {
+            path: "/products/detail/:id",
+            element: <ProductShowPage />
+          },
           {
             path: "/products/detalle/:id",
             element: <ProductDetailPage />,

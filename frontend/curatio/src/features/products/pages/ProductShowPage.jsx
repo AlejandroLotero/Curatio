@@ -13,7 +13,7 @@ export default function ProductShowPage() {
   const [quantity, setQuantity] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const product = listProducts.find((p) => p.id == id);
+  const product = listProducts.find((p) => p.id == parseInt(id));
 
   if (!product) {
     return (
@@ -54,13 +54,13 @@ export default function ProductShowPage() {
           <div className="flex items-start justify-center">
             <div className="w- aspect-square bg-gradient-to-br from-cyan-100 to-blue-100 rounded-lg flex items-center justify-center overflow-hidden mt-2">
               <img
-                src={product.image}
-                alt={product.title}
+                src={product.image || "https://via.placeholder.com/400?text=" + encodeURIComponent(product.nameproduct)}
+                alt={product.nameproduct}
                 className="w-full h-full object-cover"
                 onError={(e) => {
                   e.target.src =
                     "https://via.placeholder.com/400?text=" +
-                    encodeURIComponent(product.title);
+                    encodeURIComponent(product.nameproduct);
                 }}
               />
             </div>
@@ -71,7 +71,7 @@ export default function ProductShowPage() {
             {/* Encabezado */}
             <div>
               <h1 className="text-3xl md:text-4xl font-bold mb-2 text-label">
-                {product.title}
+                {product.nameproduct}
               </h1>
               <p className="text-sm text-label mb-4">
                 Laboratorio: <span className="font-semibold">{product.laboratory}</span>
@@ -80,7 +80,7 @@ export default function ProductShowPage() {
               {/* Precio destacado */}
               <div className="bg-gradient-to-r from-[var(--color-secondary-600)] to-[var(--color-secondary-400)] text-white p-4 rounded-lg mb-6">
                 <p className="text-sm mb-1 text-label">Precio:</p>
-                <p className="text-3xl font-bold text-label">${product.price.toLocaleString('es-CO')}</p>
+                <p className="text-3xl font-bold text-label">${product.precioVenta.toLocaleString('es-CO')}</p>
               </div>
 
               {/* Stock */}
@@ -101,7 +101,7 @@ export default function ProductShowPage() {
                 {/* Descripción */}
                 <h2 className="text-lg font-semibold mb-2 text-label">Descripción</h2>
                 <p className="text-label leading-relaxed mb-4">
-                  {product.description}
+                  {product.descripcion}
                 </p>
 
                 {/* Información técnica */}
@@ -134,8 +134,7 @@ export default function ProductShowPage() {
                     <span className="font-semibold">Lote:</span> {product.lote}
                   </p>
                   <p>
-                    <span className="font-semibold">Vencimiento:</span>{" "}
-                    {product.fechaVencimiento}
+                    <span className="font-semibold">Vencimiento:</span> {product.fechaVencimiento}
                   </p>
                 </div>
               </div>
@@ -173,7 +172,6 @@ export default function ProductShowPage() {
                   type="button"
                   onClick={handleAddToCart}
                   disabled={product.stock === 0}
-                  
                 >
                   {product.stock > 0 ? "Agregar al carrito" : "Agotado"}
                 </Button>
@@ -188,7 +186,7 @@ export default function ProductShowPage() {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         title="Producto agregado"
-        message={`Has agregado ${quantity} unidad(es) de ${product.title} a tu carrito.`}
+        message={`Has agregado ${quantity} unidad(es) de ${product.nameproduct} a tu carrito.`}
       >
         <div className="flex justify-center gap-4">
           <Button variant="secondary" size="md" onClick={handleCloseModal}>

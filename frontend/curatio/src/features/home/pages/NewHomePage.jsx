@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, Button, Modal } from "@/shared/components";
 import { products } from "@/data/product/products";
 import { Plus, Minus, ChevronLeft, ChevronRight } from "lucide-react";
 
 const NewHomePage = () => {
+  const navigate = useNavigate();
   // Inicializamos las cantidades para cada producto en 1
   const [quantities, setQuantities] = useState(
     // Creamos un objeto con las IDs de los productos como claves y 1 como valor inicial
@@ -43,6 +45,11 @@ const NewHomePage = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedProduct(null);
+  };
+
+  // Función para navegar a ProductShowPage cuando se hace click en una card
+  const handleCardClick = (productId) => {
+    navigate(`/products/detail/${productId}?source=new`);
   };
 
   // Navegación del carrusel
@@ -112,7 +119,7 @@ const NewHomePage = () => {
                     key={`carousel-${product.id}`}
                     className="w-full max-w-[210px] xs:max-w-xs md:max-w-sm lg:max-w-md"
                   >
-                    <Card product={product} />
+                    <Card product={product} onClick={() => handleCardClick(product.id)} />
                   </div>
                 );
               })}
@@ -141,7 +148,7 @@ const NewHomePage = () => {
         <div className="grid gap-6 sm:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-items-center cursor-pointer">
           {products.map((product) => (
             <div key={product.id} className="space-y-4">
-              <Card product={product} />
+              <Card product={product} onClick={() => handleCardClick(product.id)} />
 
               <div className="flex items-center justify-between gap-4">
                 <div className="flex items-center gap-3 bg-white/50  border-none border-gray-200 rounded-2xl p-2">
