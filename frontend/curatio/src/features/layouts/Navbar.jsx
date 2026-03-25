@@ -112,7 +112,12 @@ const Navbar = ({ variant = "solid" }) => {
                 "
               >
                 <ShoppingCart className="size-5 text-label" />
-                {cartCount > 0 && (
+                {/* {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-[10px] font-bold text-white">
+                    {cartCount}
+                  </span>
+                )} */}
+                {isAuthenticated && cartCount > 0 && (
                   <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-[10px] font-bold text-white">
                     {cartCount}
                   </span>
