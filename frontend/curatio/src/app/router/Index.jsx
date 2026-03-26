@@ -30,7 +30,8 @@ import {
   ProductsPage,
   ProductDetailPage,
   ListProductsPage,
-} from "@/features/products";
+  EditProductPage,
+} from "@/features/products/";
 
 import DashboardPage from "@/features/dashboard/pages/DashboardPage";
 import ListSupplierPage from "@/features/suppliers/pages/ListSupplierPage";
@@ -38,6 +39,8 @@ import { HomePage, NewHomePage } from "@/features/home";
 import CartShopLayout from "@/features/layouts/CartShopLayout";
 import ListCartShopPage from "@/features/cartshop/page/ListCartShopPage";
 import ProtectedRoute from "@/app/router/ProtectedRoute";
+import ProductShowPage from "@/features/products/pages/ProductShowPage";
+
 
 /**
  * Router principal
@@ -65,6 +68,10 @@ const router = createBrowserRouter([
         path: "/home",
         element: <HomePage />,
       },
+      {
+            path: "/products/detail/:id",
+            element: <ProductShowPage />
+          },
     ],
   },
 
@@ -211,9 +218,18 @@ const router = createBrowserRouter([
             element: <ListProductsPage />,
           },
           {
+            path: "/products/detail/:id",
+            element: <ProductShowPage />
+          },
+          {
             path: "/products/detalle/:id",
             element: <ProductDetailPage />,
           },
+          {
+            path: "/products/editar/:id",
+            element: <EditProductPage />
+          },
+          
 
           /**
            * =========================

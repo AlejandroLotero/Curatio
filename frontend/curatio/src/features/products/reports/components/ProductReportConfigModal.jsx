@@ -103,7 +103,7 @@ export default function ProductReportConfigModal({ isOpen, onClose }) {
 
         {/* Título */}
         <h2 className="mb-6 text-xl font-semibold text-label">
-          Generar reporte de medicamentos
+          Generar reporte de Productos
         </h2>
 
 
@@ -159,7 +159,7 @@ export default function ProductReportConfigModal({ isOpen, onClose }) {
             value={scope}
             onChange={(e) => setScope(e.target.value)}
             options={[
-              { label: "Todos los medicamentos", value: "all" },
+              { label: "Todos los productos", value: "all" },
               { label: "Filtrar por laboratorio", value: "laboratory" },
             ]}
           />
