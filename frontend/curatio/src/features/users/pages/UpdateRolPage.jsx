@@ -3,23 +3,57 @@ import Buttom from "@/shared/components/Button";
 import Select from "@/shared/components/Select";
 import Modal from "@/shared/components/Modal";
 import { useEffect, useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { getRoles } from "../../users/services/selectService";
 import { CircleArrowLeft } from "lucide-react";
 
 export default function RolPage() {
+  const location = useLocation();
+  const userId = location.state?.userId ?? null;
+  const previousFormData = location.state?.formData ?? {};
+
   const [roles, setRoles] = useState([]);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const formRef = useRef(null);
+  const [formData, setFormData] = useState({
+    roles: previousFormData.roles ?? "",
+    startDate: previousFormData.startDate ?? "",
+    endDate: previousFormData.endDate ?? "",
+  });
 
   useEffect(() => {
     getRoles().then(setRoles);
   }, []);
 
+  const isFarmaceutaRole = formData.roles === "Farmaceuta";
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => {
+      const next = {
+        ...prev,
+        [name]: value,
+      };
+
+      // Regla de negocio: fechas solo se usan para Farmaceuta.
+      if (name === "roles" && value !== "Farmaceuta") {
+        next.startDate = "";
+        next.endDate = "";
+      }
+
+      return next;
+    });
+  };
+
   const handleButtonSubmit = (e) => {
     e.preventDefault();
-    console.log("Crear usuario - Datos del formulario", e.target);
+    const payload = {
+      userId,
+      ...previousFormData,
+      ...formData,
+    };
+    console.log("Actualizar usuario - Datos del formulario", payload);
     setIsConfirmModalOpen(false);
     setIsSuccessModalOpen(true);
   };
@@ -44,7 +78,14 @@ export default function RolPage() {
         onSubmit={handleButtonSubmit}>
 
       <Link
-          to="/accounts/contacto"
+          to="/accounts/editar-datos-contacto"
+          state={{
+            userId,
+            formData: {
+              ...previousFormData,
+              ...formData,
+            },
+          }}
           className="absolute left-3 flex items-center justify-center w-12 h-12 rounded-full hover:bg-white/20 transition-colors group"
         >
           <CircleArrowLeft className="size-8 text-label group-hover:text-white transition-colors" />
@@ -68,18 +109,26 @@ export default function RolPage() {
             options={roles}
             placeholder="Seleccione un rol"
             wrapperClassName="w-[320px]"
+            value={formData.roles}
+            onChange={handleChange}
           />
 
           <Input
             label="Fecha de inicio"
             type="date"
             name="startDate"
+            value={formData.startDate}
+            onChange={handleChange}
+            disabled={!isFarmaceutaRole}
           />
 
           <Input
             label="Fecha de fin"
             type="date"
             name="endDate"
+            value={formData.endDate}
+            onChange={handleChange}
+            disabled={!isFarmaceutaRole}
           />
 
           <div className="flex justify-between w-full max-w-[320px] mt-6">

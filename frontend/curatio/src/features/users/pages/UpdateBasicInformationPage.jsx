@@ -7,20 +7,64 @@ import { useEffect, useState } from "react";
 import { getDocumentTypes } from "../services/selectService";
 import { CircleArrowLeft } from "lucide-react";
 import avatar from "@/assets/images/avatar.png";
+//Importaciones para cargar los datos del usuario a editar en el form
+import {getUserById} from "@/lib/http/users";
+import { adaptBackendUserToUi } from "@/lib/adapters/userAdapter";
 
 export default function UpdateBasicInformationPage() {
+
+// Obtener el id del usuario a editar
   const { id } = useParams();
+// Estado para cargar los tipos de documento
   const [documentTypes, setDocumentTypes] = useState([]);
 
-  useEffect(() => {
-    getDocumentTypes().then(setDocumentTypes);
-  }, []);
 
+//Estado formData para leer los datos del formulario
+  const [formData, setFormData] = useState({
+    fullNames: "",
+    documentTypes: "",
+    documentNumber: "",
+    photoUrl: "",
+  });
+  // Efecto para cargar los datos del usuario a editar en el form
+  useEffect(() => {
+  const loadData = async () => {
+    try {
+      const [docsResponse, userResponse] = await Promise.all([
+        getDocumentTypes(),
+        getUserById(id),
+      ]);
+      setDocumentTypes(docsResponse);
+
+      const user = adaptBackendUserToUi(userResponse?.data?.user);
+      setFormData({
+        fullNames: user?.name ?? "",
+        documentTypes: user?.documentType ?? "",
+        documentNumber: user?.documentNumber ?? "",
+        photoUrl: user?.photoUrl ?? "",
+      });
+    } catch (error) {
+      console.error("Error cargando usuario a editar:", error);
+    }
+  };
+  if (id) loadData();
+}, [id]);
+// Manejador de cambios en el formulario
+const handleChange = (e) => {
+  const { name, value } = e.target;
+  setFormData((prev) => ({ ...prev, [name]: value }));
+};
+
+
+
+
+// Manejador de cambios en el nombre del usuario
   const handleNameChange = (e) => {
     console.log("Nombre del usuario", e.target.value);
   };
 
-  const handleDocumentBlur = (e) => {
+// Manejador de cambios en el número de documento
+    const handleDocumentBlur = (e) => {
     console.log("Usuario id", id, "- Número de documento", e.target.value);
   };
 
@@ -61,7 +105,7 @@ export default function UpdateBasicInformationPage() {
             <FileInput
               label="Foto de perfil"
               accept="image/*"
-              defaultImage={avatar}
+              defaultImage={formData.photoUrl ?? avatar}
               previewSize={128}
               onUpload={(url) => console.log("Foto subida:", url)}
             />
@@ -71,7 +115,8 @@ export default function UpdateBasicInformationPage() {
             label="Nombre y Apellidos"
             placeholder="Juan Rivera Grisales"
             name="fullNames"
-            onChange={handleNameChange}
+            onChange={handleChange}
+            value={formData.fullNames}
           />
 
           <Select
@@ -80,6 +125,8 @@ export default function UpdateBasicInformationPage() {
             options={documentTypes}
             placeholder="Tipo de documento"
             wrapperClassName="w-[320px]"
+            value={formData.documentTypes}
+            onChange={handleChange}
           />
 
           <Input
@@ -88,6 +135,8 @@ export default function UpdateBasicInformationPage() {
             type="number"
             name="documentNumber"
             onBlur={handleDocumentBlur}
+            value={formData.documentNumber}
+            onChange={handleChange}
           />
 
           <div className="flex justify-between w-full max-w-[320px] mt-6">
@@ -101,11 +150,13 @@ export default function UpdateBasicInformationPage() {
               </Buttom>
             </Link>
 
-            <Link to="/accounts/editar-datos-contacto">
+            <Link to="/accounts/editar-datos-contacto"
+              state={{ userId: id, formData: formData }}>
               <Buttom
                 variant="primary"
                 size="sm"
                 type="button"
+                
                 onClick={() => console.log("Oprimió siguiente")}
               >
                 Siguiente
