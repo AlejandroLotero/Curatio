@@ -8,4 +8,3 @@ export {default as ProductShowPage} from "./pages/ProductShowPage"
 
 // export {default as ProductDetailPage} from "./pages/ProductDetailPage";
 // export {default as ListProductsPage} from "./pages/ListProductsPage";
-export {default as ProductShowPage} from "./pages/ProductShowPage"

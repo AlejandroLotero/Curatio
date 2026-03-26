@@ -292,6 +292,7 @@ import { Card, Button, Modal } from "@/shared/components";
 import { products } from "@/data/product/products";
 import { Plus, Minus, ChevronLeft, ChevronRight, ShoppingCart } from "lucide-react";
 import { useCart } from "@/features/cartshop/context/CartContext";
+import Footer from "@/features/layouts/footer";
 
 const NewHomePage = () => {
   const navigate = useNavigate();
@@ -527,7 +528,6 @@ const NewHomePage = () => {
           MODAL DE AGREGADO
          ========================= */}
       <Footer />
-
       <Modal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
