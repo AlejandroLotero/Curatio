@@ -4,6 +4,7 @@ import { Plus, Minus, ArrowLeft } from "lucide-react";
 import { Button } from "@/shared/components";
 import Modal from "@/shared/components/Modal";
 import { listProducts } from "@/data/product/listProducts";
+import { useAuth } from "@/features/auth/context/AuthContext";
 
 export default function ProductShowPage() {
   const { id } = useParams();
@@ -12,6 +13,7 @@ export default function ProductShowPage() {
   const source = searchParams.get("source") || "new"; // "new" o "home"
   const [quantity, setQuantity] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { isAuthenticated, user } = useAuth();
 
   const product = listProducts.find((p) => p.id == parseInt(id));
 
@@ -54,7 +56,11 @@ export default function ProductShowPage() {
           <div className="flex items-start justify-center">
             <div className="w- aspect-square bg-gradient-to-br from-cyan-100 to-blue-100 rounded-lg flex items-center justify-center overflow-hidden mt-2">
               <img
-                src={product.image || "https://via.placeholder.com/400?text=" + encodeURIComponent(product.nameproduct)}
+                src={
+                  product.image ||
+                  "https://via.placeholder.com/400?text=" +
+                    encodeURIComponent(product.nameproduct)
+                }
                 alt={product.nameproduct}
                 className="w-full h-full object-cover"
                 onError={(e) => {
@@ -74,13 +80,16 @@ export default function ProductShowPage() {
                 {product.nameproduct}
               </h1>
               <p className="text-sm text-label mb-4">
-                Laboratorio: <span className="font-semibold">{product.laboratory}</span>
+                Laboratorio:{" "}
+                <span className="font-semibold">{product.laboratory}</span>
               </p>
 
               {/* Precio destacado */}
               <div className="bg-gradient-to-r from-[var(--color-secondary-600)] to-[var(--color-secondary-400)] text-white p-4 rounded-lg mb-6">
                 <p className="text-sm mb-1 text-label">Precio:</p>
-                <p className="text-3xl font-bold text-label">${product.precioVenta.toLocaleString('es-CO')}</p>
+                <p className="text-3xl font-bold text-label">
+                  ${product.precioVenta.toLocaleString("es-CO")}
+                </p>
               </div>
 
               {/* Stock */}
@@ -99,7 +108,9 @@ export default function ProductShowPage() {
               {/* Cuadro con borde negro: Descripción a Vencimiento */}
               <div className="mb-6 p-4 border-2 border-black rounded-lg bg-white/30 backdrop-blur-md shadow-xl">
                 {/* Descripción */}
-                <h2 className="text-lg font-semibold mb-2 text-label">Descripción</h2>
+                <h2 className="text-lg font-semibold mb-2 text-label">
+                  Descripción
+                </h2>
                 <p className="text-label leading-relaxed mb-4">
                   {product.descripcion}
                 </p>
@@ -114,11 +125,15 @@ export default function ProductShowPage() {
                   </div>
                   <div>
                     <p className="text-xs text-label mb-1">Presentación</p>
-                    <p className="font-semibold text-sm text-label">{product.presentacion}</p>
+                    <p className="font-semibold text-sm text-label">
+                      {product.presentacion}
+                    </p>
                   </div>
                   <div>
                     <p className="text-xs text-label mb-1">Concentración</p>
-                    <p className="font-semibold text-sm text-label">{product.concentration}</p>
+                    <p className="font-semibold text-sm text-label">
+                      {product.concentration}
+                    </p>
                   </div>
                   <div>
                     <p className="text-xs text-label mb-1">Vía</p>
@@ -134,7 +149,8 @@ export default function ProductShowPage() {
                     <span className="font-semibold">Lote:</span> {product.lote}
                   </p>
                   <p>
-                    <span className="font-semibold">Vencimiento:</span> {product.fechaVencimiento}
+                    <span className="font-semibold">Vencimiento:</span>{" "}
+                    {product.fechaVencimiento}
                   </p>
                 </div>
               </div>
@@ -144,7 +160,9 @@ export default function ProductShowPage() {
             <div className="border-t border-t-black space-y-2 flex flex-col gap-2">
               {/* Selector de cantidad */}
               <div className="flex items-center gap-4">
-                <span className="text-sm font-semibold text-label">Cantidad:</span>
+                <span className="text-sm font-semibold text-label">
+                  Cantidad:
+                </span>
                 <div className="flex items-center gap-2 bg-transparent rounded-lg p-1">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -190,22 +208,28 @@ export default function ProductShowPage() {
       >
         <div className="flex justify-center gap-4">
           <Button variant="secondary" size="md" onClick={handleCloseModal}>
-            Continuar comprando
+            Cont. comprando
           </Button>
-          <Button
-            variant="primary"
-            size="md"
-            onClick={() => {
-              handleCloseModal();
-              if (source === "home") {
-                navigate("/cart");
-              } else if (source === "new") {
-                navigate("/login");
-              }
-            }}
-          >
-            {source === "home" ? "Ir al carrito" : "Iniciar sesión"}
-          </Button>
+          {/* {!isAuthenticated && (
+            <>
+              {user?.role === "Cliente" && ( */}
+                <Button
+                  variant="primary"
+                  size="md"
+                  onClick={() => {
+                    handleCloseModal();
+                    if (source === "home") {
+                      navigate("/cart");
+                    } else if (source === "new") {
+                      navigate("/");
+                    }
+                  }}
+                >
+                  {source === "home" ? "Ir a carrito" : "Agregar a Carrito"}
+                </Button>
+              {/* )}
+            </>
+          )} */}
         </div>
       </Modal>
     </div>

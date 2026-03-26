@@ -41,7 +41,7 @@ const Footer = () => {
         <div className="mx-auto max-w-7xl px-4 py-3 text-mostsmall md:text-small">
           <div className="flex flex-col items-center justify-between gap-2 md:flex-row">
             <p className="font-body text-center md:text-left">
-              © CURATIO
+              © CURATIO 2026
             </p>
 
             <nav
@@ -49,11 +49,11 @@ const Footer = () => {
               className="font-body text-center md:text-right"
             >
               <a href="#" className="transition hover:text-brand-hover">
-                Disenfor Web
+                Design Web
               </a>
               <span className="px-2">|</span>
               <a href="#" className="transition hover:text-brand-hover">
-                Mix Camunas
+                PQRS
               </a>
               <span className="px-2">|</span>
               <a href="#" className="transition hover:text-brand-hover">
