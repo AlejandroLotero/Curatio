@@ -1,0 +1,55 @@
+/**
+ * Datos de ejemplo para el listado de ventas (solo frontend).
+ */
+export const mockSales = [
+  {
+    id: "1",
+    invoiceNumber: "FEV00001",
+    saleDate: "2025-11-30",
+    saleDateTime: "2025-11-30 19:40:55",
+    customer: "Juan Pérez",
+    pharmacist: "Ana Vázquez",
+    statusId: "completada",
+    statusLabel: "Completada",
+  },
+  {
+    id: "2",
+    invoiceNumber: "FEV00002",
+    saleDate: "2025-12-01",
+    saleDateTime: "2025-12-01 10:15:00",
+    customer: "María López",
+    pharmacist: "Carlos Ruiz",
+    statusId: "pendiente",
+    statusLabel: "Pendiente",
+  },
+  {
+    id: "3",
+    invoiceNumber: "FEV00003",
+    saleDate: "2025-12-02",
+    saleDateTime: "2025-12-02 14:22:33",
+    customer: "Pedro Gómez",
+    pharmacist: "Ana Vázquez",
+    statusId: "anulada",
+    statusLabel: "Anulada",
+  },
+  {
+    id: "4",
+    invoiceNumber: "FEV00004",
+    saleDate: "2025-12-03",
+    saleDateTime: "2025-12-03 09:05:12",
+    customer: "Laura Martínez",
+    pharmacist: "Diego Herrera",
+    statusId: "completada",
+    statusLabel: "Completada",
+  },
+  {
+    id: "5",
+    invoiceNumber: "FEV00005",
+    saleDate: "2025-12-04",
+    saleDateTime: "2025-12-04 16:48:00",
+    customer: "Andrea Sánchez",
+    pharmacist: "Carlos Ruiz",
+    statusId: "pendiente",
+    statusLabel: "Pendiente",
+  },
+];

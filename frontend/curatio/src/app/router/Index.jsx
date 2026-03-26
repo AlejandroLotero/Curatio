@@ -26,7 +26,7 @@ import {
   SupplierDetailPage,
 } from "@/features/suppliers";
 
-import { ElectronicInvoiceSalesPage } from "@/features/sales";
+import { ElectronicInvoiceSalesPage, ListSales } from "@/features/sales";
 import {
   ProductsPage,
   ProductDetailPage,
@@ -263,6 +263,10 @@ const router = createBrowserRouter([
            * SALES
            * =========================
            */
+          {
+            path: "/sales/list",
+            element: <ListSales />,
+          },
           {
             path: "/sales/factura-electronica",
             element: <ElectronicInvoiceSalesPage />,
