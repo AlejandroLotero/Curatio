@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import {Input,Button} from "@/shared/components"
+import {useNavigate } from "react-router-dom";
 
 export default function LoginForm({
   onSubmit,
@@ -7,6 +8,9 @@ export default function LoginForm({
   error = "",
   onForgotPassword,
 }) {
+
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -20,7 +24,21 @@ export default function LoginForm({
     password: false,
   });
 
-  const errors = useMemo(() => {
+  // const errors = useMemo(() => {
+  //   const next = {};
+  //   const email = form.email.trim();
+  //   const password = form.password;
+
+  //   if (!email) next.email = "El correo es obligatorio.";
+  //   else if (!/^\S+@\S+\.\S+$/.test(email)) next.email = "Ingresa un correo válido.";
+
+  //   if (!password) next.password = "La contraseña es obligatoria.";
+  //   else if (password.length < 6) next.password = "Mínimo 6 caracteres.";
+
+  //   return next;
+  // }, [form.email, form.password]);
+
+    const errors = useMemo(() => {
     const next = {};
     const email = form.email.trim();
     const password = form.password;
@@ -29,7 +47,8 @@ export default function LoginForm({
     else if (!/^\S+@\S+\.\S+$/.test(email)) next.email = "Ingresa un correo válido.";
 
     if (!password) next.password = "La contraseña es obligatoria.";
-    else if (password.length < 6) next.password = "Mínimo 6 caracteres.";
+    else if (password.length < 8) next.password = "Mínimo 8 caracteres.";
+    else if (password.length > 10) next.password = "Máximo 10 caracteres.";
 
     return next;
   }, [form.email, form.password]);
@@ -95,7 +114,7 @@ export default function LoginForm({
             value={form.email}
             onChange={handleChange}
             onBlur={handleBlur}
-            error={touched.email ? errors.email : ""}
+            // error={touched.email ? errors.email : ""}
             className={`${inputClass}` }
           
           />
@@ -115,7 +134,7 @@ export default function LoginForm({
             value={form.password}
             onChange={handleChange}
             onBlur={handleBlur}
-            error={touched.password ? errors.password : ""}
+            // error={touched.password ? errors.password : ""}
             showPassword={showPassword}
             onTogglePassword={() => setShowPassword((s) => !s)}
             className={`${inputClass}` }
@@ -147,7 +166,7 @@ export default function LoginForm({
           <button
             type="button"
             onClick={onForgotPassword}
-            className="font-body text-small text-label underline underline-offset-4 transition hover:text-label"
+            className="font-body text-[14px] text-label underline underline-offset-4 transition hover:text-label"
           >
             ¿Olvidaste tu contraseña?
           </button>
@@ -158,10 +177,7 @@ export default function LoginForm({
             variant="secondary"
             size="sm"
             type="button"
-            onClick={() => {
-              setForm({ email: "", password: "", remember: true });
-              setTouched({ email: false, password: false });
-            }}
+            onClick={() => navigate("/", { replace: true })}
           >
             Cancelar
           </Button>
@@ -189,7 +205,7 @@ export default function LoginForm({
         </div>
       </form>
 
-      <p className="mt-6 text-center font-body text-mostsmall text-text-muted">
+      <p className="mt-6 text-center font-body text-[14px] text-text-muted">
         Al continuar aceptas nuestros Términos y Política de Privacidad.
       </p>
     </div>

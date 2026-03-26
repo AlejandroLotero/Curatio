@@ -1,0 +1,69 @@
+import { DataTableSuppliers } from "@/features/suppliers"
+import { Button } from "@/shared/components"
+import { Link } from "react-router-dom"
+import { SuppliersColumns } from "../table/SuppliersColumns"
+import {suppliers} from "../../../data/supplier/suppliers"
+import { useState } from "react"
+import ReportConfigModal from "../reports/components/ReportConfigModal"
+
+export default function ListSupplierPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [reportFormat, setReportFormat] = useState("pdf")
+
+  const handleOpenReportModal = (format) => {
+    setReportFormat(format)
+    setIsModalOpen(true)
+  }
+
+  return (
+    <div className="min-h-screen flex items-center justify-center p-4">
+      <div className="w-full max-w-6xl space-y-4">
+
+        {/* Header superior con título, botón Volver y acciones */}
+        <div className="mb-4 flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-3">
+            <h2 className="text-2xl font-semibold text-black">
+              Proveedores
+            </h2>
+            <Link to="/">
+              <Button variant="secondary" size="sm">
+                Volver
+              </Button>
+            </Link>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-end gap-2">
+            <Link to="/suppliers/datos-basicos">
+              <Button variant="primary" size="sm">
+                Crear proveedor
+              </Button>
+            </Link>
+            <Button
+              variant="secondary"
+              size="sm"
+              type="button"
+              onClick={() => handleOpenReportModal()}>
+              Generar reporte
+            </Button>
+          </div>
+        </div>
+
+        {/* Tabla de proveedores (mismo ancho que el header) */}
+        <DataTableSuppliers
+          data={suppliers}
+          columns={SuppliersColumns}
+        />
+
+        {isModalOpen && (
+          <ReportConfigModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            initialFormat={reportFormat}
+            usersSource={suppliers}
+          />
+        )}
+
+      </div>
+    </div>
+  )
+}
