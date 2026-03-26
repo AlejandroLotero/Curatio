@@ -1,7 +1,7 @@
 // los actionsButtons Contienen las acionesde cada fila 
 //Si necesito realizar la celda de las acciones de la fila  de los productos debe de llamarse
 // Iconos usados en los botones de acciones
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Eye} from "lucide-react";
 
 // Hook de React Router para navegar programáticamente entre rutas
 import { useNavigate } from "react-router-dom";
@@ -50,7 +50,7 @@ export default function CartShopRowActions({ user }) {
         onClick={handleDelete} // Ejecuta la acción de eliminación
         className="p-1 rounded hover:bg-gray-100"
       >
-        <Trash2 size={16} /> {/* Icono de eliminar */}
+        <Eye size={16} /> {/* Icono de eliminar */}
       </button>
 
     </div>

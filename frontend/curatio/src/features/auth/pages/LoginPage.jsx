@@ -70,13 +70,13 @@ function getDefaultPostLoginPath(user) {
 
   switch (user.role) {
     case "Administrador":
-      return "/dashboard";
+      return "/home";
     case "Farmaceuta":
       return "/home";
     case "Cliente":
       return "/home";
     default:
-      return "/home";
+      return "/";
   }
 }
 

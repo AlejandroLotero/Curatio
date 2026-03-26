@@ -797,16 +797,17 @@ export default function ProductShowPage() {
                 </p>
               </div>
 
-              {/* Descripción y datos */}
+              {/* Cuadro con borde negro: Descripción a Vencimiento */}
               <div className="mb-6 p-4 border-2 border-black rounded-lg bg-white/30 backdrop-blur-md shadow-xl">
+                {/* Descripción */}
                 <h2 className="text-lg font-semibold mb-2 text-label">
                   Descripción
                 </h2>
-
                 <p className="text-label leading-relaxed mb-4">
                   {product.descripcion}
                 </p>
 
+                {/* Información técnica */}
                 <div className="grid grid-cols-2 gap-2 mb-2 p-2 bg-white/30 rounded-lg">
                   <div>
                     <p className="text-xs text-label mb-1">Forma</p>
@@ -834,6 +835,7 @@ export default function ProductShowPage() {
                   </div>
                 </div>
 
+                {/* Información adicional */}
                 <div className="space-y-2 text-sm text-label">
                   <p>
                     <span className="font-semibold">Lote:</span> {product.lote}
@@ -846,29 +848,23 @@ export default function ProductShowPage() {
               </div>
             </div>
 
-            {/* Acciones */}
+            {/* Acciones de compra */}
             <div className="border-t border-t-black space-y-2 flex flex-col gap-2">
+              {/* Selector de cantidad */}
               <div className="flex items-center gap-4 p-2">
-                <span className="text-sm font-semibold text-label">
-                  Cantidad:
-                </span>
-
+                <span className="text-sm font-semibold text-label">Cantidad:</span>
                 <div className="flex items-center gap-2 bg-transparent rounded-lg p-1">
                   <button
-                    type="button"
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                     className="p-2 hover:bg-gray-200 rounded transition text-black"
                     disabled={quantity <= 1}
                   >
                     <Minus size={18} />
                   </button>
-
                   <span className="w-12 text-center font-semibold text-label">
                     {quantity}
                   </span>
-
                   <button
-                    type="button"
                     onClick={() =>
                       setQuantity(Math.min(product.stock, quantity + 1))
                     }

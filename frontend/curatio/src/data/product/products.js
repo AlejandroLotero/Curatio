@@ -7,55 +7,51 @@ import jarabeAcetaminofen from "@/assets/images/jarabe-acetaminofem.png";
 
 export const products = [
     {
-
         id: 1,
-        title: "Acetaminofén 500 mg",
-        price: 11000,
-        description: "Analgesico y antipirético indicado para el alivio del dolor leve a moderado y la fiebre.",
+        title: "Paracetamol 500 mg",
+        price: 35000,
+        description: "Analgésico y antipirético utilizado para el alivio del dolor leve a moderado",
         image: acetaminofen,
         category: "analgésicos"
-        
     },
     {
-
         id: 2,
-        title: "Bisbacter suspensión",
-        price: 12500,
-        description: "Suspensión oral para el tratamiento de molestias gastrointestinales leves.",
-        image: bisbacter,
-        category: "gastrointestinal"
+        title: "Ibuprofeno 400 mg",
+        price: 12000,
+        description: "Antiinflamatorio no esteroideo para dolor y fiebre",
+        image: ibuprofeno,
+        category: "antiinflamatorios"
     },
     {
-
         id: 3,
-        title: "Hidrocortisona crema",
-        price: 18900,
-        description: "Crema tópica antiinflamatoria para afecciones leves de la piel.",
-        image: hidrocortisona,
-        category: "dermatológicos"
-    },
-    {
-        id: 4,
         title: "Amoxicilina 500 mg",
-        price: 23000,
-        description: "Antibiótico de amplio espectro para el tratamiento de infecciones bacterianas.",
+        price: 14000,
+        description: "Antibiótico de amplio espectro",
         image: amoxicilina,
         category: "antibióticos"
     },
     {
+        id: 4,
+        title: "Loratadina 10 mg",
+        price: 14500,
+        description: "Antihistamínico para alergias",
+        image: hidrocortisona,
+        category: "alergias"
+    },
+    {
         id: 5,
-        title: "Ibuprofeno 800 mg",
-        price: 18000,
-        description: "Antiinflamatorio no esteroideo (AINE) para dolor moderado e inflamación.",
-        image: ibuprofeno,
-        category: "analgésicos"
+        title: "Omeprazol 20 mg",
+        price: 10300,
+        description: "Inhibidor de la bomba de protones para acidez",
+        image: bisbacter,
+        category: "gastrointestinal"
     },
     {
         id: 6,
-        title: "Acetaminofén jarabe niños",
-        price: 14500,
-        description: "Jarabe pediátrico para el alivio de fiebre y dolor en niños.",
+        title: "Salbutamol inhalador",
+        price: 18000,
+        description: "Broncodilatador para el tratamiento del asma",
         image: jarabeAcetaminofen,
-        category: "pediátricos"
+        category: "respiratorio"
     }
 ];

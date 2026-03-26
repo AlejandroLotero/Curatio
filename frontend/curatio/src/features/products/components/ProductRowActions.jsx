@@ -152,7 +152,7 @@ export default function ProductRowActions({ product }) {
    * Redirige a la página de edición usando el id del producto.
    */
   const handleEdit = () => {
-    navigate(`/products/${product.id}/edit`);
+    navigate(`/products/editar/${product.id}`);
   };
 
   return (
@@ -161,7 +161,7 @@ export default function ProductRowActions({ product }) {
       <button
         type="button"
         onClick={handleView}
-        className="p-1 rounded hover:bg-blue-100 text-blue-600 transition"
+        className="p-1 rounded hover:bg-gray-200 text-black transition"
         title="Ver detalles"
       >
         <Eye size={16} />
@@ -171,7 +171,7 @@ export default function ProductRowActions({ product }) {
       <button
         type="button"
         onClick={handleEdit}
-        className="p-1 rounded hover:bg-amber-100 text-amber-600 transition"
+        className="p-1 rounded hover:bg-gray-200 text-black transition"
         title="Editar"
       >
         <Pencil size={16} />

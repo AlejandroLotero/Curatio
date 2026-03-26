@@ -72,7 +72,7 @@ export default function ListProductsPage() {
         className="text-5xl font-bold text-center mb-6 text-label"
         style={{ fontFamily: "var(--font-body)" }}
       >
-        Gestion de Medicamentos
+        Gestion de Productos
       </h1>
 
       <div className="flex flex-wrap gap-3 mb-6 items-center justify-between">
@@ -115,7 +115,7 @@ export default function ListProductsPage() {
 
         <div className="flex gap-2 items-center">
           <Button size="sm" onClick={handleCreateProduct}>
-            Crear Medicamento
+            Crear Producto
           </Button>
 
           <Button size="sm" onClick={() => setIsModalOpen(true)}>
