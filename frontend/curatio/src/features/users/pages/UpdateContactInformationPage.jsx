@@ -1,9 +1,54 @@
 import Input from "@/shared/components/Input";
 import Buttom from "@/shared/components/Button";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { CircleArrowLeft } from "lucide-react";
+import { useEffect, useState } from "react";
+// Importaciones para traer usuario
+import { getUserById } from "@/lib/http/users";
+import { adaptBackendUserToUi } from "@/lib/adapters/userAdapter";
 
 export default function UpdateDatosContactoPage() {
+
+  //Recibir datos desde la página anterior
+  const location = useLocation();
+  const userId = location.state?.userId;
+
+  //Estado del formulario
+  const [formData, setFormData] = useState({
+    address: "",
+    phoneNumber: "",
+    email: "",
+    confirmEmail: "",
+  });
+
+    //Efecto para cargar datos del usuario
+    useEffect(() => {
+      const loadUser = async () => {
+        try {
+          const response = await getUserById(userId);
+          const user = adaptBackendUserToUi(response?.data?.user);
+  
+          setFormData({
+            address: user?.address ?? "",
+            phoneNumber: user?.phoneNumber ?? "",
+            email: user?.email ?? "",
+            confirmEmail: user?.email ?? "", // normalmente igual al email
+          });
+  
+        } catch (error) {
+          console.error("Error cargando datos de contacto:", error);
+        }
+      };
+  
+      if (userId) loadUser();
+    }, [userId]);
+
+  //Manejar cambios
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen text-label">
       <form
@@ -19,7 +64,7 @@ export default function UpdateDatosContactoPage() {
       rounded-3xl">
 
       <Link
-          to="/accounts/datos-basicos"
+          to="/accounts/editar-datos-basicos/:id"
           className="absolute left-3 flex items-center justify-center w-12 h-12 rounded-full hover:bg-white/20 transition-colors group"
         >
           <CircleArrowLeft className="size-8 text-label group-hover:text-white transition-colors" />
@@ -41,6 +86,8 @@ export default function UpdateDatosContactoPage() {
             label="Direccion"
             placeholder="Calle 123 #45-67"
             name="address"
+            value={formData.address}
+            onChange={handleChange}
           />
 
           <Input
@@ -48,6 +95,8 @@ export default function UpdateDatosContactoPage() {
             placeholder="123456789"
             type="tel"
             name="phoneNumber"
+            value={formData.phoneNumber}
+            onChange={handleChange}
           />
 
           <Input
@@ -55,6 +104,8 @@ export default function UpdateDatosContactoPage() {
             placeholder="juan@ejemplo.com"
             type="email"
             name="email"
+            value={formData.email}
+            onChange={handleChange}
           />
 
           <Input
@@ -62,6 +113,8 @@ export default function UpdateDatosContactoPage() {
             placeholder="juan@ejemplo.com"
             type="email"
             name="confirmEmail"
+            value={formData.confirmEmail}
+            onChange={handleChange}
           />
 
           <div className="flex justify-between w-full max-w-[320px] mt-6">
@@ -75,7 +128,8 @@ export default function UpdateDatosContactoPage() {
               </Buttom>
             </Link>
 
-            <Link to="/accounts/editar-rol">
+            <Link to="/accounts/editar-rol"
+            state={{ userId: userId, formData: formData }}>
               <Buttom
                 variant="primary"
                 size="sm"
