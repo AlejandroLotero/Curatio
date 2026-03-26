@@ -1,5 +1,6 @@
 import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
+import NavBarClient from "./NavBarClient";
 import bgAll from "@/assets/images/bgAll.jpg";
 
 export default function MainLayout() {
@@ -8,8 +9,16 @@ export default function MainLayout() {
     informacion de la URL actual: pathname = la ruta actual (/about, etc)
     */
   const location = useLocation();
-
+//variables para determinar el tipo de navbar a usar
   const isHome = location.pathname === "/";
+  const searchParams = new URLSearchParams(location.search);
+  const isClientSource = searchParams.get("source") === "dashboard";
+  const isProductDetail = location.pathname.startsWith("/products/detalle/");
+  const isCartFlow = location.pathname.startsWith("/cartshop/ver-carrito");
+  const useClientNavbar =
+    isHome || isCartFlow || (isProductDetail && isClientSource);
+
+    //renderiza el navbar adecuado
   return (
     /**
      * Navbar transparente solo en el home
@@ -24,7 +33,11 @@ export default function MainLayout() {
       />
       <div className="pointer-events-none absolute inset-0 " />
 
-      <Navbar variant={isHome ? "transparent" : "solid"} />
+      {useClientNavbar ? (
+        <NavBarClient variant={isHome ? "transparent" : "solid"} />
+      ) : (
+        <Navbar variant="solid" />
+      )}
 
       {/* Contenido externo que se inyecta */}
       <main className="mx-auto">
