@@ -67,45 +67,99 @@
 //   );
 // }
 
-// Iconos usados en los botones de acciones permitidas
+/////VErsion 2
+
+// // Iconos usados en los botones de acciones permitidas
+// import { Eye, Pencil } from "lucide-react";
+
+// // Hook de React Router para navegación programática
+// import { useNavigate } from "react-router-dom";
+
+// /**
+//  * ProductRowActions
+//  * -----------------
+//  * Acciones disponibles por fila para medicamentos/productos.
+//  *
+//  * Regla aplicada:
+//  * - NO se permite acción de eliminar en el listado.
+//  * - Solo se deja ver detalle y editar.
+//  */
+// export default function ProductRowActions({ product }) {
+//   // Hook para navegar a otras rutas
+//   const navigate = useNavigate();
+
+//   /**
+//    * Navega al detalle del medicamento.
+//    */
+//   const handleView = () => {
+//     navigate(`/products/detalle/${product.id}`);
+//   };
+
+//   /**
+//    * Navega a edición del medicamento.
+//    * La ruta puede ajustarse luego cuando cierres edición real.
+//    */
+//   const handleEdit = () => {
+//     navigate(`/products/${product.id}/edit`);
+//   };
+
+//   return (
+//     // Contenedor de acciones disponibles
+//     <div className="flex gap-2">
+//       {/* Acción: ver detalle */}
+//       <button
+//         onClick={handleView}
+//         className="p-1 rounded hover:bg-blue-100 text-blue-600 transition"
+//         title="Ver detalles"
+//       >
+//         <Eye size={16} />
+//       </button>
+
+//       {/* Acción: editar */}
+//       <button
+//         onClick={handleEdit}
+//         className="p-1 rounded hover:bg-amber-100 text-amber-600 transition"
+//         title="Editar"
+//       >
+//         <Pencil size={16} />
+//       </button>
+//     </div>
+//   );
+// }
+
+// Iconos usados en los botones de acciones
 import { Eye, Pencil } from "lucide-react";
 
-// Hook de React Router para navegación programática
+// Hook de React Router para navegar programáticamente entre rutas
 import { useNavigate } from "react-router-dom";
 
-/**
- * ProductRowActions
- * -----------------
- * Acciones disponibles por fila para medicamentos/productos.
- *
- * Regla aplicada:
- * - NO se permite acción de eliminar en el listado.
- * - Solo se deja ver detalle y editar.
- */
+// Componente que renderiza las acciones de cada fila de producto
+// Recibe como prop el objeto product
 export default function ProductRowActions({ product }) {
-  // Hook para navegar a otras rutas
+  // Hook que permite redirigir a otra ruta desde código
   const navigate = useNavigate();
 
   /**
-   * Navega al detalle del medicamento.
+   * Acción para ver detalle administrativo del producto.
+   * Esta vista es interna para gestión.
    */
   const handleView = () => {
-    navigate(`/products/detalle/${product.id}`);
+    navigate(`/products/admin/detalle/${product.id}`);
   };
 
   /**
-   * Navega a edición del medicamento.
-   * La ruta puede ajustarse luego cuando cierres edición real.
+   * Acción para editar el producto.
+   * Redirige a la página de edición usando el id del producto.
    */
   const handleEdit = () => {
     navigate(`/products/${product.id}/edit`);
   };
 
   return (
-    // Contenedor de acciones disponibles
     <div className="flex gap-2">
-      {/* Acción: ver detalle */}
+      {/* Botón ver detalle administrativo */}
       <button
+        type="button"
         onClick={handleView}
         className="p-1 rounded hover:bg-blue-100 text-blue-600 transition"
         title="Ver detalles"
@@ -113,8 +167,9 @@ export default function ProductRowActions({ product }) {
         <Eye size={16} />
       </button>
 
-      {/* Acción: editar */}
+      {/* Botón editar */}
       <button
+        type="button"
         onClick={handleEdit}
         className="p-1 rounded hover:bg-amber-100 text-amber-600 transition"
         title="Editar"

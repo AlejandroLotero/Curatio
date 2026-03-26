@@ -1,5 +1,6 @@
 import { createBrowserRouter, Navigate, Outlet } from "react-router-dom";
 import { MainLayout, AuthLayout } from "@/features/layouts";
+import ViewCartShopPage from "@/features/cartshop/page/ViewCartShopPage";
 
 import {
   ProfilePage,
@@ -30,6 +31,9 @@ import {
   ProductsPage,
   ProductDetailPage,
   ListProductsPage,
+  // EditProductPage,
+  ProductShowPage,
+
 } from "@/features/products";
 
 import DashboardPage from "@/features/dashboard/pages/DashboardPage";
@@ -54,19 +58,27 @@ const router = createBrowserRouter([
    * =========================
    * Estas rutas NO requieren sesión.
    */
-  {
-    element: <MainLayout />,
-    children: [
-      {
-        path: "/",
-        element: <NewHomePage />,
-      },
-      {
-        path: "/home",
-        element: <HomePage />,
-      },
-    ],
-  },
+ {
+  element: <MainLayout />,
+  children: [
+    {
+      path: "/",
+      element: <NewHomePage />,
+    },
+    {
+      path: "/home",
+      element: <HomePage />,
+    },
+    {
+      path: "/products/detalle/:id",
+      element: <ProductShowPage />,
+    },
+    {
+      path: "/cartshop/ver-carrito",
+      element: <ViewCartShopPage />,
+    },
+  ],
+},
 
   /**
    * =========================
@@ -201,7 +213,13 @@ const router = createBrowserRouter([
            * =========================
            * PRODUCTS
            * =========================
-           */
+           *  - /products               -> formulario creación medicamento
+            * - /products/listar        -> listado administrativo
+            * - /products/detalle/:id   -> detalle visual/comercial (dashboard)
+            * - /products/admin/detalle/:id -> detalle administrativo
+            */
+          
+          
           {
             path: "/products",
             element: <ProductsPage />,
@@ -211,9 +229,23 @@ const router = createBrowserRouter([
             element: <ListProductsPage />,
           },
           {
+            /**
+             * Detalle visual usado desde dashboard / catálogo
+             */
             path: "/products/detalle/:id",
+            element: <ProductShowPage />,
+          },
+          {
+            /**
+             * Detalle administrativo interno
+             */
+            path: "/products/admin/detalle/:id",
             element: <ProductDetailPage />,
           },
+          //  {
+          //       path: "products/editar/:id",
+          //       element: <EditProductPage />
+          //   },
 
           /**
            * =========================
@@ -252,6 +284,10 @@ const router = createBrowserRouter([
                 path: "perfil",
                 element: <ProfilePage />,
               },
+              // {
+              //   path: "ver-carrito",
+              //   element: <ViewCartShopPage />,
+              // },
             ],
           },
         ],
