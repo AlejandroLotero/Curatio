@@ -114,7 +114,7 @@ export default function LoginForm({
             value={form.email}
             onChange={handleChange}
             onBlur={handleBlur}
-            error={touched.email ? errors.email : ""}
+            // error={touched.email ? errors.email : ""}
             className={`${inputClass}` }
           
           />
@@ -134,7 +134,7 @@ export default function LoginForm({
             value={form.password}
             onChange={handleChange}
             onBlur={handleBlur}
-            error={touched.password ? errors.password : ""}
+            // error={touched.password ? errors.password : ""}
             showPassword={showPassword}
             onTogglePassword={() => setShowPassword((s) => !s)}
             className={`${inputClass}` }
