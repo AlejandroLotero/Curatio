@@ -159,10 +159,8 @@ export default function ProductShowPage() {
             {/* Acciones de compra */}
             <div className="border-t border-t-black space-y-2 flex flex-col gap-2">
               {/* Selector de cantidad */}
-              <div className="flex items-center gap-4">
-                <span className="text-sm font-semibold text-label">
-                  Cantidad:
-                </span>
+              <div className="flex items-center gap-4 p-2">
+                <span className="text-sm font-semibold text-label">Cantidad:</span>
                 <div className="flex items-center gap-2 bg-transparent rounded-lg p-1">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
