@@ -7,6 +7,7 @@ import { LoginPage, ForgotPasswordPage, TokenPasswordPage, ResetPasswordPage } f
 import { CreateFormSuppliers, ContactInformationSuppliers, SupplierDetailPage } from "@/features/suppliers";
 import { ElectronicInvoiceSalesPage } from "@/features/sales";
 import { ProductPage } from "@/features/products";
+import { PermissionsManagementPage } from "@/features/permissions";
 
 const router = createBrowserRouter([
 
@@ -87,6 +88,11 @@ const router = createBrowserRouter([
             {
                 path: "perfil",
                 element: <ProfilePage/>
+            },
+
+            {
+                path: "permissions",
+                element: <PermissionsManagementPage/>
             },
             
         ]
