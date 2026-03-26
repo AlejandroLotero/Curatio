@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Card, Button, Modal } from "@/shared/components";
 import { products } from "@/data/product/products";
 import { Plus, Minus, ChevronLeft, ChevronRight } from "lucide-react";
+import Footer from "@/features/layouts/footer";
 
 const NewHomePage = () => {
   const navigate = useNavigate();
@@ -190,6 +191,8 @@ const NewHomePage = () => {
           ))}
         </div>
       </section>
+
+      <Footer />
 
       <Modal
         isOpen={isModalOpen}
