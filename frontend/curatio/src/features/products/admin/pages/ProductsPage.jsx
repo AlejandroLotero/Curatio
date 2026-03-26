@@ -36,6 +36,7 @@ function mapBackendErrorsToUiFields(backendFields = {}) {
     precio_venta: "precioVenta",
     proveedor: "proveedor",
     estado: "estado",
+    imagen: "imagen",
     __all__: "general",
   };
 
@@ -52,6 +53,7 @@ function mapBackendErrorsToUiFields(backendFields = {}) {
 export default function ProductsPage() {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [imageUrl, setImageUrl] = useState(null);
 
   const formRef = useRef(null);
 
@@ -152,6 +154,7 @@ export default function ProductsPage() {
       setIsSuccessModalOpen(true);
 
       formRef.current?.reset();
+      setImageUrl(null);
       setPresentacionesOptions([]);
     } catch (error) {
       console.error("Error creating medication:", error);
@@ -172,6 +175,10 @@ export default function ProductsPage() {
 
   const handleConfirmSave = () => {
     formRef.current?.requestSubmit();
+  };
+
+  const handleImageUpload = (url) => {
+    setImageUrl(url);
   };
 
   return (
@@ -348,6 +355,15 @@ export default function ProductsPage() {
             wrapperClassName="w-full min-w-0"
             error={errors.estado}
           />
+        </div>
+
+        <div className="col-span-full mt-3">
+          <ProductFileInput
+            label="Imagen del Medicamento"
+            onUpload={handleImageUpload}
+          />
+          {/* Input oculto para guardar la URL de la imagen */}
+          <input type="hidden" name="imagen" value={imageUrl || ""} />
         </div>
 
         <div className="col-span-full flex flex-col-reverse sm:flex-row justify-between gap-3 sm:gap-0 w-full max-w-full mx-auto mt-6 min-w-0">

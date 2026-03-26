@@ -526,6 +526,8 @@ const NewHomePage = () => {
       {/* =========================
           MODAL DE AGREGADO
          ========================= */}
+      <Footer />
+
       <Modal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
