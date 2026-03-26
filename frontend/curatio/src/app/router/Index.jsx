@@ -1,7 +1,7 @@
 import { createBrowserRouter, Navigate, Outlet } from "react-router-dom";
 import { MainLayout, AuthLayout } from "@/features/layouts";
 import ViewCartShopPage from "@/features/cartshop/page/ViewCartShopPage";
-
+import { PermissionsManagementPage } from "@/features/permissions";
 import {
   ProfilePage,
   BasicInformationPage,
@@ -124,6 +124,10 @@ const router = createBrowserRouter([
             path: "/dashboard",
             element: <DashboardPage />,
           },
+           {
+                path: "permissions",
+                element: <PermissionsManagementPage/>
+            },
 
           /**
            * =========================

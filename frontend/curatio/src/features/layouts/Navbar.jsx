@@ -232,7 +232,7 @@ const Navbar = ({ variant = "solid" }) => {
              ========================= */}
           <ul className="hidden md:flex items-center gap-6 font-body font-heading text-small text-label">
             <li>
-              <Link to="/" className="hover:text-primary transition">
+              <Link to="/permissions" className="hover:text-primary transition">
                 Gestion de grupos
               </Link>
             </li>
