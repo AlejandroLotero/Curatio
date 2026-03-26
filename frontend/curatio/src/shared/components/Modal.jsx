@@ -27,7 +27,7 @@ export default function Modal({
       <div className="relative bg-white rounded-2xl shadow-xl w-[400px] p-8 text-center z-10 animate-fadeIn">
         
         {title && (
-          <h2 className="text-xl font-semibold mb-4">{title}</h2>
+          <h2 className="text-xl text-label  font-semibold mb-4">{title}</h2>
         )}
 
         {message && (
