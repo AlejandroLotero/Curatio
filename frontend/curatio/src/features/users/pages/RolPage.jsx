@@ -276,9 +276,20 @@ export default function RolPage() {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    updateFormData({
-      [name]: value,
-    });
+    if (name === "roles") {
+      const next = { roles: value };
+
+      // Regla de negocio: fechas solo aplican para Farmaceuta
+      if (value !== "Farmaceuta") {
+        next.startDate = "";
+        next.endDate = "";
+      }
+
+      updateFormData(next);
+      return;
+    }
+
+    updateFormData({ [name]: value });
   };
 
   /**
@@ -385,25 +396,29 @@ export default function RolPage() {
             error={errors.roles}
           />
 
-          {/* Fecha de inicio */}
-          <Input
-            label="Fecha de inicio"
-            type="date"
-            name="startDate"
-            value={formData.startDate}
-            onChange={handleChange}
-            error={errors.startDate}
-          />
+          {formData.roles === "Farmaceuta" ? (
+            <>
+              {/* Fecha de inicio */}
+              <Input
+                label="Fecha de inicio"
+                type="date"
+                name="startDate"
+                value={formData.startDate}
+                onChange={handleChange}
+                error={errors.startDate}
+              />
 
-          {/* Fecha de fin */}
-          <Input
-            label="Fecha de fin"
-            type="date"
-            name="endDate"
-            value={formData.endDate}
-            onChange={handleChange}
-            error={errors.endDate}
-          />
+              {/* Fecha de fin */}
+              <Input
+                label="Fecha de fin"
+                type="date"
+                name="endDate"
+                value={formData.endDate}
+                onChange={handleChange}
+                error={errors.endDate}
+              />
+            </>
+          ) : null}
 
           {/* Botones principales */}
           <div className="flex justify-between w-full max-w-[320px] mt-6">

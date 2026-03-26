@@ -12,13 +12,14 @@ export default function UpdateDatosContactoPage() {
   //Recibir datos desde la página anterior
   const location = useLocation();
   const userId = location.state?.userId;
+  const previousFormData = location.state?.formData ?? {};
 
   //Estado del formulario
   const [formData, setFormData] = useState({
-    address: "",
-    phoneNumber: "",
-    email: "",
-    confirmEmail: "",
+    address: previousFormData.address ?? "",
+    phoneNumber: previousFormData.phoneNumber ?? "",
+    email: previousFormData.email ?? "",
+    confirmEmail: previousFormData.confirmEmail ?? previousFormData.email ?? "",
   });
 
     //Efecto para cargar datos del usuario
@@ -40,8 +41,14 @@ export default function UpdateDatosContactoPage() {
         }
       };
   
-      if (userId) loadUser();
-    }, [userId]);
+      const hasPrefillFromState =
+        Boolean(previousFormData?.address) ||
+        Boolean(previousFormData?.phoneNumber) ||
+        Boolean(previousFormData?.email) ||
+        Boolean(previousFormData?.confirmEmail);
+
+      if (userId && !hasPrefillFromState) loadUser();
+    }, [userId, previousFormData]);
 
   //Manejar cambios
   const handleChange = (e) => {
@@ -64,7 +71,14 @@ export default function UpdateDatosContactoPage() {
       rounded-3xl">
 
       <Link
-          to="/accounts/editar-datos-basicos/:id"
+          to={`/accounts/editar-datos-basicos/${userId ?? ""}`}
+          state={{
+            userId,
+            formData: {
+              ...previousFormData,
+              ...formData,
+            },
+          }}
           className="absolute left-3 flex items-center justify-center w-12 h-12 rounded-full hover:bg-white/20 transition-colors group"
         >
           <CircleArrowLeft className="size-8 text-label group-hover:text-white transition-colors" />
@@ -129,7 +143,13 @@ export default function UpdateDatosContactoPage() {
             </Link>
 
             <Link to="/accounts/editar-rol"
-            state={{ userId: userId, formData: formData }}>
+            state={{
+              userId: userId,
+              formData: {
+                ...previousFormData,
+                ...formData,
+              },
+            }}>
               <Buttom
                 variant="primary"
                 size="sm"

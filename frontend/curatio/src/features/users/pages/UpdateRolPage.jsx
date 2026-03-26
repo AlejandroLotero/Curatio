@@ -113,23 +113,25 @@ export default function RolPage() {
             onChange={handleChange}
           />
 
-          <Input
-            label="Fecha de inicio"
-            type="date"
-            name="startDate"
-            value={formData.startDate}
-            onChange={handleChange}
-            disabled={!isFarmaceutaRole}
-          />
+          {isFarmaceutaRole ? (
+            <>
+              <Input
+                label="Fecha de inicio"
+                type="date"
+                name="startDate"
+                value={formData.startDate}
+                onChange={handleChange}
+              />
 
-          <Input
-            label="Fecha de fin"
-            type="date"
-            name="endDate"
-            value={formData.endDate}
-            onChange={handleChange}
-            disabled={!isFarmaceutaRole}
-          />
+              <Input
+                label="Fecha de fin"
+                type="date"
+                name="endDate"
+                value={formData.endDate}
+                onChange={handleChange}
+              />
+            </>
+          ) : null}
 
           <div className="flex justify-between w-full max-w-[320px] mt-6">
             <Link

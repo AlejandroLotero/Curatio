@@ -2,7 +2,7 @@ import Input from "@/shared/components/Input";
 import Buttom from "@/shared/components/Button";
 import Select from "@/shared/components/Select";
 import FileInput from "@/shared/components/FileInputCreateUser";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getDocumentTypes } from "../services/selectService";
 import { CircleArrowLeft } from "lucide-react";
@@ -15,16 +15,18 @@ export default function UpdateBasicInformationPage() {
 
 // Obtener el id del usuario a editar
   const { id } = useParams();
+  const location = useLocation();
+  const previousFormData = location.state?.formData ?? {};
 // Estado para cargar los tipos de documento
   const [documentTypes, setDocumentTypes] = useState([]);
 
 
 //Estado formData para leer los datos del formulario
   const [formData, setFormData] = useState({
-    fullNames: "",
-    documentTypes: "",
-    documentNumber: "",
-    photoUrl: "",
+    fullNames: previousFormData.fullNames ?? "",
+    documentTypes: previousFormData.documentTypes ?? "",
+    documentNumber: previousFormData.documentNumber ?? "",
+    photoUrl: previousFormData.photoUrl ?? "",
   });
   // Efecto para cargar los datos del usuario a editar en el form
   useEffect(() => {
@@ -47,8 +49,20 @@ export default function UpdateBasicInformationPage() {
       console.error("Error cargando usuario a editar:", error);
     }
   };
-  if (id) loadData();
-}, [id]);
+  const hasPrefillFromState =
+    Boolean(previousFormData?.fullNames) ||
+    Boolean(previousFormData?.documentTypes) ||
+    Boolean(previousFormData?.documentNumber) ||
+    Boolean(previousFormData?.photoUrl);
+
+  if (id && !hasPrefillFromState) loadData();
+  if (!hasPrefillFromState) {
+    // Si no hay state, igual necesitamos cargar los tipos de documento
+    getDocumentTypes().then(setDocumentTypes).catch((error) => {
+      console.error("Error cargando tipos de documento:", error);
+    });
+  }
+}, [id, previousFormData]);
 // Manejador de cambios en el formulario
 const handleChange = (e) => {
   const { name, value } = e.target;
@@ -83,7 +97,7 @@ const handleChange = (e) => {
       rounded-3xl"
       >
         <Link
-          to="/"
+          to="/accounts/list"
           className="absolute left-3 flex items-center justify-center w-12 h-12 rounded-full hover:bg-white/20 transition-colors group"
         >
           <CircleArrowLeft className="size-8 text-label group-hover:text-white transition-colors" />
@@ -151,7 +165,13 @@ const handleChange = (e) => {
             </Link>
 
             <Link to="/accounts/editar-datos-contacto"
-              state={{ userId: id, formData: formData }}>
+              state={{
+                userId: id,
+                formData: {
+                  ...previousFormData,
+                  ...formData,
+                },
+              }}>
               <Buttom
                 variant="primary"
                 size="sm"
