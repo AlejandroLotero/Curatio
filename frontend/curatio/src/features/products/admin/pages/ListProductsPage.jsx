@@ -16,6 +16,7 @@ import {
 export default function ListProductsPage() {
   const navigate = useNavigate();
 
+  // Estados para los filtros de la tabla
   const [filterVia, setFilterVia] = useState("");
   const [filterEstado, setFilterEstado] = useState("");
   const [filterLaboratorio, setFilterLaboratorio] = useState("");
@@ -23,18 +24,21 @@ export default function ListProductsPage() {
   const [pageSize, setPageSize] = useState(5);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Estados para almacenar los datos cargados desde la API
   const [products, setProducts] = useState([]);
   const [viasAdministracion, setViasAdministracion] = useState([]);
   const [estados, setEstados] = useState([]);
   const [laboratorios, setLaboratorios] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  // Carga los catalogos de opciones al montar el componente
   useEffect(() => {
     getViasAdministracion().then(setViasAdministracion);
     getEstadosMedicamento().then(setEstados);
     getLaboratorios().then(setLaboratorios);
   }, []);
 
+  // Carga los medicamentos desde la API cuando cambian los filtros o termino de busqueda
   useEffect(() => {
     const loadProducts = async () => {
       try {
@@ -62,6 +66,7 @@ export default function ListProductsPage() {
     loadProducts();
   }, [searchTerm, filterVia, filterEstado, filterLaboratorio]);
 
+  // Navega a la pagina de creacion de nuevo producto
   const handleCreateProduct = () => {
     navigate("/products");
   };
@@ -75,8 +80,11 @@ export default function ListProductsPage() {
         Gestion de Productos
       </h1>
 
+      {/* Controles de filtrado y busqueda */}
       <div className="flex flex-wrap gap-3 mb-6 items-center justify-between">
+        {/* Filtros de medicamentos */}
         <div className="flex flex-wrap gap-3 items-center">
+          {/* Input de busqueda por nombre */}
           <input
             type="text"
             placeholder="Buscar..."
@@ -85,6 +93,7 @@ export default function ListProductsPage() {
             className="border rounded px-2 py-2 bg-gray-900 text-gray-50"
           />
 
+          {/* Filtro por via de administracion */}
           <Select
             label=""
             options={viasAdministracion}
@@ -94,6 +103,7 @@ export default function ListProductsPage() {
             wrapperClassName="min-w-fit"
           />
 
+          {/* Filtro por estado del medicamento */}
           <Select
             label=""
             options={estados}
@@ -103,6 +113,7 @@ export default function ListProductsPage() {
             wrapperClassName="min-w-fit"
           />
 
+          {/* Filtro por laboratorio */}
           <Select
             label=""
             options={laboratorios}
@@ -113,15 +124,19 @@ export default function ListProductsPage() {
           />
         </div>
 
+        {/* Botones de acciones y selector de paginacion */}
         <div className="flex gap-2 items-center">
+          {/* Boton para crear nuevo producto */}
           <Button size="sm" onClick={handleCreateProduct}>
             Crear Producto
           </Button>
 
+          {/* Boton para generar reporte */}
           <Button size="sm" onClick={() => setIsModalOpen(true)}>
             Generar Reporte
           </Button>
 
+          {/* Selector del tamanio de pagina */}
           <select
             value={pageSize}
             onChange={(e) => setPageSize(Number(e.target.value))}
@@ -136,8 +151,10 @@ export default function ListProductsPage() {
         </div>
       </div>
 
+      {/* Indicador de carga */}
       {loading && <div className="mb-4 text-label">Loading medications...</div>}
 
+      {/* Tabla de medicamentos con paginacion y filtros */}
       <DataTable
         data={products}
         columns={ProductColumns}
@@ -146,6 +163,7 @@ export default function ListProductsPage() {
         pageSize={pageSize}
         meta={{
           statuses: estados,
+          /* Callback para actualizar el estado de un medicamento cuando cambia */
           onStatusChanged: (productId, newStatus) => {
             setProducts((prev) =>
               prev.map((item) =>
@@ -162,6 +180,7 @@ export default function ListProductsPage() {
         }}
       />
 
+      {/* Modal para generar reporte de medicamentos */}
       <ProductReportConfigModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

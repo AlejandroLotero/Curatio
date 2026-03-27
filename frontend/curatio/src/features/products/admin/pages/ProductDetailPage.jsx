@@ -8,14 +8,19 @@ import "../../../../styles/tokens.css";
 import "../../../../styles/semantic.css";
 
 export default function ProductDetailPage() {
+  // Obtiene el ID del producto desde la URL
   const { id } = useParams();
+
+  // Estados del componente
   const [medicamento, setMedicamento] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Carga el medicamento cuando cambia el ID
   useEffect(() => {
     cargarMedicamento();
   }, [id]);
 
+  // Busca el medicamento en la lista por ID y lo guarda en el estado
   const cargarMedicamento = () => {
     try {
       const med = listProducts.find((m) => m.id == id);
@@ -31,6 +36,7 @@ export default function ProductDetailPage() {
     }
   };
 
+  // Componente reutilizable para mostrar campos de detalles en modo lectura
   const DetailField = ({ label, value }) => (
     <div className="flex flex-col gap-2">
       <label className="text-sm font-semibold text-label" style={{ color: "var(--color-black)", fontFamily: "var(--font-body)" }}>
@@ -42,6 +48,7 @@ export default function ProductDetailPage() {
     </div>
   );
 
+  // Muestra pantalla de carga mientras se obtienen los datos
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -50,6 +57,7 @@ export default function ProductDetailPage() {
     );
   }
 
+  // Muestra mensaje si el producto no existe
   if (!medicamento) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -97,8 +105,8 @@ export default function ProductDetailPage() {
         >
           DETALLES DEL PRODUCTO
         </h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* responsivo para tablets y celulares */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <DetailField label="ID" value={medicamento.id} />
           <DetailField label="Medicamento" value={medicamento.nameproduct} />
           <DetailField label="Forma Farmacéutica" value={medicamento.formaFarmaceutica} />
