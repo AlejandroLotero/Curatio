@@ -5,23 +5,23 @@ export default function SupplierDetailComponent({ supplier, onCancel, onEdit }) 
   const data = supplier ?? {};
 
   return (
-    <div className="flex items-center justify-center min-h-screen text-label px-4 py-8">
+    <div className="flex items-center justify-center min-h-screen text-label px-3 sm:px-4 py-4 sm:py-8">
       <div
         className="
           w-full max-w-4xl mx-auto
-          px-8 py-10
+          px-4 sm:px-6 md:px-8 py-6 sm:py-10
           bg-white/70 dark:bg-neutral-900/20
           backdrop-blur-md
           shadow-xl
           ring-1
-          rounded-3xl
+          rounded-2xl sm:rounded-3xl
         "
       >
-        <h2 className="text-center text-subtittles font-bold mb-8">
+        <h2 className="text-center text-lg sm:text-xl md:text-2xl font-bold mb-4 sm:mb-8">
           {data.nombreProveedor || "NOMBRE DEL PROVEEDOR"}
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 place-items-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-6 sm:mb-8 place-items-center">
           <Input
             label="NIT:"
             value={data.nit ?? ""}
@@ -78,7 +78,7 @@ export default function SupplierDetailComponent({ supplier, onCancel, onEdit }) 
           />
         </div>
 
-        <div className="flex justify-end gap-6 mt-8">
+        <div className="flex flex-col sm:flex-row justify-end gap-3 sm:gap-6 mt-6 sm:mt-8">
           <Button
             variant="secondary"
             size="sm"

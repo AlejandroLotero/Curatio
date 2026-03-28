@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Input from "../../../shared/components/Input";
 import Select from "../../../shared/components/Select";
 import Button from "../../../shared/components/Button";
@@ -13,6 +14,8 @@ const roleOptions = [
 ];
 
 export default function RoleForm({ onRoleCreated, selectedPermissions = {}, selectedCount = 0 }) {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     selectedGroup: "",
     documentId: "",
@@ -89,12 +92,13 @@ export default function RoleForm({ onRoleCreated, selectedPermissions = {}, sele
 
   const handleCancel = () => {
     resetForm();
+    navigate("/");
   };
 
   return (
     <>
-      <div className="flex flex-col gap-6">
-        <h3 className="text-lg font-semibold text-label">Asignar Permisos</h3>
+      <div className="flex flex-col gap-4 sm:gap-6">
+        <h3 className="text-base sm:text-lg font-semibold text-label">Asignar Permisos</h3>
         
         <Select
           label="Grupos"
@@ -117,9 +121,9 @@ export default function RoleForm({ onRoleCreated, selectedPermissions = {}, sele
         />
 
         {/* Mostrar resumen de permisos seleccionados */}
-        <div className="bg-gray-50 dark:bg-neutral-700 rounded-lg p-4">
-          <h4 className="font-medium text-label mb-2">Permisos a asignar</h4>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
+        <div className="bg-gray-50 dark:bg-neutral-700 rounded-lg p-3 sm:p-4">
+          <h4 className="font-medium text-label mb-2 text-sm sm:text-base">Permisos a asignar</h4>
+          <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
             {selectedCount > 0
               ? `${selectedCount} permiso${selectedCount !== 1 ? 's' : ''} seleccionado${selectedCount !== 1 ? 's' : ''}`
               : 'Ningún permiso seleccionado'
@@ -132,7 +136,7 @@ export default function RoleForm({ onRoleCreated, selectedPermissions = {}, sele
           )}
         </div>
 
-        <div className="flex gap-4 mt-4">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-4">
           <Button
             variant="secondary"
             size="md"

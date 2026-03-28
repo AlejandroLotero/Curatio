@@ -78,23 +78,17 @@ export default function ListCartShopPage() {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-semibold mb-4 text-center pb-4 text-label">
+      <h1 className="text-2xl font-bold text-center text-label text-tittles mb-6">
         Carritos de compra
       </h1>
 
       <div className="flex flex-wrap items-center justify-end gap-2 pb-6">
-        <Button
-          variant="primary"
-          onClick={() => setIsReportModalOpen(true)}
-        >
+        <Button variant="primary" onClick={() => setIsReportModalOpen(true)}>
           Generar Reporte
         </Button>
       </div>
 
-      <DataTableCartShop
-        data={cartItems}
-        columns={UserColumns}
-      />
+      <DataTableCartShop data={cartItems} columns={UserColumns} />
 
       <ReportConfigModal
         isOpen={isReportModalOpen}

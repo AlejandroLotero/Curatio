@@ -1,17 +1,19 @@
 import { useState } from "react";
 import Modal from "@/shared/components/Modal";
 
-
+// Componente para cargar imagenes de productos con preview y simulacion de backend
 export default function FileInput({
   label = "Subir archivo",
   accept = "image/*",
   onUpload,
 }) {
+  // Estados para manejar el archivo, preview, loading y modal de exito
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
+  // Maneja la seleccion del archivo y genera preview si es imagen
   const handleChange = (e) => {
     const f = e.target.files[0];
     if (!f) return;
@@ -22,16 +24,17 @@ export default function FileInput({
     }
   };
 
+  // Simula la carga del archivo al servidor y muestra modal de exito
   const handleUpload = async () => {
     setLoading(true);
 
-    // 🔹 Simulación backend
+    // Simulacion de llamada al backend
     setTimeout(() => {
       const url = `https://cdn.miapp.com/${Date.now()}-${file.name}`;
       setLoading(false);
       onUpload(url);
       
-      // Mostrar modal de éxito
+      // Muestra modal de exito por 2 segundos
       setShowSuccessModal(true);
       setTimeout(() => {
         setShowSuccessModal(false);
@@ -41,6 +44,7 @@ export default function FileInput({
 
   return (
     <div className="space-y-3">
+      {/* Estilos personalizados para el input de archivo */}
       <style>{`
         .product-file::-webkit-file-upload-button {
           background-color: var(--color-primarybtnbg);
@@ -74,6 +78,7 @@ export default function FileInput({
         }
       `}</style>
       
+      {/* Etiqueta del campo */}
       <label
         className="block text-lg font-medium text-label"
         style={{ color: "var(--color-black)", fontFamily: "var(--font-body)" }}
@@ -81,13 +86,17 @@ export default function FileInput({
         {label}
       </label>
 
+      {/* Contenedor con preview de imagen e input */}
       <div className="flex gap-6 items-start">
+        {/* Preview de imagen seleccionada */}
         {preview && (
           <img src={preview} className="h-32 w-32 rounded-lg object-cover flex-shrink-0" />
         )}
         
+        {/* Contenedor del input y boton de envio */}
         <div className="space-y-3 flex-1">
           <div className="flex gap-2 border border-black rounded-lg p-2">
+            {/* Input para seleccionar archivo */}
             <input
               type="file"
               accept={accept}
@@ -96,6 +105,7 @@ export default function FileInput({
               style={{ color: "var(--semantic-text-label)" }}
             />
 
+            {/* Boton para subir el archivo */}
             <button
               onClick={handleUpload}
               disabled={!file || loading}
@@ -115,7 +125,7 @@ export default function FileInput({
         </div>
       </div>
 
-      {/* Modal de éxito */}
+      {/* Modal de confirmacion de carga exitosa */}
       <Modal
         isOpen={showSuccessModal}
         onClose={() => setShowSuccessModal(false)}

@@ -167,72 +167,76 @@ export default function ListUserPage() {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold text-center text-label text-tittles">
+      <h1 className="text-2xl font-bold text-center text-label text-tittles mb-6">
         Gestion de usuarios
       </h1>
 
-      {/* Barra superior */}
-      <div className="mb-4 flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex flex-col gap-3">
-          <Link to="/">
-            <Button variant="secondary" size="sm">
-              Volver
-            </Button>
-          </Link>
-        </div>
+      <div className="flex justify-center">
+        <div className="w-full max-w-6xl">
+          {/* Barra superior */}
+          <div className="mb-4 flex w-full flex-col gap-3 sm:gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-2 sm:gap-3">
+              <Link to="/">
+                <Button variant="secondary" size="sm">
+                  Volver
+                </Button>
+              </Link>
+            </div>
 
-        <div className="flex flex-wrap items-center justify-end gap-2 mt-12">
-          <Link to="/accounts/datos-basicos">
-            <Button variant="primary" size="sm">
-              Crear usuario
-            </Button>
-          </Link>
+            <div className="flex flex-wrap items-center justify-end gap-2 sm:gap-3">
+              <Link to="/accounts/datos-basicos">
+                <Button variant="primary" size="sm">
+                  Crear usuario
+                </Button>
+              </Link>
 
-          <Button
-            variant="secondary"
-            size="sm"
-            type="button"
-            onClick={() => handleOpenReportModal()}
-          >
-            Generar Reporte
-          </Button>
+              <Button
+                variant="secondary"
+                size="sm"
+                type="button"
+                onClick={() => handleOpenReportModal()}
+              >
+                Generar Reporte
+              </Button>
+            </div>
+          </div>
+
+          {/* Loading */}
+          {loading && <div className="mb-4 text-label">Loading users...</div>}
+
+          {/* Tabla con filtros reales */}
+          <DataTableUser
+            data={users}
+            columns={UserColumns}
+            filters={{
+              search,
+              role,
+              statusFilter,
+              documentFilter,
+            }}
+            onFiltersChange={{
+              setSearch,
+              setRole,
+              setStatusFilter,
+              setDocumentFilter,
+            }}
+            meta={{
+              onStatusChanged: (userId, nextValue) => {
+                setUsers((prev) =>
+                  prev.map((item) =>
+                    item.id === userId
+                      ? {
+                          ...item,
+                          isActive: nextValue,
+                        }
+                      : item
+                  )
+                );
+              },
+            }}
+          />
         </div>
       </div>
-
-      {/* Loading */}
-      {loading && <div className="mb-4 text-label">Loading users...</div>}
-
-      {/* Tabla con filtros reales */}
-      <DataTableUser
-        data={users}
-        columns={UserColumns}
-        filters={{
-          search,
-          role,
-          statusFilter,
-          documentFilter,
-        }}
-        onFiltersChange={{
-          setSearch,
-          setRole,
-          setStatusFilter,
-          setDocumentFilter,
-        }}
-        meta={{
-          onStatusChanged: (userId, nextValue) => {
-            setUsers((prev) =>
-              prev.map((item) =>
-                item.id === userId
-                  ? {
-                      ...item,
-                      isActive: nextValue,
-                    }
-                  : item
-              )
-            );
-          },
-        }}
-      />
 
       {/* Modal de reportes */}
       {isModalOpen && (

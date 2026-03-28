@@ -70,17 +70,17 @@ export default function DataTableSuppliers({ data, columns }) {
 
         {/* ================== TOOLBAR ================== */}
         {/* Barra superior con buscador y selector de filas */}
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
           {/* ================== BUSCADOR ================== */}
           {/* Filtra todas las columnas de la tabla */}
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 w-full sm:w-auto">
             <input
               type="text"
               placeholder="Buscar..."
               value={globalFilter ?? ""}
               onChange={(e) => setGlobalFilter(e.target.value)}
-              className="border rounded px-3 py-2 w-258 text-black"
+              className="border rounded px-3 py-2 w-full sm:w-72 text-black"
             />
           </div>
 
