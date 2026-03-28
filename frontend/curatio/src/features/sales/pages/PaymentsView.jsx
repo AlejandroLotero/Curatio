@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CircleArrowLeft, CreditCard, Wallet } from "lucide-react";
-import { Button, Select, Input } from "@/shared/components";
+import { Button, Select, Input, Modal } from "@/shared/components";
 import { useCart } from "@/features/cartshop/context/CartContext";
 import { useAuth } from "@/features/auth/context/AuthContext";
 import { getPaymentsTypes } from "@/features/sales/services/selectServices";
@@ -37,6 +37,16 @@ function formatExpiryInput(value) {
   return `${d.slice(0, 2)}/${d.slice(2)}`; // Agrega una barra entre el mes y el año
 }
 
+/** Enmascara el PAN(pan es el número de tarjeta) mostrando solo las últimas 4 cifras (nunca el CVV). */
+function maskCardNumber(value) {
+  const d = digitsOnly(value);
+  if (d.length < 4) return "•••• •••• •••• ••••";
+  const last4 = d.slice(-4);
+  return `•••• •••• •••• ${last4}`;
+}
+
+const MERCHANT_DISPLAY_NAME = "Curatio";
+
 /**
  * PaymentsView
  * --------------
@@ -51,7 +61,7 @@ function formatExpiryInput(value) {
 export default function PaymentsView() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { cartItems, cartSubtotal, cartCount } = useCart();
+  const { cartItems, cartSubtotal, cartCount, clearActiveCart } = useCart();
 
   const [paymentTypes, setPaymentTypes] = useState([]);
   const [paymentTypeId, setPaymentTypeId] = useState("");
@@ -63,6 +73,9 @@ export default function PaymentsView() {
   const [cardNumber, setCardNumber] = useState("");
   const [cardExpiry, setCardExpiry] = useState("");
   const [cardCvv, setCardCvv] = useState("");
+
+  /** Modal de confirmación antes de registrar el pago y ver la pantalla de éxito. */
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
   /**
    * Al cambiar a transferencia u otro método, limpiar datos sensibles de tarjeta.
@@ -119,16 +132,58 @@ export default function PaymentsView() {
 
   const goToCart = () => navigate("/cartshop/ver-carrito");
 
+  /** Etiqueta legible del método elegido (select). */
+  const paymentMethodLabel = useMemo(() => {
+    const opt = paymentTypes.find(
+      (p) => String(p.id) === String(paymentTypeId)
+    );
+    return opt?.label ?? paymentTypeId ?? "—";
+  }, [paymentTypes, paymentTypeId]);
+
+  /** Texto de concepto para el comprobante (primer ítem + conteo). */
+  const orderConcept = useMemo(() => {
+    if (!cartItems.length) return "—"; // Si no hay productos, retorna un guión
+    if (cartItems.length === 1) return cartItems[0].productName ?? "Pedido"; // Si hay un producto, retorna el nombre del producto
+    const first = cartItems[0].productName ?? "Medicamentos"; // Si hay más de un producto, retorna el nombre del primer producto
+    return `${first} y ${cartItems.length - 1} artículo(s) más`; // Retorna el nombre del primer producto y la cantidad de productos restantes
+  }, [cartItems]);
+
+  /** Abre el modal de revisión (no ejecuta el pago aún). */
+  const handleOpenConfirmModal = () => {
+    if (!canConfirmPayment) return;
+    setIsConfirmModalOpen(true);
+  };
+
+  const handleCloseConfirmModal = () => {
+    setIsConfirmModalOpen(false);
+  };
+
   /**
-   * Confirma el pago
+   * Confirma en el modal: vacía carrito local y navega a la vista de transacción exitosa.
+   * En producción: llamar API primero y solo entonces clear + navigate.
    */
-  const handleConfirmPayment = () => {
+  const handleModalPay = () => {
     if (!canConfirmPayment) return;
 
-    /**
-     *Ir al recibo de venta con el carrito
-     */
-    navigate("/sales/factura-electronica");
+    /** Fecha local AAAA-MM-DD (misma forma que en el diseño de referencia). */
+    const now = new Date();
+    const paymentDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+
+    navigate("/sales/confirmacion-pago", {
+      replace: true,
+      state: {
+        transactionStatus: "Aprobada",
+        merchantName: MERCHANT_DISPLAY_NAME,
+        paymentDate,
+        concept: orderConcept,
+        paymentMethod: paymentMethodLabel,
+        subtotal,
+        total: totalAPagar,
+      },
+    });
+
+    clearActiveCart();
+    setIsConfirmModalOpen(false);
   };
 
   return (
@@ -366,7 +421,7 @@ export default function PaymentsView() {
                   size="sm"
                   type="button"
                   disabled={!canConfirmPayment}
-                  onClick={handleConfirmPayment}
+                  onClick={handleOpenConfirmModal}
                 >
                   Confirmar pago
                 </Button>
@@ -375,6 +430,65 @@ export default function PaymentsView() {
           </div>
         )}
       </div>
+
+      {/*
+        Modal: resume datos de tarjeta (sin CVV) si aplica, método y total.
+        Pagar → ConfirmPayment; Cancelar → cierra.
+      */}
+      <Modal
+        isOpen={isConfirmModalOpen}
+        onClose={handleCloseConfirmModal}
+        title="Confirmar pago"
+        contentClassName="w-[min(100vw-2rem,26rem)] max-w-lg px-6 py-6 text-left sm:px-8 sm:py-8" //Estas propiedades son para el modal de confirmación de pago se manejan entre corchetes para que se pueda ajustar el ancho y el alto del modal
+      >
+        <p className="mb-4 text-sm text-label/80"> 
+          Revisa la información antes de procesar el pago.
+        </p>
+
+        {showCardFields ? ( // Si el método de pago es débito o crédito, muestra los datos de la tarjeta
+          <ul className="mb-4 space-y-2 rounded-lg border border-border-strong bg-white/60 p-3 text-sm text-label">
+            <li>
+              <span className="font-medium text-label/70">Titular: </span>
+              {cardHolder.trim() || "—"}
+            </li>
+            <li>
+              <span className="font-medium text-label/70">Tarjeta: </span>
+              {maskCardNumber(cardNumber)}
+            </li>
+            <li>
+              <span className="font-medium text-label/70">Vencimiento: </span>
+              {cardExpiry.trim() || "—"}
+            </li>
+          </ul>
+        ) : null}
+
+        <ul className="mb-6 space-y-2 text-sm text-label">
+          <li className="flex justify-between gap-2">
+            <span className="text-label/75">Método</span>
+            <span className="font-medium">{paymentMethodLabel}</span>
+          </li>
+          <li className="flex justify-between gap-2 border-t border-border-strong/50 pt-2">
+            <span className="font-semibold">Total a pagar</span>
+            <span className="font-bold">
+              ${totalAPagar.toLocaleString("es-CO")}
+            </span>
+          </li>
+        </ul>
+
+        <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+          <Button
+            variant="secondary"
+            size="sm"
+            type="button"
+            onClick={handleCloseConfirmModal}
+          >
+            Cancelar
+          </Button>
+          <Button variant="primary" size="sm" type="button" onClick={handleModalPay}>
+            Pagar
+          </Button>
+        </div>
+      </Modal>
     </div>
   );
 }

@@ -28,7 +28,8 @@ import {
 
 import { ElectronicInvoiceSalesPage, 
   ListSales, 
-  PaymentsView } 
+  PaymentsView,
+  ConfirmPayment}
   from "@/features/sales";
   
 import {
@@ -285,6 +286,11 @@ const router = createBrowserRouter([
              */
             path: "/sales/pagos",
             element: <PaymentsView />,
+          },
+          {
+            /** Resumen de transacción exitosa (tras confirmar en modal de pagos). */
+            path: "/sales/confirmacion-pago",
+            element: <ConfirmPayment />,
           },
 
           /**
