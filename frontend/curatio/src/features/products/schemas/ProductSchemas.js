@@ -81,6 +81,8 @@
 //     .min(1, "El estado es obligatorio"),
 // });
 
+// archivo para las validaciones de los formularios de productos.
+
 import { z } from "zod";
 
 export const ProductSchema = z.object({

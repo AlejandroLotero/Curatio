@@ -114,7 +114,7 @@ export default function FileInput({
                 backgroundColor: "var(--color-secondarybtnbg)",
                 color: "var(--color-secondarybtntext)",
                 fontFamily: "var(--font-body)",
-                borderRadius: "8px",
+                borderRadius: "20px",
               }}
               onMouseEnter={(e) => e.target.style.backgroundColor = "var(--color-secondarybtnhoverbg)"}
               onMouseLeave={(e) => e.target.style.backgroundColor = "var(--color-secondarybtnbg)"}
