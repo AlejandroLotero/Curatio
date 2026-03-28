@@ -146,6 +146,7 @@
 // }
 
 import { useNavigate } from "react-router-dom";
+import { CircleArrowLeft } from "lucide-react";
 import { Button } from "@/shared/components";
 import { useCart } from "@/features/cartshop/context/CartContext";
 import { useAuth } from "@/features/auth/context/AuthContext";
@@ -159,6 +160,11 @@ import { useAuth } from "@/features/auth/context/AuthContext";
  * - Esta vista puede abrirse sin login
  * - Se puede revisar el carrito sin autenticación
  * - Solo al momento de pagar se exige sesión activa
+ *
+ * Datos del medicamento:
+ * - `cartItems` viene ya enriquecido desde CartContext (resolveMedicationForCart +
+ *   enrichCartLine): nombre, precio, imagen, laboratorio, presentación, etc.
+ * - Si falta algún campo, la tabla usa fallback seguro (vacío o 0).
  */
 export default function ViewCartShopPage() {
   const navigate = useNavigate();
@@ -206,16 +212,38 @@ export default function ViewCartShopPage() {
     navigate("/sales/factura-electronica");
   };
 
+  /**
+   * Ruta "/" en el router carga NewHomePage (inicio público / tienda).
+   */
+  const goToHome = () => {
+    navigate("/");
+  };
+
   return (
     <div className="p-6 min-h-screen text-label">
       <div className="max-w-5xl mx-auto bg-white/70 backdrop-blur-md rounded-3xl shadow-xl p-6">
         {/* ========================= TÍTULO ========================= */}
-        <div className="flex items-center justify-between gap-4 mb-6">
-          <h1 className="text-2xl font-bold text-label">
-            Tu carrito de compras
-          </h1>
+        <div className="mb-6 flex items-center justify-between gap-4">  {/* Este div contriene el titulo y el numero de items en el carrito */}
+          <div className="flex min-w-0 items-center gap-3"> {/* Este div contiene el boton de volver al inicio y el titulo */}
+            {/*
+              Volver al inicio (NewHomePage): mismo patrón que otras pantallas
+              del proyecto con CircleArrowLeft + lucide-react.
+              la propiedad shrink-0 es para que el boton no se reduzca en tamaño cuando el texto es muy largo
+            */}
+            <button
+              type="button"
+              onClick={goToHome}
+              className="w-12 h-12 place-items-center hover:scale-110 transition-all duration-300 hover:bg-primarybtnhoverbg hover:rounded-full"
+              aria-label="Volver al inicio"
+            >
+              <CircleArrowLeft className="h-9 w-9" strokeWidth={1.75} />
+            </button>
+            <h1 className="truncate text-2xl font-bold text-label">
+              Tu carrito de compras
+            </h1>
+          </div>
 
-          <span className="text-sm font-semibold px-3 py-1 rounded-full bg-red-600 text-white">
+          <span className="shrink-0 text-sm font-semibold rounded-full bg-red-600 px-3 py-1 text-white"> {/* Este span contiene el numero de items en el carrito */}
             {cartCount} item(s)
           </span>
         </div>
@@ -243,7 +271,7 @@ export default function ViewCartShopPage() {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-border-strong text-left">
-                    <th className="p-3">Medicamento</th>
+                    <th className="p-3 min-w-[220px]">Medicamento</th> {/* Se define la columna de medicamento con un ancho minimo de 220px */}
                     <th className="p-3">Cantidad</th>
                     <th className="p-3">Precio unitario</th>
                     <th className="p-3">Subtotal</th>
@@ -257,23 +285,73 @@ export default function ViewCartShopPage() {
                       key={item.id}
                       className="border-b last:border-b-0 border-border/40"
                     >
-                      <td className="p-3">
-                        {item.productName}
+                      {/*
+                        Celda de medicamento: combina miniatura + datos del catálogo
+                        que el contexto adjuntó a la línea (image, laboratory, …).
+                      */}
+                      <td className="p-3 align-top">
+                        <div className="flex gap-3">
+                          <div
+                            className="
+                              flex h-20 w-20 shrink-0 items-center justify-center
+                              overflow-hidden rounded-lg bg-white/80
+                            "
+                          >
+                            {item.image ? (
+                              <img
+                                src={item.image}
+                                alt={item.productName ?? "Medicamento"}
+                                className="max-h-full max-w-full object-contain"
+                              />
+                            ) : (
+                              <span className="px-1 text-center text-xs text-label/70">
+                                Sin imagen
+                              </span>
+                            )}
+                          </div>
+                          <div className="min-w-0 space-y-1">
+                            <p className="font-semibold text-label">
+                              {item.productName ?? "Medicamento"}
+                            </p>
+                            {item.laboratory ? (
+                              <p className="text-xs text-label/80">
+                                <span className="font-medium">Laboratorio:</span>{" "}
+                                {item.laboratory}
+                              </p>
+                            ) : null}
+                            {item.concentration ? (
+                              <p className="text-xs text-label/80">
+                                <span className="font-medium">Concentración:</span>{" "}
+                                {item.concentration}
+                              </p>
+                            ) : null}
+                            {item.presentation ? (
+                              <p className="text-xs text-label/80">
+                                <span className="font-medium">Presentación:</span>{" "}
+                                {item.presentation}
+                              </p>
+                            ) : null}
+                            {item.formaFarmaceutica ? (
+                              <p className="text-xs text-label/80">
+                                <span className="font-medium">Forma:</span>{" "}
+                                {item.formaFarmaceutica}
+                              </p>
+                            ) : null}
+                          </div>
+                        </div>
                       </td>
 
-                      <td className="p-3">
-                        {item.quantity}
-                      </td>
+                      <td className="p-3 align-middle">{item.quantity}</td>
 
-                      <td className="p-3">
+                      <td className="p-3 align-middle">
                         ${Number(item.unitPrice || 0).toLocaleString("es-CO")}
                       </td>
 
-                      <td className="p-3">
+                      <td className="p-3 align-middle">
                         ${Number(item.subtotal || 0).toLocaleString("es-CO")}
                       </td>
 
-                      <td className="p-3 text-center">
+                      <td className="p-3 text-center align-middle">
                         <Button
                           variant="secondary"
                           size="sm"

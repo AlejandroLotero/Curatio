@@ -351,6 +351,21 @@ const NewHomePage = () => {
   };
 
   /**
+   * Tras abrir el modal (p. ej. al pulsar Agregar), se cierra solo a los 3 s.
+   * Se limpia el temporizador si el usuario cierra antes o al desmontar la página.
+   
+  useEffect(() => {
+    if (!isModalOpen) return;
+
+    const timerId = window.setTimeout(() => {
+      setIsModalOpen(false);
+      setSelectedProduct(null);
+    }, 3000);
+
+    return () => clearTimeout(timerId);
+  }, [isModalOpen]);*/
+
+  /**
    * Lógica del carrusel.
    */
   const totalProducts = products.length;
