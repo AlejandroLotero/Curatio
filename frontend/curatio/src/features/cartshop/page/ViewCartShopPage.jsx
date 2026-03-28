@@ -198,7 +198,8 @@ export default function ViewCartShopPage() {
       navigate("/login", {
         replace: true,
         state: {
-          from: "/cartshop/ver-carrito",
+          /** Tras login, abrir directamente la vista de pagos (carrito sigue en contexto). */
+          from: "/sales/pagos",
           reason: "checkout_required",
         },
       });
@@ -206,10 +207,9 @@ export default function ViewCartShopPage() {
     }
 
     /**
-     * Aquí va el flujo real autenticado.
-     * Por ahora reutilizamos la pantalla actual de ventas.
+     * Vista de pago (protegida): resumen del carrito + método de pago + totales.
      */
-    navigate("/sales/factura-electronica");
+    navigate("/sales/pagos");
   };
 
   /**
