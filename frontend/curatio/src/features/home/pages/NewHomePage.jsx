@@ -383,20 +383,22 @@ const NewHomePage = () => {
 
         {/* =========================
             CARRUSEL DE DESTACADOS
+            Cada ítem usa el mismo ancho que Card (w-60) para no comprimir
+            ni dejar huecos; en móvil hace wrap y centra las filas.
            ========================= */}
         <div className="mb-10">
           <h2 className="text-2xl font-semibold mb-4 text-left">
             Destacados
           </h2>
 
-          <div className="flex items-center justify-center w-full gap-2 sm:gap-4">
-            <div className="shrink-0 flex justify-start">
+          <div className="flex w-full items-center justify-center gap-2 sm:gap-4">
+            <div className="flex shrink-0 justify-start"> {/*shrink es para que el boton no se reduzca en tamaño*/}
               <Button
                 variant="secondary"
                 size="sm"
                 type="button"
                 onClick={handlePrevSlide}
-                className="bg-transparent border-none shadow-none"
+                className="border-none bg-transparent shadow-none"
               >
                 <ChevronLeft className="h-5 w-5" />
               </Button>
@@ -409,8 +411,8 @@ const NewHomePage = () => {
 
                 return (
                   <div
-                    key={`carousel-${product.id}`}
-                    className="w-full max-w-[210px] xs:max-w-xs md:max-w-sm lg:max-w-md"
+                    key={`carousel-${product.id} - ${product.title}`}
+                    className="flex w-70 shrink-0 justify-center"
                   >
                     <Card
                       product={product}
