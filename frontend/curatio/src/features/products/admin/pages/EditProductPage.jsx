@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+// import { ArrowLeft } from "lucide-react";
 import Button from "@/shared/components/Button";
 import Modal from "@/shared/components/Modal";
 import ProductFileInput from "@/features/products/components/ProductFileInput";
@@ -113,9 +113,9 @@ export default function EditProductPage() {
   }
 
   return (
-    <div className="relative min-h-screen w-full">
-      <div className="relative flex items-center justify-center min-h-screen text-label px-4 py-6 sm:px-6 sm:py-8 w-full min-w-0 overflow-x-hidden">
-        <div
+    <div className="flex items-center justify-center min-h-screen text-label px-4 py-6 sm:px-6 sm:py-8 w-full min-w-0 overflow-x-hidden">
+      {/* Contenedor interno: tarjeta semitransparente con formulario */}
+      <div
           className="
             w-full max-w-5xl
             min-w-0
@@ -144,7 +144,7 @@ export default function EditProductPage() {
           >
             EDITAR PRODUCTO
           </h2>
-            {/* responsivo para tablets y celulares */}
+          {/* Grilla responsiva: 1 col móvil, 2 cols tablet, 3 cols desktop */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <EditField label="ID" name="id" value={formData.id} />
             <EditField label="Medicamento" name="nameproduct" value={formData.nameproduct} />
@@ -165,20 +165,22 @@ export default function EditProductPage() {
           </div>
 
           {/* FileInput para imagen */}
-          <div className="col-span-full mt-3">
+          <div className="mt-3">
             <ProductFileInput
               label="Imagen del Medicamento"
               onUpload={handleImageUpload}
             />
           </div>
 
-          {/* Botones */}
-          <div className="col-span-full flex flex-col-reverse sm:flex-row justify-between gap-3 sm:gap-0 w-full max-w-full mx-auto mt-6 min-w-0">
+          {/* Botones de navegación: Volver y Editar */}
+          <div className="flex flex-col-reverse sm:flex-row justify-between gap-3 sm:gap-0 w-full max-w-full mx-auto mt-6 min-w-0">
+            {/* Botón para volver al listado */}
             <Link to="/products/listar">
               <Button variant="secondary" size="sm" type="button">
                 Volver
               </Button>
             </Link>
+            {/* Botón para abrir modal de confirmación */}
             <Button
               variant="primary"
               size="sm"
@@ -188,10 +190,8 @@ export default function EditProductPage() {
               Editar Producto
             </Button>
           </div>
-        </div>
-      </div>
 
-      {/* Modal de confirmación */}
+      {/* Modal de confirmación antes de guardar cambios */}
       <Modal
         isOpen={isConfirmModalOpen}
         onClose={() => setIsConfirmModalOpen(false)}
@@ -217,6 +217,10 @@ export default function EditProductPage() {
           </Button>
         </div>
       </Modal>
+
+      {/* Cierra contenedor interno (card del formulario) */}
+        </div>
+      {/* Cierra contenedor externo (centrador de pantalla) */}
     </div>
   );
 }
