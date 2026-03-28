@@ -96,20 +96,19 @@ export default function PaymentsView() {
   );
   const totalAPagar = subtotal + taxAmount;
 
-  const showCardFields = isCardPaymentMethod(paymentTypeId);
+  const showCardFields = isCardPaymentMethod(paymentTypeId); // Verifica si el método de pago es débito o crédito y muestra los campos de la tarjeta
 
   const isCardFormValid = useMemo(() => {
     if (!showCardFields) return true;
-    const pan = digitsOnly(cardNumber);
-    const exp = cardExpiry.trim();
-    const expOk = /^(0[1-9]|1[0-2])\/\d{2}$/.test(exp);
-    const cvvOk = /^[0-9]{3,4}$/.test(cardCvv.trim());
+    // Verifica si el formulario de la tarjeta es válido
+    const pan = digitsOnly(cardNumber); // Obtiene el número de tarjeta
+    const exp = cardExpiry.trim(); // Obtiene la fecha de vencimiento
+    const expOk = /^(0[1-9]|1[0-2])\/\d{2}$/.test(exp); // Verifica si la fecha de vencimiento es válida (MM/AA)
+    const cvvOk = /^[0-9]{3,4}$/.test(cardCvv.trim()); // Verifica si el CVV es válido (3 o 4 dígitos)
     return (
-      cardHolder.trim().length >= 3 &&
-      pan.length >= 13 &&
-      pan.length <= 19 &&
-      expOk &&
-      cvvOk
+      cardHolder.trim().length >= 3 && // Verifica si el nombre del titular es válido (al menos 3 caracteres)
+      pan.length >= 13 && pan.length <= 19 && expOk && // Verifica si el número de tarjeta es válido (al menos 13 dígitos) y no más de 19 dígitos
+      cvvOk // Verifica si el CVV es válido (3 o 4 dígitos)
     );
   }, [showCardFields, cardHolder, cardNumber, cardExpiry, cardCvv]);
 
@@ -133,7 +132,7 @@ export default function PaymentsView() {
   };
 
   return (
-    <div className="min-h-screen px-4 py-6 text-label sm:px-6 sm:py-8">
+    <div className="min-h-screen px-4 py-6 text-label sm:px-6 sm:py-8"> 
       <div className="mx-auto max-w-4xl">
         {/* Cabecera: volver al carrito + título */}
         <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
