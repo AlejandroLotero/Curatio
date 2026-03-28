@@ -16,7 +16,7 @@ const IVA_RATE = 0.19;
 function isCardPaymentMethod(paymentTypeId) {
   if (!paymentTypeId) return false;
   const id = String(paymentTypeId).toLowerCase();
-  return id === "debito" || id === "credito";
+  return id === "debito" || id === "credito"; // Verifica si el método de pago es débito o crédito
 }
 
 /** Solo dígitos, máx. 19 (PAN). */
@@ -40,13 +40,13 @@ function formatExpiryInput(value) {
 /**
  * PaymentsView
  * --------------
- * Paso de pago tras "Ir a pagar" con sesión activa (ruta protegida).
+ * Paso de pago tras "Ir a pagar" con sesión activa.
  *
- * - Resume líneas del carrito (mismos datos enriquecidos que ViewCartShopPage).
+ * - Resume líneas del carrito (mismos datos que ViewCartShopPage).
  * - Permite elegir método de pago (catálogo local paymentsTypes.json).
- * - Estilos alineados con carrito y ElectronicInvoiceSalesPage (vidrio, bordes, text-label).
+
  *
- * Siguiente paso en el flujo real: generar venta / factura en API y luego redirigir.
+ * Siguiente paso en el flujo real: generar venta
  */
 export default function PaymentsView() {
   const navigate = useNavigate();
@@ -58,7 +58,6 @@ export default function PaymentsView() {
 
   /**
    * Datos de tarjeta (solo si el método es débito o crédito).
-   * En producción: tokenizar con pasarela; no enviar PAN/CVV en claro al backend.
    */
   const [cardHolder, setCardHolder] = useState("");
   const [cardNumber, setCardNumber] = useState("");
@@ -122,16 +121,13 @@ export default function PaymentsView() {
   const goToCart = () => navigate("/cartshop/ver-carrito");
 
   /**
-   * Confirma el pago en frontend: aquí iría la llamada al backend.
-   * Tras éxito se podría vaciar el carrito y enviar a facturación.
+   * Confirma el pago
    */
   const handleConfirmPayment = () => {
     if (!canConfirmPayment) return;
 
     /**
-     * Flujo provisional: ir al recibo de venta con el carrito aún en contexto
-     * (útil para copiar importes o líneas). En producción: crear venta en API,
-     * recibir confirmación y entonces vaciar carrito (clearActiveCart) o invalidar cache.
+     *Ir al recibo de venta con el carrito
      */
     navigate("/sales/factura-electronica");
   };
