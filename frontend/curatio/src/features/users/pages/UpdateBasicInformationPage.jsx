@@ -28,54 +28,52 @@ export default function UpdateBasicInformationPage() {
     documentNumber: previousFormData.documentNumber ?? "",
     photoUrl: previousFormData.photoUrl ?? "",
   });
-  // Efecto para cargar los datos del usuario a editar en el form
+
+  /** Archivo nuevo elegido para enviar al guardar (no serializable en location.state). */
+  const [photoFile, setPhotoFile] = useState(null);
+
+  // Siempre que exista id: catálogo + usuario desde servidor (sin omitir por prefill).
   useEffect(() => {
-  const loadData = async () => {
-    try {
-      const [docsResponse, userResponse] = await Promise.all([
-        getDocumentTypes(),
-        getUserById(id),
-      ]);
-      setDocumentTypes(docsResponse);
+    if (!id) return;
+// Efecto para cargar los datos del usuario a editar en el form
+    const loadData = async () => {
+      try {
+        const [docsResponse, userResponse] = await Promise.all([
+          getDocumentTypes(),
+          getUserById(id),
+        ]);
+        setDocumentTypes(docsResponse);
+// Adaptar los datos del usuario a la UI
+        const user = adaptBackendUserToUi(userResponse?.data?.user);
+        setFormData({
+          fullNames: user?.name ?? "",
+          documentTypes: user?.documentType ?? "",
+          documentNumber: user?.documentNumber ?? "",
+          photoUrl: user?.photoUrl ?? "",
+        });
+        setPhotoFile(null);
+      } catch (error) {
+        console.error("Error cargando usuario a editar:", error);
+      }
+    };
 
-      const user = adaptBackendUserToUi(userResponse?.data?.user);
-      setFormData({
-        fullNames: user?.name ?? "",
-        documentTypes: user?.documentType ?? "",
-        documentNumber: user?.documentNumber ?? "",
-        photoUrl: user?.photoUrl ?? "",
-      });
-    } catch (error) {
-      console.error("Error cargando usuario a editar:", error);
-    }
-  };
-  const hasPrefillFromState =
-    Boolean(previousFormData?.fullNames) ||
-    Boolean(previousFormData?.documentTypes) ||
-    Boolean(previousFormData?.documentNumber) ||
-    Boolean(previousFormData?.photoUrl);
-
-  if (id && !hasPrefillFromState) loadData();
-  if (!hasPrefillFromState) {
-    // Si no hay state, igual necesitamos cargar los tipos de documento
-    getDocumentTypes().then(setDocumentTypes).catch((error) => {
-      console.error("Error cargando tipos de documento:", error);
-    });
-  }
-}, [id, previousFormData]);
+    loadData();
+  }, [id]);
 // Manejador de cambios en el formulario
-const handleChange = (e) => {
-  const { name, value } = e.target;
-  setFormData((prev) => ({ ...prev, [name]: value }));
-};
-
-
-
-
-// Manejador de cambios en el nombre del usuario
-  const handleNameChange = (e) => {
-    console.log("Nombre del usuario", e.target.value);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
+// Manejador de cambios en la foto de perfil
+  const handlePhotoFileChange = (file) => {
+    setPhotoFile(file ?? null);
+  };
+
+
+// // Manejador de cambios en el nombre del usuario
+//   const handleNameChange = (e) => {
+//     console.log("Nombre del usuario", e.target.value);
+//   };
 
 // Manejador de cambios en el número de documento
     const handleDocumentBlur = (e) => {
@@ -121,7 +119,7 @@ const handleChange = (e) => {
               accept="image/*"
               defaultImage={formData.photoUrl ?? avatar}
               previewSize={128}
-              onUpload={(url) => console.log("Foto subida:", url)}
+              onFileChange={handlePhotoFileChange}
             />
           </div>
 

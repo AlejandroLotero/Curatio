@@ -107,7 +107,7 @@ export default function EditProductPage() {
     <div className="relative min-h-screen w-full">
       <div className="relative flex items-center justify-center min-h-screen text-label px-4 py-6 sm:px-6 sm:py-8 w-full min-w-0 overflow-x-hidden">
         <div
-          className="
+  className="
             w-full max-w-5xl
             min-w-0
             px-4 py-8 sm:px-6 sm:py-12

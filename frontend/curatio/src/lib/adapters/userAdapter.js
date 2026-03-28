@@ -40,6 +40,8 @@ export function adaptBackendUserToUi(user) {
     endDate: user.end_date,
     createdAt: user.created_at,
     updatedAt: user.updated_at,
+    //Se agrega el phoneNumber para que coincida con el nombre del campo en el formulario
+    phoneNumber: user.phone,
   };
 }
 
