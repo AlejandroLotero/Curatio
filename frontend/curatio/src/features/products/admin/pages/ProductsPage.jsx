@@ -19,6 +19,7 @@ import { ProductSchema } from "../../schemas/ProductSchemas";
 import { createMedication } from "@/lib/http/medications";
 import { adaptMedicationPayloadFromForm } from "@/lib/adapters/medicationAdapter";
 
+// Mapea los nombres de campos de error del backend a los nombres de campos de formulario del UI
 function mapBackendErrorsToUiFields(backendFields = {}) {
   const fieldMap = {
     nombre: "nombre",
@@ -51,15 +52,19 @@ function mapBackendErrorsToUiFields(backendFields = {}) {
 }
 
 export default function ProductsPage() {
+  // Estados para controlar modales de confirmacion y exito
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
 
+  // Referencia al formulario para acceso directo
   const formRef = useRef(null);
 
+  // Estados para manejo de errores
   const [errors, setErrors] = useState({});
   const [generalError, setGeneralError] = useState("");
 
+  // Estados para almacenar opciones de selects desde catálogos
   const [formasFarmaceuticas, setFormasFarmaceuticas] = useState([]);
   const [viasAdministracion, setViasAdministracion] = useState([]);
   const [laboratorios, setLaboratorios] = useState([]);
@@ -67,8 +72,10 @@ export default function ProductsPage() {
   const [proveedores, setProveedores] = useState([]);
   const [presentacionesOptions, setPresentacionesOptions] = useState([]);
 
+  // Estado para controlar si se está enviando el formulario
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Carga todos los catálogos necesarios en el formulario al montar el componente
   useEffect(() => {
     const loadCatalogs = async () => {
       try {
@@ -95,6 +102,7 @@ export default function ProductsPage() {
     loadCatalogs();
   }, []);
 
+  // Actualiza las opciones de presentacion cuando cambia la forma farmaceutica
   const handleFormaChange = async (e) => {
     const formaId = e.target.value;
 
@@ -120,6 +128,7 @@ export default function ProductsPage() {
     }
   };
 
+  // Valida el formulario y envia los datos al servidor
   const handleButtonSubmit = async (e) => {
     e.preventDefault();
 
@@ -173,10 +182,12 @@ export default function ProductsPage() {
     }
   };
 
+  // Ejecuta el envio del formulario cuando se confirma en el modal
   const handleConfirmSave = () => {
     formRef.current?.requestSubmit();
   };
 
+  // Guarda la URL de la imagen cargada en el estado
   const handleImageUpload = (url) => {
     setImageUrl(url);
   };
@@ -189,7 +200,7 @@ export default function ProductsPage() {
           w-full max-w-full lg:max-w-5xl
           min-w-0
           px-4 py-8 sm:px-6 sm:py-12
-          grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6
+          grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6
           bg-white/30
           backdrop-blur-md
           shadow-xl
@@ -219,6 +230,7 @@ export default function ProductsPage() {
           </div>
         ) : null}
 
+        {/* Primera columa: informacion basica del medicamento */}
         <div className="flex flex-col gap-4 w-full max-w-full mx-auto min-w-0">
           <Input
             label="Nombre"
@@ -264,6 +276,7 @@ export default function ProductsPage() {
           />
         </div>
 
+        {/* Segunda columna: informacion del laboratorio y lotes */}
         <div className="flex flex-col gap-4 w-full max-w-full mx-auto min-w-0">
           <Select
             label="Vía de Administración"
@@ -310,6 +323,7 @@ export default function ProductsPage() {
           />
         </div>
 
+        {/* Tercera columna: informacion de precios y disponibilidad */}
         <div className="flex flex-col gap-4 w-full max-w-full mx-auto min-w-0">
           <Input
             label="Stock"
@@ -357,6 +371,7 @@ export default function ProductsPage() {
           />
         </div>
 
+        {/* Carga de imagen del medicamento */}
         <div className="col-span-full mt-3">
           <ProductFileInput
             label="Imagen del Medicamento"
@@ -366,6 +381,7 @@ export default function ProductsPage() {
           <input type="hidden" name="imagen" value={imageUrl || ""} />
         </div>
 
+        {/* Botones de accion: volver y registrar */}
         <div className="col-span-full flex flex-col-reverse sm:flex-row justify-between gap-3 sm:gap-0 w-full max-w-full mx-auto mt-6 min-w-0">
           <Link to="/products/listar">
             <Button variant="secondary" size="sm" type="button">
@@ -385,6 +401,7 @@ export default function ProductsPage() {
         </div>
       </form>
 
+      {/* Modal de confirmacion para registrar el medicamento */}
       <Modal
         isOpen={isConfirmModalOpen}
         onClose={() => setIsConfirmModalOpen(false)}
@@ -414,6 +431,7 @@ export default function ProductsPage() {
         </div>
       </Modal>
 
+      {/* Modal de exito mostrado cuando el medicamento se registra correctamente */}
       <Modal
         isOpen={isSuccessModalOpen}
         onClose={() => setIsSuccessModalOpen(false)}

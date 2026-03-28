@@ -101,10 +101,10 @@
 // //         {/* Botón volver */}
 // //         <Link
 // //           to={source === "new" ? "/" : "/home"}
-// //           className="inline-flex items-center justify-center w-16 h-16 mb-2 text-label hover:opacity-70 transition-colors"
+// //           className="inline-flex items-center justify-center w-10 h-10 mb-2 text-label hover:opacity-100 hover:bg-white/20 hover:shadow-lg hover:scale-110 transition-all duration-300"
 // //           title="Volver"
 // //         >
-// //           <ArrowLeft size={32} />
+// //           <ArrowLeft size={20} />
 // //         </Link>
 
 // //         {/* Contenedor principal */}
@@ -739,10 +739,10 @@ export default function ProductShowPage() {
         {/* Botón Volver */}
         <Link
           to="/"
-          className="inline-flex items-center justify-center w-16 h-16 mb-2 text-label hover:opacity-70 transition-colors"
+          className="inline-flex items-center justify-center w-10 h-10 mb-2 text-label rounded-lg transition-all duration-300 hover:opacity-100 hover:bg-white/20 hover:shadow-sm hover:scale-110"
           title="Volver"
         >
-          <ArrowLeft size={32} />
+          <ArrowLeft size={20} />
         </Link>
 
         {/* Contenedor principal */}
