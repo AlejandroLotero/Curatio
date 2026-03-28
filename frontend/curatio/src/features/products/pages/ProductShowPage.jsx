@@ -949,6 +949,6 @@ export default function ProductShowPage() {
       </Modal>
       {/* Cierra: Modal de confirmación de producto agregado */}
     </div>
-    {/* Cierra: Contenedor min-h-screen pb-12 (pantalla completa con fondo) */}
+    // Cierra: Contenedor min-h-screen pb-12 (pantalla completa con fondo)
   );
 }
