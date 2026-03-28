@@ -4,7 +4,6 @@ const SOCIAL_LINKS = [
   { label: "Facebook", href: "#", icon: Facebook },
   { label: "Twitter", href: "#", icon: Twitter },
   { label: "Instagram", href: "#", icon: Instagram },
-  { label: "Mas redes", href: "#", icon: MoreHorizontal },
   { label: "YouTube", href: "#", icon: Youtube },
 ];
 
@@ -28,7 +27,7 @@ const Footer = () => {
             </div>
 
             <a
-              href="mailto:charo@charogujiarro.com"
+              href="servicioalcliente@curatio.com"
               className="text-small md:text-[1.1rem] font-body transition hover:text-primary"
             >
               servicioalcliente@curatio.com
