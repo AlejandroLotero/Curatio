@@ -67,105 +67,108 @@ export default function ListProductsPage() {
   };
 
   return (
-    <div className="p-6">
-      <h1
-        className="text-5xl font-bold text-center mb-6 text-label"
-        style={{ fontFamily: "var(--font-body)" }}
-      >
-        Gestion de Productos
-      </h1>
+    <div className="flex justify-center">
+      <div className="w-full max-w-6xl p-6">
+        <h1 className="text-2xl font-bold text-center text-label text-tittles mb-6">
+          Gestion de productos
+        </h1>
 
-      <div className="flex flex-wrap gap-3 mb-6 items-center justify-between">
-        <div className="flex flex-wrap gap-3 items-center">
-          <input
-            type="text"
-            placeholder="Buscar..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="border rounded px-2 py-2 bg-gray-900 text-gray-50"
-          />
+        <div className="mb-6 flex w-full flex-col gap-3 sm:gap-4 md:gap-4">
+          {/* Fila de búsqueda y filtros */}
+          <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center md:gap-4">
+            <input
+              type="text"
+              placeholder="Buscar..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full sm:flex-1 md:w-56 border rounded bg-transparent px-2 py-2 bg-gray-900 text-gray-50"
+            />
 
-          <Select
-            label=""
-            options={viasAdministracion}
-            placeholder="Vía de administración"
-            value={filterVia}
-            onChange={(e) => setFilterVia(e.target.value)}
-            wrapperClassName="min-w-fit"
-          />
+            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center md:gap-4">
+              <Select
+                label=""
+                options={viasAdministracion}
+                placeholder="Vía de administración"
+                value={filterVia}
+                onChange={(e) => setFilterVia(e.target.value)}
+                wrapperClassName="min-w-fit"
+              />
 
-          <Select
-            label=""
-            options={estados}
-            placeholder="Estado"
-            value={filterEstado}
-            onChange={(e) => setFilterEstado(e.target.value)}
-            wrapperClassName="min-w-fit"
-          />
+              <Select
+                label=""
+                options={estados}
+                placeholder="Estado"
+                value={filterEstado}
+                onChange={(e) => setFilterEstado(e.target.value)}
+                wrapperClassName="min-w-fit"
+              />
 
-          <Select
-            label=""
-            options={laboratorios}
-            placeholder="Laboratorio"
-            value={filterLaboratorio}
-            onChange={(e) => setFilterLaboratorio(e.target.value)}
-            wrapperClassName="min-w-fit"
-          />
+              <Select
+                label=""
+                options={laboratorios}
+                placeholder="Laboratorio"
+                value={filterLaboratorio}
+                onChange={(e) => setFilterLaboratorio(e.target.value)}
+                wrapperClassName="min-w-fit"
+              />
+            </div>
+          </div>
+
+          {/* Fila de botones y selector de paginación */}
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-end md:gap-4">
+            <Button size="sm" onClick={handleCreateProduct}>
+              Crear Producto
+            </Button>
+
+            <Button size="sm" onClick={() => setIsModalOpen(true)}>
+              Generar Reporte
+            </Button>
+
+            <select
+              value={pageSize}
+              onChange={(e) => setPageSize(Number(e.target.value))}
+              className="border rounded px-2 py-2 bg-gray-900 text-gray-50"
+            >
+              {[5, 7, 10, 20, 50].map((size) => (
+                <option key={size} value={size}>
+                  {size} filas
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
-        <div className="flex gap-2 items-center">
-          <Button size="sm" onClick={handleCreateProduct}>
-            Crear Producto
-          </Button>
+        {loading && <div className="mb-4 text-label">Loading medications...</div>}
 
-          <Button size="sm" onClick={() => setIsModalOpen(true)}>
-            Generar Reporte
-          </Button>
+        <DataTable
+          data={products}
+          columns={ProductColumns}
+          globalFilter={searchTerm}
+          onGlobalFilterChange={setSearchTerm}
+          pageSize={pageSize}
+          meta={{
+            statuses: estados,
+            onStatusChanged: (productId, newStatus) => {
+              setProducts((prev) =>
+                prev.map((item) =>
+                  item.id === productId
+                    ? {
+                        ...item,
+                        state: newStatus.label,
+                        stateId: newStatus.id,
+                      }
+                    : item,
+                ),
+              );
+            },
+          }}
+        />
 
-          <select
-            value={pageSize}
-            onChange={(e) => setPageSize(Number(e.target.value))}
-            className="border rounded px-2 py-2 bg-gray-900 text-gray-50"
-          >
-            {[5, 7, 10, 20, 50].map((size) => (
-              <option key={size} value={size}>
-                {size} filas
-              </option>
-            ))}
-          </select>
-        </div>
+        <ProductReportConfigModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
       </div>
-
-      {loading && <div className="mb-4 text-label">Loading medications...</div>}
-
-      <DataTable
-        data={products}
-        columns={ProductColumns}
-        globalFilter={searchTerm}
-        onGlobalFilterChange={setSearchTerm}
-        pageSize={pageSize}
-        meta={{
-          statuses: estados,
-          onStatusChanged: (productId, newStatus) => {
-            setProducts((prev) =>
-              prev.map((item) =>
-                item.id === productId
-                  ? {
-                      ...item,
-                      state: newStatus.label,
-                      stateId: newStatus.id,
-                    }
-                  : item
-              )
-            );
-          },
-        }}
-      />
-
-      <ProductReportConfigModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
     </div>
   );
 }

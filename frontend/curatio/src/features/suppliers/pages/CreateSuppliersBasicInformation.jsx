@@ -50,18 +50,18 @@ export default function CreateFormSuppliers() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen text-label">
+    <div className="flex items-center justify-center min-h-screen text-label px-3 sm:px-4 py-4 sm:py-8">
       <form
         onSubmit={handleSubmit}
         className="
       w-full max-w-md
-      px-6 py-12 
+      px-4 sm:px-6 py-8 sm:py-12 
       grid grid-cols-1 gap-4 
       bg-white/70 dark:bg-neutral-900/20 
       backdrop-blur-md 
       shadow-xl 
       ring-1 
-      rounded-3xl"
+      rounded-2xl sm:rounded-3xl"
       >
 
         <Link
@@ -76,8 +76,7 @@ export default function CreateFormSuppliers() {
           <h2
             className="
           text-center 
-          text-subtittles 
-          font-bold 
+          text-lg sm:text-xl md:text-2xl font-bold 
           text-label"
           >
             Datos básicos

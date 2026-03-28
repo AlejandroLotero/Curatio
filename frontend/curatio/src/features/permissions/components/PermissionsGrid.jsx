@@ -34,11 +34,11 @@ export default function PermissionsGrid({
     <div className="flex flex-col gap-6">
       <h3 className="text-lg font-semibold text-label">Permisos</h3>
 
-      <div className="space-y-4 max-h-96 overflow-y-auto">
+      <div className="space-y-3 sm:space-y-4 max-h-64 sm:max-h-96 overflow-y-auto">
         {modules.map((module) => (
           <div
             key={module.id}
-            className="border border-border rounded-lg p-4 bg-white/50 dark:bg-neutral-800/50"
+            className="border border-border rounded-lg p-3 sm:p-4 bg-white/50 dark:bg-neutral-800/50"
           >
             <div className="flex items-start gap-3 mb-3">
               <input
