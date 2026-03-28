@@ -290,7 +290,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, Button, Modal } from "@/shared/components";
 import { products } from "@/data/product/products";
-import { Plus, Minus, ChevronLeft, ChevronRight, ShoppingCart } from "lucide-react";
+import { ChevronLeft, ChevronRight, ShoppingCart } from "lucide-react";
 import { useCart } from "@/features/cartshop/context/CartContext";
 import Footer from "@/features/layouts/footer";
 
@@ -301,16 +301,6 @@ const NewHomePage = () => {
    * Contexto del carrito público.
    */
   const { addToCartItem } = useCart();
-
-  /**
-   * Cantidades por producto.
-   */
-  const [quantities, setQuantities] = useState(
-    products.reduce((acc, p) => {
-      acc[p.id] = 1;
-      return acc;
-    }, {})
-  );
 
   /**
    * Modal de confirmación.
@@ -328,26 +318,6 @@ const NewHomePage = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   /**
-   * Aumenta cantidad.
-   */
-  const handleIncrease = (id) => {
-    setQuantities((prev) => ({
-      ...prev,
-      [id]: prev[id] + 1,
-    }));
-  };
-
-  /**
-   * Disminuye cantidad.
-   */
-  const handleDecrease = (id) => {
-    setQuantities((prev) => ({
-      ...prev,
-      [id]: prev[id] > 1 ? prev[id] - 1 : 1,
-    }));
-  };
-
-  /**
    * Click en la card para abrir el detalle público/comercial.
    */
   const handleCardClick = (productId) => {
@@ -360,11 +330,9 @@ const NewHomePage = () => {
    */
   const handleBuy = async (product) => {
     try {
-      const quantity = quantities[product.id] ?? 1;
-
       await addToCartItem({
         productId: product.id,
-        quantity,
+        quantity: 1,
       });
 
       setSelectedProduct(product);
@@ -409,7 +377,7 @@ const NewHomePage = () => {
   }, [totalProducts]);
 
   return (
-    <div className="min-h-screen bgAll text-tittle text-label flex flex-col pt-24">
+    <div className=" bgAll text-tittle text-label flex flex-col pt-20">
       <section className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
         <header className="mb-8 text-center" />
 
@@ -422,19 +390,19 @@ const NewHomePage = () => {
           </h2>
 
           <div className="flex items-center justify-center w-full gap-2 sm:gap-4">
-            <div className="flex-shrink-0 flex justify-start">
+            <div className="shrink-0 flex justify-start">
               <Button
                 variant="secondary"
-                size="md"
+                size="sm"
                 type="button"
                 onClick={handlePrevSlide}
                 className="bg-transparent border-none shadow-none"
               >
-                <ChevronLeft className="w-8 h-8" />
+                <ChevronLeft className="h-5 w-5" />
               </Button>
             </div>
 
-            <div className="flex-1 flex justify-center gap-3 sm:gap-6 flex-wrap md:flex-nowrap max-w-5xl mx-auto">
+            <div className="flex-1 flex justify-center gap-3 sm:gap-4 flex-wrap md:flex-nowrap max-w-5xl mx-auto">
               {Array.from({ length: 3 }).map((_, index) => {
                 const productIndex = (currentSlide + index) % totalProducts;
                 const product = products[productIndex];
@@ -453,15 +421,15 @@ const NewHomePage = () => {
               })}
             </div>
 
-            <div className="flex-shrink-0 flex justify-end">
+            <div className="shrink-0 flex justify-end">
               <Button
                 variant="secondary"
-                size="md"
+                size="sm"
                 type="button"
                 onClick={handleNextSlide}
                 className="bg-transparent border-none shadow-none"
               >
-                <ChevronRight className="w-8 h-8" />
+                <ChevronRight className="h-5 w-5" />
               </Button>
             </div>
           </div>
@@ -473,52 +441,26 @@ const NewHomePage = () => {
         <h2 className="text-2xl font-semibold mb-4 text-left">
           Productos
         </h2>
-
-        <div className="grid gap-6 sm:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-items-center cursor-pointer">
+          {/*Div de control de las cards, espaciado entre ellas y columnas, solo seccion de productos*/}
+        <div className="grid gap-x-6 gap-y-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center cursor-pointer">
           {products.map((product) => (
-            <div key={product.id} className="space-y-4">
+            <div key={product.id} className="w-60 space-y-2">    {/*w-60 space-y-2 es el tamaño de la card y el espacio entre el texto y los botones*/}
+
               <Card
                 product={product}
                 onClick={() => handleCardClick(product.id)}
               />
 
-              <div className="flex items-center justify-between gap-4">
-                <div className="flex items-center gap-3 bg-white/50 border-none border-gray-200 rounded-2xl ">
-                  <Button
-                    variant="secondary"
-                    size="md"
-                    type="button"
-                    onClick={() => handleDecrease(product.id)}
-                    className="bg-transparent border-none shadow-none"
-                  >
-                    <Minus className="w-6 h-6 " />
-                  </Button>
-
-                  <span className="min-w-[2rem] text-center font-semibold">
-                    {quantities[product.id]}
-                  </span>
-
-                  <Button
-                    variant="secondary"
-                    size="md"
-                    type="button"
-                    onClick={() => handleIncrease(product.id)}
-                    className="bg-transparent border-none shadow-none"
-                  >
-                    <Plus className="w-6 h-6" />
-                  </Button>
-                </div>
-
-                <Button
-                  variant="primary"
-                  size="md"
-                  type="button"
-                  onClick={() => handleBuy(product)}
-                  className="flex items-center gap-4"
-                >
-                  Agregar  <ShoppingCart/>
-                </Button>
-              </div>
+              <Button
+                variant="primary"
+                size="sm"
+                type="button"
+                onClick={() => handleBuy(product)}
+                className="flex w-full items-center justify-center gap-2"
+              >
+                Agregar
+                <ShoppingCart className="h-4 w-4 shrink-0" aria-hidden />
+              </Button>
             </div>
           ))}
         </div>
@@ -534,7 +476,7 @@ const NewHomePage = () => {
         title="Producto agregado al carrito"
         message={
           selectedProduct
-            ? `Has agregado ${quantities[selectedProduct.id]} unidad(es) de ${selectedProduct.title} a tu carrito.`
+            ? `Has agregado 1 unidad de ${selectedProduct.title} a tu carrito.`
             : ""
         }
       >

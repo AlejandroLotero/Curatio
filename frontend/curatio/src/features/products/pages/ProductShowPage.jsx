@@ -747,17 +747,30 @@ export default function ProductShowPage() {
 
         {/* Contenedor principal */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 bgformglass rounded-lg p-2 sm:p-4 shadow-lg border-2 border-black">
-          {/* Imagen */}
-          <div className="flex items-start justify-center">
-            <div className="w- aspect-square bg-gradient-to-br from-cyan-100 to-blue-100 rounded-lg flex items-center justify-center overflow-hidden mt-2">
+          {/*
+            Bloque de imagen del producto
+            ---------------------------
+            - Marco con ancho máximo y relación 1:1 fija: todas las rutas de producto
+              usan el mismo tamaño de contenedor (no depende del PNG/JPEG original).
+            - object-contain + object-center: escala la imagen completa dentro del
+              marco y la centra; bandas del gradiente si el asset no es cuadrado.
+          */}
+          <div className="flex w-full items-start justify-center md:justify-center">
+            <div
+              className="
+                mt-2 flex aspect-square w-full max-w-sm shrink-0
+                items-center justify-center overflow-hidden rounded-lg
+                bg-gradient-to-br from-cyan-100 to-blue-100
+              "
+            >
               {product.image ? (
                 <img
                   src={product.image}
                   alt={product.nameproduct}
-                  className="w-full h-full object-cover"
+                  className="h-full w-full object-contain object-center"
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-label">
+                <div className="flex h-full w-full items-center justify-center p-6 text-center text-sm text-label">
                   Sin imagen
                 </div>
               )}

@@ -6,6 +6,18 @@ import { useEffect, useState, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { getRoles } from "../../users/services/selectService";
 import { CircleArrowLeft } from "lucide-react";
+//Importaciones para traer usuario
+import { getUserById } from "@/lib/http/users";
+import { adaptBackendUserToUi } from "@/lib/adapters/userAdapter";
+
+/** ISO o string de fecha → YYYY-MM-DD para inputs type="date". */
+function toDateInputValue(value) {
+  if (!value) return "";
+  if (typeof value === "string") {
+    return value.length >= 10 ? value.slice(0, 10) : value;
+  }
+  return "";
+}
 
 export default function RolPage() {
   const location = useLocation();
@@ -25,6 +37,36 @@ export default function RolPage() {
   useEffect(() => {
     getRoles().then(setRoles);
   }, []);
+
+  useEffect(() => {
+    const loadUser = async () => {
+      try {
+        const response = await getUserById(userId);
+        const user = adaptBackendUserToUi(response?.data?.user);
+        if (!user) return;
+
+        const role = user.role ?? "";
+        const isFarmaceuta = role === "Farmaceuta";
+
+        setFormData({
+          roles: role,
+          startDate: isFarmaceuta ? toDateInputValue(user.startDate) : "",
+          endDate: isFarmaceuta ? toDateInputValue(user.endDate) : "",
+        });
+      } catch (error) {
+        console.error("Error cargando rol y fechas del usuario:", error);
+      }
+    };
+
+    const hasPrefillFromState =
+      Boolean(previousFormData?.roles) ||
+      Boolean(previousFormData?.startDate) ||
+      Boolean(previousFormData?.endDate);
+
+    if (userId && !hasPrefillFromState) {
+      loadUser();
+    }
+  }, [userId, previousFormData]);
 
   const isFarmaceutaRole = formData.roles === "Farmaceuta";
 
