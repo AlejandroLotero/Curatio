@@ -59,11 +59,14 @@ export default function ListSales() {
   return (
     <div className="min-h-screen flex items-center justify-center p-4 text-label">
       <div className="w-full max-w-6xl space-y-6">
-        <div className="mb-2 flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex flex-col gap-3">
-            <h2 className="text-2xl font-semibold text-label text-tittles">
-              Ventas
-            </h2>
+        <div className="text-center mb-4">
+          <h1 className="text-2xl font-bold text-label text-tittles">
+            Ventas
+          </h1>
+        </div>
+
+        <div className="mb-4 flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <Link to="/">
               <Button variant="secondary" size="sm">
                 Volver

@@ -374,21 +374,21 @@ export default function DataTableUser({
     <div className="flex items-center justify-center p-4">
       <div className="w-full max-w-6xl space-y-4">
         {/* Toolbar */}
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-2 w-full sm:w-auto">
             {/* Buscador por nombre */}
             <input
               type="text"
               placeholder="Buscar por nombre..."
               value={filters?.search ?? ""}
               onChange={(e) => onFiltersChange?.setSearch?.(e.target.value)}
-              className="border rounded px-3 py-2 w-258 text-black"
+              className="border rounded px-3 py-2 w-full sm:w-64 md:w-72 text-black"
             />
 
-            <div className="w-258 flex justify-between">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-start">
               {/* Filtro real por rol */}
               <select
-                className="border rounded px-3 py-2 w-70 text-black bg-white"
+                className="border rounded px-3 py-2 w-full sm:w-40 text-black bg-white"
                 value={filters?.role ?? ""}
                 onChange={(e) => onFiltersChange?.setRole?.(e.target.value)}
               >
@@ -400,7 +400,7 @@ export default function DataTableUser({
 
               {/* Filtro real por estado */}
               <select
-                className="border rounded px-3 py-2 w-70 text-black bg-white"
+                className="border rounded px-3 py-2 w-full sm:w-40 text-black bg-white"
                 value={filters?.statusFilter ?? ""}
                 onChange={(e) => onFiltersChange?.setStatusFilter?.(e.target.value)}
               >
@@ -415,7 +415,7 @@ export default function DataTableUser({
                 placeholder="Buscar por número de documento..."
                 value={filters?.documentFilter ?? ""}
                 onChange={(e) => onFiltersChange?.setDocumentFilter?.(e.target.value)}
-                className="border rounded px-3 py-2 w-70 text-black"
+                className="border rounded px-3 py-2 w-full sm:w-40 text-black"
               />
             </div>
           </div>
