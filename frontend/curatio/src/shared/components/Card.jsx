@@ -122,8 +122,8 @@ const Card = ({ product, onClick }) => {
     <div
       onClick={onClick}
       className="
-        w-80
-        h-96
+        w-60
+        h-95
         text-text-inverse
         bg-white/70
         backdrop-blur-[2px]
@@ -141,7 +141,7 @@ const Card = ({ product, onClick }) => {
       <img
         src={image}
         alt={title}
-        className="w-full h-48 object-contain flex-shrink-0"
+        className="w-full h-44 object-contain"
       />
 
       <div className="p-5 space-y-3 flex-1 flex flex-col">
