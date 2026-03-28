@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+// import { ArrowLeft } from "lucide-react";
 import Button from "@/shared/components/Button";
-import Input from "@/shared/components/Input";
-import Select from "@/shared/components/Select";
 import Modal from "@/shared/components/Modal";
 import ProductFileInput from "@/features/products/components/ProductFileInput";
 import { listProducts } from "@/data/product/listProducts";
@@ -11,18 +9,23 @@ import "../../../../styles/tokens.css";
 import "../../../../styles/semantic.css";
 
 export default function EditProductPage() {
+  // Obtiene el ID del producto desde la URL
   const { id } = useParams();
   const navigate = useNavigate();
+
+  // Estados del componente
   const [medicamento, setMedicamento] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [formData, setFormData] = useState({});
   const [imageUrl, setImageUrl] = useState(null);
 
+  // Carga el medicamento cuando cambia el ID
   useEffect(() => {
     cargarMedicamento();
   }, [id]);
 
+  // Busca el medicamento en la lista por ID y carga sus datos en el formulario
   const cargarMedicamento = () => {
     try {
       const med = listProducts.find((m) => m.id == id);
@@ -39,6 +42,7 @@ export default function EditProductPage() {
     }
   };
 
+  // Actualiza los datos del formulario cuando el usuario modifica un campo
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -47,6 +51,7 @@ export default function EditProductPage() {
     });
   };
 
+  // Guarda la URL de la imagen cargada en el estado
   const handleImageUpload = (url) => {
     setImageUrl(url);
     setFormData({
@@ -55,6 +60,7 @@ export default function EditProductPage() {
     });
   };
 
+  // Procesa la confirmacion de edicion del producto
   const handleConfirmEdit = () => {
     console.log("Producto actualizado:", formData);
     setIsConfirmModalOpen(false);
@@ -64,6 +70,7 @@ export default function EditProductPage() {
     }, 500);
   };
 
+  // Componente reutilizable para renderizar campos editables del formulario
   const EditField = ({ label, value, name, type = "text" }) => (
     <div className="flex flex-col gap-2">
       <label className="text-sm font-semibold text-label" style={{ color: "var(--color-black)", fontFamily: "var(--font-body)" }}>
@@ -80,6 +87,7 @@ export default function EditProductPage() {
     </div>
   );
 
+  // Muestra pantalla de carga mientras se obtienen los datos
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -88,6 +96,7 @@ export default function EditProductPage() {
     );
   }
 
+  // Muestra mensaje si el producto no existe
   if (!medicamento) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -104,9 +113,9 @@ export default function EditProductPage() {
   }
 
   return (
-    <div className="relative min-h-screen w-full">
-      <div className="relative flex items-center justify-center min-h-screen text-label px-4 py-6 sm:px-6 sm:py-8 w-full min-w-0 overflow-x-hidden">
-        <div
+    <div className="flex items-center justify-center min-h-screen text-label px-4 py-6 sm:px-6 sm:py-8 w-full min-w-0 overflow-x-hidden">
+      {/* Contenedor interno: tarjeta semitransparente con formulario */}
+      <div
           className="
             w-full max-w-5xl
             min-w-0
@@ -135,8 +144,8 @@ export default function EditProductPage() {
           >
             EDITAR PRODUCTO
           </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Grilla responsiva: 1 col móvil, 2 cols tablet, 3 cols desktop */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <EditField label="ID" name="id" value={formData.id} />
             <EditField label="Medicamento" name="nameproduct" value={formData.nameproduct} />
             <EditField label="Forma Farmacéutica" name="formaFarmaceutica" value={formData.formaFarmaceutica} />
@@ -156,23 +165,22 @@ export default function EditProductPage() {
           </div>
 
           {/* FileInput para imagen */}
-          <div className="col-span-full mt-3">
+          <div className="mt-3">
             <ProductFileInput
               label="Imagen del Medicamento"
               onUpload={handleImageUpload}
             />
-            {/* {imageUrl && (
-              <p className="mt-2 text-sm text-green-600">Imagen cargada: {imageUrl}</p>
-            )} */}
           </div>
 
-          {/* Botones */}
-          <div className="col-span-full flex flex-col-reverse sm:flex-row justify-between gap-3 sm:gap-0 w-full max-w-full mx-auto mt-6 min-w-0">
+          {/* Botones de navegación: Volver y Editar */}
+          <div className="flex flex-col-reverse sm:flex-row justify-between gap-3 sm:gap-0 w-full max-w-full mx-auto mt-6 min-w-0">
+            {/* Botón para volver al listado */}
             <Link to="/products/listar">
               <Button variant="secondary" size="sm" type="button">
                 Volver
               </Button>
             </Link>
+            {/* Botón para abrir modal de confirmación */}
             <Button
               variant="primary"
               size="sm"
@@ -182,10 +190,8 @@ export default function EditProductPage() {
               Editar Producto
             </Button>
           </div>
-        </div>
-      </div>
 
-      {/* Modal de confirmación */}
+      {/* Modal de confirmación antes de guardar cambios */}
       <Modal
         isOpen={isConfirmModalOpen}
         onClose={() => setIsConfirmModalOpen(false)}
@@ -211,6 +217,10 @@ export default function EditProductPage() {
           </Button>
         </div>
       </Modal>
+
+      {/* Cierra contenedor interno (card del formulario) */}
+        </div>
+      {/* Cierra contenedor externo (centrador de pantalla) */}
     </div>
   );
 }

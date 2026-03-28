@@ -16,6 +16,7 @@ import {
 export default function ListProductsPage() {
   const navigate = useNavigate();
 
+  // Estados para los filtros de la tabla
   const [filterVia, setFilterVia] = useState("");
   const [filterEstado, setFilterEstado] = useState("");
   const [filterLaboratorio, setFilterLaboratorio] = useState("");
@@ -23,18 +24,21 @@ export default function ListProductsPage() {
   const [pageSize, setPageSize] = useState(5);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Estados para almacenar los datos cargados desde la API
   const [products, setProducts] = useState([]);
   const [viasAdministracion, setViasAdministracion] = useState([]);
   const [estados, setEstados] = useState([]);
   const [laboratorios, setLaboratorios] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  // Carga los catalogos de opciones al montar el componente
   useEffect(() => {
     getViasAdministracion().then(setViasAdministracion);
     getEstadosMedicamento().then(setEstados);
     getLaboratorios().then(setLaboratorios);
   }, []);
 
+  // Carga los medicamentos desde la API cuando cambian los filtros o termino de busqueda
   useEffect(() => {
     const loadProducts = async () => {
       try {
@@ -62,6 +66,7 @@ export default function ListProductsPage() {
     loadProducts();
   }, [searchTerm, filterVia, filterEstado, filterLaboratorio]);
 
+  // Navega a la pagina de creacion de nuevo producto
   const handleCreateProduct = () => {
     navigate("/products");
   };
