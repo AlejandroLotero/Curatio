@@ -916,10 +916,15 @@ export default function ProductShowPage() {
                   )}
                 </Button>
               </div>
+              {/* Cierra: Selector de cantidad (flex items-center gap-4) */}
             </div>
+            {/* Cierra: Acciones de compra (border-t border-t-black) */}
           </div>
+          {/* Cierra: Contenido dentro de Información (div con descripción y detalles) */}
         </div>
+        {/* Cierra: Contenedor principal (grid grid-cols-1 md:grid-cols-2 - Imagen e Información) */}
       </div>
+      {/* Cierra: Contenedor max-w-6xl mx-auto (ancho máximo de contenido) */}
 
       {/* Modal de confirmación */}
       <Modal
@@ -953,7 +958,10 @@ export default function ProductShowPage() {
             Ir al carrito
           </Button>
         </div>
+        {/* Cierra: Contenedor de botones del modal (flex justify-end gap-4) */}
       </Modal>
+      {/* Cierra: Modal de confirmación de producto agregado */}
     </div>
+    // Cierra: Contenedor min-h-screen pb-12 (pantalla completa con fondo)
   );
 }
