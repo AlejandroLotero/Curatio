@@ -26,7 +26,12 @@ import {
   SupplierDetailPage,
 } from "@/features/suppliers";
 
-import { ElectronicInvoiceSalesPage, ListSales } from "@/features/sales";
+import { ElectronicInvoiceSalesPage, 
+  ListSales, 
+  PaymentsView,
+  ConfirmPayment}
+  from "@/features/sales";
+  
 import {
   ProductsPage,
   ProductDetailPage,
@@ -274,6 +279,18 @@ const router = createBrowserRouter([
           {
             path: "/sales/factura-electronica",
             element: <ElectronicInvoiceSalesPage />,
+          },
+          {
+            /**
+             * Checkout con sesión: tras "Ir a pagar" en el carrito público.
+             */
+            path: "/sales/pagos",
+            element: <PaymentsView />,
+          },
+          {
+            /** Resumen de transacción exitosa (tras confirmar en modal de pagos). */
+            path: "/sales/confirmacion-pago",
+            element: <ConfirmPayment />,
           },
 
           /**
