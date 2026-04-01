@@ -20,7 +20,7 @@ export default function SupplierDetailPage() {
   return (
     <SupplierDetailComponent
       supplier={mockSupplier}
-      onCancel={() => navigate("/suppliers/datos-basicos")}
+      onCancel={() => navigate("/suppliers/listar-proveedores")}
       onEdit={() => navigate(`/suppliers/datos-basicos?nit=${mockSupplier.nit}`)}
     />
   );
