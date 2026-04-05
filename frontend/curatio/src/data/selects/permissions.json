@@ -1,0 +1,114 @@
+{
+  "modules": [
+    {
+      "id": "usuarios",
+      "name": "Gestión de usuarios",
+      "permissions": [
+        {
+          "id": "usuarios.crear",
+          "label": "Crear usuarios"
+        },
+        {
+          "id": "usuarios.actualizar",
+          "label": "Actualizar usuarios"
+        },
+        {
+          "id": "usuarios.listar",
+          "label": "Listar usuarios"
+        },
+        {
+          "id": "usuarios.activarDesactivar",
+          "label": "Activar/Desactivar usuarios"
+        }
+      ]
+    },
+    {
+      "id": "medicamentos",
+      "name": "Gestión de medicamentos",
+      "permissions": [
+        {
+          "id": "medicamentos.crear",
+          "label": "Crear medicamentos"
+        },
+        {
+          "id": "medicamentos.actualizar",
+          "label": "Actualizar medicamentos"
+        },
+        {
+          "id": "medicamentos.visualizar",
+          "label": "Visualizar medicamentos"
+        },
+        {
+          "id": "medicamentos.activarDesactivar",
+          "label": "Activar/Desactivar medicamentos"
+        }
+      ]
+    },
+    {
+      "id": "proveedores",
+      "name": "Gestión de proveedores",
+      "permissions": [
+        {
+          "id": "proveedores.crear",
+          "label": "Crear proveedores"
+        },
+        {
+          "id": "proveedores.actualizar",
+          "label": "Actualizar proveedores"
+        },
+        {
+          "id": "proveedores.listar",
+          "label": "Listar proveedores"
+        },
+        {
+          "id": "proveedores.activarDesactivar",
+          "label": "Activar/Desactivar proveedores"
+        }
+      ]
+    },
+    {
+      "id": "ventas",
+      "name": "Gestión de ventas",
+      "permissions": [
+        {
+          "id": "ventas.ejecutar",
+          "label": "Ejecutar ventas"
+        },
+        {
+          "id": "ventas.buscarFacturas",
+          "label": "Buscar facturas"
+        },
+        {
+          "id": "ventas.modificarFacturas",
+          "label": "Modificar facturas"
+        },
+        {
+          "id": "ventas.eliminarFacturas",
+          "label": "Eliminar facturas"
+        }
+      ]
+    },
+    {
+      "id": "carrito",
+      "name": "Gestión del carrito de compras",
+      "permissions": [
+        {
+          "id": "carrito.crear",
+          "label": "Crear carrito de compras"
+        },
+        {
+          "id": "carrito.listar",
+          "label": "Listar carrito de compras"
+        },
+        {
+          "id": "carrito.actualizar",
+          "label": "Actualizar carrito de compras"
+        },
+        {
+          "id": "carrito.eliminar",
+          "label": "Eliminar carrito de compras"
+        }
+      ]
+    }
+  ]
+}

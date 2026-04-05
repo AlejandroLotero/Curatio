@@ -1,22 +1,60 @@
 //Formulario de Creación de Proveedores - Datos de contacto
 import { useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Input from "../../../shared/components/Input";
 import Button from "../../../shared/components/Button";
 import Modal from "@/shared/components/Modal";
 import { CircleArrowLeft } from "lucide-react";
+import { SupplierSchema } from "../schemas/SupplierSchemas";
 
 export default function ContactInformationSuppliers() {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const formRef = useRef(null);
 
-  const handleEmailBlur = (e) => {
-    console.log("Correo electrónico del proveedor: ", e.target.value);
+  const location = useLocation();
+  const prevData = location.state ?? {};
+
+  const [formData, setFormData] = useState({
+    ...prevData,
+    nombreContacto: prevData.nombreContacto ?? "",
+    phoneNumber: prevData.phoneNumber ?? "",
+    email: prevData.email ?? "",
+    address: prevData.address ?? "",
+  });
+
+  const [errors, setErrors] = useState({});
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleButtonSubmit = (e) => {
     e.preventDefault();
+
+    const contactSchema = SupplierSchema.pick({
+      phoneNumber: true,
+      email: true,
+      address: true,
+    });
+
+    const result = contactSchema.safeParse(formData);
+    if (!result.success) {
+      const fieldErrors = {};
+      result.error.issues.forEach((issue) => {
+        const field = issue.path[0];
+        fieldErrors[field] = issue.message;
+      });
+      setErrors(fieldErrors);
+      setIsConfirmModalOpen(false);
+      return;
+    }
+
+    setErrors({});
     setIsConfirmModalOpen(false);
     setIsSuccessModalOpen(true);
   };
@@ -26,19 +64,19 @@ export default function ContactInformationSuppliers() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen text-label">
+    <div className="flex items-center justify-center min-h-screen text-label px-3 sm:px-4 py-4 sm:py-8">
 
       <form
         ref={formRef}
         className="
       w-full max-w-md
-      px-6 py-12 
+      px-4 sm:px-6 py-8 sm:py-12 
       grid grid-cols-1 gap-4 
       bg-white/70 dark:bg-neutral-900/20 
       backdrop-blur-md 
       shadow-xl 
       ring-1 
-      rounded-3xl"
+      rounded-2xl sm:rounded-3xl"
       onSubmit={handleButtonSubmit}>
         <Link
         to="/suppliers/datos-basicos"
@@ -52,8 +90,7 @@ export default function ContactInformationSuppliers() {
           <h2
             className="
           text-center 
-          text-subtittles 
-          font-bold 
+          text-lg sm:text-xl md:text-2xl font-bold 
           text-label"
           >
             Datos de contacto
@@ -62,19 +99,35 @@ export default function ContactInformationSuppliers() {
             <Input
               label="Nombre de contacto"
               placeholder="Stiven Quintero"
+              name="nombreContacto"
+              value={formData.nombreContacto}
+              onChange={handleChange}
             />
             <Input
               label="Teléfono de contacto"
-              placeholder="30000000"
+              placeholder="3001234567"
+              type="tel"
+              name="phoneNumber"
+              value={formData.phoneNumber}
+              onChange={handleChange}
+              error={errors.phoneNumber}
             />
             <Input
               label="Correo electrónico"
               placeholder="example@gmail.com"
-              onBlur={handleEmailBlur}
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              error={errors.email}
             />
             <Input
               label="Dirección"
               placeholder="Barrio Dss Mz 44 Cs 88"
+              name="address"
+              value={formData.address}
+              onChange={handleChange}
+              error={errors.address}
             />
           </div>
 

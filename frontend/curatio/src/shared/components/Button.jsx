@@ -5,6 +5,7 @@ export default function Buttom({
     type = "button",
     children,
     disabled= false,       //Contenido que tiene el boton
+    className = "",
     ...props
 }) {
     const variants = {
@@ -20,7 +21,7 @@ export default function Buttom({
                 before:-inset-y-[7px] before:-inset-x-[2px]
                 `,
             md :
-                            `
+                `
                 h-10 px-4
                 before:absolute before:content-['']
                 before:-inset-y-[7px] before:-inset-x-[0px]
@@ -41,6 +42,8 @@ export default function Buttom({
                 cursor-pointer
                 ${variants[variant]}
                 ${sizes[size]}
+                ${className}
+                
                 `}
                 {...props}
             >

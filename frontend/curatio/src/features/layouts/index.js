@@ -2,3 +2,4 @@ export {default as AuthLayout } from "./AuthLayout";
 //export {default as Footer } from "./Footer";
 export {default as MainLayout } from "./MainLayout";
 export {default as Navbar } from "./NavBar";
+export {default as Footer} from "./footer";
