@@ -446,7 +446,7 @@ const NewHomePage = () => {
           {/*Div de control de las cards, espaciado entre ellas y columnas, solo seccion de productos*/}
         <div className="grid gap-x-6 gap-y-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center cursor-pointer">
           {products.map((product) => (
-            <div key={product.id} className="w-60 space-y-2">    {/*w-60 space-y-2 es el tamaño de la card y el espacio entre el texto y los botones*/}
+            <div key={product.id} className="w-60 space-y-4">    {/*w-60 space-y-2 es el tamaño de la card y el espacio entre el texto y los botones*/}
 
               <Card
                 product={product}

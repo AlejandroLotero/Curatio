@@ -85,8 +85,12 @@ const NavBarClient = ({ variant = "solid" }) => {
             {/* Dropdown de usuario */}
             <Dropdown>
               <DropdownTrigger>
-                <IconButton arialLabel="Menu de Usuario">
-                  <User className="size-5 text-label" />
+                <IconButton arialLabel="Menu de Usuario" className="
+                relative hidden sm:flex items-center justify-center
+                rounded-full border hover:bg-surface
+                transition border-border-strong
+              ">
+                  <User className="size-5 text-label " />
                 </IconButton>
               </DropdownTrigger>
 
