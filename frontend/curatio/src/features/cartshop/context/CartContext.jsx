@@ -1,6 +1,243 @@
+// import { createContext, useContext, useMemo, useState } from "react";
+// import { getPublicMedicationById } from "@/lib/http/publicMedications";
+// import { adaptPublicMedicationDetail } from "@/lib/adapters/publicMedicationAdapter";
+
+// /**
+//  * CartContext
+//  * -----------
+//  * Contexto central del carrito actual / operativo.
+//  *
+//  * Responsabilidades:
+//  * - mantener items activos del carrito
+//  * - resolver datos mínimos del producto si no llegan desde la vista
+//  * - exponer contador y subtotal
+//  * - permitir agregar, quitar y vaciar
+//  */
+// const CartContext = createContext(null);
+
+// export function CartProvider({ children }) {
+//   /**
+//    * Estado principal del carrito actual.
+//    */
+//   const [cartItems, setCartItems] = useState([]);
+
+//   /**
+//    * Bandera para bloquear UI mientras se modifica el carrito.
+//    */
+//   const [isMutatingCart, setIsMutatingCart] = useState(false);
+
+//   /**
+//    * =========================
+//    * AGREGAR AL CARRITO
+//    * =========================
+//    *
+//    * Si no llegan los datos mínimos necesarios desde la vista,
+//    * se consultan desde backend para no romper el flujo.
+//    *
+//    * Estructura final de cada item:
+//    * {
+//    *   id,
+//    *   productId,
+//    *   productName,
+//    *   quantity,
+//    *   unitPrice,
+//    *   subtotal,
+//    *   imageUrl,
+//    *   laboratory
+//    * }
+//    */
+//   const addToCartItem = async ({
+//     productId,
+//     productName,
+//     quantity,
+//     unitPrice,
+//     imageUrl,
+//     laboratory,
+//   }) => {
+//     try {
+//       setIsMutatingCart(true);
+
+//       let resolvedProductName = productName;
+//       let resolvedUnitPrice = unitPrice;
+//       let resolvedImageUrl = imageUrl;
+//       let resolvedLaboratory = laboratory;
+
+//       /**
+//        * Si faltan datos importantes del producto,
+//        * se resuelven desde backend.
+//        */
+//       const needsProductLookup =
+//         !resolvedProductName ||
+//         resolvedUnitPrice === undefined ||
+//         resolvedUnitPrice === null ||
+//         resolvedImageUrl === undefined ||
+//         resolvedLaboratory === undefined;
+
+//       if (needsProductLookup) {
+//         const response = await getPublicMedicationById(productId);
+//         const medication = adaptPublicMedicationDetail(response?.data?.medication);
+
+//         resolvedProductName = resolvedProductName || medication?.name || "Producto";
+//         resolvedUnitPrice =
+//           resolvedUnitPrice !== undefined && resolvedUnitPrice !== null
+//             ? Number(resolvedUnitPrice)
+//             : Number(medication?.salePrice ?? 0);
+
+//         resolvedImageUrl =
+//           resolvedImageUrl !== undefined
+//             ? resolvedImageUrl
+//             : medication?.imageUrl ?? null;
+
+//         resolvedLaboratory =
+//           resolvedLaboratory !== undefined
+//             ? resolvedLaboratory
+//             : medication?.laboratory ?? "";
+//       }
+
+//       setCartItems((prevItems) => {
+//         const existingItem = prevItems.find(
+//           (item) => String(item.productId) === String(productId)
+//         );
+
+//         /**
+//          * Si ya existe el producto en el carrito,
+//          * solo se actualiza la cantidad y subtotal.
+//          */
+//         if (existingItem) {
+//           return prevItems.map((item) => {
+//             if (String(item.productId) !== String(productId)) {
+//               return item;
+//             }
+
+//             const nextQuantity = Number(item.quantity || 0) + Number(quantity || 0);
+
+//             return {
+//               ...item,
+//               productName: resolvedProductName,
+//               unitPrice: Number(resolvedUnitPrice || 0),
+//               quantity: nextQuantity,
+//               subtotal: nextQuantity * Number(resolvedUnitPrice || 0),
+//               imageUrl: resolvedImageUrl ?? item.imageUrl ?? null,
+//               laboratory: resolvedLaboratory ?? item.laboratory ?? "",
+//             };
+//           });
+//         }
+
+//         /**
+//          * Si no existe, se crea una nueva línea.
+//          */
+//         return [
+//           ...prevItems,
+//           {
+//             id: `${productId}-${Date.now()}`,
+//             productId,
+//             productName: resolvedProductName,
+//             quantity: Number(quantity || 1),
+//             unitPrice: Number(resolvedUnitPrice || 0),
+//             subtotal: Number(resolvedUnitPrice || 0) * Number(quantity || 1),
+//             imageUrl: resolvedImageUrl ?? null,
+//             laboratory: resolvedLaboratory ?? "",
+//           },
+//         ];
+//       });
+//     } finally {
+//       setIsMutatingCart(false);
+//     }
+//   };
+
+//   /**
+//    * =========================
+//    * QUITAR ITEM DEL CARRITO
+//    * =========================
+//    */
+//   const removeCartItem = async (itemId) => {
+//     try {
+//       setIsMutatingCart(true);
+
+//       setCartItems((prevItems) =>
+//         prevItems.filter((item) => item.id !== itemId)
+//       );
+//     } finally {
+//       setIsMutatingCart(false);
+//     }
+//   };
+
+//   /**
+//    * =========================
+//    * VACIAR CARRITO
+//    * =========================
+//    */
+//   const clearActiveCart = async () => {
+//     try {
+//       setIsMutatingCart(true);
+//       setCartItems([]);
+//     } finally {
+//       setIsMutatingCart(false);
+//     }
+//   };
+
+//   /**
+//    * =========================
+//    * HIDRATAR CARRITO
+//    * =========================
+//    * Por ahora no hace nada porque seguimos en memoria.
+//    */
+//   const hydrateCart = async () => {
+//     return;
+//   };
+
+//   /**
+//    * =========================
+//    * CONTADOR TOTAL
+//    * =========================
+//    */
+//   const cartCount = useMemo(() => {
+//     return cartItems.reduce((acc, item) => acc + Number(item.quantity || 0), 0);
+//   }, [cartItems]);
+
+//   /**
+//    * =========================
+//    * SUBTOTAL TOTAL
+//    * =========================
+//    */
+//   const cartSubtotal = useMemo(() => {
+//     return cartItems.reduce(
+//       (acc, item) => acc + Number(item.subtotal || 0),
+//       0
+//     );
+//   }, [cartItems]);
+
+//   const value = {
+//     cartItems,
+//     cartCount,
+//     cartSubtotal,
+//     isMutatingCart,
+//     hydrateCart,
+//     addToCartItem,
+//     removeCartItem,
+//     clearActiveCart,
+//   };
+
+//   return (
+//     <CartContext.Provider value={value}>
+//       {children}
+//     </CartContext.Provider>
+//   );
+// }
+
+// export function useCart() {
+//   const context = useContext(CartContext);
+
+//   if (!context) {
+//     throw new Error("useCart must be used inside CartProvider");
+//   }
+
+//   return context;
+// }
+
 import { createContext, useContext, useMemo, useState } from "react";
-import { products as catalogProducts } from "@/data/product/products";
-import { listProducts } from "@/data/product/listProducts";
+import { getPublicMedicationById } from "@/lib/http/publicMedications";
+import { adaptPublicMedicationDetail } from "@/lib/adapters/publicMedicationAdapter";
 
 /**
  * CartContext
@@ -8,183 +245,96 @@ import { listProducts } from "@/data/product/listProducts";
  * Contexto central del carrito actual / operativo.
  *
  * Responsabilidades:
- * - mantener items activos del carrito
- * - exponer contador
- * - exponer subtotal
- * - permitir agregar, quitar y vaciar
- * - exponer bandera de mutación para bloquear botones mientras se procesa
- *
- * Datos del medicamento en la UI:
- * - NewHomePage / ProductShowPage solo envían productId + quantity.
- * - El contexto resuelve nombre, precio, imagen y datos técnicos desde el
- *   catálogo local (products + listProducts), igual que en el detalle de producto.
- *
- * Nota:
- * - esta implementación funciona en memoria
- * - si luego conectas backend, solo reemplazas la lógica interna
- *   de addToCartItem, removeCartItem y clearActiveCart
+ * - agregar productos
+ * - quitar productos completos
+ * - aumentar cantidad
+ * - disminuir cantidad
+ * - vaciar carrito
+ * - recalcular contador y subtotal
  */
 const CartContext = createContext(null);
 
-/**
- * Une catálogo visual (products) e inventario (listProducts) por id.
- * Así ViewCartShopPage puede mostrar la misma información que la ficha del medicamento.
- *
- * @param {string|number} productId
- * @returns {object|null} Datos del medicamento para una línea de carrito, o null si no existe en catálogo
- */
-function resolveMedicationForCart(productId) {
-  if (productId == null) return null;
-
-  const visual = catalogProducts.find(
-    (p) => String(p.id) === String(productId)
-  );
-  const inventory = listProducts.find(
-    (p) => String(p.id) === String(productId)
-  );
-
-  if (!visual && !inventory) return null;
-
-  return {
-    productId: inventory?.id ?? visual?.id,
-    productName:
-      inventory?.nameproduct ?? visual?.title ?? "Medicamento",
-    unitPrice: Number(
-      inventory?.precioVenta ?? visual?.price ?? 0
-    ),
-    image: visual?.image ?? inventory?.image ?? null,
-    laboratory: inventory?.laboratory ?? "",
-    description: inventory?.descripcion ?? visual?.description ?? "",
-    presentation: inventory?.presentacion ?? "",
-    concentration: inventory?.concentration ?? "",
-    formaFarmaceutica: inventory?.formaFarmaceutica ?? "",
-  };
-}
-
-/**
-Aqui se defin ela logica para llenar la linea del carrito con los datos del medicamento
- */
-function enrichCartLine(item) {
-  const meta = resolveMedicationForCart(item.productId);
-  if (!meta) {
-    return {
-      ...item,
-      subtotal:
-        Number(item.quantity || 0) * Number(item.unitPrice || 0),
-    };
-  }
-  // Se calcula el precio unitario efectivo (si hay un precio unitario en la linea, se usa, sino se usa el precio unitario del medicamento)
-  const unitPrice =
-    Number(item.unitPrice) > 0 //
-      ? Number(item.unitPrice)
-      : Number(meta.unitPrice);
-  const quantity = Number(item.quantity) || 0; // Se obtiene la cantidad de la linea
-// Se retorna el item con los datos del medicamento
-  return {
-    ...item,
-    productName: item.productName || meta.productName, // Se actualiza el nombre del producto
-    unitPrice, // Se actualiza el precio unitario efectivo
-    image: item.image ?? meta.image, // Se actualiza la imagen del producto
-    laboratory: item.laboratory ?? meta.laboratory, // Se actualiza el laboratorio del producto
-    description: item.description ?? meta.description, // Se actualiza la descripción del producto
-    presentation: item.presentation ?? meta.presentation, // Se actualiza la presentación del producto
-    concentration: item.concentration ?? meta.concentration, // Se actualiza la concentración del producto
-    formaFarmaceutica: item.formaFarmaceutica ?? meta.formaFarmaceutica, // Se actualiza la forma farmacéutica del producto
-    subtotal: quantity * unitPrice, // Se actualiza el subtotal
-  };
-}
-
-/**
- * Provider del carrito.
- */
-export function CartProvider({ children }) { 
-  /**
-   * Líneas crudas del carrito (persistencia en memoria).
-   * La UI consume `cartItems` ya enriquecido vía useMemo.
-   */
-  const [rawCartItems, setRawCartItems] = useState([]);
-
-  /**
-   * Bandera para bloquear UI mientras se modifica el carrito.
-   */
+export function CartProvider({ children }) {
+  const [cartItems, setCartItems] = useState([]);
   const [isMutatingCart, setIsMutatingCart] = useState(false);
 
   /**
    * =========================
    * AGREGAR AL CARRITO
    * =========================
-   * Si el producto ya existe en el carrito:
-   * - suma cantidades
-   * - recalcula subtotal
-   *
-   * Si no existe:
-   * - crea un nuevo item
+   * Si no llegan datos mínimos, los consulta desde backend.
    */
   const addToCartItem = async ({
     productId,
-    productName: productNameOverride,
-    quantity = 1,
-    unitPrice: unitPriceOverride,
-  } = {}) => {
-    const meta = resolveMedicationForCart(productId); // La constante meta contiene los datos del medicamento
-    const productName =
-      productNameOverride ?? meta?.productName ?? "Producto";
-    const unitPrice = Number(
-      unitPriceOverride ?? meta?.unitPrice ?? 0
-    );
-
-    if (!meta && productNameOverride == null && unitPriceOverride == null) {
-      throw new Error("Producto no encontrado en catálogo.");
-    }
-
-    const extraFields = meta
-      ? {
-          image: meta.image,
-          laboratory: meta.laboratory,
-          description: meta.description,
-          presentation: meta.presentation,
-          concentration: meta.concentration,
-          formaFarmaceutica: meta.formaFarmaceutica,
-        }
-      : {};
-
+    productName,
+    quantity,
+    unitPrice,
+  }) => {
     try {
       setIsMutatingCart(true);
-// Se agrega el producto al carrito con los datos del medicamento y se actualiza la cantidad y el subtotal
-      setRawCartItems((prevItems) => {            // Se busca el producto en el carrito
-        const existingItem = prevItems.find(      // Si el producto ya existe en el carrito, se actualiza la cantidad y el subtotal
-          (item) => String(item.productId) === String(productId) // Se compara el id del producto con el id del producto en el carrito
+
+      let resolvedProductName = productName;
+      let resolvedUnitPrice = unitPrice;
+      let resolvedImageUrl = null;
+      let resolvedLaboratory = "";
+
+      if (!resolvedProductName || resolvedUnitPrice === undefined) {
+        const response = await getPublicMedicationById(productId);
+        const medication = adaptPublicMedicationDetail(response?.data?.medication);
+
+        resolvedProductName = medication?.name ?? "Producto";
+        resolvedUnitPrice = Number(medication?.salePrice ?? 0);
+        resolvedImageUrl = medication?.imageUrl ?? null;
+        resolvedLaboratory = medication?.laboratory ?? "";
+      } else {
+        /**
+         * Si ya vienen nombre y precio, igual intentamos completar
+         * imagen y laboratorio para mejorar la vista del carrito.
+         */
+        try {
+          const response = await getPublicMedicationById(productId);
+          const medication = adaptPublicMedicationDetail(response?.data?.medication);
+
+          resolvedImageUrl = medication?.imageUrl ?? null;
+          resolvedLaboratory = medication?.laboratory ?? "";
+        } catch {
+          resolvedImageUrl = null;
+          resolvedLaboratory = "";
+        }
+      }
+
+      setCartItems((prevItems) => {
+        const existingItem = prevItems.find(
+          (item) => item.productId === productId
         );
 
-        if (existingItem) { // Si el producto ya existe en el carrito, se actualiza la cantidad y el subtotal
-          return prevItems.map((item) => { // Se actualiza la cantidad y el subtotal
-            if (String(item.productId) !== String(productId)) return item; // Si el id del producto no es el mismo, se retorna el item original
+        if (existingItem) {
+          return prevItems.map((item) => {
+            if (item.productId !== productId) return item;
 
-            const nextQuantity = Number(item.quantity) + Number(quantity); // Se obtiene la cantidad total
-            const effectiveUnit =
-              Number(item.unitPrice) > 0 ? item.unitPrice : unitPrice; // Se obtiene el precio unitario efectivo
+            const nextQuantity = item.quantity + quantity;
 
-            return { // Se retorna el item con los datos del medicamento y se actualiza la cantidad y el subtotal
-              ...item, // Se retorna el item original
-              ...extraFields, // Se agrega los datos del medicamento
-              productName: item.productName || productName, // Se actualiza el nombre del producto
-              unitPrice: effectiveUnit, // Se actualiza el precio unitario efectivo
+            return {
+              ...item,
               quantity: nextQuantity,
-              subtotal: nextQuantity * Number(effectiveUnit), // Se actualiza el subtotal
+              subtotal: nextQuantity * Number(item.unitPrice || 0),
+              imageUrl: item.imageUrl ?? resolvedImageUrl ?? null,
+              laboratory: item.laboratory ?? resolvedLaboratory ?? "",
             };
-          }); // Se retorna el item con los datos del medicamento y se actualiza la cantidad y el subtotal
+          });
         }
 
-        return [ //Este return es para agregar el producto al carrito si no existe si existe se actualiza la cantidad y el subtotal
+        return [
           ...prevItems,
           {
-            id: `${productId}-${Date.now()}`, // Se genera un id para el producto
-            productId: meta?.productId ?? productId, // Se actualiza el id del producto
-            productName, // Se actualiza el nombre del producto
-            ...extraFields, // Se agrega los datos del medicamento
-            quantity: Number(quantity), // Se actualiza la cantidad
-            unitPrice, // Se actualiza el precio unitario efectivo
-            subtotal: unitPrice * Number(quantity), // Se actualiza el subtotal
+            id: `${productId}-${Date.now()}`,
+            productId,
+            productName: resolvedProductName,
+            quantity,
+            unitPrice: Number(resolvedUnitPrice || 0),
+            subtotal: Number(resolvedUnitPrice || 0) * quantity,
+            imageUrl: resolvedImageUrl,
+            laboratory: resolvedLaboratory,
           },
         ];
       });
@@ -195,19 +345,80 @@ export function CartProvider({ children }) {
 
   /**
    * =========================
-   * QUITAR ITEM DEL CARRITO
+   * QUITAR ITEM COMPLETO
    * =========================
-   * Elimina un item puntual por su id interno.
-   *
-   * Este método es el que usa el botón "Quitar"
-   * de ViewCartShopPage.
    */
   const removeCartItem = async (itemId) => {
     try {
       setIsMutatingCart(true);
 
-      setRawCartItems((prevItems) => // Se filtra el producto del carrito
-        prevItems.filter((item) => item.id !== itemId) // Se filtra el producto del carrito
+      setCartItems((prevItems) =>
+        prevItems.filter((item) => item.id !== itemId)
+      );
+    } finally {
+      setIsMutatingCart(false);
+    }
+  };
+
+  /**
+   * =========================
+   * AUMENTAR CANTIDAD
+   * =========================
+   */
+  const increaseCartItemQuantity = async (itemId) => {
+    try {
+      setIsMutatingCart(true);
+
+      setCartItems((prevItems) =>
+        prevItems.map((item) => {
+          if (item.id !== itemId) return item;
+
+          const nextQuantity = Number(item.quantity || 0) + 1;
+
+          return {
+            ...item,
+            quantity: nextQuantity,
+            subtotal: nextQuantity * Number(item.unitPrice || 0),
+          };
+        })
+      );
+    } finally {
+      setIsMutatingCart(false);
+    }
+  };
+
+  /**
+   * =========================
+   * DISMINUIR CANTIDAD
+   * =========================
+   * Regla:
+   * - si la cantidad es mayor a 1, disminuye
+   * - si la cantidad es 1, elimina el item
+   */
+  const decreaseCartItemQuantity = async (itemId) => {
+    try {
+      setIsMutatingCart(true);
+
+      setCartItems((prevItems) =>
+        prevItems.flatMap((item) => {
+          if (item.id !== itemId) return [item];
+
+          const currentQuantity = Number(item.quantity || 0);
+
+          if (currentQuantity <= 1) {
+            return [];
+          }
+
+          const nextQuantity = currentQuantity - 1;
+
+          return [
+            {
+              ...item,
+              quantity: nextQuantity,
+              subtotal: nextQuantity * Number(item.unitPrice || 0),
+            },
+          ];
+        })
       );
     } finally {
       setIsMutatingCart(false);
@@ -218,15 +429,11 @@ export function CartProvider({ children }) {
    * =========================
    * VACIAR CARRITO
    * =========================
-   * Elimina todos los items del carrito actual.
-   *
-   * Este método es el que usa el botón "Vaciar carrito".
    */
   const clearActiveCart = async () => {
     try {
       setIsMutatingCart(true);
-
-      setRawCartItems([]); // Se vacía el carrito
+      setCartItems([]);
     } finally {
       setIsMutatingCart(false);
     }
@@ -236,8 +443,7 @@ export function CartProvider({ children }) {
    * =========================
    * HIDRATAR CARRITO
    * =========================
-   * Por ahora no hace nada porque estamos en memoria.
-   * Lo dejamos para no romper las pantallas que ya lo consumen.
+   * Reservado para futura conexión con backend.
    */
   const hydrateCart = async () => {
     return;
@@ -245,32 +451,17 @@ export function CartProvider({ children }) {
 
   /**
    * =========================
-   * CONTADOR DEL CARRITO
+   * TOTAL DE ITEMS
    * =========================
-   * Suma cantidades reales, no solamente número de líneas.
-   *
-   * Ejemplo:
-   * - si hay 1 producto con cantidad 4
-   *   el badge debe mostrar 4
    */
-  /**
-   * Items listos para la UI: siempre con nombre, precio y datos del medicamento
-   * cuando el id existe en catálogo.
-   */
-  const cartItems = useMemo(
-    () => rawCartItems.map(enrichCartLine),
-    [rawCartItems]
-  );
-
   const cartCount = useMemo(() => {
     return cartItems.reduce((acc, item) => acc + Number(item.quantity || 0), 0);
   }, [cartItems]);
 
   /**
    * =========================
-   * SUBTOTAL DEL CARRITO
+   * SUBTOTAL
    * =========================
-   * Suma subtotales reales.
    */
   const cartSubtotal = useMemo(() => {
     return cartItems.reduce(
@@ -279,9 +470,6 @@ export function CartProvider({ children }) {
     );
   }, [cartItems]);
 
-  /**
-   * Valor expuesto por el contexto.
-   */
   const value = {
     cartItems,
     cartCount,
@@ -290,6 +478,8 @@ export function CartProvider({ children }) {
     hydrateCart,
     addToCartItem,
     removeCartItem,
+    increaseCartItemQuantity,
+    decreaseCartItemQuantity,
     clearActiveCart,
   };
 
@@ -300,9 +490,6 @@ export function CartProvider({ children }) {
   );
 }
 
-/**
- * Hook de consumo del carrito.
- */
 export function useCart() {
   const context = useContext(CartContext);
 

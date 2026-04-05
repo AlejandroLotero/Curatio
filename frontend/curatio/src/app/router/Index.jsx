@@ -24,21 +24,16 @@ import {
   CreateFormSuppliers,
   ContactInformationSuppliers,
   SupplierDetailPage,
-  EditFormSuppliers,
-  EditContactInformationSuppliers,
 } from "@/features/suppliers";
 
-import { ElectronicInvoiceSalesPage, 
-  ListSales, 
-  PaymentsView,
-  ConfirmPayment}
-  from "@/features/sales";
-  
+import { ElectronicInvoiceSalesPage, ListSales } from "@/features/sales";
 import {
   ProductsPage,
   ProductDetailPage,
   ListProductsPage,
   EditProductPage,
+  ProductShowPage,
+  MedicationSearchResultsPage,
 } from "@/features/products/";
 
 import DashboardPage from "@/features/dashboard/pages/DashboardPage";
@@ -47,7 +42,6 @@ import { HomePage, NewHomePage } from "@/features/home";
 import CartShopLayout from "@/features/layouts/CartShopLayout";
 import ListCartShopPage from "@/features/cartshop/page/ListCartShopPage";
 import ProtectedRoute from "@/app/router/ProtectedRoute";
-import ProductShowPage from "@/features/products/pages/ProductShowPage";
 
 
 /**
@@ -83,6 +77,10 @@ const router = createBrowserRouter([
     {
       path: "/cartshop/ver-carrito",
       element: <ViewCartShopPage />,
+    },
+    {
+      path: "/products/busqueda",
+      element: <MedicationSearchResultsPage />,
     },
   ],
 },
@@ -214,16 +212,8 @@ const router = createBrowserRouter([
                 element: <ContactInformationSuppliers />,
               },
               {
-                path: "detalle/:id",
+                path: "detalle",
                 element: <SupplierDetailPage />,
-              },
-              {
-                path: "editar/:id",
-                element: <EditFormSuppliers />,
-              },
-              {
-                path: "editar-contacto/:id",
-                element: <EditContactInformationSuppliers />,
               },
             ],
           },
@@ -289,18 +279,6 @@ const router = createBrowserRouter([
           {
             path: "/sales/factura-electronica",
             element: <ElectronicInvoiceSalesPage />,
-          },
-          {
-            /**
-             * Checkout con sesión: tras "Ir a pagar" en el carrito público.
-             */
-            path: "/sales/pagos",
-            element: <PaymentsView />,
-          },
-          {
-            /** Resumen de transacción exitosa (tras confirmar en modal de pagos). */
-            path: "/sales/confirmacion-pago",
-            element: <ConfirmPayment />,
           },
 
           /**
