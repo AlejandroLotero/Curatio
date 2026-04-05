@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import ProductReportConfigModal from "../../reports/components/ProductReportConfigModal";
 import { getMedications } from "@/lib/http/medications";
 import { adaptMedicationToListItem } from "@/lib/adapters/medicationAdapter";
+import { TestConnection } from "../../pages/TestConnection";
 import {
   getViasAdministracion,
   getEstadosMedicamento,
@@ -77,6 +78,11 @@ export default function ListProductsPage() {
         <h1 className="text-2xl font-bold text-center text-label text-tittles mb-6">
           Gestion de productos
         </h1>
+
+        {/* Prueba de conexión */}
+        <div className="mb-8">
+          <TestConnection />
+        </div>
 
         <div className="mb-6 flex w-full flex-col gap-3 sm:gap-4 md:gap-4">
           {/* Fila de búsqueda y filtros */}
