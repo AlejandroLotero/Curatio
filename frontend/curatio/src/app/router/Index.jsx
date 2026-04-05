@@ -24,6 +24,8 @@ import {
   CreateFormSuppliers,
   ContactInformationSuppliers,
   SupplierDetailPage,
+  EditFormSuppliers,
+  EditContactInformationSuppliers,
 } from "@/features/suppliers";
 
 import { ElectronicInvoiceSalesPage, 
@@ -212,8 +214,16 @@ const router = createBrowserRouter([
                 element: <ContactInformationSuppliers />,
               },
               {
-                path: "detalle",
+                path: "detalle/:id",
                 element: <SupplierDetailPage />,
+              },
+              {
+                path: "editar/:id",
+                element: <EditFormSuppliers />,
+              },
+              {
+                path: "editar-contacto/:id",
+                element: <EditContactInformationSuppliers />,
               },
             ],
           },
