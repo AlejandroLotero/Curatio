@@ -22,12 +22,13 @@ import {
  * - Se conserva la estructura visual existente
  */
 const Navbar = ({ variant = "solid" }) => {
+  const [open, setOpen] = useState(false);
   const { cartCount } = useCart();
   const { isAuthenticated, user } = useAuth();
 
   return (
     <nav
-      className={`w-full border-b transition-colors duration-300 ${
+      className={`relative w-full border-b transition-colors duration-300 ${
         variant === "transparent"
           ? "bg-transparent border-transparent absolute top-0 left-0 z-100"
           : "bg-[#98e3f4] border-border"
@@ -101,7 +102,76 @@ const Navbar = ({ variant = "solid" }) => {
               </Link>
             </li>
           </ul>
-
+{/* =========================
+              MENÚ HAMBURGUESA
+             ========================= */}
+          <button
+            onClick={() => setOpen((prev) => !prev)}
+            className="md:hidden p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-700"
+            aria-label="Abrir menú"
+          >
+            {open ? <X size={20} className="text-black dark:text-black" /> : <Menu size={20} className="text-black dark:text-black" />}
+          </button>
+          {open && (
+            <div className="md:hidden absolute top-full left-0 w-full bg-slate-900 border-t border-slate-700 mt-2 z-50">
+              <ul className="flex flex-col px-4 py-3 gap-2">
+                <li>
+                  <Link
+                    to="/permissions"
+                    onClick={() => setOpen(false)}
+                    className="block rounded px-3 py-2 text-white hover:bg-slate-700"
+                  >
+                    Gestión 
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/accounts/list"
+                    onClick={() => setOpen(false)}
+                    className="block rounded px-3 py-2 text-white hover:bg-slate-700"
+                  >
+                    Usuarios
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/suppliers/listar-proveedores"
+                    onClick={() => setOpen(false)}
+                    className="block rounded px-3 py-2 text-white hover:bg-slate-700"
+                  >
+                    Proveedores
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/products/listar"
+                    onClick={() => setOpen(false)}
+                    className="block rounded px-3 py-2 text-white hover:bg-slate-700"
+                  >
+                    Productos
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/cartshop/list-cartshop"
+                    onClick={() => setOpen(false)}
+                    className="block rounded px-3 py-2 text-white hover:bg-slate-700"
+                  >
+                    Carritos
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/sales/list"
+                    onClick={() => setOpen(false)}
+                    className="block rounded px-3 py-2 text-white hover:bg-slate-700"
+                  >
+                    Ventas
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          )}
           {/* =========================
               DERECHA
              ========================= */}

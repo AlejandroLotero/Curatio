@@ -327,6 +327,7 @@
 
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import { CircleArrowLeft } from "lucide-react";
 import { Button } from "@/shared/components";
 import { useCart } from "@/features/cartshop/context/CartContext";
 import { useAuth } from "@/features/auth/context/AuthContext";
@@ -397,7 +398,8 @@ export default function ViewCartShopPage() {
       navigate("/login", {
         replace: true,
         state: {
-          from: "/cartshop/ver-carrito",
+          /** Tras login, abrir directamente la vista de pagos (carrito sigue en contexto). */
+          from: "/sales/pagos",
           reason: "checkout_required",
         },
       });
@@ -407,7 +409,14 @@ export default function ViewCartShopPage() {
     /**
      * Aquí continúa el flujo de checkout real.
      */
-    navigate("/sales/factura-electronica");
+    navigate("/sales/pagos");
+  };
+
+  /**
+   * Ruta "/" en el router carga NewHomePage (inicio público / tienda).
+   */
+  const goToHome = () => {
+    navigate("/");
   };
 
   return (
@@ -421,7 +430,7 @@ export default function ViewCartShopPage() {
             Tu carrito de compras
           </h1>
 
-          <span className="text-sm font-semibold px-3 py-1 rounded-full bg-red-600 text-white">
+          <span className="shrink-0 text-sm font-semibold rounded-full bg-red-600 px-3 py-1 text-white"> {/* Este span contiene el numero de items en el carrito */}
             {cartCount} item(s)
           </span>
         </div>
