@@ -533,8 +533,15 @@ const Navbar = ({ variant = "solid" }) => {
 
                 {isAuthenticated && (
                   <>
-                    <DropdownItem>
-                      <Link to="/perfil" className="block w-full">
+                    <DropdownItem> {/* Perfil propio o el de la URL */}
+                      <Link
+                        to={
+                          user?.id != null
+                            ? `/accounts/perfil/${user.id}`
+                            : "/perfil"
+                        }
+                        className="block w-full"
+                      >
                         Perfil
                       </Link>
                     </DropdownItem>
