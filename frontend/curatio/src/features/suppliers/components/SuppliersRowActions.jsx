@@ -115,7 +115,7 @@ export default function SuppliersRowActions({ supplier }) {
       <button
         type="button"
         onClick={handleView}
-        className="p-1 rounded hover:bg-gray-100"
+        className="p-1 rounded hover:bg-white/80 transition-colors duration-400"
         title="Ver detalle"
       >
         <Eye size={16} />
@@ -125,7 +125,7 @@ export default function SuppliersRowActions({ supplier }) {
       <button
         type="button"
         onClick={handleEdit}
-        className="p-1 rounded hover:bg-gray-100"
+        className="p-1 rounded hover:bg-white/80 transition-colors duration-400"
         title="Editar"
       >
         <Pencil size={16} />
