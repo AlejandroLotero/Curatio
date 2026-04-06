@@ -10,7 +10,7 @@ const AuthContext = createContext(null);
 
 // Timeout configurable desde Vite o fallback a 60s
 const INACTIVITY_TIMEOUT_MS = Number(
-  import.meta.env.VITE_SESSION_INACTIVITY_TIMEOUT_MS ?? 60000
+  import.meta.env.VITE_SESSION_INACTIVITY_TIMEOUT_MS ?? 6000000
 );
 
 export function AuthProvider({ children }) {

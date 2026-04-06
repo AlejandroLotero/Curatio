@@ -4,6 +4,7 @@ import Navbar from "./Navbar";
 
 import heroBfg from "@/assets/images/bgAll.jpg";
 
+
 export default function AuthLayout() {
  
   return (
