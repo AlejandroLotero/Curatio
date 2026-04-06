@@ -26,7 +26,14 @@ import {
   SupplierDetailPage,
 } from "@/features/suppliers";
 
-import { ElectronicInvoiceSalesPage, ListSales } from "@/features/sales";
+import {
+  ElectronicInvoiceSalesPage,
+  ListSales,
+  WebCheckoutPage,
+  SaleDetailPage,
+  EditSalePage,
+  CancelSalePage,
+} from "@/features/sales";
 import {
   ProductsPage,
   ProductDetailPage,
@@ -44,6 +51,7 @@ import ListCartShopPage from "@/features/cartshop/page/ListCartShopPage";
 import ProtectedRoute from "@/app/router/ProtectedRoute";
 import EditFormSuppliers from "@/features/suppliers/pages/EditSuppliersBasicInformation";
 import EditContactInformationSuppliers from "@/features/suppliers/pages/EditSuppliersContactInformation";
+
 
 
 /**
@@ -134,6 +142,10 @@ const router = createBrowserRouter([
            {
                 path: "permissions",
                 element: <PermissionsManagementPage/>
+            },
+            {
+              path: "/checkout",
+              element: <WebCheckoutPage />,
             },
 
           /**
@@ -304,6 +316,22 @@ const router = createBrowserRouter([
           {
             path: "/sales/factura-electronica",
             element: <ElectronicInvoiceSalesPage />,
+          },
+          {
+            path: "/checkout",
+            element: <WebCheckoutPage />,
+          },
+          {
+            path: "/sales/detalle/:saleId",
+            element: <SaleDetailPage />,
+          },
+          {
+            path: "/sales/editar/:saleId",
+            element: <EditSalePage />,
+          },
+          {
+            path: "/sales/anular/:saleId",
+            element: <CancelSalePage />,
           },
 
           /**

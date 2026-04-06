@@ -1,24 +1,14 @@
-// // =========================
-// // IMPORTS PRINCIPALES
-// // =========================
-
-// // React
 // import { useEffect, useMemo, useState } from "react";
-
-// // Router
 // import { useNavigate } from "react-router-dom";
 
-// // Design system actual del proyecto
 // import Input from "@/shared/components/Input";
 // import Button from "@/shared/components/Button";
 // import Select from "@/shared/components/Select";
 // import Modal from "@/shared/components/Modal";
 
-// // Contextos reales ya existentes
 // import { useCart } from "@/features/cartshop/context/CartContext";
 // import { useAuth } from "@/features/auth/context/AuthContext";
 
-// // Iconografía ya alineada con el proyecto
 // import {
 //   CreditCard,
 //   Landmark,
@@ -30,38 +20,16 @@
 //   BadgeCheck,
 // } from "lucide-react";
 
-// // Cliente HTTP y adapters del módulo de ventas
 // import {
-//   createSale,
-//   confirmSalePayment,
-//   downloadSaleInvoice,  
-// } from "@/lib/http/sales";
-// import {
-//   buildCreateSaleBody,  
-//   mapSaleDetailResponse,
-// } from "@/lib/adapters/salesAdapter";
-
-// // Subcomponente visual separado para la simulación de tarjeta
-// import SaleCardPreview from "@/features/sales/components/SaleCardPreview";
-
-// import {
-//   createSale,
-//   confirmSalePayment,
+//   createCustomerCheckout,
 //   downloadSaleInvoice,
-//   fetchSalesCustomerByDocument,
 // } from "@/lib/http/sales";
-
 // import {
-//   buildCreateSaleBody,
-//   mapSaleDetailResponse,
-//   mapSalesCustomerLookupResponse,
+//   buildCustomerCheckoutBody,
+//   mapCustomerCheckoutResponse,
 // } from "@/lib/adapters/salesAdapter";
 
-// /**
-//  * =========================
-//  * CONSTANTES LOCALES DE UI
-//  * =========================
-//  */
+// import SaleCardPreview from "@/features/sales/components/SaleCardPreview";
 
 // // Métodos de entrega
 // const DELIVERY_METHODS = [
@@ -81,32 +49,24 @@
 //   },
 // ];
 
-// // Métodos de pago alineados con backend
+// // Métodos de pago para cliente
 // const PAYMENT_METHODS = [
-//   {
-//     id: "cash",
-//     value: "cash",
-//     label: "Efectivo",
-//     description: "Pago en efectivo validado por el personal.",
-//     icon: Wallet,
-//   },
 //   {
 //     id: "card",
 //     value: "card",
 //     label: "Tarjeta débito / crédito",
-//     description: "Visa, Mastercard, American Express y otras redes.",
+//     description: "Visa, Mastercard y otras redes.",
 //     icon: CreditCard,
 //   },
 //   {
 //     id: "transfer",
 //     value: "transfer",
 //     label: "Transferencia / PSE",
-//     description: "Transferencia bancaria o débito por PSE.",
+//     description: "Débito desde cuenta bancaria.",
 //     icon: Landmark,
 //   },
 // ];
 
-// // Bancos para transferencia / PSE
 // const TRANSFER_BANK_OPTIONS = [
 //   { id: "bancolombia", value: "bancolombia", label: "Bancolombia" },
 //   { id: "bbva", value: "bbva", label: "BBVA" },
@@ -118,17 +78,14 @@
 //   { id: "nequi", value: "nequi", label: "Nequi" },
 // ];
 
-// // Tipos de documento
 // const DOCUMENT_TYPE_OPTIONS = [
 //   { id: "CC", value: "CC", label: "CC" },
-//   { id: "CE", value: "CE", label: "CE" },
+//   { id: "CE", value: "CE", label: "CE", label: "CE" },
 //   { id: "TI", value: "TI", label: "TI" },
-//   { id: "NIT", value: "NIT", label: "NIT" },
 //   { id: "PEP", value: "PEP", label: "PEP" },
 //   { id: "PPT", value: "PPT", label: "PPT" },
 // ];
 
-// // Cuotas
 // const INSTALLMENT_OPTIONS = [
 //   { id: "1", value: "1", label: "1 cuota" },
 //   { id: "2", value: "2", label: "2 cuotas" },
@@ -136,12 +93,6 @@
 //   { id: "6", value: "6", label: "6 cuotas" },
 //   { id: "12", value: "12", label: "12 cuotas" },
 // ];
-
-// /**
-//  * =========================
-//  * UTILIDADES LOCALES
-//  * =========================
-//  */
 
 // function formatCurrency(value) {
 //   return Number(value || 0).toLocaleString("es-CO");
@@ -219,37 +170,10 @@
 
 // function buildInvoiceNumber() {
 //   const stamp = Date.now().toString().slice(-8);
-//   return `FEV-${stamp}`;
-// }
-
-// function buildDateTimeLabel() {
-//   return new Intl.DateTimeFormat("es-CO", {
-//     dateStyle: "medium",
-//     timeStyle: "short",
-//   }).format(new Date());
-// }
-
-// function getUserRole(user) {
-//   return user?.rol || user?.role || "";
-// }
-
-// function getUserName(user) {
-//   return user?.nombre || user?.name || "";
-// }
-
-// function getUserPhone(user) {
-//   return user?.telefono || user?.phone || "";
-// }
-
-// function getUserAddress(user) {
-//   return user?.direccion || user?.address || "";
+//   return `WEB-${stamp}`;
 // }
 
 // function mapCheckoutPaymentToBackend({ paymentMethod, cardType }) {
-//   if (paymentMethod === "cash") {
-//     return "Efectivo";
-//   }
-
 //   if (paymentMethod === "transfer") {
 //     return "Transferencia";
 //   }
@@ -261,32 +185,12 @@
 //   return "Tarjeta crédito";
 // }
 
-// /**
-//  * Intenta extraer un Blob independientemente del tipo de cliente HTTP.
-//  * Funciona bien con wrappers basados en fetch y también con estructuras
-//  * que devuelven data / blob / body.
-//  */
 // async function extractBlobPayload(response) {
-//   if (!response) {
-//     return null;
-//   }
-
-//   if (response instanceof Blob) {
-//     return response;
-//   }
-
-//   if (response.data instanceof Blob) {
-//     return response.data;
-//   }
-
-//   if (typeof response.blob === "function") {
-//     return await response.blob();
-//   }
-
-//   if (response.body instanceof Blob) {
-//     return response.body;
-//   }
-
+//   if (!response) return null;
+//   if (response instanceof Blob) return response;
+//   if (response.data instanceof Blob) return response.data;
+//   if (typeof response.blob === "function") return await response.blob();
+//   if (response.body instanceof Blob) return response.body;
 //   return null;
 // }
 
@@ -305,19 +209,9 @@
 //   window.URL.revokeObjectURL(url);
 // }
 
-// /**
-//  * =========================
-//  * COMPONENTE PRINCIPAL
-//  * =========================
-//  */
-// export default function ElectronicInvoiceSalesPage() {
+// export default function WebCheckoutPage() {
 //   const navigate = useNavigate();
 
-//   /**
-//    * =========================
-//    * CONTEXTOS REALES
-//    * =========================
-//    */
 //   const {
 //     cartItems,
 //     cartCount,
@@ -327,45 +221,21 @@
 
 //   const { user, isAuthenticated } = useAuth();
 
-//   /**
-//    * =========================
-//    * ESTADOS DE CHECKOUT
-//    * =========================
-//    */
 //   const [currentStep, setCurrentStep] = useState(1);
-
-//  // Búsqueda manual de cliente por documento
-// const [customerLookupForm, setCustomerLookupForm] = useState({
-//   documentType: "CC",
-//   documentNumber: "",
-// });
-
-
-// const [customerLookupLoading, setCustomerLookupLoading] = useState(false);
-// const [customerLookupError, setCustomerLookupError] = useState("");
-
-//   // Cliente destinatario de la venta
-//   const [selectedCustomerId, setSelectedCustomerId] = useState("");
-//   const [selectedCustomerMeta, setSelectedCustomerMeta] = useState(null);
-
-//   // Método de entrega
 //   const [deliveryMethod, setDeliveryMethod] = useState("");
 
-//   // Datos de entrega
 //   const [deliveryForm, setDeliveryForm] = useState({
-//     deliveryAddress: "",
+//     deliveryAddress: user?.direccion || user?.address || "",
 //     deliveryCity: "Bogotá",
-//     deliveryPhone: "",
+//     deliveryPhone: user?.telefono || user?.phone || "",
 
 //     pickupPoint: "",
-//     pickupContactName: "",
-//     pickupContactPhone: "",
+//     pickupContactName: user?.nombre || user?.name || "",
+//     pickupContactPhone: user?.telefono || user?.phone || "",
 //   });
 
-//   // Método de pago
 //   const [paymentMethod, setPaymentMethod] = useState("");
 
-//   // Datos de pago
 //   const [paymentForm, setPaymentForm] = useState({
 //     cardType: "debit",
 //     cardNumber: "",
@@ -379,33 +249,16 @@
 //     transferBank: "",
 //     transferDocumentType: "CC",
 //     transferDocumentNumber: "",
-//     transferPhone: "",
-
-//     cashReceived: "",
+//     transferPhone: user?.telefono || user?.phone || "",
 //   });
 
-//   // Errores
 //   const [errors, setErrors] = useState({});
-
-//   // Estado general de procesamiento
 //   const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
 //   const [paymentStatus, setPaymentStatus] = useState("idle");
 //   const [statusMessage, setStatusMessage] = useState("");
+//   const [checkoutSale, setCheckoutSale] = useState(null);
 //   const [saving, setSaving] = useState(false);
-
-//   // Venta / comprobante persistidos
-//   const [saleRecord, setSaleRecord] = useState(null);
-//   const [receiptData, setReceiptData] = useState(null);
-
-//   // Mensajes auxiliares
 //   const [apiError, setApiError] = useState("");
-//   const [emailSentMessage, setEmailSentMessage] = useState("");
-
-//   /**
-//    * =========================
-//    * EFFECTS DE SEGURIDAD / UX
-//    * =========================
-//    */
 
 //   useEffect(() => {
 //     if (cartItems.length === 0) {
@@ -418,86 +271,15 @@
 //       navigate("/login", {
 //         replace: true,
 //         state: {
-//           from: "/sales/factura-electronica",
+//           from: "/checkout",
 //           reason: "checkout_required",
 //         },
 //       });
 //     }
 //   }, [isAuthenticated, navigate]);
 
-//   const role = getUserRole(user);
-// const isSalesOperator = ["Administrador", "Farmaceuta"].includes(role);
+//   const isClientRole = (user?.rol || user?.role) === "Cliente";
 
-// useEffect(() => {
-//   if (role === "Cliente") {
-//     navigate("/checkout", { replace: true });
-//   }
-// }, [role, navigate]);
-
-// if (!isSalesOperator && role !== "Cliente") {
-//   return (
-//     <div className="min-h-screen px-4 py-8 text-label">
-//       <div className="max-w-3xl mx-auto bg-white/70 backdrop-blur-md rounded-3xl shadow-xl p-8">
-//         <div className="flex items-center gap-3 mb-4">
-//           <CircleAlert className="size-6" />
-//           <h1 className="text-2xl font-bold">
-//             Módulo de ventas restringido
-//           </h1>
-//         </div>
-
-//         <p className="mb-6">
-//           Esta vista está habilitada para los roles Administrador y Farmaceuta.
-//         </p>
-
-//         <div className="flex gap-3">
-//           <Button
-//             variant="secondary"
-//             size="sm"
-//             type="button"
-//             onClick={() => navigate("/cartshop/ver-carrito")}
-//           >
-//             Volver al carrito
-//           </Button>
-
-//           <Button
-//             variant="primary"
-//             size="sm"
-//             type="button"
-//             onClick={() => navigate("/")}
-//           >
-//             Ir al inicio
-//           </Button>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-//   useEffect(() => {
-//     if (!selectedCustomerId) {
-//       setSelectedCustomerMeta(null);
-//       return;
-//     }
-
-//     const currentCustomer = customerOptions.find(
-//       (item) => String(item.value) === String(selectedCustomerId)
-//     );
-
-//     setSelectedCustomerMeta(currentCustomer || null);
-
-//     if (deliveryMethod === "delivery" && currentCustomer) {
-//       setDeliveryForm((prev) => ({
-//         ...prev,
-//         deliveryPhone: prev.deliveryPhone || "",
-//       }));
-//     }
-//   }, [selectedCustomerId, customerOptions, deliveryMethod]);
-
-//   /**
-//    * =========================
-//    * CÁLCULOS DE RESUMEN
-//    * =========================
-//    */
 //   const discountValue = useMemo(() => {
 //     if (cartSubtotal >= 100000) {
 //       return 5000;
@@ -527,11 +309,6 @@
 //     return Math.max(cartSubtotal - discountValue, 0) + ivaValue + deliveryFee;
 //   }, [cartSubtotal, discountValue, ivaValue, deliveryFee]);
 
-//   /**
-//    * =========================
-//    * CAMBIOS DE FORMULARIO
-//    * =========================
-//    */
 //   const handleDeliveryInputChange = (event) => {
 //     const { name, value } = event.target;
 
@@ -545,49 +322,6 @@
 //       [name]: "",
 //     }));
 //   };
-
-//   const handleCustomerLookupInputChange = (event) => {
-//   const { name, value } = event.target;
-
-//   setCustomerLookupForm((prev) => ({
-//     ...prev,
-//     [name]: value,
-//   }));
-
-//   setCustomerLookupError("");
-//   setErrors((prev) => ({
-//     ...prev,
-//     customerId: "",
-//   }));
-// };
-
-// const handleSearchCustomer = async () => {
-//   if (!customerLookupForm.documentNumber.trim()) {
-//     setCustomerLookupError("Debes ingresar el número de documento.");
-//     return;
-//   }
-
-//   setCustomerLookupLoading(true);
-//   setCustomerLookupError("");
-
-//   try {
-//     const response = await fetchSalesCustomerByDocument({
-//       documentType: customerLookupForm.documentType,
-//       documentNumber: customerLookupForm.documentNumber,
-//     });
-
-//     const customer = mapSalesCustomerLookupResponse(response);
-
-//     setSelectedCustomerMeta(customer);
-//   } catch (error) {
-//     setSelectedCustomerMeta(null);
-//     setCustomerLookupError(
-//       error?.error?.message || "No se encontró un cliente con ese documento."
-//     );
-//   } finally {
-//     setCustomerLookupLoading(false);
-//   }
-// };
 
 //   const handlePaymentInputChange = (event) => {
 //     const { name, value } = event.target;
@@ -611,7 +345,6 @@
 //         "cardDocumentNumber",
 //         "transferDocumentNumber",
 //         "transferPhone",
-//         "cashReceived",
 //       ].includes(name)
 //     ) {
 //       nextValue = onlyDigits(value);
@@ -628,17 +361,8 @@
 //     }));
 //   };
 
-//   /**
-//    * =========================
-//    * VALIDACIONES
-//    * =========================
-//    */
 //   const validateDeliveryStep = () => {
 //     const nextErrors = {};
-
-//     if (!selectedCustomerMeta?.id) {
-//   nextErrors.customerId = "Debes consultar y seleccionar un cliente válido.";
-// }
 
 //     if (!deliveryMethod) {
 //       nextErrors.deliveryMethod = "Debes seleccionar una forma de entrega.";
@@ -715,10 +439,6 @@
 //       if (!paymentForm.cardDocumentNumber.trim()) {
 //         nextErrors.cardDocumentNumber = "El número de documento es obligatorio.";
 //       }
-
-//       if (paymentForm.cardType === "credit" && !paymentForm.installments) {
-//         nextErrors.installments = "Debes seleccionar el número de cuotas.";
-//       }
 //     }
 
 //     if (paymentMethod === "transfer") {
@@ -739,25 +459,10 @@
 //       }
 //     }
 
-//     if (paymentMethod === "cash") {
-//       if (!paymentForm.cashReceived.trim()) {
-//         nextErrors.cashReceived = "Debes indicar el valor recibido.";
-//       }
-
-//       if (Number(paymentForm.cashReceived || 0) < grandTotal) {
-//         nextErrors.cashReceived = "El valor recibido no puede ser menor al total.";
-//       }
-//     }
-
 //     setErrors(nextErrors);
 //     return Object.keys(nextErrors).length === 0;
 //   };
 
-//   /**
-//    * =========================
-//    * NAVEGACIÓN DE PASOS
-//    * =========================
-//    */
 //   const handleContinueToPayment = () => {
 //     const isValid = validateDeliveryStep();
 
@@ -773,11 +478,6 @@
 //     setErrors({});
 //   };
 
-//   /**
-//    * =========================
-//    * PROCESAR PAGO REAL
-//    * =========================
-//    */
 //   const handleProcessPayment = async () => {
 //     const isValid = validatePaymentStep();
 
@@ -786,14 +486,13 @@
 //     }
 
 //     setApiError("");
-//     setEmailSentMessage("");
 //     setIsStatusModalOpen(true);
 //     setPaymentStatus("pending_validation");
-//     setStatusMessage("La venta está siendo registrada y el pago está pendiente de validación.");
+//     setStatusMessage("Tu pago está siendo validado y la compra está siendo registrada.");
 //     setSaving(true);
 
 //     try {
-//       const gatewayDecision = simulateGatewayDecision({
+//       const decision = simulateGatewayDecision({
 //         paymentMethod,
 //         cardNumber: paymentForm.cardNumber,
 //         documentNumber:
@@ -802,70 +501,44 @@
 //             : paymentForm.transferDocumentNumber,
 //       });
 
-//       if (gatewayDecision === "rejected") {
+//       if (decision === "rejected") {
 //         setPaymentStatus("rejected");
 //         setStatusMessage(
-//           "La transacción fue rechazada por la simulación de la pasarela. Puedes corregir los datos e intentarlo de nuevo."
+//           "La transacción fue rechazada. Puedes corregir los datos e intentarlo de nuevo."
 //         );
 //         return;
 //       }
 
-//       const invoiceNumber = buildInvoiceNumber();
-
-//       const createBody = buildCreateSaleBody({
-//         invoiceNumber,
-//         customerId: Number(selectedCustomerMeta.id),
-//         subtotal: Math.max(cartSubtotal - discountValue, 0),
-//         iva: ivaValue,
-//         discount: 0,
-//         total: grandTotal,
-//         paymentType: mapCheckoutPaymentToBackend({
-//           paymentMethod,
-//           cardType: paymentForm.cardType,
-//         }),
-//         lines: cartItems.map((item) => ({
-//           medicationId: item.id,
-//           quantity: item.quantity,
-//         })),
-//       });
-
-//       const createdResponse = await createSale(createBody);
-//       const createdSale = mapSaleDetailResponse(createdResponse);
-
-//       const confirmedResponse = await confirmSalePayment(createdSale.id);
-//       const confirmedSale = mapSaleDetailResponse(confirmedResponse);
-
-//       const nextReceipt = {
-//         saleId: confirmedSale.id,
-//         invoiceNumber: confirmedSale.invoiceNumber,
-//         createdAt: confirmedSale.saleDateTime || buildDateTimeLabel(),
-//         customerName: confirmedSale.customer,
-//         customerEmail: confirmedSale.customerEmail,
-//         paymentMethod: confirmedSale.paymentType,
-//         deliveryMethod,
-//         items: confirmedSale.lines,
-//         subtotal: confirmedSale.subtotal,
-//         discount: confirmedSale.discount,
-//         iva: confirmedSale.iva,
-//         deliveryFee,
-//         total: confirmedSale.total,
-//         paymentStatus: confirmedSale.status,
-//       };
-
-//       setSaleRecord(confirmedSale);
-//       setReceiptData(nextReceipt);
-
-//       setPaymentStatus("approved");
-//       setStatusMessage(
-//         "La venta fue creada y el pago quedó confirmado correctamente."
+//       const response = await createCustomerCheckout(
+//         buildCustomerCheckoutBody({
+//           invoiceNumber: buildInvoiceNumber(),
+//           subtotal: Math.max(cartSubtotal - discountValue, 0),
+//           iva: ivaValue,
+//           discount: 0,
+//           total: grandTotal,
+//           paymentType: mapCheckoutPaymentToBackend({
+//             paymentMethod,
+//             cardType: paymentForm.cardType,
+//           }),
+//           lines: cartItems.map((item) => ({
+//             medicationId: item.id,
+//             quantity: item.quantity,
+//           })),
+//         })
 //       );
 
+//       const result = mapCustomerCheckoutResponse(response);
+
+//       setCheckoutSale(result);
+//       setPaymentStatus("approved");
+//       setStatusMessage("Tu compra fue confirmada correctamente.");
 //       setCurrentStep(3);
+
 //       await clearActiveCart();
 //     } catch (error) {
 //       const fields = error?.error?.fields;
 //       let message =
-//         error?.error?.message || "No se pudo procesar el pago de la venta.";
+//         error?.error?.message || "No se pudo completar la compra.";
 
 //       if (fields && typeof fields === "object") {
 //         const first = Object.values(fields).flat()[0];
@@ -882,50 +555,24 @@
 //     }
 //   };
 
-//   /**
-//    * =========================
-//    * DESCARGA DE FACTURA REAL
-//    * =========================
-//    */
-//   const handleDownloadPdf = async () => {
-//     if (!saleRecord?.id) {
-//       return;
-//     }
+//   const handleDownloadInvoice = async () => {
+//     if (!checkoutSale?.id) return;
 
 //     try {
-//       const response = await downloadSaleInvoice(saleRecord.id);
+//       const response = await downloadSaleInvoice(checkoutSale.id);
 //       const blob = await extractBlobPayload(response);
 
 //       triggerBlobDownload(
 //         blob,
-//         `factura_${saleRecord.invoiceNumber || saleRecord.id}.pdf`
+//         `factura_${checkoutSale.invoice_number || checkoutSale.id}.pdf`
 //       );
 //     } catch (error) {
-//       setEmailSentMessage(
+//       setApiError(
 //         error?.error?.message || "No se pudo descargar la factura."
 //       );
 //     }
 //   };
 
-//   /**
-//    * =========================
-//    * ENVÍO DE CORREO
-//    * =========================
-//    *
-//    * En esta fase el correo real ya sale desde backend al crear la venta.
-//    * Aquí solo informamos al usuario de ello.
-//    */
-//   const handleSendReceiptByEmail = async () => {
-//     setEmailSentMessage(
-//       "La notificación al cliente se gestiona desde el backend al registrar la venta."
-//     );
-//   };
-
-//   /**
-//    * =========================
-//    * CERRAR MODAL DE ESTADO
-//    * =========================
-//    */
 //   const handleCloseStatusModal = () => {
 //     setIsStatusModalOpen(false);
 
@@ -936,34 +583,23 @@
 //     }
 
 //     if (paymentStatus === "approved") {
-//       navigate("/sales/list", { replace: true });
+//       navigate("/", { replace: true });
 //     }
 //   };
 
-//   /**
-//    * =========================
-//    * VALIDACIÓN DE ROL
-//    * =========================
-//    *
-//    * Esta vista queda orientada al flujo de venta del personal autorizado,
-//    * en coherencia con el modelo y con los requerimientos de ventas.
-//    */
-//   const isSalesOperator = ["Administrador", "Farmaceuta"].includes(getUserRole(user));
-
-//   if (!isSalesOperator) {
+//   if (!isClientRole) {
 //     return (
 //       <div className="min-h-screen px-4 py-8 text-label">
 //         <div className="max-w-3xl mx-auto bg-white/70 backdrop-blur-md rounded-3xl shadow-xl p-8">
 //           <div className="flex items-center gap-3 mb-4">
 //             <CircleAlert className="size-6" />
 //             <h1 className="text-2xl font-bold">
-//               Módulo de ventas restringido
+//               Checkout exclusivo para clientes
 //             </h1>
 //           </div>
 
 //           <p className="mb-6">
-//             Esta vista de checkout y confirmación de pago está habilitada para los
-//             roles Administrador y Farmaceuta.
+//             Este flujo está pensado para compras web del cliente autenticado.
 //           </p>
 
 //           <div className="flex gap-3">
@@ -990,37 +626,21 @@
 //     );
 //   }
 
-//   /**
-//    * =========================
-//    * RENDER PRINCIPAL
-//    * =========================
-//    */
 //   return (
 //     <div className="min-h-screen px-4 py-8 text-label">
 //       <div className="max-w-7xl mx-auto">
-//         {/* ENCABEZADO */}
 //         <div className="mb-6 rounded-3xl bg-white/70 backdrop-blur-md shadow-xl p-6">
 //           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
 //             <div>
-//               <h1 className="text-2xl font-bold">
-//                 Checkout y confirmación de pago
-//               </h1>
+//               <h1 className="text-2xl font-bold">Checkout y pago seguro</h1>
 //               <p className="text-sm mt-1">
-//                 Registra la venta, valida el pago y genera la factura.
+//                 Finaliza tu compra y recibe tu factura digital.
 //               </p>
 //             </div>
 
 //             <div className="flex gap-2 flex-wrap">
-//               <StepBadge
-//                 active={currentStep === 1}
-//                 completed={currentStep > 1}
-//                 label="Entrega"
-//               />
-//               <StepBadge
-//                 active={currentStep === 2}
-//                 completed={currentStep > 2}
-//                 label="Pago"
-//               />
+//               <StepBadge active={currentStep === 1} completed={currentStep > 1} label="Entrega" />
+//               <StepBadge active={currentStep === 2} completed={currentStep > 2} label="Pago" />
 //               <StepBadge
 //                 active={currentStep === 3}
 //                 completed={currentStep >= 3 && paymentStatus === "approved"}
@@ -1031,84 +651,15 @@
 //         </div>
 
 //         <div className="grid grid-cols-1 xl:grid-cols-[1.35fr_0.95fr] gap-6">
-//           {/* COLUMNA IZQUIERDA */}
 //           <div className="space-y-6">
-//             {/* PASO 1 */}
 //             <section className="bg-white/70 backdrop-blur-md shadow-xl rounded-3xl p-6">
 //               <div className="flex items-center gap-3 mb-4">
-//                 <PackageSectionIcon currentStep={currentStep} />
+//                 <ReceiptText className="size-5" />
 //                 <div>
-//                   <h2 className="text-xl font-bold">
-//                     1. Cliente y método de entrega
-//                   </h2>
-//                   <p className="text-sm">
-//                     Selecciona el cliente y define cómo se entregará el pedido.
-//                   </p>
+//                   <h2 className="text-xl font-bold">1. Método de entrega</h2>
+//                   <p className="text-sm">Selecciona cómo deseas recibir tu pedido.</p>
 //                 </div>
 //               </div>
-
-//               {customersError ? (
-//                 <p className="mb-4 text-sm text-red-600" role="alert">
-//                   {customersError}
-//                 </p>
-//               ) : null}
-
-//               <div className="grid grid-cols-1 md:grid-cols-[180px_1fr_auto] gap-4 mb-2">
-//                 <Select
-//                   label="Tipo de documento"
-//                   name="documentType"
-//                   value={customerLookupForm.documentType}
-//                   onChange={handleCustomerLookupInputChange}
-//                   options={DOCUMENT_TYPE_OPTIONS}
-//                   placeholder="Tipo"
-//                   wrapperClassName="w-full"
-//                 />
-
-//                 <Input
-//                   label="Número de documento"
-//                   name="documentNumber"
-//                   value={customerLookupForm.documentNumber}
-//                   onChange={handleCustomerLookupInputChange}
-//                   error={customerLookupError || errors.customerId}
-//                   wrapperClassName="w-full"
-//                 />
-
-//                 <div className="flex items-end">
-//                   <Button
-//                     variant="secondary"
-//                     size="sm"
-//                     type="button"
-//                     onClick={handleSearchCustomer}
-//                     disabled={customerLookupLoading}
-//                   >
-//                     Buscar cliente
-//                   </Button>
-//                 </div>
-//               </div>
-
-//               {selectedCustomerMeta ? (
-//                 <div className="rounded-2xl border border-border-strong bg-white/60 p-4 mb-4">
-//                   <h3 className="font-semibold mb-2">Cliente encontrado</h3>
-//                   <div className="space-y-1 text-sm">
-//                     <p>
-//                       <span className="font-medium">Nombre:</span> {selectedCustomerMeta.name}
-//                     </p>
-//                     <p>
-//                       <span className="font-medium">Correo:</span> {selectedCustomerMeta.email}
-//                     </p>
-//                     <p>
-//                       <span className="font-medium">Documento:</span>{" "}
-//                       {selectedCustomerMeta.documentType} {selectedCustomerMeta.documentNumber}
-//                     </p>
-//                     <p>
-//                       <span className="font-medium">Teléfono:</span> {selectedCustomerMeta.phone}
-//                     </p>
-//                     <p>
-//                       <span className="font-medium">Dirección:</span> {selectedCustomerMeta.address}
-//                     </p>
-//                   </div>
-//                 </div>
-//               ) : null}
 
 //               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 //                 {DELIVERY_METHODS.map((option) => {
@@ -1224,29 +775,24 @@
 //                   size="sm"
 //                   type="button"
 //                   onClick={handleContinueToPayment}
-//                   disabled={!deliveryMethod || !selectedCustomerMeta?.id}
+//                   disabled={!deliveryMethod}
 //                 >
 //                   Continuar al pago
 //                 </Button>
 //               </div>
 //             </section>
 
-//             {/* PASO 2 */}
 //             {currentStep >= 2 && (
 //               <section className="bg-white/70 backdrop-blur-md shadow-xl rounded-3xl p-6">
 //                 <div className="flex items-center gap-3 mb-4">
-//                   <ReceiptText className="size-5" />
+//                   <Wallet className="size-5" />
 //                   <div>
-//                     <h2 className="text-xl font-bold">
-//                       2. Método de pago
-//                     </h2>
-//                     <p className="text-sm">
-//                       Selecciona el método y completa la información requerida.
-//                     </p>
+//                     <h2 className="text-xl font-bold">2. Método de pago</h2>
+//                     <p className="text-sm">Selecciona cómo deseas pagar tu compra.</p>
 //                   </div>
 //                 </div>
 
-//                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+//                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 //                   {PAYMENT_METHODS.map((option) => {
 //                     const Icon = option.icon;
 //                     const isSelected = paymentMethod === option.value;
@@ -1365,7 +911,6 @@
 //                         onChange={handlePaymentInputChange}
 //                         options={INSTALLMENT_OPTIONS}
 //                         placeholder="Cuotas"
-//                         error={errors.installments}
 //                         wrapperClassName="w-full"
 //                       />
 //                     )}
@@ -1416,19 +961,6 @@
 //                   </div>
 //                 )}
 
-//                 {paymentMethod === "cash" && (
-//                   <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-//                     <Input
-//                       label="Valor recibido"
-//                       name="cashReceived"
-//                       value={paymentForm.cashReceived}
-//                       onChange={handlePaymentInputChange}
-//                       error={errors.cashReceived}
-//                       wrapperClassName="w-full"
-//                     />
-//                   </div>
-//                 )}
-
 //                 {apiError ? (
 //                   <p className="mt-4 text-sm text-red-600" role="alert">
 //                     {apiError}
@@ -1452,14 +984,13 @@
 //                     onClick={handleProcessPayment}
 //                     disabled={saving}
 //                   >
-//                     Confirmar pago
+//                     Pagar ahora
 //                   </Button>
 //                 </div>
 //               </section>
 //             )}
 //           </div>
 
-//           {/* COLUMNA DERECHA */}
 //           <div className="space-y-6">
 //             {paymentMethod === "card" && (
 //               <SaleCardPreview
@@ -1476,45 +1007,22 @@
 //               <div className="flex items-center gap-3 mb-4">
 //                 <Wallet className="size-5" />
 //                 <div>
-//                   <h3 className="text-lg font-bold">Resumen de la venta</h3>
+//                   <h3 className="text-lg font-bold">Resumen de tu compra</h3>
 //                   <p className="text-sm text-label/80">
-//                     Información consolidada del checkout.
+//                     Revisa el total antes de confirmar.
 //                   </p>
 //                 </div>
 //               </div>
 
 //               <div className="space-y-3">
-//                 <SummaryRow
-//                   label="Cliente"
-//                   value={selectedCustomerMeta?.name || "—"}
-//                 />
-//                 <SummaryRow
-//                   label="Vendedor"
-//                   value={getUserName(user) || "—"}
-//                 />
+//                 <SummaryRow label="Cliente" value={user?.nombre || user?.name || "—"} />
 //                 <SummaryRow label="Ítems" value={String(cartCount)} />
-//                 <SummaryRow
-//                   label="Subtotal"
-//                   value={`$${formatCurrency(cartSubtotal)}`}
-//                 />
-//                 <SummaryRow
-//                   label="Descuento"
-//                   value={`$${formatCurrency(discountValue)}`}
-//                 />
-//                 <SummaryRow
-//                   label="IVA"
-//                   value={`$${formatCurrency(ivaValue)}`}
-//                 />
-//                 <SummaryRow
-//                   label="Envío"
-//                   value={`$${formatCurrency(deliveryFee)}`}
-//                 />
+//                 <SummaryRow label="Subtotal" value={`$${formatCurrency(cartSubtotal)}`} />
+//                 <SummaryRow label="Descuento" value={`$${formatCurrency(discountValue)}`} />
+//                 <SummaryRow label="IVA" value={`$${formatCurrency(ivaValue)}`} />
+//                 <SummaryRow label="Envío" value={`$${formatCurrency(deliveryFee)}`} />
 //                 <div className="pt-3 border-t border-border-strong">
-//                   <SummaryRow
-//                     label="Total"
-//                     value={`$${formatCurrency(grandTotal)}`}
-//                     strong={true}
-//                   />
+//                   <SummaryRow label="Total" value={`$${formatCurrency(grandTotal)}`} strong={true} />
 //                 </div>
 //               </div>
 //             </section>
@@ -1522,84 +1030,45 @@
 //         </div>
 //       </div>
 
-//       {/* MODAL DE ESTADO / RESULTADO */}
 //       <Modal
 //         isOpen={isStatusModalOpen}
 //         onClose={handleCloseStatusModal}
 //         title={
 //           paymentStatus === "approved"
-//             ? "Pago confirmado"
+//             ? "Compra confirmada"
 //             : paymentStatus === "rejected"
 //             ? "Pago rechazado"
-//             : "Procesando venta"
+//             : "Procesando pago"
 //         }
 //       >
 //         <div className="space-y-4">
 //           <p className="text-sm text-label/80">{statusMessage}</p>
 
-//           {paymentStatus === "approved" && receiptData ? (
+//           {paymentStatus === "approved" && checkoutSale ? (
 //             <div className="rounded-2xl border border-border-strong bg-white/60 p-4">
-//               <h4 className="font-bold text-label mb-3">
-//                 Comprobante de la venta
-//               </h4>
+//               <h4 className="font-bold text-label mb-3">Comprobante de compra</h4>
 
 //               <div className="space-y-2 text-sm">
-//                 <SummaryRow
-//                   label="Factura"
-//                   value={receiptData.invoiceNumber}
-//                 />
-//                 <SummaryRow
-//                   label="Fecha"
-//                   value={receiptData.createdAt}
-//                 />
-//                 <SummaryRow
-//                   label="Cliente"
-//                   value={receiptData.customerName}
-//                 />
-//                 <SummaryRow
-//                   label="Método de pago"
-//                   value={receiptData.paymentMethod}
-//                 />
-//                 <SummaryRow
-//                   label="Estado"
-//                   value={receiptData.paymentStatus}
-//                 />
-//                 <SummaryRow
-//                   label="Total"
-//                   value={`$${formatCurrency(receiptData.total)}`}
-//                   strong={true}
-//                 />
+//                 <SummaryRow label="Factura" value={checkoutSale.invoice_number} />
+//                 <SummaryRow label="Fecha" value={checkoutSale.sale_datetime} />
+//                 <SummaryRow label="Cliente" value={checkoutSale.customer?.name || ""} />
+//                 <SummaryRow label="Método de pago" value={checkoutSale.payment_type} />
+//                 <SummaryRow label="Estado" value={checkoutSale.status} />
+//                 <SummaryRow label="Total" value={`$${formatCurrency(checkoutSale.total)}`} strong={true} />
 //               </div>
-
-//               {emailSentMessage ? (
-//                 <p className="mt-3 text-xs text-label/80">
-//                   {emailSentMessage}
-//                 </p>
-//               ) : null}
 //             </div>
 //           ) : null}
 
 //           <div className="flex flex-wrap justify-end gap-3">
 //             {paymentStatus === "approved" && (
-//               <>
-//                 <Button
-//                   variant="secondary"
-//                   size="sm"
-//                   type="button"
-//                   onClick={handleDownloadPdf}
-//                 >
-//                   Descargar factura
-//                 </Button>
-
-//                 <Button
-//                   variant="secondary"
-//                   size="sm"
-//                   type="button"
-//                   onClick={handleSendReceiptByEmail}
-//                 >
-//                   Ver estado del correo
-//                 </Button>
-//               </>
+//               <Button
+//                 variant="secondary"
+//                 size="sm"
+//                 type="button"
+//                 onClick={handleDownloadInvoice}
+//               >
+//                 Descargar factura
+//               </Button>
 //             )}
 
 //             <Button
@@ -1617,13 +1086,6 @@
 //   );
 // }
 
-// /**
-//  * =========================
-//  * SUBCOMPONENTES LOCALES
-//  * =========================
-//  */
-
-// // Badge visual del paso
 // function StepBadge({ label, active, completed }) {
 //   return (
 //     <div
@@ -1641,7 +1103,6 @@
 //   );
 // }
 
-// // Fila del resumen
 // function SummaryRow({ label, value, strong = false }) {
 //   return (
 //     <div className="flex items-center justify-between gap-4">
@@ -1653,15 +1114,6 @@
 //       </span>
 //     </div>
 //   );
-// }
-
-// // Icono visual de la sección entrega
-// function PackageSectionIcon({ currentStep }) {
-//   if (currentStep > 1) {
-//     return <BadgeCheck className="size-5" />;
-//   }
-
-//   return <ReceiptText className="size-5" />;
 // }
 
 // =========================
@@ -1698,15 +1150,12 @@ import {
 
 // Cliente HTTP y adapters del módulo de ventas
 import {
-  createSale,
-  confirmSalePayment,
+  createCustomerCheckout,
   downloadSaleInvoice,
-  fetchSalesCustomerByDocument,
 } from "@/lib/http/sales";
 import {
-  buildCreateSaleBody,
-  mapSaleDetailResponse,
-  mapSalesCustomerLookupResponse,
+  buildCustomerCheckoutBody,
+  mapCustomerCheckoutResponse,
 } from "@/lib/adapters/salesAdapter";
 
 // Subcomponente visual separado para la simulación de tarjeta
@@ -1736,15 +1185,8 @@ const DELIVERY_METHODS = [
   },
 ];
 
-// Métodos de pago alineados con backend
+// Métodos de pago válidos para el flujo web del cliente
 const PAYMENT_METHODS = [
-  {
-    id: "cash",
-    value: "cash",
-    label: "Efectivo",
-    description: "Pago en efectivo validado por el personal.",
-    icon: Wallet,
-  },
   {
     id: "card",
     value: "card",
@@ -1778,7 +1220,6 @@ const DOCUMENT_TYPE_OPTIONS = [
   { id: "CC", value: "CC", label: "CC" },
   { id: "CE", value: "CE", label: "CE" },
   { id: "TI", value: "TI", label: "TI" },
-  { id: "NIT", value: "NIT", label: "NIT" },
   { id: "PEP", value: "PEP", label: "PEP" },
   { id: "PPT", value: "PPT", label: "PPT" },
 ];
@@ -1874,14 +1315,7 @@ function simulateGatewayDecision({ paymentMethod, cardNumber, documentNumber }) 
 
 function buildInvoiceNumber() {
   const stamp = Date.now().toString().slice(-8);
-  return `FEV-${stamp}`;
-}
-
-function buildDateTimeLabel() {
-  return new Intl.DateTimeFormat("es-CO", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  }).format(new Date());
+  return `WEB-${stamp}`;
 }
 
 function getUserRole(user) {
@@ -1892,11 +1326,19 @@ function getUserName(user) {
   return user?.nombre || user?.name || "";
 }
 
-function mapCheckoutPaymentToBackend({ paymentMethod, cardType }) {
-  if (paymentMethod === "cash") {
-    return "Efectivo";
-  }
+function getUserEmail(user) {
+  return user?.email || "";
+}
 
+function getUserPhone(user) {
+  return user?.telefono || user?.phone || "";
+}
+
+function getUserAddress(user) {
+  return user?.direccion || user?.address || "";
+}
+
+function mapCheckoutPaymentToBackend({ paymentMethod, cardType }) {
   if (paymentMethod === "transfer") {
     return "Transferencia";
   }
@@ -1961,7 +1403,7 @@ function triggerBlobDownload(blob, filename) {
  * COMPONENTE PRINCIPAL
  * =========================
  */
-export default function ElectronicInvoiceSalesPage() {
+export default function WebCheckoutPage() {
   const navigate = useNavigate();
 
   /**
@@ -1985,27 +1427,18 @@ export default function ElectronicInvoiceSalesPage() {
    */
   const [currentStep, setCurrentStep] = useState(1);
 
-  // Búsqueda manual de cliente por documento
-  const [customerLookupForm, setCustomerLookupForm] = useState({
-    documentType: "CC",
-    documentNumber: "",
-  });
-
-  const [selectedCustomerMeta, setSelectedCustomerMeta] = useState(null);
-  const [customerLookupLoading, setCustomerLookupLoading] = useState(false);
-  const [customerLookupError, setCustomerLookupError] = useState("");
-
   // Método de entrega
   const [deliveryMethod, setDeliveryMethod] = useState("");
 
   // Datos de entrega
   const [deliveryForm, setDeliveryForm] = useState({
-    deliveryAddress: "",
+    deliveryAddress: getUserAddress(user),
     deliveryCity: "Bogotá",
-    deliveryPhone: "",
+    deliveryPhone: getUserPhone(user),
+
     pickupPoint: "",
-    pickupContactName: "",
-    pickupContactPhone: "",
+    pickupContactName: getUserName(user),
+    pickupContactPhone: getUserPhone(user),
   });
 
   // Método de pago
@@ -2025,9 +1458,7 @@ export default function ElectronicInvoiceSalesPage() {
     transferBank: "",
     transferDocumentType: "CC",
     transferDocumentNumber: "",
-    transferPhone: "",
-
-    cashReceived: "",
+    transferPhone: getUserPhone(user),
   });
 
   // Errores
@@ -2039,13 +1470,11 @@ export default function ElectronicInvoiceSalesPage() {
   const [statusMessage, setStatusMessage] = useState("");
   const [saving, setSaving] = useState(false);
 
-  // Venta / comprobante persistidos
-  const [saleRecord, setSaleRecord] = useState(null);
-  const [receiptData, setReceiptData] = useState(null);
+  // Compra persistida
+  const [checkoutSale, setCheckoutSale] = useState(null);
 
   // Mensajes auxiliares
   const [apiError, setApiError] = useState("");
-  const [emailSentMessage, setEmailSentMessage] = useState("");
 
   /**
    * =========================
@@ -2064,7 +1493,7 @@ export default function ElectronicInvoiceSalesPage() {
       navigate("/login", {
         replace: true,
         state: {
-          from: "/sales/factura-electronica",
+          from: "/checkout",
           reason: "checkout_required",
         },
       });
@@ -2072,15 +1501,15 @@ export default function ElectronicInvoiceSalesPage() {
   }, [isAuthenticated, navigate]);
 
   /**
-   * Si un cliente llega por error a esta ruta administrativa,
-   * se redirige al flujo web de checkout.
+   * Solo el rol Cliente debe usar este flujo.
+   * Si entra personal interno por error, se redirige a la venta asistida.
    */
   const role = getUserRole(user);
-  const isSalesOperator = ["Administrador", "Farmaceuta"].includes(role);
+  const isClientRole = role === "Cliente";
 
   useEffect(() => {
-    if (role === "Cliente") {
-      navigate("/checkout", { replace: true });
+    if (role === "Administrador" || role === "Farmaceuta") {
+      navigate("/sales/factura-electronica", { replace: true });
     }
   }, [role, navigate]);
 
@@ -2137,69 +1566,6 @@ export default function ElectronicInvoiceSalesPage() {
     }));
   };
 
-  const handleCustomerLookupInputChange = (event) => {
-    const { name, value } = event.target;
-
-    setCustomerLookupForm((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-
-    setCustomerLookupError("");
-    setErrors((prev) => ({
-      ...prev,
-      customerId: "",
-    }));
-  };
-
-  /**
-   * Busca cliente por tipo y número de documento.
-   */
-  const handleSearchCustomer = async () => {
-    if (!customerLookupForm.documentNumber.trim()) {
-      setCustomerLookupError("Debes ingresar el número de documento.");
-      return;
-    }
-
-    setCustomerLookupLoading(true);
-    setCustomerLookupError("");
-    setSelectedCustomerMeta(null);
-
-    try {
-      const response = await fetchSalesCustomerByDocument({
-        documentType: customerLookupForm.documentType,
-        documentNumber: customerLookupForm.documentNumber,
-      });
-
-      const customer = mapSalesCustomerLookupResponse(response);
-
-      setSelectedCustomerMeta(customer);
-
-      if (deliveryMethod === "delivery" && customer?.phone) {
-        setDeliveryForm((prev) => ({
-          ...prev,
-          deliveryPhone: prev.deliveryPhone || customer.phone,
-          deliveryAddress: prev.deliveryAddress || customer.address || "",
-        }));
-      }
-
-      if (deliveryMethod === "pickup" && customer?.name) {
-        setDeliveryForm((prev) => ({
-          ...prev,
-          pickupContactName: prev.pickupContactName || customer.name,
-          pickupContactPhone: prev.pickupContactPhone || customer.phone || "",
-        }));
-      }
-    } catch (error) {
-      setSelectedCustomerMeta(null);
-      setCustomerLookupError(
-        error?.error?.message || "No se encontró un cliente con ese documento."
-      );
-    } finally {
-      setCustomerLookupLoading(false);
-    }
-  };
-
   const handlePaymentInputChange = (event) => {
     const { name, value } = event.target;
 
@@ -2222,7 +1588,6 @@ export default function ElectronicInvoiceSalesPage() {
         "cardDocumentNumber",
         "transferDocumentNumber",
         "transferPhone",
-        "cashReceived",
       ].includes(name)
     ) {
       nextValue = onlyDigits(value);
@@ -2246,10 +1611,6 @@ export default function ElectronicInvoiceSalesPage() {
    */
   const validateDeliveryStep = () => {
     const nextErrors = {};
-
-    if (!selectedCustomerMeta?.id) {
-      nextErrors.customerId = "Debes consultar y seleccionar un cliente válido.";
-    }
 
     if (!deliveryMethod) {
       nextErrors.deliveryMethod = "Debes seleccionar una forma de entrega.";
@@ -2350,16 +1711,6 @@ export default function ElectronicInvoiceSalesPage() {
       }
     }
 
-    if (paymentMethod === "cash") {
-      if (!paymentForm.cashReceived.trim()) {
-        nextErrors.cashReceived = "Debes indicar el valor recibido.";
-      }
-
-      if (Number(paymentForm.cashReceived || 0) < grandTotal) {
-        nextErrors.cashReceived = "El valor recibido no puede ser menor al total.";
-      }
-    }
-
     setErrors(nextErrors);
     return Object.keys(nextErrors).length === 0;
   };
@@ -2397,10 +1748,9 @@ export default function ElectronicInvoiceSalesPage() {
     }
 
     setApiError("");
-    setEmailSentMessage("");
     setIsStatusModalOpen(true);
     setPaymentStatus("pending_validation");
-    setStatusMessage("La venta está siendo registrada y el pago está pendiente de validación.");
+    setStatusMessage("Tu compra está siendo procesada y el pago está en validación.");
     setSaving(true);
 
     try {
@@ -2423,93 +1773,67 @@ export default function ElectronicInvoiceSalesPage() {
 
       const invoiceNumber = buildInvoiceNumber();
 
-            
-
             /**
-       * IMPORTANTE:
-       * El backend de ventas valida:
-       * total = subtotal + iva - discount
-       *
-       * Por ahora el envío es solo informativo en UI y no forma parte
-       * del modelo Venta, por eso NO debe enviarse dentro del total persistido.
-       */
-      const saleSubtotal = Number(cartSubtotal || 0);
-      const saleDiscount = 0;
-      const saleTotal = saleSubtotal + Number(ivaValue || 0) - saleDiscount;
+         * IMPORTANTE:
+         * El backend del checkout web valida:
+         * total = subtotal + iva - discount
+         *
+         * El envío sigue mostrándose en UI, pero no se persiste en Venta
+         * mientras el modelo no tenga un campo específico para ese valor.
+         */
+        const saleSubtotal = Number(cartSubtotal || 0);
+        const saleDiscount = 0;
+        const saleTotal = saleSubtotal + Number(ivaValue || 0) - saleDiscount;
 
-      const normalizedLines = cartItems.map((item) => ({
+        const normalizedLines = cartItems.map((item) => ({
         medicationId: Number(
-          item.medicationId ??
-          item.productId ??
-          item.product?.id ??
-          item.medication?.id
+            item.medicationId ??
+            item.productId ??
+            item.product?.id ??
+            item.medication?.id
         ),
         quantity: Number(item.quantity),
-      }));
+        }));
 
-      console.log("cartItems checkout admin:", cartItems);
-      console.log("normalizedLines admin:", normalizedLines);
+        console.log("cartItems checkout cliente:", cartItems);
+        console.log("normalizedLines cliente:", normalizedLines);
 
-      const hasInvalidMedicationId = normalizedLines.some(
+        const hasInvalidMedicationId = normalizedLines.some(
         (line) => !Number.isInteger(line.medicationId) || line.medicationId <= 0
-      );
+        );
 
-      if (hasInvalidMedicationId) {
+        if (hasInvalidMedicationId) {
         setApiError("No se pudo identificar correctamente uno o más medicamentos del carrito.");
         setPaymentStatus("rejected");
         setStatusMessage("No se pudo identificar correctamente uno o más medicamentos del carrito.");
         setSaving(false);
         return;
-      }
+        }
 
-      const createBody = buildCreateSaleBody({
+        const checkoutBody = buildCustomerCheckoutBody({
         invoiceNumber,
-        customerId: Number(selectedCustomerMeta.id),
         subtotal: saleSubtotal,
         iva: ivaValue,
         discount: saleDiscount,
         total: saleTotal,
         paymentType: mapCheckoutPaymentToBackend({
-          paymentMethod,
-          cardType: paymentForm.cardType,
+            paymentMethod,
+            cardType: paymentForm.cardType,
         }),
         lines: normalizedLines,
-      });
+        });
 
-      const createdResponse = await createSale(createBody);
-      const createdSale = mapSaleDetailResponse(createdResponse);
+      const response = await createCustomerCheckout(checkoutBody);
+      const result = mapCustomerCheckoutResponse(response);
 
-      const confirmedResponse = await confirmSalePayment(createdSale.id);
-      const confirmedSale = mapSaleDetailResponse(confirmedResponse);
-
-      const nextReceipt = {
-        saleId: confirmedSale.id,
-        invoiceNumber: confirmedSale.invoiceNumber,
-        createdAt: confirmedSale.saleDateTime || buildDateTimeLabel(),
-        customerName: confirmedSale.customer,
-        customerEmail: confirmedSale.customerEmail,
-        paymentMethod: confirmedSale.paymentType,
-        deliveryMethod,
-        items: confirmedSale.lines,
-        subtotal: confirmedSale.subtotal,
-        discount: confirmedSale.discount,
-        iva: confirmedSale.iva,
-        deliveryFee,
-        total: confirmedSale.total,
-        paymentStatus: confirmedSale.status,
-      };
-
-      setSaleRecord(confirmedSale);
-      setReceiptData(nextReceipt);
+      setCheckoutSale(result);
 
       setPaymentStatus("approved");
-      setStatusMessage(
-        "La venta fue creada y el pago quedó confirmado correctamente."
-      );
+      setStatusMessage("Tu compra fue confirmada correctamente.");
 
       setCurrentStep(3);
       await clearActiveCart();
-    } catch (error) {
+    }catch (error) {
   console.error("Error completo procesando venta:", error);
   console.error("error.error:", error?.error);
   console.error("error.error.fields:", error?.error?.fields);
@@ -2532,6 +1856,24 @@ export default function ElectronicInvoiceSalesPage() {
 } finally {
   setSaving(false);
 }
+    // } catch (error) {
+    //   const fields = error?.error?.fields;
+    //   let message =
+    //     error?.error?.message || "No se pudo completar la compra.";
+
+    //   if (fields && typeof fields === "object") {
+    //     const first = Object.values(fields).flat()[0];
+    //     if (first) {
+    //       message = `${message} (${first})`;
+    //     }
+    //   }
+
+    //   setApiError(message);
+    //   setPaymentStatus("rejected");
+    //   setStatusMessage(message);
+    // } finally {
+    //   setSaving(false);
+    // }
   };
 
   /**
@@ -2539,36 +1881,52 @@ export default function ElectronicInvoiceSalesPage() {
    * DESCARGA DE FACTURA REAL
    * =========================
    */
-  const handleDownloadPdf = async () => {
-    if (!saleRecord?.id) {
-      return;
-    }
+//   const handleDownloadInvoice = async () => {
+//     if (!checkoutSale?.id) {
+//       return;
+//     }
 
-    try {
-      const response = await downloadSaleInvoice(saleRecord.id);
-      const blob = await extractBlobPayload(response);
+//     try {
+//       const response = await downloadSaleInvoice(checkoutSale.id);
+//       const blob = await extractBlobPayload(response);
 
-      triggerBlobDownload(
-        blob,
-        `factura_${saleRecord.invoiceNumber || saleRecord.id}.pdf`
-      );
-    } catch (error) {
-      setEmailSentMessage(
-        error?.error?.message || "No se pudo descargar la factura."
-      );
-    }
-  };
+//       triggerBlobDownload(
+//         blob,
+//         `factura_${checkoutSale.invoice_number || checkoutSale.id}.pdf`
+//       );
+//     } catch (error) {
+//       setApiError(
+//         error?.error?.message || "No se pudo descargar la factura."
+//       );
+//     }
+//   };
+const handleDownloadInvoice = async () => {
+  console.log("Click en descargar factura");
+  console.log("checkoutSale:", checkoutSale);
 
-  /**
-   * =========================
-   * ESTADO DEL CORREO
-   * =========================
-   */
-  const handleSendReceiptByEmail = async () => {
-    setEmailSentMessage(
-      "La notificación al cliente se gestiona desde el backend al registrar la venta."
+  if (!checkoutSale?.id) {
+    console.log("No hay id de venta para descargar factura.");
+    return;
+  }
+
+  try {
+    const response = await downloadSaleInvoice(checkoutSale.id);
+    console.log("Respuesta descarga factura:", response);
+
+    const blob = await extractBlobPayload(response);
+    console.log("Blob extraído:", blob);
+
+    triggerBlobDownload(
+      blob,
+      `factura_${checkoutSale.invoice_number || checkoutSale.id}.pdf`
     );
-  };
+  } catch (error) {
+    console.error("Error descargando factura:", error);
+    setApiError(
+      error?.error?.message || "No se pudo descargar la factura."
+    );
+  }
+};
 
   /**
    * =========================
@@ -2585,7 +1943,7 @@ export default function ElectronicInvoiceSalesPage() {
     }
 
     if (paymentStatus === "approved") {
-      navigate("/sales/list", { replace: true });
+      navigate("/", { replace: true });
     }
   };
 
@@ -2594,19 +1952,19 @@ export default function ElectronicInvoiceSalesPage() {
    * GUARDAS DE RENDER
    * =========================
    */
-  if (!isSalesOperator && role !== "Cliente") {
+  if (!isClientRole && role !== "Administrador" && role !== "Farmaceuta") {
     return (
       <div className="min-h-screen px-4 py-8 text-label">
         <div className="max-w-3xl mx-auto bg-white/70 backdrop-blur-md rounded-3xl shadow-xl p-8">
           <div className="flex items-center gap-3 mb-4">
             <CircleAlert className="size-6" />
             <h1 className="text-2xl font-bold">
-              Módulo de ventas restringido
+              Checkout restringido
             </h1>
           </div>
 
           <p className="mb-6">
-            Esta vista está habilitada para los roles Administrador y Farmaceuta.
+            Esta vista de compra está habilitada para clientes autenticados.
           </p>
 
           <div className="flex gap-3">
@@ -2646,10 +2004,10 @@ export default function ElectronicInvoiceSalesPage() {
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
             <div>
               <h1 className="text-2xl font-bold">
-                Checkout y confirmación de pago
+                Checkout y pago seguro
               </h1>
               <p className="text-sm mt-1">
-                Registra la venta, valida el pago y genera la factura.
+                Finaliza tu compra y recibe tu factura digital.
               </p>
             </div>
 
@@ -2682,70 +2040,13 @@ export default function ElectronicInvoiceSalesPage() {
                 <PackageSectionIcon currentStep={currentStep} />
                 <div>
                   <h2 className="text-xl font-bold">
-                    1. Cliente y método de entrega
+                    1. Método de entrega
                   </h2>
                   <p className="text-sm">
-                    Consulta el cliente por documento y define cómo se entregará el pedido.
+                    Define cómo deseas recibir tu pedido.
                   </p>
                 </div>
               </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-[180px_1fr_auto] gap-4 mb-2">
-                <Select
-                  label="Tipo de documento"
-                  name="documentType"
-                  value={customerLookupForm.documentType}
-                  onChange={handleCustomerLookupInputChange}
-                  options={DOCUMENT_TYPE_OPTIONS}
-                  placeholder="Tipo"
-                  wrapperClassName="w-full"
-                />
-
-                <Input
-                  label="Número de documento"
-                  name="documentNumber"
-                  value={customerLookupForm.documentNumber}
-                  onChange={handleCustomerLookupInputChange}
-                  error={customerLookupError || errors.customerId}
-                  wrapperClassName="w-full"
-                />
-
-                <div className="flex items-end">
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    type="button"
-                    onClick={handleSearchCustomer}
-                    disabled={customerLookupLoading}
-                  >
-                    Buscar cliente
-                  </Button>
-                </div>
-              </div>
-
-              {selectedCustomerMeta ? (
-                <div className="rounded-2xl border border-border-strong bg-white/60 p-4 mb-4">
-                  <h3 className="font-semibold mb-2">Cliente encontrado</h3>
-                  <div className="space-y-1 text-sm">
-                    <p>
-                      <span className="font-medium">Nombre:</span> {selectedCustomerMeta.name}
-                    </p>
-                    <p>
-                      <span className="font-medium">Correo:</span> {selectedCustomerMeta.email}
-                    </p>
-                    <p>
-                      <span className="font-medium">Documento:</span>{" "}
-                      {selectedCustomerMeta.documentType} {selectedCustomerMeta.documentNumber}
-                    </p>
-                    <p>
-                      <span className="font-medium">Teléfono:</span> {selectedCustomerMeta.phone}
-                    </p>
-                    <p>
-                      <span className="font-medium">Dirección:</span> {selectedCustomerMeta.address}
-                    </p>
-                  </div>
-                </div>
-              ) : null}
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {DELIVERY_METHODS.map((option) => {
@@ -2861,7 +2162,7 @@ export default function ElectronicInvoiceSalesPage() {
                   size="sm"
                   type="button"
                   onClick={handleContinueToPayment}
-                  disabled={!deliveryMethod || !selectedCustomerMeta?.id}
+                  disabled={!deliveryMethod}
                 >
                   Continuar al pago
                 </Button>
@@ -2883,7 +2184,7 @@ export default function ElectronicInvoiceSalesPage() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {PAYMENT_METHODS.map((option) => {
                     const Icon = option.icon;
                     const isSelected = paymentMethod === option.value;
@@ -3053,19 +2354,6 @@ export default function ElectronicInvoiceSalesPage() {
                   </div>
                 )}
 
-                {paymentMethod === "cash" && (
-                  <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <Input
-                      label="Valor recibido"
-                      name="cashReceived"
-                      value={paymentForm.cashReceived}
-                      onChange={handlePaymentInputChange}
-                      error={errors.cashReceived}
-                      wrapperClassName="w-full"
-                    />
-                  </div>
-                )}
-
                 {apiError ? (
                   <p className="mt-4 text-sm text-red-600" role="alert">
                     {apiError}
@@ -3089,7 +2377,7 @@ export default function ElectronicInvoiceSalesPage() {
                     onClick={handleProcessPayment}
                     disabled={saving}
                   >
-                    Confirmar pago
+                    Pagar ahora
                   </Button>
                 </div>
               </section>
@@ -3113,7 +2401,7 @@ export default function ElectronicInvoiceSalesPage() {
               <div className="flex items-center gap-3 mb-4">
                 <Wallet className="size-5" />
                 <div>
-                  <h3 className="text-lg font-bold">Resumen de la venta</h3>
+                  <h3 className="text-lg font-bold">Resumen de la compra</h3>
                   <p className="text-sm text-label/80">
                     Información consolidada del checkout.
                   </p>
@@ -3123,11 +2411,11 @@ export default function ElectronicInvoiceSalesPage() {
               <div className="space-y-3">
                 <SummaryRow
                   label="Cliente"
-                  value={selectedCustomerMeta?.name || "—"}
+                  value={getUserName(user) || "—"}
                 />
                 <SummaryRow
-                  label="Vendedor"
-                  value={getUserName(user) || "—"}
+                  label="Correo"
+                  value={getUserEmail(user) || "—"}
                 />
                 <SummaryRow label="Ítems" value={String(cartCount)} />
                 <SummaryRow
@@ -3165,63 +2453,46 @@ export default function ElectronicInvoiceSalesPage() {
         onClose={handleCloseStatusModal}
         title={
           paymentStatus === "approved"
-            ? "Pago confirmado"
+            ? "Compra confirmada"
             : paymentStatus === "rejected"
             ? "Pago rechazado"
-            : "Procesando venta"
+            : "Procesando compra"
         }
       >
         <div className="space-y-4">
           <p className="text-sm text-label/80">{statusMessage}</p>
 
-          {paymentStatus === "approved" && receiptData ? (
+          {paymentStatus === "approved" && checkoutSale ? (
             <div className="rounded-2xl border border-border-strong bg-white/60 p-4">
               <h4 className="font-bold text-label mb-3">
-                Comprobante de la venta
+                Comprobante de compra
               </h4>
 
               <div className="space-y-2 text-sm">
-                <SummaryRow label="Factura" value={receiptData.invoiceNumber} />
-                <SummaryRow label="Fecha" value={receiptData.createdAt} />
-                <SummaryRow label="Cliente" value={receiptData.customerName} />
-                <SummaryRow label="Método de pago" value={receiptData.paymentMethod} />
-                <SummaryRow label="Estado" value={receiptData.paymentStatus} />
+                <SummaryRow label="Factura" value={checkoutSale.invoice_number} />
+                <SummaryRow label="Fecha" value={checkoutSale.sale_datetime} />
+                <SummaryRow label="Cliente" value={checkoutSale.customer?.name || ""} />
+                <SummaryRow label="Método de pago" value={checkoutSale.payment_type} />
+                <SummaryRow label="Estado" value={checkoutSale.status} />
                 <SummaryRow
                   label="Total"
-                  value={`$${formatCurrency(receiptData.total)}`}
+                  value={`$${formatCurrency(checkoutSale.total)}`}
                   strong={true}
                 />
               </div>
-
-              {emailSentMessage ? (
-                <p className="mt-3 text-xs text-label/80">
-                  {emailSentMessage}
-                </p>
-              ) : null}
             </div>
           ) : null}
 
           <div className="flex flex-wrap justify-end gap-3">
             {paymentStatus === "approved" && (
-              <>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  type="button"
-                  onClick={handleDownloadPdf}
-                >
-                  Descargar factura
-                </Button>
-
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  type="button"
-                  onClick={handleSendReceiptByEmail}
-                >
-                  Ver estado del correo
-                </Button>
-              </>
+              <Button
+                variant="secondary"
+                size="sm"
+                type="button"
+                onClick={handleDownloadInvoice}
+              >
+                Descargar factura
+              </Button>
             )}
 
             <Button

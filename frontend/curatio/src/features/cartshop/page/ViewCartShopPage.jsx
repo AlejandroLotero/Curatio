@@ -288,7 +288,7 @@ export default function ViewCartShopPage() {
     isMutatingCart,
   } = useCart();
 
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   const handleGoToCheckout = () => {
     if (!isAuthenticated) {
@@ -302,7 +302,19 @@ export default function ViewCartShopPage() {
       return;
     }
 
-    navigate("/sales/factura-electronica");
+    const role = user?.rol || user?.role || "";
+
+    if (role === "Cliente") {
+      navigate("/checkout");
+      return;
+    }
+
+    if (role === "Administrador" || role === "Farmaceuta") {
+      navigate("/sales/factura-electronica");
+      return;
+    }
+
+    navigate("/");
   };
 
   if (cartItems.length === 0) {
