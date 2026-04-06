@@ -315,9 +315,9 @@ const Navbar = ({ variant = "solid" }) => {
 
   return (
     <nav
-      className={`relative w-full border-b transition-colors duration-300 ${
+      className={`relative z-50 w-full border-b transition-colors duration-300 ${
         variant === "transparent"
-          ? "bg-transparent border-transparent absolute top-0 left-0 z-100"
+          ? "bg-transparent border-transparent absolute top-0 left-0 z-[100]"
           : "bg-[#98e3f4] border-border"
       }`}
     >
