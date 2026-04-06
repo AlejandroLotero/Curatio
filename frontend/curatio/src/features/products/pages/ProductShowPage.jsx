@@ -347,7 +347,8 @@ export default function ProductShowPage() {
                 <div className="flex items-center gap-2 bg-transparent rounded-lg p-1">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="p-2 hover:bg-gray-200 rounded transition text-black"
+                    //Modificacion de tono de gris para resaltar el plus y Minus
+                    className="p-2 hover:bg-gray-900/80  rounded transition text-black"
                     disabled={quantity <= 1}
                   >
                     <Minus size={18} />
@@ -361,7 +362,8 @@ export default function ProductShowPage() {
                     onClick={() =>
                       setQuantity(Math.min(product.stock, quantity + 1))
                     }
-                    className="p-2 hover:bg-gray-200 rounded transition text-black"
+                    //Modificacion de tono de gris para resaltar el plus y Minus
+                    className="p-2 hover:bg-gray-900/80 rounded transition text-black"
                     disabled={quantity >= product.stock}
                   >
                     <Plus size={18} />

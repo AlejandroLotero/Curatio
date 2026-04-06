@@ -11,9 +11,27 @@ export default function SuppliersRowActions({ supplier }) {
   // Hook que permite redirigir a otra ruta desde código
   const navigate = useNavigate();
 
-  // Acción para visualizar el supplier
-  const handleView = () => {
-    navigate(`/suppliers/detalle/${supplier.id}`);
+  // Acción para ver/editar el supplier
+  // Redirige a la ruta de detalle configurada en el router
+  const handleEdit = () => {
+    // Detalle vía GET /v1/procurement/suppliers/<nit>/ (NIT es la PK en el backend).
+    const nit = supplier?.nit;
+    if (nit) {
+      navigate(`/suppliers/detalle?nit=${encodeURIComponent(nit)}`);
+    } else {
+      navigate("/suppliers/detalle");
+    }
+  };
+
+  // Abre el modal de confirmación
+  const handleOpenConfirm = () => {
+    setIsConfirmOpen(true);
+  };
+
+  // El backend (products) no expone DELETE de proveedores vía API REST; sigue siendo solo simulación en UI.
+  const handleConfirmDelete = () => {
+    console.log("Eliminar supplier", supplier.id);
+    setIsSuccessOpen(true);
   };
 
   // Acción para editar el supplier
