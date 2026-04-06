@@ -112,9 +112,18 @@ export async function getUsers(params = {}) {
 }
 
 /**
+ * Perfil del usuario en sesión (FFARMA02 / backend users/me).
+ * Función para obtener el perfil del usuario en sesión.
+ */
+export async function getMyProfile() {
+  return httpClient.get("/v1/people/users/me/");
+}
+
+/**
  * =========================
  * GET USER BY ID
  * =========================
+ * Función para obtener un usuario por su ID.
  */
 export async function getUserById(id) {
   return httpClient.get(`/v1/people/users/${id}/`);

@@ -23,6 +23,7 @@ export async function getMedicationStatuses() {
   return httpClient.get("/v1/catalogs/medication-statuses/");
 }
 
+/** Misma ruta que el listado SPA; el backend puede devolver campos extra (contacto, etc.) sin romper el select. */
 export async function getActiveSuppliers() {
   return httpClient.get("/v1/procurement/suppliers/?status=Activo");
 }

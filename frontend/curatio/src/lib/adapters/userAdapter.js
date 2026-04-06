@@ -24,12 +24,25 @@
 export function adaptBackendUserToUi(user) {
   if (!user) return null;
 
+  // is_active y fechas de auditoría solo vienen si quien consulta es Administrador
+  // Adapta el estado del usuario (is_active) al formato booleano de la UI. Esto se hace para que el switch de la UI funcione correctamente.
+    const isActive =
+    user.is_active === undefined || user.is_active === null
+      ? undefined
+      : Boolean(user.is_active);
+
   return {
     id: user.id,
     name: user.name,
     email: user.email,
     role: user.role,
-    isActive: user.is_active,
+    // Estado del usuario. Se adapta al formato booleano de la UI.
+    isActive,
+    // Email confirmado. Se adapta al formato booleano de la UI.
+    emailConfirmed:
+      user.email_confirmed === undefined || user.email_confirmed === null
+        ? undefined
+        : Boolean(user.email_confirmed),
     documentType: user.document_type,
     documentNumber: user.document_number,
     phone: user.phone,
@@ -40,7 +53,7 @@ export function adaptBackendUserToUi(user) {
     endDate: user.end_date,
     createdAt: user.created_at,
     updatedAt: user.updated_at,
-    //Se agrega el phoneNumber para que coincida con el nombre del campo en el formulario
+    lastLogin: user.last_login,
     phoneNumber: user.phone,
   };
 }

@@ -22,7 +22,13 @@ export default function SuppliersRowActions({ supplier }) {
   // Acción para ver/editar el supplier
   // Redirige a la ruta de detalle configurada en el router
   const handleEdit = () => {
-    navigate("/suppliers/detalle");
+    // Detalle vía GET /v1/procurement/suppliers/<nit>/ (NIT es la PK en el backend).
+    const nit = supplier?.nit;
+    if (nit) {
+      navigate(`/suppliers/detalle?nit=${encodeURIComponent(nit)}`);
+    } else {
+      navigate("/suppliers/detalle");
+    }
   };
 
   // Abre el modal de confirmación
@@ -30,10 +36,9 @@ export default function SuppliersRowActions({ supplier }) {
     setIsConfirmOpen(true);
   };
 
-  // Acción real de "eliminar" (simulada)
+  // El backend (products) no expone DELETE de proveedores vía API REST; sigue siendo solo simulación en UI.
   const handleConfirmDelete = () => {
     console.log("Eliminar supplier", supplier.id);
-    // Aquí iría la llamada a la API real para eliminar
     setIsSuccessOpen(true);
   };
 

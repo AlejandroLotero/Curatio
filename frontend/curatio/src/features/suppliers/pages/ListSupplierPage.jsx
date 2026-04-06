@@ -1,14 +1,55 @@
-import { DataTableSuppliers } from "@/features/suppliers"
-import { Button } from "@/shared/components"
-import { Link } from "react-router-dom"
-import { SuppliersColumns } from "../table/SuppliersColumns"
-import {suppliers} from "../../../data/supplier/suppliers"
-import { useState } from "react"
-import ReportConfigModal from "../reports/components/ReportConfigModal"
+import { useCallback, useEffect, useMemo, useState } from "react"; // UseCallback para manejar el estado de la carga
+import { DataTableSuppliers } from "@/features/suppliers";
+import { Button } from "@/shared/components";
+import { Link } from "react-router-dom";
+import { buildSuppliersColumns } from "../table/SuppliersColumns";
+import ReportConfigModal from "../reports/components/ReportConfigModal"; 
+import {
+  fetchSuppliersList,
+  mapSuppliersResponseToRows,
+  patchSupplierStatus,
+} from "@/lib/http/suppliers"; // Funciones para obtener la lista de proveedores y actualizar el estado del proveedor
 
 export default function ListSupplierPage() {
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [reportFormat, setReportFormat] = useState("pdf")
+  const [suppliers, setSuppliers] = useState([]); // Estado para almacenar la lista de proveedores
+  const [loading, setLoading] = useState(true); // Estado para manejar el estado de la carga
+  const [loadError, setLoadError] = useState(""); // Estado para manejar el error de la carga
+
+  const [isModalOpen, setIsModalOpen] = useState(false); // Estado para manejar el estado de la modal de reporte
+  const [reportFormat, setReportFormat] = useState("pdf"); // Estado para manejar el formato de reporte
+
+  const reload = useCallback(async () => { // Función para recargar la lista de proveedores
+    setLoadError(""); // Limpiar el error de la carga
+    try {
+      const res = await fetchSuppliersList();
+      setSuppliers(mapSuppliersResponseToRows(res)); // Mapear la respuesta de la API a la lista de proveedores
+    } catch (e) {
+      setLoadError(e?.error?.message || "No se pudieron cargar los proveedores."); 
+      setSuppliers([]);
+    } finally {
+      setLoading(false); // Cambiar el estado de la carga a false
+    }
+  }, []);
+
+  useEffect(() => { // Efecto para recargar la lista de proveedores cuando se monta el componente
+    reload(); // Recargar la lista de proveedores cuando se monta el componente
+  }, [reload]); // Dependencia para recargar la lista de proveedores cuando se cambia el estado de la carga
+
+  const columns = useMemo( 
+    () =>
+      buildSuppliersColumns({
+        onStatusChange: async (row, isActive) => {
+          try {
+            await patchSupplierStatus(row.nit, isActive ? "Activo" : "Inactivo");
+            await reload();
+          } catch (e) {
+            window.alert(e?.error?.message || "No se pudo actualizar el estado.");
+            await reload();
+          }
+        },
+      }),
+    [reload]
+  );
 
   const handleOpenReportModal = (format) => {
     setReportFormat(format)
@@ -50,8 +91,16 @@ export default function ListSupplierPage() {
             </div>
           </div>
 
-          {/* Tabla de proveedores */}
-          <DataTableSuppliers data={suppliers} columns={SuppliersColumns} />
+          {loadError && (
+            <p className="text-sm text-red-600 dark:text-red-400 mb-2" role="alert">
+              {loadError}
+            </p>
+          )}
+          {loading ? (
+            <p className="text-sm text-label/80">Cargando proveedores…</p>
+          ) : (
+            <DataTableSuppliers data={suppliers} columns={columns} />
+          )}
         </div>
       </div>
 

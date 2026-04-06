@@ -1,10 +1,10 @@
-import { Facebook, Twitter, Instagram, MoreHorizontal, Youtube } from "lucide-react";
+import { Facebook, Twitter, Instagram, X, Youtube } from "lucide-react";
 
 const SOCIAL_LINKS = [
-  { label: "Facebook", href: "#", icon: Facebook },
-  { label: "Twitter", href: "#", icon: Twitter },
-  { label: "Instagram", href: "#", icon: Instagram },
-  { label: "YouTube", href: "#", icon: Youtube },
+  { label: "Facebook", href: "https://www.facebook.com/", icon: Facebook },
+  { label: "X", href: "https://x.com/", icon: X },
+  { label: "Instagram", href: "https://www.instagram.com/", icon: Instagram },
+  { label: "YouTube", href: "https://www.youtube.com/", icon: Youtube },
 ];
 
 const Footer = () => {

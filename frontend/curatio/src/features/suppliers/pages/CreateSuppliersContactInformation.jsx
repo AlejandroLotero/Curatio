@@ -6,10 +6,14 @@ import Button from "../../../shared/components/Button";
 import Modal from "@/shared/components/Modal";
 import { CircleArrowLeft } from "lucide-react";
 import { SupplierSchema } from "../schemas/SupplierSchemas";
+import { buildSupplierCreateBody } from "@/lib/adapters/supplierAdapter";
+import { createSupplier as createSupplierRequest } from "@/lib/http/suppliers";
 
 export default function ContactInformationSuppliers() {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [apiError, setApiError] = useState("");
+  const [saving, setSaving] = useState(false);
   const formRef = useRef(null);
 
   const location = useLocation();
@@ -33,7 +37,7 @@ export default function ContactInformationSuppliers() {
     }));
   };
 
-  const handleButtonSubmit = (e) => {
+  const handleButtonSubmit = async (e) => {
     e.preventDefault();
 
     const contactSchema = SupplierSchema.pick({
@@ -55,8 +59,26 @@ export default function ContactInformationSuppliers() {
     }
 
     setErrors({});
-    setIsConfirmModalOpen(false);
-    setIsSuccessModalOpen(true);
+    setApiError("");
+    setSaving(true);
+    try {
+      // POST /v1/procurement/suppliers/ — cuerpo alineado a CrearProveedorForm en el backend Django.
+      const body = buildSupplierCreateBody(formData);
+      await createSupplierRequest(body);
+      setIsConfirmModalOpen(false);
+      setIsSuccessModalOpen(true);
+    } catch (err) {
+      const fields = err?.error?.fields;
+      let msg = err?.error?.message || "No se pudo registrar el proveedor.";
+      if (fields && typeof fields === "object") {
+        const first = Object.values(fields).flat()[0];
+        if (first) msg = `${msg} (${first})`;
+      }
+      setApiError(msg);
+      setIsConfirmModalOpen(false);
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleConfirmSave = () => {
@@ -77,7 +99,12 @@ export default function ContactInformationSuppliers() {
       shadow-xl 
       ring-1 
       rounded-2xl sm:rounded-3xl"
-      onSubmit={handleButtonSubmit}>
+        onSubmit={handleButtonSubmit}>
+        {apiError ? (
+          <p className="mb-2 text-center text-sm text-red-600 dark:text-red-400" role="alert">
+            {apiError}
+          </p>
+        ) : null}
         <Link
         to="/suppliers/datos-basicos"
         className="absolute left-3 flex items-center justify-center w-12 h-12 rounded-full hover:bg-white/20 transition-colors group"
@@ -139,14 +166,15 @@ export default function ContactInformationSuppliers() {
               </Button>
             </Link>
 
-            <Button
-              variant="primary"
-              size="sm"
-              type="button"
-              onClick={() => setIsConfirmModalOpen(true)}
-            >
-              Guardar
-            </Button>
+          <Button
+            variant="primary"
+            size="sm"
+            type="button"
+            disabled={saving}
+            onClick={() => setIsConfirmModalOpen(true)}
+          >
+            {saving ? "Guardando…" : "Guardar"}
+          </Button>
           </div>
         </section>
       </form>
@@ -171,9 +199,10 @@ export default function ContactInformationSuppliers() {
             variant="primary"
             size="sm"
             type="button"
+            disabled={saving}
             onClick={handleConfirmSave}
           >
-            Confirmar
+            {saving ? "Guardando…" : "Confirmar"}
           </Button>
         </div>
       </Modal>
@@ -187,10 +216,10 @@ export default function ContactInformationSuppliers() {
       >
         <div className="flex flex-col gap-4 items-center">
           <Link
-            to="/"
+            to="/suppliers/listar-proveedores"
             className="border border-border-strong bg-primarybtnbg text-primarybtntext font-body font-heading text-small hover:bg-primarybtnhoverbg hover:text-label px-4 py-2 rounded-4xl transition-colors"
           >
-            Volver al inicio
+            Ver listado de proveedores
           </Link>
         </div>
       </Modal>
