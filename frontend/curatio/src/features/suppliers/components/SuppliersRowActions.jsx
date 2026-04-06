@@ -1,20 +1,12 @@
 // Iconos usados en los botones de acciones
-import { Link, Pencil, Trash2 } from "lucide-react";
+import { Eye, Pencil } from "lucide-react";
 
 // Hook de React Router para navegar programáticamente entre rutas
 import { useNavigate } from "react-router-dom";
 
-// Modal de confirmación reutilizable
-import { ConfirmDialog } from "@/shared/components";
-
-import { useState } from "react";
-
 // Componente que renderiza las acciones de cada fila de supplier
 // Recibe como prop el objeto supplier
 export default function SuppliersRowActions({ supplier }) {
-
-  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const [isSuccessOpen, setIsSuccessOpen] = useState(false);
 
   // Hook que permite redirigir a otra ruta desde código
   const navigate = useNavigate();
@@ -42,52 +34,33 @@ export default function SuppliersRowActions({ supplier }) {
     setIsSuccessOpen(true);
   };
 
-  // Cuando se cierra el modal de éxito, redirigimos a la lista
-  const handleCloseSuccess = () => {
-    setIsSuccessOpen(false);
-    navigate("/suppliers/listar-proveedores");
+  // Acción para editar el supplier
+  const handleEdit = () => {
+    navigate(`/suppliers/editar/${supplier.id}`);
   };
 
   return (
-    <>
-      {/* Contenedor de los botones de acciones */}
-      <div className="flex gap-2">
+    <div className="flex gap-2">
 
-        {/* Botón editar */}
-        <button
-          onClick={handleEdit} // Ejecuta la navegación a la página de detalle
-          className="p-1 rounded hover:bg-gray-100"
-        >
-          <Pencil size={16} /> {/* Icono de editar */}
-        </button>
+      {/* Botón visualizar */}
+      <button
+        onClick={handleView}
+        className="p-1 rounded hover:bg-gray-100"
+        title="Ver detalle"
+      >
+        <Eye size={16} />
+      </button>
 
-        {/* Botón eliminar */}
-        <button
-          onClick={handleOpenConfirm} // Abre el modal de confirmación
-          className="p-1 rounded hover:bg-gray-100"
-        >
-          <Trash2 size={16} /> {/* Icono de eliminar */}
-        </button>
+      {/* Botón editar */}
+      <button
+        onClick={handleEdit}
+        className="p-1 rounded hover:bg-gray-100"
+        title="Editar"
+      >
+        <Pencil size={16} />
+      </button>
 
-      </div>
-
-      {/* Modal de confirmación de eliminación */}
-      <ConfirmDialog
-        isOpen={isConfirmOpen}
-        onClose={() => setIsConfirmOpen(false)}
-        onConfirm={handleConfirmDelete}
-        title="Eliminar proveedor"
-        message={`¿Estás seguro de que deseas eliminar al proveedor "${supplier.nombreProveedor}"?`}
-      />
-
-      {/* Modal de éxito de eliminación */}
-      <ConfirmDialog
-        isOpen={isSuccessOpen}
-        onClose={handleCloseSuccess}
-        onConfirm={handleCloseSuccess}
-        title="Proveedor eliminado"
-        message="El proveedor ha sido eliminado exitosamente."
-      />
-    </>
+    </div>
   );
 }
+
