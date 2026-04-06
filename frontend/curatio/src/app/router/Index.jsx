@@ -42,6 +42,8 @@ import { HomePage, NewHomePage } from "@/features/home";
 import CartShopLayout from "@/features/layouts/CartShopLayout";
 import ListCartShopPage from "@/features/cartshop/page/ListCartShopPage";
 import ProtectedRoute from "@/app/router/ProtectedRoute";
+import EditFormSuppliers from "@/features/suppliers/pages/EditSuppliersBasicInformation";
+import EditContactInformationSuppliers from "@/features/suppliers/pages/EditSuppliersContactInformation";
 
 
 /**
@@ -214,6 +216,29 @@ const router = createBrowserRouter([
               {
                 path: "detalle",
                 element: <SupplierDetailPage />,
+              },             
+
+              /**
+               * Ruta para editar los datos básicos del proveedor.
+               *
+               * Se usa el NIT como identificador del recurso porque en backend
+               * el proveedor se consulta y actualiza por NIT.
+               */
+              {
+                path: "editar/:nit",
+                element: <EditFormSuppliers />,
+              },
+
+              /**
+               * Segundo paso del flujo de edición del proveedor:
+               * datos de contacto.
+               *
+               * También usa el NIT como parámetro de ruta para mantener
+               * consistencia con el backend y con la navegación desde la tabla.
+               */
+              {
+                path: "editar-contacto/:nit",
+                element: <EditContactInformationSuppliers />,
               },
             ],
           },

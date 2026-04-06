@@ -1,170 +1,24 @@
-// // import { Link, useNavigate } from "react-router-dom";
-// // import { Button } from "@/shared/components";
-// // import { useCart } from "@/features/cartshop/context/CartContext";
-
-// // /**
-// //  * ViewCartShopPage
-// //  * ----------------
-// //  * Vista del carrito actual del usuario autenticado.
-// //  *
-// //  * Diferencia con ListCartShopPage:
-// //  * - ViewCartShopPage = carrito actual / operativo
-// //  * - ListCartShopPage = listado histórico / gestión
-// //  */
-// // export default function ViewCartShopPage() {
-// //   const navigate = useNavigate();
-
-// //   const {
-// //     cartItems,
-// //     cartCount,
-// //     cartSubtotal,
-// //     removeCartItem,
-// //     clearActiveCart,
-// //     isMutatingCart,
-// //   } = useCart();
-
-// //   return (
-// //     <div className="p-6 min-h-screen text-label">
-// //       <div className="max-w-5xl mx-auto bg-white/70 backdrop-blur-md rounded-3xl shadow-xl p-6">
-// //         {/* =========================TÍTULO ========================= */}
-// //         <div className="flex items-center justify-between gap-4 mb-6">
-// //           <h1 className="text-2xl font-bold text-label">
-// //             Tu carrito de compras
-// //           </h1>
-
-// //           <span className="text-sm font-semibold px-3 py-1 rounded-full bg-red-600 text-white">
-// //             {cartCount} item(s)
-// //           </span>
-// //         </div>
-
-// //         {/* ========================= CARRITO VACÍO ========================= */}
-// //         {cartItems.length === 0 ? (
-// //           <div className="text-center py-12">
-// //             <p className="text-lg font-medium mb-4">
-// //               Tu carrito está vacío.
-// //             </p>
-
-// //             <Button
-// //               variant="primary"
-// //               size="sm"
-// //               type="button"
-// //               onClick={() => navigate("/")}
-// //             >
-// //               Ir a comprar
-// //             </Button>
-// //           </div>
-// //         ) : (
-// //           <>
-// //             {/* =========================
-// //                 TABLA SIMPLE DEL CARRITO
-// //                ========================= */}
-// //             <div className="overflow-x-auto rounded-2xl border border-border-strong bg-white/40">
-// //               <table className="w-full">
-// //                 <thead>
-// //                   <tr className="border-b border-border-strong text-left">
-// //                     <th className="p-3">Medicamento</th>
-// //                     <th className="p-3">Cantidad</th>
-// //                     <th className="p-3">Precio unitario</th>
-// //                     <th className="p-3">Subtotal</th>
-// //                     <th className="p-3 text-center">Acciones</th>
-// //                   </tr>
-// //                 </thead>
-
-// //                 <tbody>
-// //                   {cartItems.map((item) => (
-// //                     <tr
-// //                       key={item.id}
-// //                       className="border-b last:border-b-0 border-border/40"
-// //                     >
-// //                       <td className="p-3">
-// //                         {item.productName}
-// //                       </td>
-
-// //                       <td className="p-3">
-// //                         {item.quantity}
-// //                       </td>
-
-// //                       <td className="p-3">
-// //                         ${Number(item.unitPrice || 0).toLocaleString("es-CO")}
-// //                       </td>
-
-// //                       <td className="p-3">
-// //                         ${Number(item.subtotal || 0).toLocaleString("es-CO")}
-// //                       </td>
-
-// //                       <td className="p-3 text-center">
-// //                         <Button
-// //                           variant="secondary"
-// //                           size="sm"
-// //                           type="button"
-// //                           disabled={isMutatingCart}
-// //                           onClick={() => removeCartItem(item.id)}
-// //                         >
-// //                           Quitar
-// //                         </Button>
-// //                       </td>
-// //                     </tr>
-// //                   ))}
-// //                 </tbody>
-// //               </table>
-// //             </div>
-
-// //             {/* ========================= RESUMEN ========================= */}
-// //             <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-// //               <div className="text-lg font-semibold">
-// //                 Subtotal: ${Number(cartSubtotal || 0).toLocaleString("es-CO")}
-// //               </div>
-
-// //               <div className="flex gap-3">
-// //                 <Button
-// //                   variant="secondary"
-// //                   size="sm"
-// //                   type="button"
-// //                   disabled={isMutatingCart}
-// //                   onClick={clearActiveCart}
-// //                 >
-// //                   Vaciar carrito
-// //                 </Button>
-
-// //                 <Link to="/sales/factura-electronica">
-// //                   <Button
-// //                     variant="primary"
-// //                     size="sm"
-// //                     type="button"
-// //                     disabled={isMutatingCart}
-// //                   >
-// //                     Ir a Pagar
-// //                   </Button>
-// //                 </Link>
-// //               </div>
-// //             </div>
-// //           </>
-// //         )}
-// //       </div>
-// //     </div>
-// //   );
-// // }
-
 // import { useNavigate } from "react-router-dom";
-// import { Button } from "@/shared/components";
 // import { useCart } from "@/features/cartshop/context/CartContext";
 // import { useAuth } from "@/features/auth/context/AuthContext";
+
+// import CartProductList from "@/features/cartshop/components/CartProductList";
+// import CartSummaryCard from "../components/CardSummaryCard";
 
 // /**
 //  * ViewCartShopPage
 //  * ----------------
-//  * Vista del carrito actual / operativo.
+//  * Vista operativa del carrito actual.
 //  *
-//  * Reglas de comportamiento:
-//  * - Esta vista puede abrirse sin login
-//  * - Se puede revisar el carrito sin autenticación
-//  * - Solo al momento de pagar se exige sesión activa
+//  * Nuevo layout:
+//  * - izquierda: lista visual de productos con scroll interno
+//  * - derecha: resumen fijo del carrito
 //  */
 // export default function ViewCartShopPage() {
 //   const navigate = useNavigate();
 
 //   /**
-//    * Estado real del carrito actual.
+//    * Estado real del carrito.
 //    */
 //   const {
 //     cartItems,
@@ -176,16 +30,13 @@
 //   } = useCart();
 
 //   /**
-//    * Estado real de autenticación.
+//    * Estado de autenticación.
 //    */
 //   const { isAuthenticated } = useAuth();
 
 //   /**
-//    * Maneja el paso a checkout / pago.
-//    *
-//    * Reglas:
-//    * - Si no está autenticado → redirigir a login
-//    * - Si está autenticado → continuar al flujo de venta/pago
+//    * Flujo hacia checkout.
+//    * Si no hay login, primero se pide autenticación.
 //    */
 //   const handleGoToCheckout = () => {
 //     if (!isAuthenticated) {
@@ -199,305 +50,327 @@
 //       return;
 //     }
 
-//     /**
-//      * Aquí va el flujo real autenticado.
-//      * Por ahora reutilizamos la pantalla actual de ventas.
-//      */
 //     navigate("/sales/factura-electronica");
 //   };
 
-//   return (
-//     <div className="p-6 min-h-screen text-label">
-//       <div className="max-w-5xl mx-auto bg-white/70 backdrop-blur-md rounded-3xl shadow-xl p-6">
-//         {/* ========================= TÍTULO ========================= */}
-//         <div className="flex items-center justify-between gap-4 mb-6">
-//           <h1 className="text-2xl font-bold text-label">
-//             Tu carrito de compras
-//           </h1>
+//   /**
+//    * Estado carrito vacío.
+//    */
+//   if (cartItems.length === 0) {
+//     return (
+//       <div className="min-h-screen px-4 py-8 sm:px-6 lg:px-8 text-label">
+//         <div className="max-w-6xl mx-auto bg-white/70 backdrop-blur-md rounded-3xl shadow-xl p-8">
+//           <div className="text-center py-16">
+//             <h1 className="text-2xl font-bold mb-4">Tu carrito está vacío</h1>
 
-//           <span className="text-sm font-semibold px-3 py-1 rounded-full bg-red-600 text-white">
-//             {cartCount} item(s)
-//           </span>
-//         </div>
-
-//         {/* ========================= CARRITO VACÍO ========================= */}
-//         {cartItems.length === 0 ? (
-//           <div className="text-center py-12">
-//             <p className="text-lg font-medium mb-4">
-//               Tu carrito está vacío.
+//             <p className="text-base mb-6 text-label/80">
+//               Aún no has agregado productos a tu carrito de compras.
 //             </p>
 
-//             <Button
-//               variant="primary"
-//               size="sm"
+//             <button
 //               type="button"
 //               onClick={() => navigate("/")}
+//               className="
+//                 inline-flex items-center justify-center
+//                 rounded-4xl border border-border-strong
+//                 bg-primarybtnbg text-primarybtntext
+//                 px-4 py-2 text-small font-heading font-body
+//                 transition-colors hover:bg-primarybtnhoverbg hover:text-label
+//               "
 //             >
 //               Ir a comprar
-//             </Button>
+//             </button>
 //           </div>
-//         ) : (
-//           <>
-//             {/* ========================= TABLA DEL CARRITO ========================= */}
-//             <div className="overflow-x-auto rounded-2xl border border-border-strong bg-white/40">
-//               <table className="w-full">
-//                 <thead>
-//                   <tr className="border-b border-border-strong text-left">
-//                     <th className="p-3">Medicamento</th>
-//                     <th className="p-3">Cantidad</th>
-//                     <th className="p-3">Precio unitario</th>
-//                     <th className="p-3">Subtotal</th>
-//                     <th className="p-3 text-center">Acciones</th>
-//                   </tr>
-//                 </thead>
+//         </div>
+//       </div>
+//     );
+//   }
 
-//                 <tbody>
-//                   {cartItems.map((item) => (
-//                     <tr
-//                       key={item.id}
-//                       className="border-b last:border-b-0 border-border/40"
-//                     >
-//                       <td className="p-3">
-//                         {item.productName}
-//                       </td>
+//   return (
+//     <div className="min-h-screen px-4 py-6 sm:px-6 lg:px-8 text-label">
+//       <div className="max-w-7xl mx-auto">
+//         {/* Encabezado */}
+//         <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+//           <div>
+//             <h1 className="text-2xl sm:text-3xl font-bold text-label">
+//               Tu carrito de compras
+//             </h1>
+//             <p className="text-sm text-label/80 mt-1">
+//               Revisa tus productos antes de continuar al pago.
+//             </p>
+//           </div>
 
-//                       <td className="p-3">
-//                         {item.quantity}
-//                       </td>
+//           <div className="inline-flex items-center self-start sm:self-auto rounded-full bg-red-600 px-3 py-1 text-sm font-semibold text-white">
+//             {cartCount} item(s)
+//           </div>
+//         </div>
 
-//                       <td className="p-3">
-//                         ${Number(item.unitPrice || 0).toLocaleString("es-CO")}
-//                       </td>
+//         {/* Layout principal */}
+//         <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_360px] gap-6 items-start">
+//           <CartProductList
+//             items={cartItems}
+//             isMutatingCart={isMutatingCart}
+//             onRemoveItem={removeCartItem}
+//           />
 
-//                       <td className="p-3">
-//                         ${Number(item.subtotal || 0).toLocaleString("es-CO")}
-//                       </td>
+//           <CartSummaryCard
+//             cartCount={cartCount}
+//             cartSubtotal={cartSubtotal}
+//             isMutatingCart={isMutatingCart}
+//             onClearCart={clearActiveCart}
+//             onCheckout={handleGoToCheckout}
+//             onContinueShopping={() => navigate("/")}
+//           />
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+//v2
+// import { useNavigate } from "react-router-dom";
+// import { useCart } from "@/features/cartshop/context/CartContext";
+// import { useAuth } from "@/features/auth/context/AuthContext";
 
-//                       <td className="p-3 text-center">
-//                         <Button
-//                           variant="secondary"
-//                           size="sm"
-//                           type="button"
-//                           disabled={isMutatingCart}
-//                           onClick={() => removeCartItem(item.id)}
-//                         >
-//                           Quitar
-//                         </Button>
-//                       </td>
-//                     </tr>
-//                   ))}
-//                 </tbody>
-//               </table>
-//             </div>
+// import CartProductList from "../components/CartProductList";
+// import CartSummaryCard from "../components/CardSummaryCard";
 
-//             {/* ========================= RESUMEN ========================= */}
-//             <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-//               <div className="text-lg font-semibold">
-//                 Subtotal: ${Number(cartSubtotal || 0).toLocaleString("es-CO")}
-//               </div>
+// /**
+//  * ViewCartShopPage
+//  * ----------------
+//  * Vista del carrito actual con layout mejorado.
+//  *
+//  * Layout:
+//  * - izquierda: lista visual de productos
+//  * - derecha: resumen fijo
+//  */
+// export default function ViewCartShopPage() {
+//   const navigate = useNavigate();
 
-//               <div className="flex gap-3">
-//                 <Button
-//                   variant="secondary"
-//                   size="sm"
-//                   type="button"
-//                   disabled={isMutatingCart}
-//                   onClick={clearActiveCart}
-//                 >
-//                   Vaciar carrito
-//                 </Button>
+//   /**
+//    * Estado real del carrito.
+//    */
+//   const {
+//     cartItems,
+//     cartCount,
+//     cartSubtotal,
+//     removeCartItem,
+//     clearActiveCart,
+//     isMutatingCart,
+//   } = useCart();
 
-//                 <Button
-//                   variant="primary"
-//                   size="sm"
-//                   type="button"
-//                   disabled={isMutatingCart}
-//                   onClick={handleGoToCheckout}
-//                 >
-//                   Ir a pagar
-//                 </Button>
-//               </div>
-//             </div>
-//           </>
-//         )}
+//   /**
+//    * Estado de autenticación.
+//    */
+//   const { isAuthenticated } = useAuth();
+
+//   /**
+//    * Flujo hacia checkout.
+//    */
+//   const handleGoToCheckout = () => {
+//     if (!isAuthenticated) {
+//       navigate("/login", {
+//         replace: true,
+//         state: {
+//           from: "/cartshop/ver-carrito",
+//           reason: "checkout_required",
+//         },
+//       });
+//       return;
+//     }
+
+//     navigate("/sales/factura-electronica");
+//   };
+
+//   /**
+//    * Estado carrito vacío.
+//    */
+//   if (cartItems.length === 0) {
+//     return (
+//       <div className="min-h-screen px-4 py-8 sm:px-6 lg:px-8 text-label">
+//         <div className="max-w-6xl mx-auto bg-white/70 backdrop-blur-md rounded-3xl shadow-xl p-8">
+//           <div className="text-center py-16">
+//             <h1 className="text-2xl font-bold mb-4">Tu carrito está vacío</h1>
+
+//             <p className="text-base mb-6 text-label/80">
+//               Aún no has agregado productos a tu carrito de compras.
+//             </p>
+
+//             <button
+//               type="button"
+//               onClick={() => navigate("/")}
+//               className="
+//                 inline-flex items-center justify-center
+//                 rounded-4xl border border-border-strong
+//                 bg-primarybtnbg text-primarybtntext
+//                 px-4 py-2 text-small font-heading font-body
+//                 transition-colors hover:bg-primarybtnhoverbg hover:text-label
+//               "
+//             >
+//               Ir a comprar
+//             </button>
+//           </div>
+//         </div>
+//       </div>
+//     );
+//   }
+
+//   return (
+//     <div className="min-h-screen px-4 py-6 sm:px-6 lg:px-8 text-label">
+//       <div className="max-w-7xl mx-auto">
+//         {/* =========================
+//             ENCABEZADO
+//            ========================= */}
+//         <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+//           <div>
+//             <h1 className="text-2xl sm:text-3xl font-bold text-label">
+//               Tu carrito de compras
+//             </h1>
+//             <p className="text-sm text-label/80 mt-1">
+//               Revisa tus productos antes de continuar al pago.
+//             </p>
+//           </div>
+
+//           <div className="inline-flex items-center self-start sm:self-auto rounded-full bg-red-600 px-3 py-1 text-sm font-semibold text-white">
+//             {cartCount} item(s)
+//           </div>
+//         </div>
+
+//         {/* =========================
+//             GRID PRINCIPAL
+//            ========================= */}
+//         <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_360px] gap-6 items-start">
+//           <CartProductList
+//             items={cartItems}
+//             isMutatingCart={isMutatingCart}
+//             onRemoveItem={removeCartItem}
+//           />
+
+//           <CartSummaryCard
+//             cartCount={cartCount}
+//             cartSubtotal={cartSubtotal}
+//             isMutatingCart={isMutatingCart}
+//             onClearCart={clearActiveCart}
+//             onCheckout={handleGoToCheckout}
+//             onContinueShopping={() => navigate("/")}
+//           />
+//         </div>
 //       </div>
 //     </div>
 //   );
 // }
 
-import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { CircleArrowLeft } from "lucide-react";
-import { Button } from "@/shared/components";
 import { useCart } from "@/features/cartshop/context/CartContext";
 import { useAuth } from "@/features/auth/context/AuthContext";
 
-// Nueva tabla reutilizable del carrito actual
-import DataTableCurrentCart from "@/features/cartshop/components/DataTableCurrentCart";
-
-// Constructor de columnas del carrito actual
-import { buildCurrentCartColumns } from "@/features/cartshop/table/CurrentCartColumns";
+import CartProductList from "../components/CartProductList";
+import CartSummaryCard from "../components/CardSummaryCard";
 
 /**
  * ViewCartShopPage
  * ----------------
- * Vista del carrito actual / operativo.
- *
- * Reglas de comportamiento:
- * - Esta vista puede abrirse sin login
- * - Se puede revisar el carrito sin autenticación
- * - Solo al momento de pagar se exige sesión activa
- *
- * Ajuste realizado:
- * - Ya no usa una tabla HTML manual
- * - Ahora usa un componente estándar reutilizable
- * - Queda alineada con el patrón de tablas del proyecto
+ * Vista del carrito actual con:
+ * - lista scrollable a la izquierda
+ * - resumen fijo a la derecha
+ * - control directo de cantidades
  */
 export default function ViewCartShopPage() {
   const navigate = useNavigate();
 
-  /**
-   * Estado real del carrito actual.
-   */
   const {
     cartItems,
     cartCount,
     cartSubtotal,
     removeCartItem,
+    increaseCartItemQuantity,
+    decreaseCartItemQuantity,
     clearActiveCart,
     isMutatingCart,
   } = useCart();
 
-  /**
-   * Estado real de autenticación.
-   */
   const { isAuthenticated } = useAuth();
 
-  /**
-   * Construcción memoizada de columnas.
-   *
-   * Se usa useMemo para evitar recrear columnas
-   * en cada render innecesariamente.
-   */
-  const columns = useMemo(() => {
-    return buildCurrentCartColumns({
-      onRemoveItem: removeCartItem,
-      isMutatingCart,
-    });
-  }, [removeCartItem, isMutatingCart]);
-
-  /**
-   * Maneja el paso a checkout / pago.
-   *
-   * Reglas:
-   * - Si no está autenticado → redirigir a login
-   * - Si está autenticado → continuar al flujo de venta/pago
-   */
   const handleGoToCheckout = () => {
     if (!isAuthenticated) {
       navigate("/login", {
         replace: true,
         state: {
-          /** Tras login, abrir directamente la vista de pagos (carrito sigue en contexto). */
-          from: "/sales/pagos",
+          from: "/cartshop/ver-carrito",
           reason: "checkout_required",
         },
       });
       return;
     }
 
-    /**
-     * Aquí continúa el flujo de checkout real.
-     */
-    navigate("/sales/pagos");
+    navigate("/sales/factura-electronica");
   };
 
-  /**
-   * Ruta "/" en el router carga NewHomePage (inicio público / tienda).
-   */
-  const goToHome = () => {
-    navigate("/");
-  };
+  if (cartItems.length === 0) {
+    return (
+      <div className="min-h-screen px-4 py-8 sm:px-6 lg:px-8 text-label">
+        <div className="max-w-6xl mx-auto bg-white/70 backdrop-blur-md rounded-3xl shadow-xl p-8">
+          <div className="text-center py-16">
+            <h1 className="text-2xl font-bold mb-4">Tu carrito está vacío</h1>
 
-  return (
-    <div className="p-6 min-h-screen text-label">
-      <div className="max-w-6xl mx-auto bg-white/70 backdrop-blur-md rounded-3xl shadow-xl p-6">
-        {/* =========================
-            TÍTULO DEL CARRITO
-           ========================= */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-          <h1 className="text-2xl font-bold text-label">
-            Tu carrito de compras
-          </h1>
-
-          <span className="shrink-0 text-sm font-semibold rounded-full bg-red-600 px-3 py-1 text-white"> {/* Este span contiene el numero de items en el carrito */}
-            {cartCount} item(s)
-          </span>
-        </div>
-
-        {/* =========================
-            CARRITO VACÍO
-           ========================= */}
-        {cartItems.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-lg font-medium mb-4">
-              Tu carrito está vacío.
+            <p className="text-base mb-6 text-label/80">
+              Aún no has agregado productos a tu carrito de compras.
             </p>
 
-            <Button
-              variant="primary"
-              size="sm"
+            <button
               type="button"
               onClick={() => navigate("/")}
+              className="
+                inline-flex items-center justify-center
+                rounded-4xl border border-border-strong
+                bg-primarybtnbg text-primarybtntext
+                px-4 py-2 text-small font-heading font-body
+                transition-colors hover:bg-primarybtnhoverbg hover:text-label
+              "
             >
               Ir a comprar
-            </Button>
+            </button>
           </div>
-        ) : (
-          <>
-            {/* =========================
-                TABLA ESTÁNDAR DEL CARRITO
-               =========================
-               Se reemplaza la tabla manual por el componente
-               reutilizable alineado al estándar del proyecto.
-            */}
-            <DataTableCurrentCart
-              data={cartItems}
-              columns={columns}
-            />
+        </div>
+      </div>
+    );
+  }
 
-            {/* =========================
-                RESUMEN DEL CARRITO
-               ========================= */}
-            <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="text-lg font-semibold">
-                Subtotal: ${Number(cartSubtotal || 0).toLocaleString("es-CO")}
-              </div>
+  return (
+    <div className="min-h-screen px-4 py-6 sm:px-6 lg:px-8 text-label">
+      <div className="max-w-7xl mx-auto">
+        <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-bold text-label">
+              Tu carrito de compras
+            </h1>
+            <p className="text-sm text-label/80 mt-1">
+              Revisa tus productos antes de continuar al pago.
+            </p>
+          </div>
 
-              <div className="flex flex-wrap gap-3">
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  type="button"
-                  disabled={isMutatingCart}
-                  onClick={clearActiveCart}
-                >
-                  Vaciar carrito
-                </Button>
+          <div className="inline-flex items-center self-start sm:self-auto rounded-full bg-red-600 px-3 py-1 text-sm font-semibold text-white">
+            {cartCount} item(s)
+          </div>
+        </div>
 
-                <Button
-                  variant="primary"
-                  size="sm"
-                  type="button"
-                  disabled={isMutatingCart}
-                  onClick={handleGoToCheckout}
-                >
-                  Ir a pagar
-                </Button>
-              </div>
-            </div>
-          </>
-        )}
+        <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_360px] gap-6 items-start">
+          <CartProductList
+            items={cartItems}
+            isMutatingCart={isMutatingCart}
+            onRemoveItem={removeCartItem}
+            onIncreaseItem={increaseCartItemQuantity}
+            onDecreaseItem={decreaseCartItemQuantity}
+          />
+
+          <CartSummaryCard
+            cartCount={cartCount}
+            cartSubtotal={cartSubtotal}
+            isMutatingCart={isMutatingCart}
+            onClearCart={clearActiveCart}
+            onCheckout={handleGoToCheckout}
+            onContinueShopping={() => navigate("/")}
+          />
+        </div>
       </div>
     </div>
   );
