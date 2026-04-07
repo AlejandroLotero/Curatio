@@ -236,8 +236,9 @@ export default function EditFormSuppliers() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // En edición el NIT ya existe en BD y puede venir con formato distinto al regex
+    // del esquema (p. ej. puntos); no re-validamos el NIT aquí para poder avanzar de paso.
     const basicSchema = SupplierSchema.pick({
-      nit: true,
       fullnames: true,
       supplierSocialReason: true,
     });
@@ -254,12 +255,17 @@ export default function EditFormSuppliers() {
       return;
     }
 
+    const nitValue = String(formData.nit || nit || "").trim();
+    if (!nitValue) {
+      setErrors({ nit: "No se pudo determinar el NIT del proveedor." });
+      return;
+    }
+
     setErrors({});
 
-    // Se pasa la data al siguiente paso
-    navigate(`/suppliers/editar-contacto/${encodeURIComponent(nit)}`, {
-    state: result.data,
-      });
+    navigate(`/suppliers/editar-contacto/${encodeURIComponent(nitValue)}`, {
+      state: { nit: nitValue, ...result.data },
+    });
   };
 
   if (loading) {
@@ -298,7 +304,8 @@ export default function EditFormSuppliers() {
               label="NIT"
               name="nit"
               value={formData.nit}
-              disabled={true} // Regla de negocio: NO editable
+              disabled={true}
+              error={errors.nit}
             />
 
             <Input
