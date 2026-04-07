@@ -1,3 +1,21 @@
+const API_ORIGIN = (
+  import.meta.env.VITE_BACKEND_URL ?? "http://localhost:8000"
+).replace(/\/$/, "");
+
+/**
+ * Si la API devuelve ruta relativa /media/..., el navegador la resolvería contra el origen del SPA.
+ * Se antepone el origen del backend (misma lógica que medicamentos con URL absoluta).
+ */
+function absolutizeMediaUrl(url) {
+  if (url === null || url === undefined) return url;
+  if (typeof url !== "string") return url;
+  const t = url.trim();
+  if (!t) return url;
+  if (t.startsWith("http://") || t.startsWith("https://")) return t;
+  if (t.startsWith("/")) return `${API_ORIGIN}${t}`;
+  return url;
+}
+
 // export function adaptBackendUserToUi(user) {
 //   if (!user) return null;
 
@@ -48,7 +66,7 @@ export function adaptBackendUserToUi(user) {
     phone: user.phone,
     secondaryPhone: user.secondary_phone,
     address: user.address,
-    photoUrl: user.photo,
+    photoUrl: absolutizeMediaUrl(user.photo),
     startDate: user.start_date,
     endDate: user.end_date,
     createdAt: user.created_at,

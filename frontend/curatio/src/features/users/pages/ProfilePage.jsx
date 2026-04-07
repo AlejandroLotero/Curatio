@@ -134,7 +134,7 @@ import { Link, useParams } from "react-router-dom";
 import { useAuth } from "@/features/auth/context/AuthContext";
 import { useEffect, useState } from "react";
 import { getMyProfile, getUserById } from "@/lib/http/users"; // Importaciones para obtener el perfil del usuario en sesión y un usuario por su ID.
-import { adaptBackendUserToUi } from "@/lib/adapters/userAdapter";
+import { adaptBackendUserToUi } from "@/lib/adapters/userAdapter"; // Adaptador para convertir el usuario del backend al formato del frontend.
 
 export default function ProfilePage() {
   const { id } = useParams();
@@ -187,13 +187,10 @@ export default function ProfilePage() {
   const cancelPath = profileMeta?.can_edit_account
     ? "/accounts/list"
     : "/NewHomePage";
-  // yesNo: convierte booleanos del backend en etiquetas para campos de solo lectura().
-  const yesNo = (v) =>
-    v === undefined ? "—" : v ? "Sí" : "No";
-
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-label">
+      <div className="min-h-screen flex items-center justify-center text-label px-4 py-8">
+        {/* Estado de carga: mensaje centrado; no se reutiliza el grid del perfil. */}
         Cargando perfil...
       </div>
     );
@@ -201,39 +198,47 @@ export default function ProfilePage() {
 
   if (!profile) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-label">
+      <div className="min-h-screen flex items-center justify-center text-label px-4 py-8 text-center">
+        {/* Perfil no disponible (error de red o sin sesión/id válido). */}
         No se pudo cargar el perfil.
       </div>
     );
   }
 
   return (
+
     <div
-      className="min-h-screen flex items-center justify-center text-label px-6 bg-cover bg-center"
+      className="min-h-screen flex items-center justify-center text-label px-3 py-8 sm:px-6 sm:py-10 bg-cover bg-center"
       style={{ backgroundImage: `url(${bgAll})` }}
     >
-      <div className="w-full max-w-5xl grid grid-cols-2 gap-16 items-center">
-        <div className="flex flex-col items-center">
-          <div className="text-center [&_h2]:text-primarybtntext">
-            <Card
-              product={{
-                title: "Perfil de usuario",
-                image: profile.photoUrl || pf2,
-                price: 0,
-                description: "",
-              }}
-              hidePrice
-            />
-          </div>
+      {/* 1) Shell de página: viewport + imagen de fondo + padding; centra el bloque interior. */}
+      {/* 2) Contenedor interior: max-w-5xl, grid responsivo (1 col → lg: 2 cols), min-w-0 en hijos evita desbordes. */}
+      <div className="w-full max-w-5xl min-w-0 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-start lg:items-center">
+        {/* 3) Columna foto: card solo imagen (sin título), centrada; orden visual en móvil. */}
+        <div className="flex flex-col items-center w-full min-w-0 max-w-sm mx-auto order-1 lg:order-none">
+          <Card
+            imageOnly
+            alt={`Foto de perfil de ${profile.name || "usuario"}`}
+            product={{
+              image: profile.photoUrl || pf2,
+              price: 0,
+              description: "",
+            }}
+            hidePrice
+            imageClassName="w-full aspect-square object-cover object-center bg-neutral-900/25 dark:bg-black/30"
+          />
         </div>
 
-        <div className="flex-1 flex flex-col gap-6 items-center">
-          <h1 className="text-center text-subtittles font-heading font-bold w-full">
+        {/* 4) Columna datos: título (nombre) + bloque de campos y acciones; min-w-0 evita desborde horizontal con textos largos. */}
+        <div className="flex flex-col gap-5 sm:gap-6 w-full min-w-0 order-2 lg:order-none">
+          <h1 className="text-center text-lg sm:text-subtittles font-heading font-bold w-full break-words px-1">
             {profile.name}
           </h1>
 
-          <div className="w-full flex flex-col items-center">
-            <div className="grid grid-cols-2 gap-x-4 w-full">
+          {/* 5) Agrupa rejilla de inputs y fila de botones; sm:items-center acota ancho en tablet, lg:items-stretch usa todo el ancho de la columna. */}
+          <div className="w-full flex flex-col items-stretch sm:items-center lg:items-stretch">
+            {/* 6) Campos de solo lectura: 1 columna en móvil, 2 desde md. */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-3 w-full max-w-full">
               <Input
                 label="Nombres y apellidos:"
                 wrapperClassName="w-full"
@@ -306,16 +311,17 @@ export default function ProfilePage() {
               />
             </div>
 
-            <div className="mt-8 flex gap-4 w-full max-w-md justify-between flex-wrap">
-              <Link to={cancelPath}>
-                <Buttom variant="secondary" size="sm" type="button">
+            {/* 7) Acciones: Volver (y Editar si meta.can_edit_account); apilados en móvil, fila desde sm. */}
+            <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 w-full max-w-md mx-auto sm:max-w-none lg:mx-0 sm:justify-between sm:items-center">
+              <Link to={cancelPath} className="w-full sm:w-auto sm:inline-flex">
+                <Buttom variant="secondary" size="sm" type="button" className="w-full sm:w-auto min-w-0">
                   {profileMeta?.can_edit_account ? "Volver al listado" : "Volver"}
                 </Buttom>
               </Link>
 
               {profileMeta?.can_edit_account && (
-                <Link to={editUserPath}>
-                  <Buttom variant="primary" size="sm" type="button">
+                <Link to={editUserPath} className="w-full sm:w-auto sm:inline-flex">
+                  <Buttom variant="primary" size="sm" type="button" className="w-full sm:w-auto min-w-0">
                     Editar cuenta
                   </Buttom>
                 </Link>
