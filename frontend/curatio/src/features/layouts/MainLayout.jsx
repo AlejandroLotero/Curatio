@@ -3,6 +3,7 @@ import Navbar from "./Navbar";
 import NavBarClient from "./NavBarClient";
 import bgAll from "@/assets/images/bgAll.jpg";
 
+
 export default function MainLayout() {
   /*
     * useLocation: es un hook de react router que te da acceso al objeto location, el cual contiene
@@ -38,6 +39,7 @@ export default function MainLayout() {
       ) : (
         <Navbar variant="solid" />
       )}
+      
 
       {/* Contenido externo que se inyecta */}
       <main className="mx-auto">

@@ -148,3 +148,35 @@ export async function fetchSalesCustomerByDocument({
     `/v1/sales/catalogs/customers/lookup/?${params.toString()}`
   );
 }
+
+/**
+ * Lista notificaciones internas del módulo de ventas.
+ *
+ * Solo aplica para:
+ * - Administrador
+ * - Farmaceuta
+ */
+export async function fetchSalesNotifications(query = {}) {
+  const params = new URLSearchParams();
+
+  if (query.unread_only) {
+    params.set("unread_only", "true");
+  }
+
+  const suffix = params.toString() ? `?${params.toString()}` : "";
+  return httpClient.get(`/v1/sales/notifications/${suffix}`);
+}
+
+/**
+ * Marca una notificación como leída.
+ */
+export async function markSalesNotificationAsRead(notificationId) {
+  return httpClient.patch(`/v1/sales/notifications/${notificationId}/read/`);
+}
+
+/**
+ * Aprueba manualmente una compra web pendiente.
+ */
+export async function approveSaleInternal(saleId) {
+  return httpClient.patch(`/v1/sales/${saleId}/approve-internal/`);
+}

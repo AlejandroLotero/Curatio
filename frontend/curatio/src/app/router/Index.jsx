@@ -322,7 +322,7 @@ const router = createBrowserRouter([
             element: <WebCheckoutPage />,
           },
           {
-            path: "/sales/detalle/:saleId",
+            path: "/sales/detalle/:id",
             element: <SaleDetailPage />,
           },
           {

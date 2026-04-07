@@ -1131,7 +1131,7 @@ import Input from "@/shared/components/Input";
 import Button from "@/shared/components/Button";
 import Select from "@/shared/components/Select";
 import Modal from "@/shared/components/Modal";
-
+import { useToast } from "@/shared/components/ToastContext";
 // Contextos reales ya existentes
 import { useCart } from "@/features/cartshop/context/CartContext";
 import { useAuth } from "@/features/auth/context/AuthContext";
@@ -1736,6 +1736,15 @@ export default function WebCheckoutPage() {
   };
 
   /**
+   * Toasts globales del sistema.
+   */
+  const { pushToast } = useToast();
+  /**
+   * =========================
+   * PROCESAR PAGO REAL
+   * =========================
+   */
+    /**
    * =========================
    * PROCESAR PAGO REAL
    * =========================
@@ -1773,55 +1782,67 @@ export default function WebCheckoutPage() {
 
       const invoiceNumber = buildInvoiceNumber();
 
-            /**
-         * IMPORTANTE:
-         * El backend del checkout web valida:
-         * total = subtotal + iva - discount
-         *
-         * El envío sigue mostrándose en UI, pero no se persiste en Venta
-         * mientras el modelo no tenga un campo específico para ese valor.
-         */
-        const saleSubtotal = Number(cartSubtotal || 0);
-        const saleDiscount = 0;
-        const saleTotal = saleSubtotal + Number(ivaValue || 0) - saleDiscount;
+      /**
+       * IMPORTANTE:
+       * El backend del checkout web valida:
+       * total = subtotal + iva - discount
+       *
+       * Por ahora el costo de envío sigue mostrándose en UI,
+       * pero el valor persistido en Venta usa solo subtotal + iva - descuento,
+       * según el contrato actual del backend.
+       */
+      const saleSubtotal = Number(cartSubtotal || 0);
+      const saleDiscount = 0;
+      const saleTotal = saleSubtotal + Number(ivaValue || 0) - saleDiscount;
 
-        const normalizedLines = cartItems.map((item) => ({
+      const normalizedLines = cartItems.map((item) => ({
         medicationId: Number(
-            item.medicationId ??
-            item.productId ??
-            item.product?.id ??
-            item.medication?.id
+          item.medicationId ??
+          item.productId ??
+          item.product?.id ??
+          item.medication?.id
         ),
         quantity: Number(item.quantity),
-        }));
+      }));
 
-        console.log("cartItems checkout cliente:", cartItems);
-        console.log("normalizedLines cliente:", normalizedLines);
-
-        const hasInvalidMedicationId = normalizedLines.some(
+      const hasInvalidMedicationId = normalizedLines.some(
         (line) => !Number.isInteger(line.medicationId) || line.medicationId <= 0
-        );
+      );
 
-        if (hasInvalidMedicationId) {
+      if (hasInvalidMedicationId) {
         setApiError("No se pudo identificar correctamente uno o más medicamentos del carrito.");
         setPaymentStatus("rejected");
         setStatusMessage("No se pudo identificar correctamente uno o más medicamentos del carrito.");
         setSaving(false);
         return;
-        }
+      }
 
-        const checkoutBody = buildCustomerCheckoutBody({
+      /**
+       * Body del checkout web.
+       *
+       * Además de la venta, ahora se envían los datos del método de entrega
+       * porque el backend los valida y los persiste en la venta.
+       */
+      const checkoutBody = buildCustomerCheckoutBody({
         invoiceNumber,
         subtotal: saleSubtotal,
         iva: ivaValue,
         discount: saleDiscount,
         total: saleTotal,
         paymentType: mapCheckoutPaymentToBackend({
-            paymentMethod,
-            cardType: paymentForm.cardType,
+          paymentMethod,
+          cardType: paymentForm.cardType,
         }),
         lines: normalizedLines,
-        });
+
+        deliveryMethod,
+        deliveryAddress: deliveryForm.deliveryAddress,
+        deliveryCity: deliveryForm.deliveryCity,
+        deliveryPhone: deliveryForm.deliveryPhone,
+        pickupPoint: deliveryForm.pickupPoint,
+        pickupContactName: deliveryForm.pickupContactName,
+        pickupContactPhone: deliveryForm.pickupContactPhone,
+      });
 
       const response = await createCustomerCheckout(checkoutBody);
       const result = mapCustomerCheckoutResponse(response);
@@ -1829,51 +1850,54 @@ export default function WebCheckoutPage() {
       setCheckoutSale(result);
 
       setPaymentStatus("approved");
-      setStatusMessage("Tu compra fue confirmada correctamente.");
+      setStatusMessage(
+        "Tu compra fue registrada correctamente y quedó pendiente de validación por la farmacia."
+      );
+
+      /**
+       * Toast visual para el cliente.
+       *
+       * En este flujo aún NO se aprueba internamente la venta;
+       * solo se confirma que la compra quedó registrada.
+       */
+      pushToast({
+        type: "success",
+        title: "Compra registrada",
+        message:
+          "Tu compra fue registrada correctamente y está pendiente de validación por la farmacia.",
+      });
 
       setCurrentStep(3);
       await clearActiveCart();
-    }catch (error) {
-  console.error("Error completo procesando venta:", error);
-  console.error("error.error:", error?.error);
-  console.error("error.error.fields:", error?.error?.fields);
-  console.error("error raw string:", JSON.stringify(error, null, 2));
+    } catch (error) {
+      console.error("Error completo procesando venta:", error);
+      console.error("error.error:", error?.error);
+      console.error("error.error.fields:", error?.error?.fields);
+      console.error("error raw string:", JSON.stringify(error, null, 2));
 
-  const fields = error?.error?.fields;
-  let message =
-    error?.error?.message || "No se pudo procesar el pago de la venta.";
+      const fields = error?.error?.fields;
+      let message =
+        error?.error?.message || "No se pudo procesar el pago de la venta.";
 
-  if (fields && typeof fields === "object") {
-    const first = Object.values(fields).flat()[0];
-    if (first) {
-      message = `${message} (${first})`;
+      if (fields && typeof fields === "object") {
+        const first = Object.values(fields).flat()[0];
+        if (first) {
+          message = `${message} (${first})`;
+        }
+      }
+
+      setApiError(message);
+      setPaymentStatus("rejected");
+      setStatusMessage(message);
+
+      pushToast({
+        type: "error",
+        title: "No se pudo completar la compra",
+        message,
+      });
+    } finally {
+      setSaving(false);
     }
-  }
-
-  setApiError(message);
-  setPaymentStatus("rejected");
-  setStatusMessage(message);
-} finally {
-  setSaving(false);
-}
-    // } catch (error) {
-    //   const fields = error?.error?.fields;
-    //   let message =
-    //     error?.error?.message || "No se pudo completar la compra.";
-
-    //   if (fields && typeof fields === "object") {
-    //     const first = Object.values(fields).flat()[0];
-    //     if (first) {
-    //       message = `${message} (${first})`;
-    //     }
-    //   }
-
-    //   setApiError(message);
-    //   setPaymentStatus("rejected");
-    //   setStatusMessage(message);
-    // } finally {
-    //   setSaving(false);
-    // }
   };
 
   /**
