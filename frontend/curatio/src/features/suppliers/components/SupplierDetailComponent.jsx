@@ -1,8 +1,21 @@
 import Input from "@/shared/components/Input";
 import Button from "@/shared/components/Button";
+import { useNavigate } from "react-router-dom";
 
-export default function SupplierDetailComponent({ supplier, onCancel, onEdit }) {
+export default function SupplierDetailComponent({ supplier, onCancel, }) {
   const data = supplier ?? {};
+  const navigate = useNavigate();
+
+    const handleEdit = () => {
+    const nit = supplier?.nit;
+
+    if (nit) {
+      navigate(`/suppliers/editar/${encodeURIComponent(nit)}`);
+      return;
+    }
+
+    navigate("/suppliers/editar");
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen text-label px-3 sm:px-4 py-4 sm:py-8">
@@ -91,7 +104,7 @@ export default function SupplierDetailComponent({ supplier, onCancel, onEdit }) 
             variant="primary"
             size="sm"
             type="button"
-            onClick={onEdit}
+            onClick={handleEdit}
           >
             Editar
           </Button>

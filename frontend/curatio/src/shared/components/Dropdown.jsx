@@ -54,7 +54,10 @@ export function Dropdown({
 
   return (
     <DropdownContext.Provider value={{ open, setOpen }}>
-      <div ref={containerRef} className={`relative inline-block ${className}`}>
+      <div
+        ref={containerRef}
+        className={`relative z-[1000] inline-block ${className}`}
+      > {/** z-[1000] es el valor por defecto para el z-index para superponerse a otros elementos */}
         {children}
       </div>
     </DropdownContext.Provider>
@@ -88,6 +91,7 @@ export function DropdownContent({ children, className = "" }) {
       role="menu"
       className={`
         absolute 
+        z-[1001]
         mt-1
         min-w-48
         rounded-xl

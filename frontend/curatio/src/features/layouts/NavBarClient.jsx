@@ -179,9 +179,9 @@ const NavBarClient = ({ variant = "solid" }) => {
 
   return (
     <nav
-      className={`w-full border-b transition-colors duration-300 ${
+      className={`relative z-50 w-full border-b transition-colors duration-300 ${
         variant === "transparent"
-          ? "bg-transparent border-transparent absolute top-0 left-0 z-100"
+          ? "bg-transparent border-transparent absolute top-0 left-0 z-[100]"
           : "bg-[#98e3f4] border-border"
       }`}
     >
@@ -271,7 +271,14 @@ const NavBarClient = ({ variant = "solid" }) => {
                 {isAuthenticated && (
                   <>
                     <DropdownItem>
-                      <Link to="/perfil" className="block w-full">
+                      <Link
+                        to={
+                          user?.id != null
+                            ? `/accounts/perfil/${user.id}`
+                            : "/perfil"
+                        }
+                        className="block w-full"
+                      >
                         Perfil
                       </Link>
                     </DropdownItem>
