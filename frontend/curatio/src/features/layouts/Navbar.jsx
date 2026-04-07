@@ -344,11 +344,6 @@ const Navbar = ({ variant = "solid" }) => {
              ========================= */}
           <ul className="hidden md:flex items-center gap-6 font-body font-heading text-small text-label">
             <li>
-              <Link to="/permissions" className="hover:text-primary transition">
-                Gestion de grupos
-              </Link>
-            </li>
-            <li>
               <Link
                 to="/accounts/list"
                 className="hover:text-primary transition"
@@ -408,15 +403,6 @@ const Navbar = ({ variant = "solid" }) => {
           {open && (
             <div className="md:hidden absolute top-full left-0 w-full bg-[#98e3f4] border-t border-border mt-2 z-50">
               <ul className="flex flex-col px-4 py-3 gap-2 font-body text-label">
-                <li>
-                  <Link
-                    to="/permissions"
-                    onClick={() => setOpen(false)}
-                    className="block rounded px-3 py-2 hover:bg-white/40 transition"
-                  >
-                    Gestion de grupos
-                  </Link>
-                </li>
                 <li>
                   <Link
                     to="/accounts/list"

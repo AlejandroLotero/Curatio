@@ -73,47 +73,43 @@ export default function DataTable({ data, columns, globalFilter: externalGlobalF
   })
 
   return (
-    <div className="space-y-4">
+    <div className="flex items-center justify-center p-4">
+      <div className="w-full max-w-6xl space-y-4 min-w-0">
 
       {/* ================== TOOLBAR ================== */}
-      {/* Barra superior con buscador y selector de filas (solo si no se controlan desde fuera) */}
+      {/* Misma rejilla que proveedores/usuarios: max-w-6xl; buscador + filas */}
 
       {externalGlobalFilter === undefined && (
-      <div className="flex items-center justify-between gap-4">
-
-        {/* ================== BUSCADOR ================== */}
-        {/* Filtra todas las columnas de la tabla */}
-        <input
-          type="text"
-          placeholder="Buscar..."
-          value={globalFilter ?? ""}
-          onChange={(e) => setGlobalFilter(e.target.value)}
-          className="pl-10 pr-3 py-2 border rounded-lg w-64 bg-white/50 backdrop-blur-sm focus:ring-2 focus:ring-amber-400/50 outline-none transition-all text-gray-200"
-        />
-
-        {/* ================== SELECTOR DE FILAS ================== */}
-        {/* Permite cambiar cuántas filas se muestran por página */}
-        <select
-          value={table.getState().pagination.pageSize}
-          onChange={(e) => table.setPageSize(Number(e.target.value))}
-          className="border rounded px-2 py-2 bg-gray-900 text-gray-50"
-        >
-          {[5, 7, 10, 20, 50].map(size => (
-            <option key={size} value={size}>
-              {size} filas
-            </option>
-          ))}
-        </select>
-
-      </div>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-2 w-full sm:w-auto min-w-0 flex-1">
+            <input
+              type="text"
+              placeholder="Buscar..."
+              value={globalFilter ?? ""}
+              onChange={(e) => setGlobalFilter(e.target.value)}
+              className="border rounded px-3 py-2 w-full sm:w-72 text-black"
+            />
+          </div>
+          <select
+            value={table.getState().pagination.pageSize}
+            onChange={(e) => table.setPageSize(Number(e.target.value))}
+            className="border rounded px-2 py-2 text-black shrink-0"
+          >
+            {[5, 7, 10, 20, 50].map((size) => (
+              <option key={size} value={size}>
+                {size} filas
+              </option>
+            ))}
+          </select>
+        </div>
       )}
 
       {/* ================== TABLA ================== */}
-      <div className="overflow-x-auto border rounded-xl shadow-sm bg-white/30 backdrop-blur-md">
-        <table className="w-full">
+      <div className="w-full min-w-0 overflow-x-auto rounded-lg border border-gray-200 overflow-hidden">
+        <table className="w-full border-collapse">
 
           {/* ================== CABECERA ================== */}
-          <thead className="bg-white">
+          <thead className="bg-gray-100/60">
 
             {/* TanStack agrupa cabeceras automáticamente */}
             {table.getHeaderGroups().map(headerGroup => (
@@ -124,16 +120,10 @@ export default function DataTable({ data, columns, globalFilter: externalGlobalF
 
                   <th
                     key={header.id}
-                    className="p-3 border-b border-gray-500 text-gray-50 text-center font-semibold"
+                    className="p-3 text-left border-b border-r border-gray-200 last:border-r-0 align-middle"
                   >
 
-                    {/* 
-                      flexRender permite renderizar:
-                      - texto
-                      - JSX
-                      - funciones
-                      definidos en columnDef.header
-                    */}
+                
                     {flexRender(
                       header.column.columnDef.header,
                       header.getContext()
@@ -153,12 +143,12 @@ export default function DataTable({ data, columns, globalFilter: externalGlobalF
             {/* Filas generadas por TanStack */}
             {table.getRowModel().rows.map(row => (
 
-              <tr key={row.id} className="hover:bg-green-900/40 transition-colors duration-150">
+              <tr key={row.id} className="hover:bg-primarybtnbg/30 transition-colors duration-700 bg-white/80 text-label text-left last:[&_td]:border-b-0">
 
                 {/* Celdas visibles de cada fila */}
                 {row.getVisibleCells().map(cell => (
 
-                  <td key={cell.id} className="p-3 border-b border-gray-500 text-gray-50 text-center">
+                  <td key={cell.id} className="p-3 border-b border-r border-gray-200 last:border-r-0 text-left align-middle">
 
                     {/* Render dinámico del contenido de la celda */}
                     {flexRender(
@@ -180,17 +170,17 @@ export default function DataTable({ data, columns, globalFilter: externalGlobalF
       </div>
 
       {/* ================== FOOTER ================== */}
-      <div className="flex items-center justify-between">
+      <div className="flex w-full min-w-0 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 
         {/* ================== INFORMACIÓN ================== */}
         {/* Cantidad de registros visibles */}
-        <span className="text-sm text-label font-medium">
+        <span className="text-sm text-black/80">
           Mostrando {table.getRowModel().rows.length} de{" "}
           {table.getFilteredRowModel().rows.length} registros
         </span>
 
         {/* ================== CONTROLES DE PAGINACIÓN ================== */}
-        <div className="flex items-center gap-2 text-sm text-label pl-2">
+        <div className="flex flex-wrap items-center gap-2">
           
 
           {/* Ir a la primera página */}
@@ -213,7 +203,7 @@ export default function DataTable({ data, columns, globalFilter: externalGlobalF
             Anterior
           </Button>
 
-          <span className="text-sm font-medium px-4 py-1 bg-white/50 rounded-full border border-gray-200">
+          <span className="text-sm px-2 text-black bg-white/80 rounded">
             Página {table.getState().pagination.pageIndex + 1} de {table.getPageCount()}
           </span>
 
@@ -265,7 +255,7 @@ export default function DataTable({ data, columns, globalFilter: externalGlobalF
         />
 
       </div> */}
-       <div className="flex items-center gap-2 text-sm text-label pl-2">
+      <div className="flex w-full items-center gap-2 text-sm text-black/80">
         <span>Ir a página:</span>
         <input
           type="number"
@@ -274,10 +264,10 @@ export default function DataTable({ data, columns, globalFilter: externalGlobalF
             const page = e.target.value ? Number(e.target.value) - 1 : 0
             table.setPageIndex(page)
           }}
-          className="border rounded-lg px-2 py-1 w-16 bg-white/50 backdrop-blur-sm outline-none focus:ring-1"
+          className="border rounded px-2 py-1 w-16 text-center text-black"
         />
       </div>
+      </div>
     </div>
-
   )
 }
