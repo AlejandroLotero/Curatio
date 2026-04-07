@@ -356,6 +356,7 @@ export default function ListSales() {
     setPharmacistFilter("");
     setStatusFilter("");
   };
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 text-label">
