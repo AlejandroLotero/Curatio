@@ -102,3 +102,4 @@ export const SalesColumns = [
     cell: ({ row }) => <SalesRowActions sale={row.original} />,
   },
 ];
+
