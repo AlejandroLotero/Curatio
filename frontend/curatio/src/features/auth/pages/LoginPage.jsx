@@ -58,7 +58,8 @@
 // }
 
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+//Ya no se usa location porque ya no se usa el hook useLocation ya que no se usa el estado de la ruta actual
+import { useNavigate } from "react-router-dom";
 import LoginForm from "@/features/auth/components/LoginForm";
 import { useAuth } from "@/features/auth/context/AuthContext";
 
@@ -82,7 +83,6 @@ function getDefaultPostLoginPath(user) {
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const location = useLocation();
   const { signIn } = useAuth();
 
   const [loading, setLoading] = useState(false);
@@ -95,11 +95,10 @@ export default function LoginPage() {
 
       const authenticatedUser = await signIn({ email, password, remember });
 
-      // Si el usuario venía de una ruta protegida, priorizar ese destino
-      const from = location.state?.from;
-      const fallbackPath = getDefaultPostLoginPath(authenticatedUser);
-
-      navigate(from || fallbackPath, { replace: true });
+      // Tras expirar sesión o cerrar sesión no se restaura la última pantalla:
+      // siempre se va al inicio según rol.
+      const nextPath = getDefaultPostLoginPath(authenticatedUser);
+      navigate(nextPath, { replace: true });
     } catch (err) {
       console.error(err);
       setError(

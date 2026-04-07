@@ -1,4 +1,5 @@
-import { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { CLEAR_UI_STATE_ON_AUTH_END } from "@/lib/auth/sessionEvents";
 import { createUser } from "../../../lib/http/users";
 import { buildCreateUserFormData } from "@/lib/adapters/userAdapter";
 import { UserSchema } from "../schemas/UserSchemas";
@@ -46,6 +47,18 @@ export function CreateUserWizardProvider({ children }) {
 
   // Éxito final
   const [isSuccess, setIsSuccess] = useState(false);
+
+  useEffect(() => {
+    const onAuthEnd = () => {
+      setFormData(initialWizardState);
+      setErrors({});
+      setGeneralError("");
+      setIsSubmitting(false);
+      setIsSuccess(false);
+    };
+    window.addEventListener(CLEAR_UI_STATE_ON_AUTH_END, onAuthEnd);
+    return () => window.removeEventListener(CLEAR_UI_STATE_ON_AUTH_END, onAuthEnd);
+  }, []);
 
   /**
    * Actualiza parcialmente el estado del wizard.

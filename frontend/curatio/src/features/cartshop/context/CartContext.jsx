@@ -235,9 +235,11 @@
 //   return context;
 // }
 
-import { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { getPublicMedicationById } from "@/lib/http/publicMedications";
 import { adaptPublicMedicationDetail } from "@/lib/adapters/publicMedicationAdapter";
+//funcion para limpiar el estado de la UI cuando la sesion termina 
+import { CLEAR_UI_STATE_ON_AUTH_END } from "@/lib/auth/sessionEvents";
 
 /**
  * CartContext
@@ -257,6 +259,14 @@ const CartContext = createContext(null);
 export function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
   const [isMutatingCart, setIsMutatingCart] = useState(false);
+
+  useEffect(() => {
+    const onAuthEnd = () => {
+      setCartItems([]);
+    };
+    window.addEventListener(CLEAR_UI_STATE_ON_AUTH_END, onAuthEnd);
+    return () => window.removeEventListener(CLEAR_UI_STATE_ON_AUTH_END, onAuthEnd);
+  }, []);
 
   /**
    * =========================

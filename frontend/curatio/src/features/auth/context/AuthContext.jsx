@@ -5,6 +5,9 @@ import {
   getCurrentSession,
 } from "@/lib/http/identity";
 import { adaptBackendUserToUi } from "@/lib/adapters/userAdapter";
+//funcion para limpiar el estado de la UI cuando la sesion termina 
+import { dispatchClearUiStateOnAuthEnd } from "@/lib/auth/sessionEvents"; 
+
 
 const AuthContext = createContext(null);
 
@@ -41,6 +44,7 @@ export function AuthProvider({ children }) {
       // Si backend ya expiró la sesión, no pasa nada
       console.warn("Session already expired in backend or logout failed silently.");
     } finally {
+      dispatchClearUiStateOnAuthEnd();
       setUser(null);
       setAuthNotice("Sesión cerrada por inactividad, vuelva a iniciar sesión.");
     }
@@ -94,6 +98,7 @@ export function AuthProvider({ children }) {
 
     const handleSessionExpired = (event) => {
       if (!isMounted) return;
+      dispatchClearUiStateOnAuthEnd();
       setUser(null);
       setAuthNotice(
         event?.detail?.message ||
@@ -168,6 +173,7 @@ export function AuthProvider({ children }) {
       await deleteSessionRequest();
     } finally {
       clearInactivityTimer();
+      dispatchClearUiStateOnAuthEnd();
       setUser(null);
       setAuthNotice("");
     }
