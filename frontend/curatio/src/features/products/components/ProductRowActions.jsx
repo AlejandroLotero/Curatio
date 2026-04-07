@@ -161,17 +161,17 @@ export default function ProductRowActions({ product }) {
       <button
         type="button"
         onClick={handleView}
-        className="p-1 rounded hover:bg-gray-200 text-black transition"
+        className="p-1 rounded hover:bg-white/80 transition-colors duration-400"
         title="Ver detalles"
       >
         <Eye size={16} />
       </button>
 
-      {/* Botón editar */}
+      {/* Botón editar (mismo tratamiento que UserRowActions) */}
       <button
         type="button"
         onClick={handleEdit}
-        className="p-1 rounded hover:bg-gray-200 text-black transition"
+        className="p-1 rounded hover:bg-white/80 transition-colors duration-400"
         title="Editar"
       >
         <Pencil size={16} />

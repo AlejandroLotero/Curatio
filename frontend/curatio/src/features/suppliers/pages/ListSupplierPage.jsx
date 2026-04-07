@@ -64,19 +64,17 @@ export default function ListSupplierPage() {
 
       <div className="flex justify-center">
         <div className="w-full max-w-6xl">
-          {/* Barra de acciones alineada con la tabla */}
-          <div className="mb-4 flex w-full flex-col gap-3 sm:gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex flex-col gap-2 sm:gap-3">
-              <Link to="/">
-                <Button variant="secondary" size="sm">
-                  Volver
-                </Button>
-              </Link>
-            </div>
+          {/* Barra de acciones: mismo patrón que productos (columna en móvil, fila desde sm) */}
+          <div className="mb-4 flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between md:gap-4">
+            <Link to="/" className="block w-full sm:w-auto">
+              <Button variant="secondary" size="sm" className="w-full sm:w-auto">
+                Volver
+              </Button>
+            </Link>
 
-            <div className="flex flex-wrap items-center justify-end gap-2 sm:gap-3">
-              <Link to="/suppliers/datos-basicos">
-                <Button variant="primary" size="sm">
+            <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:justify-end md:gap-4">
+              <Link to="/suppliers/datos-basicos" className="block w-full sm:w-auto">
+                <Button variant="primary" size="sm" className="w-full sm:w-auto">
                   Crear proveedor
                 </Button>
               </Link>
@@ -84,6 +82,7 @@ export default function ListSupplierPage() {
                 variant="secondary"
                 size="sm"
                 type="button"
+                className="w-full sm:w-auto"
                 onClick={() => handleOpenReportModal()}
               >
                 Generar reporte
