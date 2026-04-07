@@ -87,8 +87,6 @@
 // ];
 
 import ProductRowActions from "../components/ProductRowActions";
-import MedicationStatusSelect from "../components/MedicationStatusSelect";
-import { updateMedicationStatus } from "@/lib/http/medications";
 
 export const ProductColumns = [
   {
@@ -118,30 +116,15 @@ export const ProductColumns = [
   {
     accessorKey: "state",
     header: "Estado",
-    cell: ({ row, table }) => {
-      const product = row.original;
-      const statuses = table?.options?.meta?.statuses ?? [];
-      const onStatusChanged = table?.options?.meta?.onStatusChanged;
-
-      const handleStatusChange = async (statusId) => {
-        await updateMedicationStatus(product.id, statusId);
-
-        const selectedStatus = statuses.find(
-          (status) => String(status.id) === String(statusId)
-        );
-
-        if (selectedStatus && onStatusChanged) {
-          onStatusChanged(product.id, selectedStatus);
-        }
-      };
+    cell: ({ row }) => {
+      const state = row.original?.state ?? "";
 
       return (
         <div className="flex justify-center">
-          <MedicationStatusSelect
-            value={String(product.stateId ?? "")}
-            options={statuses}
-            onChange={handleStatusChange}
-          />
+          <span
+            className="px-3 py-1 p-3 text-gray-50 text-center ">
+            {state}
+          </span>
         </div>
       );
     },

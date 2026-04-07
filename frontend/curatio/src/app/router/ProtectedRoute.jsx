@@ -1,9 +1,8 @@
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "@/features/auth/context/AuthContext";
 
 export default function ProtectedRoute({ allowedRoles = [] }) {
   const { isAuthenticated, isBootstrapping, user } = useAuth();
-  const location = useLocation();
 
   if (isBootstrapping) {
     return (
@@ -14,7 +13,7 @@ export default function ProtectedRoute({ allowedRoles = [] }) {
   }
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace state={{ from: location.pathname }} />;
+    return <Navigate to="/login" replace />;
   }
 
   if (allowedRoles.length > 0 && !allowedRoles.includes(user?.role)) {

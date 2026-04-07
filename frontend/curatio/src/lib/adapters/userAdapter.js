@@ -1,3 +1,21 @@
+const API_ORIGIN = (
+  import.meta.env.VITE_BACKEND_URL ?? "http://localhost:8000"
+).replace(/\/$/, "");
+
+/**
+ * Si la API devuelve ruta relativa /media/..., el navegador la resolvería contra el origen del SPA.
+ * Se antepone el origen del backend (misma lógica que medicamentos con URL absoluta).
+ */
+function absolutizeMediaUrl(url) {
+  if (url === null || url === undefined) return url;
+  if (typeof url !== "string") return url;
+  const t = url.trim();
+  if (!t) return url;
+  if (t.startsWith("http://") || t.startsWith("https://")) return t;
+  if (t.startsWith("/")) return `${API_ORIGIN}${t}`;
+  return url;
+}
+
 // export function adaptBackendUserToUi(user) {
 //   if (!user) return null;
 
@@ -48,7 +66,7 @@ export function adaptBackendUserToUi(user) {
     phone: user.phone,
     secondaryPhone: user.secondary_phone,
     address: user.address,
-    photoUrl: user.photo,
+    photoUrl: absolutizeMediaUrl(user.photo),
     startDate: user.start_date,
     endDate: user.end_date,
     createdAt: user.created_at,
@@ -100,4 +118,61 @@ export function buildCreateUserFormData(values) {
   }
 
   return formData;
+}
+
+/**
+ * Cuerpo para PATCH /v1/people/users/:id/ (mismos alias que usa el merge del backend).
+ * Con archivo: multipart + `status` activo/inactivo (evita bool mal parseado en formularios).
+ * Sin archivo: JSON con `estado` booleano.
+ */
+export function buildUpdateUserRequestBody(merged, { isActive }, photoFile) {
+  const payload = {
+    fullNames: merged.fullNames ?? "",
+    documentTypes: merged.documentTypes ?? "",
+    documentNumber: merged.documentNumber ?? "",
+    email: merged.email ?? "",
+    phoneNumber: merged.phoneNumber ?? "",
+    secondaryPhone: merged.secondaryPhone ?? "",
+    address: merged.address ?? "",
+    roles: merged.roles ?? "",
+    startDate: merged.startDate ?? "",
+    endDate: merged.endDate ?? "",
+    estado: Boolean(isActive),
+  };
+
+  if (photoFile instanceof File) {
+    const fd = new FormData();
+    const append = (key, value) => {
+      if (value === null || value === undefined) return;
+      fd.append(key, value);
+    };
+
+    append("fullNames", payload.fullNames);
+    append("documentTypes", payload.documentTypes);
+    append("documentNumber", payload.documentNumber);
+    append("email", payload.email);
+    append("phoneNumber", payload.phoneNumber);
+    append("secondaryPhone", payload.secondaryPhone);
+    append("address", payload.address);
+    append("roles", payload.roles);
+    append("startDate", payload.startDate);
+    append("endDate", payload.endDate);
+    fd.append("status", payload.estado ? "activo" : "inactivo");
+    fd.append("foto", photoFile);
+    return fd;
+  }
+
+  return {
+    fullNames: payload.fullNames,
+    documentTypes: payload.documentTypes,
+    documentNumber: payload.documentNumber,
+    email: payload.email,
+    phoneNumber: payload.phoneNumber,
+    secondaryPhone: payload.secondaryPhone ? payload.secondaryPhone : null,
+    address: payload.address,
+    roles: payload.roles,
+    startDate: payload.startDate ? payload.startDate : null,
+    endDate: payload.endDate ? payload.endDate : null,
+    estado: payload.estado,
+  };
 }

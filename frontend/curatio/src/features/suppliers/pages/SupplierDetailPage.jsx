@@ -112,7 +112,7 @@ export default function SupplierDetailPage() {
       supplier={supplier}
       onCancel={() => navigate("/suppliers/listar-proveedores")}
       onEdit={() =>
-        navigate(`/suppliers/datos-basicos?nit=${encodeURIComponent(nit)}`)
+        navigate(`/suppliers/editar/${encodeURIComponent(nit)}`)
       }
     />
   );

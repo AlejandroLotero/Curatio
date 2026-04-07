@@ -74,7 +74,7 @@
 // }
 
 // Navegación
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 // Tabla reutilizable de usuarios
 import { DataTableUser } from "@/features/users";
@@ -110,6 +110,8 @@ import { adaptUsersList } from "@/lib/adapters/userAdapter";
  * - cambio de estado con switch
  */
 export default function ListUserPage() {
+  const location = useLocation();
+
   // Estado del modal de reportes
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -163,7 +165,7 @@ export default function ListUserPage() {
     };
 
     loadUsers();
-  }, [search, role, statusFilter, documentFilter]);
+  }, [search, role, statusFilter, documentFilter, location.key]);
 
   return (
     <div className="p-6">

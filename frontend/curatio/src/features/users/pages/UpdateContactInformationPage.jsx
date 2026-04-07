@@ -13,6 +13,8 @@ export default function UpdateDatosContactoPage() {
   const location = useLocation();
   const userId = location.state?.userId;
   const previousFormData = location.state?.formData ?? {};
+  //Archivo nuevo elegido para enviar al guardar (no serializable en location.state).
+  const photoFile = location.state?.photoFile ?? null;
 
   //Estado del formulario
   const [formData, setFormData] = useState({
@@ -78,6 +80,7 @@ export default function UpdateDatosContactoPage() {
               ...previousFormData,
               ...formData,
             },
+            photoFile,
           }}
           className="absolute left-3 flex items-center justify-center w-12 h-12 rounded-full hover:bg-white/20 transition-colors group"
         >
@@ -149,6 +152,7 @@ export default function UpdateDatosContactoPage() {
                 ...previousFormData,
                 ...formData,
               },
+              photoFile,
             }}>
               <Buttom
                 variant="primary"
