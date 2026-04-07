@@ -101,3 +101,60 @@ export function buildCreateUserFormData(values) {
 
   return formData;
 }
+
+/**
+ * Cuerpo para PATCH /v1/people/users/:id/ (mismos alias que usa el merge del backend).
+ * Con archivo: multipart + `status` activo/inactivo (evita bool mal parseado en formularios).
+ * Sin archivo: JSON con `estado` booleano.
+ */
+export function buildUpdateUserRequestBody(merged, { isActive }, photoFile) {
+  const payload = {
+    fullNames: merged.fullNames ?? "",
+    documentTypes: merged.documentTypes ?? "",
+    documentNumber: merged.documentNumber ?? "",
+    email: merged.email ?? "",
+    phoneNumber: merged.phoneNumber ?? "",
+    secondaryPhone: merged.secondaryPhone ?? "",
+    address: merged.address ?? "",
+    roles: merged.roles ?? "",
+    startDate: merged.startDate ?? "",
+    endDate: merged.endDate ?? "",
+    estado: Boolean(isActive),
+  };
+
+  if (photoFile instanceof File) {
+    const fd = new FormData();
+    const append = (key, value) => {
+      if (value === null || value === undefined) return;
+      fd.append(key, value);
+    };
+
+    append("fullNames", payload.fullNames);
+    append("documentTypes", payload.documentTypes);
+    append("documentNumber", payload.documentNumber);
+    append("email", payload.email);
+    append("phoneNumber", payload.phoneNumber);
+    append("secondaryPhone", payload.secondaryPhone);
+    append("address", payload.address);
+    append("roles", payload.roles);
+    append("startDate", payload.startDate);
+    append("endDate", payload.endDate);
+    fd.append("status", payload.estado ? "activo" : "inactivo");
+    fd.append("foto", photoFile);
+    return fd;
+  }
+
+  return {
+    fullNames: payload.fullNames,
+    documentTypes: payload.documentTypes,
+    documentNumber: payload.documentNumber,
+    email: payload.email,
+    phoneNumber: payload.phoneNumber,
+    secondaryPhone: payload.secondaryPhone ? payload.secondaryPhone : null,
+    address: payload.address,
+    roles: payload.roles,
+    startDate: payload.startDate ? payload.startDate : null,
+    endDate: payload.endDate ? payload.endDate : null,
+    estado: payload.estado,
+  };
+}

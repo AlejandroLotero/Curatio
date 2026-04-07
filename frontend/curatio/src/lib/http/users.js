@@ -88,6 +88,8 @@
 // }
 
 import { bootstrapCsrf, httpClient } from "./client";
+// Importaciones para actualizar usuario 
+import { buildUpdateUserRequestBody } from "@/lib/adapters/userAdapter";
 
 /**
  * =========================
@@ -139,6 +141,29 @@ export async function updateUserStatus(id, isActive, reason = "") {
     is_active: isActive,
     reason,
   });
+}
+
+/**
+ * Actualiza cuenta de usuario (admin, PATCH /v1/people/users/:id/).
+ * `merged` debe incluir los campos del wizard (fullNames, email, roles, etc.).
+ * Nueva función updateUser(userId, merged, { isActive }, photoFile) que hace PATCH /v1/people/users/:id/ con CSRF, reutilizando el mismo contrato que el backend (merge de campos en inglés / español).
+Errores normalizados como en createUser.
+ */
+export async function updateUser(userId, merged, { isActive }, photoFile) {
+  try {
+    await bootstrapCsrf();
+    const body = buildUpdateUserRequestBody(merged, { isActive }, photoFile);
+    return await httpClient.patch(`/v1/people/users/${userId}/`, body);
+  } catch (backendError) {
+    throw {
+      error: {
+        code: backendError?.error?.code || "UPDATE_USER_FAILED",
+        message:
+          backendError?.error?.message || "No se pudo actualizar el usuario.",
+        fields: backendError?.error?.fields || {},
+      },
+    };
+  }
 }
 
 /**

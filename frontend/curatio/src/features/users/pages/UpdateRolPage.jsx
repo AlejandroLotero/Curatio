@@ -3,11 +3,11 @@ import Buttom from "@/shared/components/Button";
 import Select from "@/shared/components/Select";
 import Modal from "@/shared/components/Modal";
 import { useEffect, useState, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { getRoles } from "../../users/services/selectService";
 import { CircleArrowLeft } from "lucide-react";
 //Importaciones para traer usuario
-import { getUserById } from "@/lib/http/users";
+import { getUserById, updateUser } from "@/lib/http/users";
 import { adaptBackendUserToUi } from "@/lib/adapters/userAdapter";
 
 /** ISO o string de fecha → YYYY-MM-DD para inputs type="date". */
@@ -21,12 +21,16 @@ function toDateInputValue(value) {
 
 export default function RolPage() {
   const location = useLocation();
+  const navigate = useNavigate();
   const userId = location.state?.userId ?? null;
   const previousFormData = location.state?.formData ?? {};
+  const photoFile = location.state?.photoFile ?? null;
 
   const [roles, setRoles] = useState([]);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [saving, setSaving] = useState(false);
   const formRef = useRef(null);
   const [formData, setFormData] = useState({
     roles: previousFormData.roles ?? "",
@@ -88,16 +92,58 @@ export default function RolPage() {
     });
   };
 
-  const handleButtonSubmit = (e) => {
+  const handleButtonSubmit = async (e) => {
     e.preventDefault();
-    const payload = {
-      userId,
-      ...previousFormData,
-      ...formData,
-    };
-    console.log("Actualizar usuario - Datos del formulario", payload);
+    const merged = { ...previousFormData, ...formData };
+
+    const confirmEmail = merged.confirmEmail ?? merged.email;
+    if (merged.email !== confirmEmail) {
+      setSubmitError("Los correos no coinciden.");
+      return;
+    }
+
+    if (formData.roles === "Farmaceuta" && (!formData.startDate || !formData.endDate)) {
+      setSubmitError("Las fechas de inicio y fin son obligatorias para farmaceuta.");
+      return;
+    }
+
+    if (!userId) {
+      setSubmitError("No se identificó el usuario a actualizar.");
+      return;
+    }
+
     setIsConfirmModalOpen(false);
-    setIsSuccessModalOpen(true);
+    setSubmitError("");
+    setSaving(true);
+
+    try {
+      const detail = await getUserById(userId);
+      const u = adaptBackendUserToUi(detail?.data?.user);
+      const mergedPayload = {
+        ...merged,
+        secondaryPhone: u?.secondaryPhone ?? merged.secondaryPhone ?? "",
+      };
+
+      await updateUser(
+        userId,
+        mergedPayload,
+        {
+          isActive:
+            u?.isActive !== undefined && u?.isActive !== null
+              ? Boolean(u.isActive)
+              : true,
+        },
+        photoFile instanceof File ? photoFile : null,
+      );
+
+      setIsSuccessModalOpen(true);
+    } catch (err) {
+      setSubmitError(
+        err?.error?.message || "No se pudo actualizar el usuario.",
+      );
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleConfirmCreate = () => {
@@ -109,6 +155,7 @@ export default function RolPage() {
       <form
         ref={formRef}
         className="
+      relative
       w-full max-w-md
       px-6 py-12 
       grid grid-cols-1 gap-4 
@@ -127,6 +174,7 @@ export default function RolPage() {
               ...previousFormData,
               ...formData,
             },
+            photoFile,
           }}
           className="absolute left-3 flex items-center justify-center w-12 h-12 rounded-full hover:bg-white/20 transition-colors group"
         >
@@ -175,6 +223,12 @@ export default function RolPage() {
             </>
           ) : null}
 
+          {submitError ? (
+            <p className="text-sm text-red-600 text-center max-w-[320px]">
+              {submitError}
+            </p>
+          ) : null}
+
           <div className="flex justify-between w-full max-w-[320px] mt-6">
             <Link
               to="/accounts/list"
@@ -187,9 +241,10 @@ export default function RolPage() {
               variant="primary"
               size="sm"
               type="button"
+              disabled={saving}
               onClick={() => setIsConfirmModalOpen(true)}
             >
-              Actualizar
+              {saving ? "Guardando…" : "Actualizar"}
             </Buttom>
           </div>
         </section>
@@ -225,7 +280,10 @@ export default function RolPage() {
       {/* Modal de éxito con Link */}
       <Modal
         isOpen={isSuccessModalOpen}
-        onClose={() => setIsSuccessModalOpen(false)}
+        onClose={() => {
+          setIsSuccessModalOpen(false);
+          navigate("/accounts/list", { replace: true });
+        }}
         title="Usuario actualizado"
         message="El usuario se ha actualizado correctamente."
       >
@@ -234,7 +292,7 @@ export default function RolPage() {
             to="/accounts/list"
             className="border border-border-strong bg-primarybtnbg text-primarybtntext font-body font-heading text-small hover:bg-primarybtnhoverbg hover:text-label px-4 py-2 rounded-4xl transition-colors"
           >
-            Ir al inicio
+            Ir al listado
           </Link>
         </div>
       </Modal>

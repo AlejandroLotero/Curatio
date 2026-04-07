@@ -169,6 +169,7 @@ export default function UpdateBasicInformationPage() {
                   ...previousFormData,
                   ...formData,
                 },
+                photoFile,
               }}>
               <Buttom
                 variant="primary"
