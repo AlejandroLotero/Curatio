@@ -1,5 +1,5 @@
 import { Bell } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSalesNotifications } from "@/features/sales/context/SalesNotificationsContext";
 
@@ -10,6 +10,7 @@ export default function SalesNotificationsBell() {
   const navigate = useNavigate();
   const { notifications, unreadCount, markAsRead, isInternalUser } = useSalesNotifications();
   const [open, setOpen] = useState(false);
+  const containerRef = useRef(null);
 
   if (!isInternalUser) {
     return null;
@@ -26,9 +27,35 @@ export default function SalesNotificationsBell() {
 
     setOpen(false);
   };
+//Efecto para cerrar la bandeja cuando se hace click fuera de ella
+  useEffect(() => {
+    if (!open) return undefined;
+
+    const handlePointerDownOutside = (event) => {
+      if (containerRef.current && !containerRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handlePointerDownOutside);
+    document.addEventListener("touchstart", handlePointerDownOutside);
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDownOutside);
+      document.removeEventListener("touchstart", handlePointerDownOutside);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [open]);
 
   return (
-    <div className="relative">
+    <div ref={containerRef} className="relative"> {/* ref para el contenedor de la bandeja */}
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
