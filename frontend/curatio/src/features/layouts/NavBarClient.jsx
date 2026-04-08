@@ -141,6 +141,7 @@ import { Link } from "react-router-dom";
 import LogoutButton from "@/features/auth/components/LogoutButton";
 import { useCart } from "@/features/cartshop/context/CartContext";
 import { useAuth } from "@/features/auth/context/AuthContext";
+import logoCuratio from "@/assets/images/Curatio.png";
 import { IconButton } from "@/shared/components";
 import MedicationSearchBar from "@/features/products/components/MedicationSearchBar";
 import {
@@ -179,7 +180,7 @@ const NavBarClient = ({ variant = "solid" }) => {
 
   return (
     <nav
-      className={`relative z-50 w-full border-b transition-colors duration-300 ${
+      className={`relative z-50 w-full border-b transition-colors duration-300 mt-4 ${
         variant === "transparent"
           ? "bg-transparent border-transparent absolute top-0 left-0 z-[100]"
           : "bg-[#98e3f4] border-border"
@@ -193,16 +194,15 @@ const NavBarClient = ({ variant = "solid" }) => {
           <div className="flex items-center flex-shrink-0">
             <Link
               to="/"
-              className="flex items-center gap-2 text-tittles font-heading font-body text-label"
+              className="flex items-center"
             >
-              <Cross
-                className="size-12 fill-label stroke-label [stroke-linecap:square] [stroke-linejoin:miter]"
-                strokeWidth={2}
+              <img
+                src={logoCuratio}
+                alt="Curatio Logo"
+                className="h-18 w-auto"
               />
-              Curatio
             </Link>
           </div>
-
           {/* =========================
               BUSCADOR PÚBLICO
              =========================
