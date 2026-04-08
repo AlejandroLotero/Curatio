@@ -44,7 +44,7 @@ const Navbar = ({ variant = "solid" }) => {
 
   return (
     <nav
-      className={`relative z-50 w-full border-b transition-colors duration-300 mt-4 ${
+      className={`relative z-50 w-full border-b transition-colors duration-300 py-2 ${
         variant === "transparent"
           ? "bg-transparent border-transparent absolute top-0 left-0 z-[100]"
           : "bg-[#98e3f4] border-border"
@@ -63,7 +63,7 @@ const Navbar = ({ variant = "solid" }) => {
               <img
                 src={logoCuratio}
                 alt="Curatio Logo"
-                className="h-18 w-auto"
+                className="h-16 w-auto "
               />
             </Link>
           </div>
