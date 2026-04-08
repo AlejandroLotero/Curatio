@@ -486,20 +486,21 @@ export default function DataTableUser({
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between">
-          <span className="text-sm text-black/80">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <span className="text-center text-sm text-black/80 sm:text-left">
             Mostrando {table.getRowModel().rows.length} de{" "}
             {table.getFilteredRowModel().rows.length} registros
           </span>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-end">
             <Button
               size="sm"
               variant="secondary"
               onClick={() => table.setPageIndex(0)}
               disabled={!table.getCanPreviousPage()}
             >
-              Inicio
+              <span className="sm:hidden">Ini</span>
+              <span className="hidden sm:inline">Inicio</span>
             </Button>
 
             <Button
@@ -508,10 +509,11 @@ export default function DataTableUser({
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
             >
-              Anterior
+              <span className="sm:hidden">Ant</span>
+              <span className="hidden sm:inline">Anterior</span>
             </Button>
 
-            <span className="text-sm px-2 text-black bg-white/80 rounded">
+            <span className="rounded bg-white/80 px-2 text-xs text-black sm:text-sm">
               Página {table.getState().pagination.pageIndex + 1} de{" "}
               {table.getPageCount()}
             </span>
@@ -521,7 +523,8 @@ export default function DataTableUser({
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
             >
-              Siguiente
+              <span className="sm:hidden">Sig</span>
+              <span className="hidden sm:inline">Siguiente</span>
             </Button>
 
             <Button
@@ -529,13 +532,14 @@ export default function DataTableUser({
               onClick={() => table.setPageIndex(table.getPageCount() - 1)}
               disabled={!table.getCanNextPage()}
             >
-              Final
+              <span className="sm:hidden">Fin</span>
+              <span className="hidden sm:inline">Final</span>
             </Button>
           </div>
         </div>
 
         {/* Ir a página */}
-        <div className="flex items-center gap-2 text-sm text-black/80">
+        <div className="flex flex-wrap items-center justify-center gap-2 text-sm text-black/80 sm:justify-start">
           <span>Ir a página:</span>
 
           <input
@@ -545,7 +549,7 @@ export default function DataTableUser({
               const page = e.target.value ? Number(e.target.value) - 1 : 0;
               table.setPageIndex(page);
             }}
-            className="border rounded px-2 py-1 w-16 text-center"
+            className="w-16 rounded border px-2 py-1 text-center"
           />
         </div>
       </div>
