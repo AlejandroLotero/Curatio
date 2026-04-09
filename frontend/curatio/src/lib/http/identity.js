@@ -75,3 +75,15 @@ export async function confirmPasswordRecovery(payload) {
     confirm_password: payload.confirmPassword,
   });
 }
+
+/**
+ * Cambio de contraseña con sesión iniciada (misma política que el backend Django).
+ */
+export async function changePasswordWithSession(payload) {
+  await bootstrapCsrf();
+
+  return httpClient.post("/v1/identity/session/password/", {
+    password: payload.password,
+    confirm_password: payload.confirmPassword,
+  });
+}
