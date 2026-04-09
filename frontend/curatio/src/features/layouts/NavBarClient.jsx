@@ -186,12 +186,12 @@ const NavBarClient = ({ variant = "solid" }) => {
           : "bg-[#98e3f4] border-border"
       }`}
     >
-      <div className="mx-auto max-w-7xl px-4">
-        <div className="flex h-16 items-center gap-4">
+      <div className="mx-auto max-w-7xl px-3 sm:px-4">
+        <div className="flex min-h-16 items-center gap-2 py-2 sm:gap-4 sm:py-0">
           {/* =========================
               MARCA
              ========================= */}
-          <div className="flex items-center flex-shrink-0">
+          <div className="flex shrink-0 items-center">
             <Link
               to="/"
               className="flex items-center"
@@ -199,7 +199,7 @@ const NavBarClient = ({ variant = "solid" }) => {
               <img
                 src={logoCuratio}
                 alt="Curatio Logo"
-                className="h-18 w-auto"
+                className="h-16 w-auto drop-shadow-[0_6px_18px_rgba(0,0,0,0.18)] "
               />
             </Link>
           </div>
@@ -209,31 +209,32 @@ const NavBarClient = ({ variant = "solid" }) => {
               - ocupa el espacio central del navbar
               - busca medicamentos reales en backend
               - funciona para cliente y visitante
+              - min-w-0 permite que el input encaje en pantallas estrechas
            */}
-          <div className="flex-1 hidden sm:flex items-center">
+          <div className="flex min-w-0 flex-1 items-center">
             <MedicationSearchBar
               source="dashboard"
               placeholder="Buscar medicamentos..."
-              className="w-full text-label"
+              className="w-full min-w-0 text-label"
             />
           </div>
 
           {/* =========================
               ACCIONES DERECHA
              ========================= */}
-          <div className="flex items-center gap-4 flex-shrink-0">
+          <div className="flex shrink-0 items-center gap-1.5 sm:gap-4">
             {/* =========================
                 BOTÓN DE CARRITO
                ========================= */}
             <Link
               to="/cartshop/ver-carrito"
               className="
-                relative hidden sm:flex items-center justify-center
-                size-10 rounded-full border hover:bg-surface
-                transition border-border-strong
+                relative flex size-9 items-center justify-center rounded-full border
+                hover:bg-surface transition border-border-strong
+                sm:size-10
               "
             >
-              <ShoppingCart className="size-5 text-label" />
+              <ShoppingCart className="size-[1.125rem] text-label sm:size-5" />
 
               {cartCount > 0 && (
                 <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-[10px] font-bold text-white">
@@ -250,12 +251,12 @@ const NavBarClient = ({ variant = "solid" }) => {
                 <IconButton
                   arialLabel="Menu de Usuario"
                   className="
-                    relative hidden sm:flex items-center justify-center
-                    rounded-full border hover:bg-surface
-                    transition border-border-strong
+                    relative flex size-9 items-center justify-center rounded-full border
+                    hover:bg-surface transition border-border-strong
+                    sm:size-10
                   "
                 >
-                  <User className="size-5 text-label" />
+                  <User className="size-[1.125rem] text-label sm:size-5" />
                 </IconButton>
               </DropdownTrigger>
 

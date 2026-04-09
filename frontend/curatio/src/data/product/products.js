@@ -1,11 +1,11 @@
-import acetaminofen from "@/assets/images/acetaminofen.png";
-import bisbacter from "@/assets/images/bisbacter.png";
-import hidrocortisona from "@/assets/images/hidrocortisona.png";
-import amoxicilina from "@/assets/images/amoxicilina.png";
-import ibuprofeno from "@/assets/images/ibuprofeno.png";
-import jarabeAcetaminofen from "@/assets/images/jarabe-acetaminofem.png";
-import metformina from "@/assets/images/metformina.png";
-import losartan from "@/assets/images/losartan.png";
+// import acetaminofen from "@/assets/images/acetaminofen.png";
+// import bisbacter from "@/assets/images/bisbacter.png";
+// import hidrocortisona from "@/assets/images/hidrocortisona.png";
+// import amoxicilina from "@/assets/images/amoxicilina.png";
+// import ibuprofeno from "@/assets/images/ibuprofeno.png";
+// import jarabeAcetaminofen from "@/assets/images/jarabe-acetaminofem.png";
+// import metformina from "@/assets/images/metformina.png";
+// import losartan from "@/assets/images/losartan.png";
 
 export const products = [
     {
@@ -13,7 +13,7 @@ export const products = [
         title: "Paracetamol 500 mg",
         price: 35000,
         description: "Analgésico y antipirético utilizado para el alivio del dolor leve a moderado",
-        image: acetaminofen,
+        // image: acetaminofen,
         category: "analgésicos"
     },
     {
@@ -21,7 +21,7 @@ export const products = [
         title: "Ibuprofeno 400 mg",
         price: 12000,
         description: "Antiinflamatorio no esteroideo para dolor y fiebre",
-        image: ibuprofeno,
+        // image: ibuprofeno,
         category: "antiinflamatorios"
     },
     {
@@ -29,7 +29,7 @@ export const products = [
         title: "Amoxicilina 500 mg",
         price: 14000,
         description: "Antibiótico de amplio espectro",
-        image: amoxicilina,
+        // image: amoxicilina,
         category: "antibióticos"
     },
     {
@@ -37,7 +37,7 @@ export const products = [
         title: "Loratadina 10 mg",
         price: 14500,
         description: "Antihistamínico para alergias",
-        image: hidrocortisona,
+        // image: hidrocortisona,
         category: "alergias"
     },
     {
@@ -45,7 +45,7 @@ export const products = [
         title: "Omeprazol 20 mg",
         price: 10300,
         description: "Inhibidor de la bomba de protones para acidez",
-        image: bisbacter,
+        // image: bisbacter,
         category: "gastrointestinal"
     },
     {
@@ -53,7 +53,7 @@ export const products = [
         title: "Salbutamol inhalador",
         price: 18000,
         description: "Broncodilatador para el tratamiento del asma",
-        image: jarabeAcetaminofen,
+        // image: jarabeAcetaminofen,
         category: "respiratorio"
     },
     {
@@ -61,7 +61,7 @@ export const products = [
         title: "Metformina 850 mg",
         price: 16000,
         description: "Antidiabético oral utilizado para el control de la glucosa en sangre",
-        image: metformina,
+        // image: metformina,
         category: "antidiabéticos"
     },
     {
@@ -69,7 +69,7 @@ export const products = [
         title: "Losartán 50 mg",
         price: 15000,
         description: "Antihipertensivo utilizado para controlar la presión arterial",
-        image: losartan,
+        // image: losartan,
         category: "cardiovascular"
     }
 ];

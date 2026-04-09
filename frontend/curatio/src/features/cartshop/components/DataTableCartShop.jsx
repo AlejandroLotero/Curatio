@@ -200,20 +200,22 @@ export default function DataTable({ data, columns }) {
       </div>
 
       {/* ================== FOOTER  ================== */}
-      <div className="flex items-center justify-between px-2">
-        <span className="text-sm text-label font-medium">
+      <div className="flex flex-col gap-3 px-2 sm:flex-row sm:items-center sm:justify-between">
+        <span className="text-center text-sm font-medium text-label sm:text-left">
           Mostrando {table.getRowModel().rows.length} de{" "}
           {table.getFilteredRowModel().rows.length} registros
         </span>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-end">
           <Button
             size="sm"
             variant="secondary"
             onClick={() => table.setPageIndex(0)}
             disabled={!table.getCanPreviousPage()}
           >
-            <ChevronsLeft className="w-4 h-4 mr-1" /> Inicio
+            <ChevronsLeft className="mr-1 h-4 w-4" />
+            <span className="sm:hidden">Ini</span>
+            <span className="hidden sm:inline">Inicio</span>
           </Button>
 
           <Button
@@ -222,10 +224,12 @@ export default function DataTable({ data, columns }) {
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            <ChevronLeft className="w-4 h-4 mr-1" /> Anterior
+            <ChevronLeft className="mr-1 h-4 w-4" />
+            <span className="sm:hidden">Ant</span>
+            <span className="hidden sm:inline">Anterior</span>
           </Button>
 
-          <span className="text-sm font-medium px-4 py-1 bg-white/50 rounded-full border border-gray-200">
+          <span className="rounded-full border border-gray-200 bg-white/50 px-3 py-1 text-xs font-medium sm:px-4 sm:text-sm">
             Página {table.getState().pagination.pageIndex + 1} de{" "}
             {table.getPageCount()}
           </span>
@@ -235,7 +239,9 @@ export default function DataTable({ data, columns }) {
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            Siguiente <ChevronRight className="w-4 h-4 ml-1" />
+            <span className="sm:hidden">Sig</span>
+            <span className="hidden sm:inline">Siguiente</span>
+            <ChevronRight className="ml-1 h-4 w-4" />
           </Button>
 
           <Button
@@ -243,13 +249,15 @@ export default function DataTable({ data, columns }) {
             onClick={() => table.setPageIndex(table.getPageCount() - 1)}
             disabled={!table.getCanNextPage()}
           >
-            Final <ChevronsRight className="w-4 h-4 ml-1" />
+            <span className="sm:hidden">Fin</span>
+            <span className="hidden sm:inline">Final</span>
+            <ChevronsRight className="ml-1 h-4 w-4" />
           </Button>
         </div>
       </div>
 
       {/* ================== IR A PÁGINA ================== */}
-      <div className="flex items-center gap-2 text-sm text-label pl-2">
+      <div className="flex flex-wrap items-center justify-center gap-2 pl-2 text-sm text-label sm:justify-start">
         <span>Ir a página:</span>
         <input
           type="number"
@@ -258,7 +266,7 @@ export default function DataTable({ data, columns }) {
             const page = e.target.value ? Number(e.target.value) - 1 : 0;
             table.setPageIndex(page);
           }}
-          className="border rounded-lg px-2 py-1 w-16 bg-white/50 backdrop-blur-sm outline-none focus:ring-1"
+          className="w-16 rounded-lg border bg-white/50 px-2 py-1 backdrop-blur-sm outline-none focus:ring-1"
         />
       </div>
     </div>

@@ -112,7 +112,7 @@ export default function ResetPasswordForm({
             onChange={handleChange}
             onBlur={handleBlur}
             className={`${inputClass} pr-12`}
-            error={touched.password ? errors.password : ""}
+            // error={touched.password ? errors.password : ""}
             showPassword={show.password}
             onTogglePassword={() => setShow((s) => ({ ...s, password: !s.password }))}
           />
@@ -131,7 +131,7 @@ export default function ResetPasswordForm({
             onChange={handleChange}
             onBlur={handleBlur}
             className={`${inputClass} pr-12`}
-            error={touched.confirmPassword ? errors.confirmPassword : ""}
+            // error={touched.confirmPassword ? errors.confirmPassword : ""}
             showPassword={show.confirmPassword}
             onTogglePassword={() =>
               setShow((s) => ({ ...s, confirmPassword: !s.confirmPassword }))

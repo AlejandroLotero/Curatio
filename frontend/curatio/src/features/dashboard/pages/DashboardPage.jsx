@@ -14,9 +14,9 @@ import Buttom from "@/shared/components/Button";
 
 // importar imagenes desde assets/images
 
-import acetaminofen from "@/assets/images/acetaminofen.png";
-import bisbacter from "@/assets/images/bisbacter.png";
-import hidrocortisona from "@/assets/images/hidrocortisona.png";
+// import acetaminofen from "@/assets/images/acetaminofen.png";
+// import bisbacter from "@/assets/images/bisbacter.png";
+// import hidrocortisona from "@/assets/images/hidrocortisona.png";
 
 
 
@@ -30,24 +30,8 @@ export default function HomePage() {
 
   // Array de productos
   const products = [
-    {
-      title: "Acetaminofén",
-      image: acetaminofen,
-      price: 29990,
-      description: "Acetam forte 500+65mg de MK. Es un medicamento eficaz para el alivio del dolor y la reducción de la fiebre."
-    },
-    {
-      title: "Bisbacter",
-      image: bisbacter,
-      price: 49990,
-      description: "Subsacilato de bismuto 262mg de MK. Es un medicamento utilizado para tratar problemas como la diarrea y la indigestión."
-    },
-    {
-      title: "Hidrocortisona",
-      image: hidrocortisona,
-      price: 39990,
-      description: "Hidrocortisona 20mg de MK. Es un medicamento antiinflamatorio utilizado para tratar diversas afecciones inflamatorias y alérgicas."
-    }
+    
+   
   ];
 
   const handleCardClick = (product) => {
