@@ -171,17 +171,17 @@ export default function DataTableSuppliers({ data, columns }) {
         </div>
 
         {/* ================== FOOTER ================== */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 
           {/* ================== INFORMACIÓN ================== */}
           {/* Cantidad de registros visibles */}
-          <span className="text-sm text-black/80">
+          <span className="text-center text-sm text-black/80 sm:text-left">
             Mostrando {table.getRowModel().rows.length} de{" "}
             {table.getFilteredRowModel().rows.length} registros
           </span>
 
           {/* ================== CONTROLES DE PAGINACIÓN ================== */}
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-end">
 
             {/* Ir a la primera página */}
             <Button
@@ -190,7 +190,8 @@ export default function DataTableSuppliers({ data, columns }) {
               onClick={() => table.setPageIndex(0)}
               disabled={!table.getCanPreviousPage()}
             >
-              Inicio
+              <span className="sm:hidden">Ini</span>
+              <span className="hidden sm:inline">Inicio</span>
             </Button>
 
             {/* Página anterior */}
@@ -200,11 +201,12 @@ export default function DataTableSuppliers({ data, columns }) {
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
             >
-              Anterior
+              <span className="sm:hidden">Ant</span>
+              <span className="hidden sm:inline">Anterior</span>
             </Button>
 
             {/* Información de página actual */}
-            <span className="text-sm px-2 text-black bg-white/80 rounded">
+            <span className="rounded bg-white/80 px-2 text-xs text-black sm:text-sm">
               Página {table.getState().pagination.pageIndex + 1} de{" "}
               {table.getPageCount()}
             </span>
@@ -215,7 +217,8 @@ export default function DataTableSuppliers({ data, columns }) {
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
             >
-              Siguiente
+              <span className="sm:hidden">Sig</span>
+              <span className="hidden sm:inline">Siguiente</span>
             </Button>
 
             {/* Ir a la última página */}
@@ -224,7 +227,8 @@ export default function DataTableSuppliers({ data, columns }) {
               onClick={() => table.setPageIndex(table.getPageCount() - 1)}
               disabled={!table.getCanNextPage()}
             >
-              Final
+              <span className="sm:hidden">Fin</span>
+              <span className="hidden sm:inline">Final</span>
             </Button>
 
           </div>
@@ -233,7 +237,7 @@ export default function DataTableSuppliers({ data, columns }) {
 
         {/* ================== IR A PÁGINA ================== */}
         {/* Permite navegar directamente a una página específica */}
-        <div className="flex items-center gap-2 text-sm text-black/80">
+        <div className="flex flex-wrap items-center justify-center gap-2 text-sm text-black/80 sm:justify-start">
 
           <span>Ir a página:</span>
 
@@ -247,7 +251,7 @@ export default function DataTableSuppliers({ data, columns }) {
               // Cambia la página
               table.setPageIndex(page)
             }}
-            className="border rounded px-2 py-1 w-16 text-center"
+            className="w-16 rounded border px-2 py-1 text-center"
           />
 
         </div>
