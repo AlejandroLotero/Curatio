@@ -44,18 +44,18 @@ const Navbar = ({ variant = "solid" }) => {
 
   return (
     <nav
-      className={`relative z-50 w-full border-b transition-colors duration-300 mt-4 ${
+      className={`relative z-50 w-full border-b transition-colors duration-300 py-2 ${
         variant === "transparent"
           ? "bg-transparent border-transparent absolute top-0 left-0 z-[100]"
           : "bg-[#98e3f4] border-border"
       }`}
     >
-      <div className="mx-auto max-w-7xl px-4">
-        <div className="flex h-16 items-center justify-between gap-4">
+      <div className="mx-auto max-w-7xl px-3 sm:px-4">
+        <div className="relative flex flex-wrap items-center gap-y-2 gap-x-2 py-2 md:h-16 md:flex-nowrap md:gap-4 md:py-0">
           {/* =========================
               MARCA
              ========================= */}
-          <div className="flex items-center flex-shrink-0 ">
+          <div className="order-1 flex shrink-0 items-center">
             <Link
               to="/"
               className="flex items-center"
@@ -63,7 +63,7 @@ const Navbar = ({ variant = "solid" }) => {
               <img
                 src={logoCuratio}
                 alt="Curatio Logo"
-                className="h-18 w-auto"
+                className="h-16 w-auto "
               />
             </Link>
           </div>
@@ -71,7 +71,7 @@ const Navbar = ({ variant = "solid" }) => {
           {/* =========================
               MENÚ PRINCIPAL
              ========================= */}
-          <ul className="hidden md:flex items-center gap-6 font-body font-heading text-small text-label">
+          <ul className="order-2 hidden items-center gap-6 font-body font-heading text-small text-label md:flex">
             <li>
               <Link
                 to="/accounts/list"
@@ -114,23 +114,8 @@ const Navbar = ({ variant = "solid" }) => {
             </li>
           </ul>
 
-          {/* =========================
-              MENÚ HAMBURGUESA
-             ========================= */}
-          <button
-            onClick={() => setOpen((prev) => !prev)}
-            className="md:hidden p-2 rounded-full hover:bg-white/40 transition"
-            aria-label="Abrir menú"
-          >
-            {open ? (
-              <X size={20} className="text-label" />
-            ) : (
-              <Menu size={20} className="text-label" />
-            )}
-          </button>
-
           {open && (
-            <div className="md:hidden absolute top-full left-0 w-full bg-[#98e3f4] border-t border-border mt-2 z-50">
+            <div className="absolute top-full left-0 z-50 mt-2 w-full border-t border-border bg-[#98e3f4] md:hidden">
               <ul className="flex flex-col px-4 py-3 gap-2 font-body text-label">
                 <li>
                   <Link
@@ -182,23 +167,33 @@ const Navbar = ({ variant = "solid" }) => {
           )}
 
           {/* =========================
-              DERECHA
+              BUSCADOR INTERNO (una sola instancia; orden distinto en móvil vs escritorio)
              ========================= */}
-          <div className="flex items-center gap-4 flex-shrink-0">
-            {/* =========================
-                BUSCADOR INTERNO
-               =========================
-                - sirve para admin y farmaceuta
-                - consulta backend real
-                - útil para visualización y apoyo a la venta
-             */}
-            <div className="hidden sm:block w-[320px]">
-              <MedicationSearchBar
-                source="backoffice"
-                placeholder="Buscar medicamentos..."
-                className="w-full text-label"
-              />
-            </div>
+          <div className="order-4 w-full min-w-0 basis-full md:order-3 md:w-[320px] md:max-w-[320px] md:basis-auto md:shrink-0">
+            <MedicationSearchBar
+              source="backoffice"
+              placeholder="Buscar medicamentos..."
+              className="w-full min-w-0 text-label"
+            />
+          </div>
+
+          {/* =========================
+              HAMBURGUESA + ACCIONES DERECHA
+             ========================= */}
+          <div className="order-3 ml-auto flex shrink-0 items-center gap-1.5 sm:gap-2 md:order-4 md:ml-0 md:gap-4">
+            <button
+              type="button"
+              onClick={() => setOpen((prev) => !prev)}
+              className="flex shrink-0 rounded-full p-2 hover:bg-white/40 transition md:hidden"
+              aria-label={open ? "Cerrar menú" : "Abrir menú"}
+              aria-expanded={open}
+            >
+              {open ? (
+                <X size={20} className="text-label" />
+              ) : (
+                <Menu size={20} className="text-label" />
+              )}
+            </button>
 
             {/* =========================
                 BOTÓN DE CARRITO
@@ -206,12 +201,12 @@ const Navbar = ({ variant = "solid" }) => {
             <Link
               to="/cartshop/ver-carrito"
               className="
-                relative hidden sm:flex items-center justify-center
-                size-10 rounded-full border hover:bg-surface
-                transition border-border-strong
+                relative flex size-9 items-center justify-center rounded-full border
+                hover:bg-surface transition border-border-strong
+                sm:size-10
               "
             >
-              <ShoppingCart className="size-5 text-label" />
+              <ShoppingCart className="size-[1.125rem] text-label sm:size-5" />
 
               {cartCount > 0 && (
                 <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-[10px] font-bold text-white">
@@ -220,7 +215,9 @@ const Navbar = ({ variant = "solid" }) => {
               )}
             </Link>
 
-            <SalesNotificationsBell />
+            <div className="flex items-center [&_button]:h-9 [&_button]:w-9 sm:[&_button]:h-10 sm:[&_button]:w-10">
+              <SalesNotificationsBell />
+            </div>
 
             {/* =========================
                 DROPDOWN DE USUARIO
@@ -230,12 +227,12 @@ const Navbar = ({ variant = "solid" }) => {
                 <IconButton
                   arialLabel="Menu de Usuario"
                   className="
-                    relative hidden sm:flex items-center justify-center
-                    rounded-full border hover:bg-surface
-                    transition border-border-strong
+                    relative flex size-9 items-center justify-center rounded-full border
+                    hover:bg-surface transition border-border-strong
+                    sm:size-10
                   "
                 >
-                  <User className="size-5 text-label" />
+                  <User className="size-[1.125rem] text-label sm:size-5" />
                 </IconButton>
               </DropdownTrigger>
 
