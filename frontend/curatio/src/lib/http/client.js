@@ -1,4 +1,8 @@
-// const BASE_URL = import.meta.env.VITE_BACKEND_URL ?? "http://localhost:8000";
+// const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+
+// if (!BASE_URL) {
+//   throw new Error("VITE_BACKEND_URL no está definida");
+// }
 
 // /**
 //  * Lee una cookie por nombre.
@@ -14,33 +18,17 @@
 
 // /**
 //  * Determina si el body enviado es FormData.
-//  * Esto es importante porque:
-//  * - FormData NO debe serializarse con JSON.stringify
-//  * - FormData NO debe forzar Content-Type manualmente
 //  */
 // function isFormDataBody(value) {
 //   return typeof FormData !== "undefined" && value instanceof FormData;
 // }
 
-// /**
-//  * Cliente base para requests fetch.
-//  *
-//  * Soporta:
-//  * - JSON
-//  * - FormData
-//  * - credenciales con cookies/sesión
-//  * - CSRF automático para métodos mutables
-//  */
 // async function request(path, options = {}) {
 //   const url = `${BASE_URL}${path}`;
 //   const method = options.method || "GET";
 //   const csrfToken = getCookie("csrftoken");
+//   const responseType = options.responseType || "json";
 
-//   /**
-//    * Si el body es FormData:
-//    * - no se debe poner Content-Type manualmente
-//    * - el navegador agrega el boundary correcto
-//    */
 //   const bodyIsFormData = isFormDataBody(options.body);
 
 //   const headers = {
@@ -48,7 +36,6 @@
 //     ...(options.headers || {}),
 //   };
 
-//   // CSRF solo para métodos mutables
 //   if (csrfToken && !["GET", "HEAD", "OPTIONS"].includes(method)) {
 //     headers["X-CSRFToken"] = csrfToken;
 //   }
@@ -59,13 +46,34 @@
 //     headers,
 //   });
 
+//   if (responseType === "blob") {
+//     const blob = await response.blob();
+
+//     if (!response.ok) {
+//       throw {
+//         error: {
+//           code: "REQUEST_FAILED",
+//           message: "Unexpected request error.",
+//           fields: {},
+//         },
+//         status: response.status,
+//         data: blob,
+//       };
+//     }
+
+//     return {
+//       data: blob,
+//       status: response.status,
+//       headers: response.headers,
+//     };
+//   }
+
 //   const contentType = response.headers.get("content-type") || "";
 //   const body = contentType.includes("application/json")
 //     ? await response.json()
 //     : null;
 
 //   if (!response.ok) {
-//     // Si backend reporta expiración real por inactividad, emitir evento global
 //     if (response.status === 401 && body?.error?.code === "SESSION_EXPIRED") {
 //       window.dispatchEvent(
 //         new CustomEvent("session-expired", {
@@ -88,9 +96,6 @@
 //   return body;
 // }
 
-// /**
-//  * Fuerza generación de CSRF cookie/token.
-//  */
 // export async function bootstrapCsrf() {
 //   return request("/v1/identity/csrf-token/", {
 //     method: "GET",
@@ -98,56 +103,49 @@
 // }
 
 // export const httpClient = {
-//   /**
-//    * GET simple
-//    */
-//   get: (path) => request(path, { method: "GET" }),
-
-//   /**
-//    * POST:
-//    * - si recibe FormData, lo envía directo
-//    * - si recibe objeto normal, lo serializa a JSON
-//    */
-//   post: (path, data) =>
+//   get: (path, options = {}) =>
 //     request(path, {
+//       ...options,
+//       method: "GET",
+//     }),
+
+//   post: (path, data, options = {}) =>
+//     request(path, {
+//       ...options,
 //       method: "POST",
 //       body: isFormDataBody(data) ? data : JSON.stringify(data),
 //     }),
 
-//   /**
-//    * PUT:
-//    * - si recibe FormData, lo envía directo
-//    * - si recibe objeto normal, lo serializa a JSON
-//    */
-//   put: (path, data) =>
+//   put: (path, data, options = {}) =>
 //     request(path, {
+//       ...options,
 //       method: "PUT",
 //       body: isFormDataBody(data) ? data : JSON.stringify(data),
 //     }),
 
-//   /**
-//    * PATCH:
-//    * - si recibe FormData, lo envía directo
-//    * - si recibe objeto normal, lo serializa a JSON
-//    */
-//   patch: (path, data) =>
+//   patch: (path, data, options = {}) =>
 //     request(path, {
+//       ...options,
 //       method: "PATCH",
 //       body: isFormDataBody(data) ? data : JSON.stringify(data),
 //     }),
 
-//   /**
-//    * DELETE simple
-//    */
-//   delete: (path) =>
+//   delete: (path, options = {}) =>
 //     request(path, {
+//       ...options,
 //       method: "DELETE",
 //     }),
 // };
 
 // export { BASE_URL };
 
-const BASE_URL = import.meta.env.VITE_BACKEND_URL ?? "http://localhost:8000";
+const BASE_URL =
+  import.meta.env.VITE_BACKEND_URL ??
+  `${window.location.protocol}//${window.location.hostname}:8000`;
+
+if (!BASE_URL) {
+  throw new Error("VITE_BACKEND_URL no está definida");
+}
 
 /**
  * Lee una cookie por nombre.
@@ -163,43 +161,25 @@ function getCookie(name) {
 
 /**
  * Determina si el body enviado es FormData.
- * Esto es importante porque:
- * - FormData NO debe serializarse con JSON.stringify
- * - FormData NO debe forzar Content-Type manualmente
  */
 function isFormDataBody(value) {
   return typeof FormData !== "undefined" && value instanceof FormData;
 }
 
-/**
- * Cliente base para requests fetch.
- *
- * Soporta:
- * - JSON
- * - FormData
- * - Blob (PDF, Excel, etc.)
- * - credenciales con cookies/sesión
- * - CSRF automático para métodos mutables
- */
 async function request(path, options = {}) {
   const url = `${BASE_URL}${path}`;
   const method = options.method || "GET";
   const csrfToken = getCookie("csrftoken");
   const responseType = options.responseType || "json";
 
-  /**
-   * Si el body es FormData:
-   * - no se debe poner Content-Type manualmente
-   * - el navegador agrega el boundary correcto
-   */
   const bodyIsFormData = isFormDataBody(options.body);
+  const hasBody = options.body !== undefined && options.body !== null;
 
   const headers = {
-    ...(bodyIsFormData ? {} : { "Content-Type": "application/json" }),
+    ...(hasBody && !bodyIsFormData ? { "Content-Type": "application/json" } : {}),
     ...(options.headers || {}),
   };
 
-  // CSRF solo para métodos mutables
   if (csrfToken && !["GET", "HEAD", "OPTIONS"].includes(method)) {
     headers["X-CSRFToken"] = csrfToken;
   }
@@ -210,13 +190,6 @@ async function request(path, options = {}) {
     headers,
   });
 
-  /**
-   * Respuestas binarias.
-   *
-   * Se usa para:
-   * - facturas PDF
-   * - reportes Excel/PDF
-   */
   if (responseType === "blob") {
     const blob = await response.blob();
 
@@ -245,7 +218,6 @@ async function request(path, options = {}) {
     : null;
 
   if (!response.ok) {
-    // Si backend reporta expiración real por inactividad, emitir evento global
     if (response.status === 401 && body?.error?.code === "SESSION_EXPIRED") {
       window.dispatchEvent(
         new CustomEvent("session-expired", {
@@ -268,9 +240,6 @@ async function request(path, options = {}) {
   return body;
 }
 
-/**
- * Fuerza generación de CSRF cookie/token.
- */
 export async function bootstrapCsrf() {
   return request("/v1/identity/csrf-token/", {
     method: "GET",
@@ -278,23 +247,12 @@ export async function bootstrapCsrf() {
 }
 
 export const httpClient = {
-  /**
-   * GET simple.
-   *
-   * También soporta opciones adicionales, por ejemplo:
-   * - responseType: "blob"
-   */
   get: (path, options = {}) =>
     request(path, {
       ...options,
       method: "GET",
     }),
 
-  /**
-   * POST:
-   * - si recibe FormData, lo envía directo
-   * - si recibe objeto normal, lo serializa a JSON
-   */
   post: (path, data, options = {}) =>
     request(path, {
       ...options,
@@ -302,11 +260,6 @@ export const httpClient = {
       body: isFormDataBody(data) ? data : JSON.stringify(data),
     }),
 
-  /**
-   * PUT:
-   * - si recibe FormData, lo envía directo
-   * - si recibe objeto normal, lo serializa a JSON
-   */
   put: (path, data, options = {}) =>
     request(path, {
       ...options,
@@ -314,11 +267,6 @@ export const httpClient = {
       body: isFormDataBody(data) ? data : JSON.stringify(data),
     }),
 
-  /**
-   * PATCH:
-   * - si recibe FormData, lo envía directo
-   * - si recibe objeto normal, lo serializa a JSON
-   */
   patch: (path, data, options = {}) =>
     request(path, {
       ...options,
@@ -326,9 +274,6 @@ export const httpClient = {
       body: isFormDataBody(data) ? data : JSON.stringify(data),
     }),
 
-  /**
-   * DELETE simple
-   */
   delete: (path, options = {}) =>
     request(path, {
       ...options,

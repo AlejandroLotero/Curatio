@@ -155,15 +155,27 @@ export function AuthProvider({ children }) {
   /**
    * Login real.
    */
+  // const signIn = async (payload) => {
+  //   const response = await createSessionRequest(payload);
+  //   const adaptedUser = adaptBackendUserToUi(response?.data?.user);
+
+  //   setUser(adaptedUser);
+  //   setAuthNotice("");
+
+  //   return adaptedUser;
+  // };
+
   const signIn = async (payload) => {
-    const response = await createSessionRequest(payload);
-    const adaptedUser = adaptBackendUserToUi(response?.data?.user);
+  await createSessionRequest(payload);
 
-    setUser(adaptedUser);
-    setAuthNotice("");
+  const sessionResponse = await getCurrentSession();
+  const adaptedUser = adaptBackendUserToUi(sessionResponse?.data?.user);
 
-    return adaptedUser;
-  };
+  setUser(adaptedUser);
+  setAuthNotice("");
+
+  return adaptedUser;
+};
 
   /**
    * Logout manual real.

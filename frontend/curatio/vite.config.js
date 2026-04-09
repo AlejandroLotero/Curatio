@@ -7,7 +7,25 @@ import {dirname, resolve} from 'path'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-// https://vite.dev/config/
+// // https://vite.dev/config/
+// export default defineConfig({
+//   plugins: [
+//     react({
+//       babel: {
+//         plugins: [['babel-plugin-react-compiler']],
+//       },
+//     }),
+//     tailwindcss(),
+//   ],
+//   resolve: {
+//     alias: {
+//       '@' : resolve(__dirname, 'src'),
+//     }
+//   },
+  
+// })
+
+
 export default defineConfig({
   plugins: [
     react({
@@ -22,5 +40,9 @@ export default defineConfig({
       '@' : resolve(__dirname, 'src'),
     }
   },
-  
+
+  server: {
+    host: true,
+    port: 5173, 
+  }
 })
