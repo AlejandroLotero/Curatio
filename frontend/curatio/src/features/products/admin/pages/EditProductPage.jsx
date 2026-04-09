@@ -62,8 +62,7 @@
 
 //   // Procesa la confirmacion de edicion del producto
 //   const handleConfirmEdit = () => {
-//     console.log("Producto actualizado:", formData);
-//     setIsConfirmModalOpen(false);
+//     console.log("Producto actualizado:", formData);//     setIsConfirmModalOpen(false);
 //     // Aquí irá la lógica de API para guardar cambios
 //     setTimeout(() => {
 //       navigate("/products/listar");
@@ -289,6 +288,38 @@ function mapBackendErrorsToUiFields(backendFields = {}) {
   return normalized;
 }
 
+/**
+ * Componente EditField extraído fuera.
+ * Evita que se redefinida en cada render del padre (problema de React).
+ */
+function EditField({ label, value, name, type = "text", error, onChange }) {
+  return (
+    <div className="flex flex-col gap-2">
+      <label
+        className="text-sm font-semibold text-label"
+        style={{ color: "var(--color-black)", fontFamily: "var(--font-body)" }}
+      >
+        {label}
+      </label>
+
+      <input
+        type={type}
+        name={name}
+        value={value || ""}
+        onChange={onChange}
+        disabled={false}
+        autoComplete="off"
+        className="p-3 rounded-lg bg-white/80 text-label border border-gray-300 enabled:cursor-text enabled:hover:border-gray-400"
+        style={{ color: "var(--color-black)", fontFamily: "var(--font-body)" }}
+      />
+
+      {error ? (
+        <p className="text-mostsmall text-red-600">{error}</p>
+      ) : null}
+    </div>
+  );
+}
+
 export default function EditProductPage() {
   /**
    * ID del medicamento desde la URL.
@@ -383,7 +414,10 @@ export default function EditProductPage() {
    * Carga el medicamento real desde backend.
    */
   const loadMedication = async () => {
+
+    
     const response = await getMedicationById(id);
+
     const adapted = adaptMedicationDetail(response?.data?.medication);
 
     if (!adapted) {
@@ -409,7 +443,7 @@ export default function EditProductPage() {
       precioCompra: adapted.precioCompra ?? "",
       precioVenta: adapted.precioVenta ?? "",
       proveedor: adapted.supplierId ?? adapted.proveedorId ?? "",
-      estado: adapted.stateId ?? adapted.estadoId ?? "",
+      estado: adapted.stateId ?? adapt.estadoId ?? "",
       imageUrl: adapted.imageUrl ?? null,
     });
 
@@ -460,13 +494,16 @@ export default function EditProductPage() {
   /**
    * Actualiza estado local al escribir en campos.
    */
-  const handleInputChange = (e) => {
+  const handleInputChange = (e) => {    
     const { name, value } = e.target;
 
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => {
+      const newData = {
+        ...prev,
+        [name]: value,
+      };
+      return newData;
+    });
   };
 
   /**
@@ -595,29 +632,7 @@ export default function EditProductPage() {
   /**
    * Componente reutilizable simple para campos input.
    */
-  const EditField = ({ label, value, name, type = "text", error }) => (
-    <div className="flex flex-col gap-2">
-      <label
-        className="text-sm font-semibold text-label"
-        style={{ color: "var(--color-black)", fontFamily: "var(--font-body)" }}
-      >
-        {label}
-      </label>
-
-      <input
-        type={type}
-        name={name}
-        value={value || ""}
-        onChange={handleInputChange}
-        className="p-3 rounded-lg bg-white/80 text-label border border-gray-300"
-        style={{ color: "var(--color-black)", fontFamily: "var(--font-body)" }}
-      />
-
-      {error ? (
-        <p className="text-mostsmall text-red-600">{error}</p>
-      ) : null}
-    </div>
-  );
+  // NOTA: EditField ahora está definido AFUERA del componente para evitar re-renders innecesarios
 
   /**
    * Estado de carga.
@@ -692,13 +707,14 @@ export default function EditProductPage() {
         ) : null}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <EditField label="ID" name="id" value={formData.id} />
+          <EditField label="ID" name="id" value={formData.id} onChange={handleInputChange} />
 
           <EditField
             label="Medicamento"
             name="nombre"
             value={formData.nombre}
             error={errors.nombre}
+            onChange={handleInputChange}
           />
 
           <div className="flex flex-col gap-2">
@@ -732,6 +748,7 @@ export default function EditProductPage() {
             name="concentracion"
             value={formData.concentracion}
             error={errors.concentracion}
+            onChange={handleInputChange}
           />
 
           <EditField
@@ -739,6 +756,7 @@ export default function EditProductPage() {
             name="descripcion"
             value={formData.descripcion}
             error={errors.descripcion}
+            onChange={handleInputChange}
           />
 
           <div className="flex flex-col gap-2">
@@ -772,6 +790,7 @@ export default function EditProductPage() {
             name="lote"
             value={formData.lote}
             error={errors.lote}
+            onChange={handleInputChange}
           />
 
           <EditField
@@ -780,6 +799,7 @@ export default function EditProductPage() {
             value={formData.fechaFabricacion}
             type="date"
             error={errors.fechaFabricacion}
+            onChange={handleInputChange}
           />
 
           <EditField
@@ -788,6 +808,7 @@ export default function EditProductPage() {
             value={formData.fechaVencimiento}
             type="date"
             error={errors.fechaVencimiento}
+            onChange={handleInputChange}
           />
 
           <EditField
@@ -796,6 +817,7 @@ export default function EditProductPage() {
             value={formData.stock}
             type="number"
             error={errors.stock}
+            onChange={handleInputChange}
           />
 
           <EditField
@@ -804,6 +826,7 @@ export default function EditProductPage() {
             value={formData.precioCompra}
             type="number"
             error={errors.precioCompra}
+            onChange={handleInputChange}
           />
 
           <EditField
@@ -812,6 +835,7 @@ export default function EditProductPage() {
             value={formData.precioVenta}
             type="number"
             error={errors.precioVenta}
+            onChange={handleInputChange}
           />
 
           <div className="flex flex-col gap-2">
