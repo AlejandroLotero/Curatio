@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import Input from "@/shared/components/Input";
 import Button from "@/shared/components/Button";
 
+
 export default function ForgotPasswordForm({
   onSubmit,
   onBack,
@@ -73,6 +74,8 @@ export default function ForgotPasswordForm({
           {loading ? "Enviando..." : "Enviar enlace"}
         </Button>
       </div>
+
+      
     </form>
   );
 }
