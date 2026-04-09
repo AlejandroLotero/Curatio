@@ -199,7 +199,7 @@ const NavBarClient = ({ variant = "solid" }) => {
               <img
                 src={logoCuratio}
                 alt="Curatio Logo"
-                className="h-18 w-auto"
+                className="h-16 w-auto drop-shadow-[0_6px_18px_rgba(0,0,0,0.18)] "
               />
             </Link>
           </div>

@@ -1,16 +1,16 @@
-import acetaminofen from "@/assets/images/acetaminofen.png";
-import bisbacter from "@/assets/images/bisbacter.png";
-import hidrocortisona from "@/assets/images/hidrocortisona.png";
-import amoxicilina from "@/assets/images/amoxicilina.png";
-import ibuprofeno from "@/assets/images/ibuprofeno.png";
-import jarabeAcetaminofen from "@/assets/images/jarabe-acetaminofem.png";
+// import acetaminofen from "@/assets/images/acetaminofen.png";
+// import bisbacter from "@/assets/images/bisbacter.png";
+// import hidrocortisona from "@/assets/images/hidrocortisona.png";
+// import amoxicilina from "@/assets/images/amoxicilina.png";
+// import ibuprofeno from "@/assets/images/ibuprofeno.png";
+// import jarabeAcetaminofen from "@/assets/images/jarabe-acetaminofem.png";
 
 export const listProducts = [
   {
     id: 1,
     visualId: "MED-001",
     nameproduct: "Paracetamol",
-    image: acetaminofen,
+    // image: acetaminofen,
     formaFarmaceutica: "Tableta",
     presentacion: "Caja x 10 tabletas",
     concentration: "500 mg",
@@ -30,7 +30,7 @@ export const listProducts = [
     id: 2,
     visualId: "MED-002",
     nameproduct: "Ibuprofeno",
-    image: ibuprofeno,
+    // image: ibuprofeno,
     formaFarmaceutica: "Tableta",
     presentacion: "Caja x 20 tabletas",
     concentration: "400 mg",
@@ -50,7 +50,7 @@ export const listProducts = [
     id: 3,
     visualId: "MED-003",
     nameproduct: "Amoxicilina",
-    image: amoxicilina,
+    // image: amoxicilina,
     formaFarmaceutica: "Cápsula",
     presentacion: "Caja x 12 cápsulas",
     concentration: "500 mg",
@@ -70,7 +70,7 @@ export const listProducts = [
     id: 4,
     visualId: "MED-004",
     nameproduct: "Loratadina",
-    image: hidrocortisona,
+    // image: hidrocortisona,
     formaFarmaceutica: "Tableta",
     presentacion: "Caja x 10 tabletas",
     concentration: "10 mg",
@@ -90,7 +90,7 @@ export const listProducts = [
     id: 5,
     visualId: "MED-005",
     nameproduct: "Omeprazol",
-    image: bisbacter,
+    // image: bisbacter,
     formaFarmaceutica: "Cápsula",
     presentacion: "Caja x 14 cápsulas",
     concentration: "20 mg",
@@ -110,7 +110,7 @@ export const listProducts = [
     id: 6,
     visualId: "MED-006",
     nameproduct: "Salbutamol",
-    image: jarabeAcetaminofen,
+    // image: jarabeAcetaminofen,
     formaFarmaceutica: "Inhalador",
     presentacion: "Inhalador 200 dosis",
     concentration: "100 mcg",
