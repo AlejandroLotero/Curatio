@@ -76,7 +76,7 @@ export default function MainLayout() {
          style={{ backgroundImage: `url(${bgAll})` }}
        /> */}
 
-      {/* <div
+      <div
         className="pointer-events-none absolute inset-0 -z-10"
         style={{
           background: `
@@ -91,9 +91,9 @@ export default function MainLayout() {
             )
           `,
         }}
-      /> */}
+      />
 
-      <div
+      {/* <div
         className="pointer-events-none absolute inset-0 -z-10"
         style={{
           background: `
@@ -107,7 +107,7 @@ export default function MainLayout() {
             )
           `,
         }}
-      />
+      /> */}
 
 
 
@@ -121,7 +121,7 @@ export default function MainLayout() {
         <img
           src={logo}
           alt="watermark"
-          className="absolute inset-0 m-auto w-[800px] opacity-[0.80] blur-[10px]"
+          className="absolute inset-0 m-auto w-[800px] opacity-[0.60] blur-[9px]"
         />
       </div>
 
