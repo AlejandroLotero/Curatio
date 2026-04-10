@@ -4,6 +4,7 @@ export default function Select({
     options = [],
     extraOptions = [],
     placeholder = "Seleccionar...",
+    error,
     value,
     onChange,
     wrapperClassName,
@@ -16,14 +17,15 @@ export default function Select({
         <div className={wrapperClassName ?? "w-full"}>
             {label && (
                 <label
-                    className="block
-                              mb-1
-                              text-label
-                              font-body
-                              font-heading
-                              font-weight
-                              text-mostsmall
-                              "
+                    className="
+                            block
+                            mb-1
+                            text-label
+                            font-body
+                            font-heading
+                            font-weight
+                            text-mostsmall
+                            "
                 >
                     {label}
                 </label>
@@ -39,6 +41,7 @@ export default function Select({
             >
                 <select
                     name={name}
+                    error={error}
                     value={value}
                     onChange={onChange}
                     className={`
@@ -57,6 +60,8 @@ export default function Select({
                         focus:ring-1
                         focus:ring-border
                         focus:border-border
+                        hover:bg-surface/50
+                        cursor-pointer
                         ${selectClassName ?? ""}
                     `}
                 >
@@ -73,7 +78,8 @@ export default function Select({
                 ))}
             </select>
             </div>
+            {error && <p className="text-mostsmall text-red-600 mt-1">{error}</p>}
         </div>
     );
-}
+};
 

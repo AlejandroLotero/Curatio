@@ -1,0 +1,762 @@
+﻿Análisis y Desarrollo de Software
+  
+
+
+
+Servicio Nacional de Aprendizaje
+Red de conocimiento informática, diseño y desarrollo de software
+
+
+
+
+
+
+
+
+Tecnólogo en Análisis y Desarrollo de Software
+Sesión 12 – MAR -2026
+
+
+
+
+
+
+        
+Instructor
+Edwar Velásquez, Ing. Mecatrónico y 
+Magister en Tecnología Educativa.
+
+
+
+
+
+
+2026 – Colombia   
+________________
+Componente Checkbox
+
+
+// Componente reutilizable de tipo Checkbox controlado
+export default function Checkbox({
+  id,            // Identificador único del input (necesario para accesibilidad)
+  name,          // Nombre del campo (útil para formularios)
+  label,         // Texto visible asociado al checkbox
+  checked = false, // Estado controlado del checkbox (true/false)
+  onChange,      // Función que maneja el cambio de estado
+  disabled = false, // Indica si el checkbox está deshabilitado
+  className = "",   // Clases adicionales para personalización
+}) {
+  return (
+    // Label envolvente para mejorar la accesibilidad y permitir clic en todo el bloque
+    <label
+      htmlFor={id} // Vincula el label con el input mediante el id
+      className={`
+        flex items-center gap-2 text-sm cursor-pointer
+        ${disabled ? "opacity-50 cursor-not-allowed" : ""} 
+        ${className}
+      `}
+    >
+      {/* Input checkbox controlado */}
+      <input
+        id={id}             // Debe coincidir con htmlFor del label
+        name={name}         // Nombre del campo
+        type="checkbox"     // Tipo de input
+        checked={checked}   // Valor controlado desde el estado externo
+        disabled={disabled} // Deshabilita la interacción si es true
+        onChange={onChange} // Evento de cambio
+        className="accent-primary w-4 h-4" // Estilos (Tailwind)
+      />
+
+
+      {/* Texto del checkbox */}
+      <span>{label}</span>
+    </label>
+  );
+}
+________________
+
+
+Reportes
+1. Implementar buildReportDataset.js
+src/features/users/reports/utils/buildReportDataset.js
+
+
+// Función utilitaria para construir el dataset de un reporte (tabla)
+// Patrón: transformación de datos (input → output listo para exportar)
+export function buildReportDataset({
+  users,           // Array de usuarios origen
+  selectedFields,  // Campos seleccionados para el reporte [{ key, label }]
+  scope,           // Alcance del reporte: "all" | "document"
+  documentNumber   // Número de documento para filtrar (si aplica)
+}) {
+
+
+  // Copia inmutable del array original (evita mutaciones)
+  let filteredUsers = [...users];
+
+
+  // Filtro por alcance: si es por documento, se aplica filtro específico
+  if (scope === "document" && documentNumber) {
+    filteredUsers = filteredUsers.filter(
+      (user) => user.document_number === documentNumber
+    );
+  }
+
+
+  // Construcción de encabezados del reporte
+  // Se toma el label de cada campo seleccionado
+  const headers = selectedFields.map((field) => field.label);
+
+
+  // Construcción de filas del reporte
+  // Cada usuario se transforma en un array de valores según los campos seleccionados
+  const rows = filteredUsers.map((user) =>
+    selectedFields.map((field) => {
+      const value = user[field.key]; // Acceso dinámico a la propiedad
+
+
+      // Normalización: evita undefined o null en el reporte
+      return value ?? "";
+    })
+  );
+
+
+  // Estructura final desacoplada de la UI
+  // Lista para exportar a Excel, PDF o renderizar en tabla
+  return {
+    headers, // Array de strings (columnas)
+    rows     // Array de arrays (filas)
+  };
+}
+2. Implementar el generador de Excel (xlsx)        
+// Librería para manipulación y generación de archivos Excel
+import * as XLSX from "xlsx";
+
+
+// Función utilitaria para generar un archivo Excel a partir de datos tabulares
+// Patrón: exportación de datos (dataset → archivo descargable)
+export function generateExcelReport({
+  headers,                       // Array de encabezados (columnas)
+  rows,                          // Array de filas (array de arrays)
+  fileName = "user-report.xlsx"  // Nombre del archivo de salida
+}) {
+
+
+  // Estructura final de la hoja:
+  // Primera fila = headers
+  // Siguientes filas = datos
+  const worksheetData = [
+    headers,
+    ...rows
+  ];
+
+
+  // Convierte un array de arrays (AOA = Array of Arrays) en una hoja de Excel
+  const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+
+
+  // Crea un nuevo libro de Excel (workbook)
+  const workbook = XLSX.utils.book_new();
+
+
+  // Agrega la hoja al libro con el nombre "Usuarios"
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Usuarios");
+
+
+  // Genera y descarga el archivo Excel en el cliente
+  XLSX.writeFile(workbook, fileName);
+}
+
+
+
+
+5. Implementar el generador de PDF (jspdf + jspdf-autotable)
+// Librería para generación de PDFs en el cliente
+import jsPDF from "jspdf";
+
+
+// Plugin para creación de tablas dentro del PDF
+import autoTable from "jspdf-autotable";
+
+
+// Función utilitaria para generar un reporte en PDF
+// Patrón: exportación de datos (dataset → documento estructurado)
+export function generatePdfReport({
+  headers,                      // Encabezados de la tabla (columnas)
+  rows,                         // Datos (array de filas)
+  fileName = "user-report.pdf"  // Nombre del archivo de salida
+}) {
+
+
+  // Inicializa el documento PDF
+  const doc = new jsPDF();
+
+
+  // Configuración del título
+  doc.setFontSize(16);
+  doc.text("Reporte de Usuarios", 14, 20); // Posición (x, y)
+
+
+  // Generación de tabla automática
+  autoTable(doc, {
+    startY: 30,       // Posición inicial debajo del título
+
+
+    head: [headers],  // Encabezados (debe ser array de arrays)
+    body: rows,       // Filas del reporte
+
+
+    theme: "grid",    // Estilo visual de la tabla
+
+
+    // Estilos del encabezado
+    headStyles: {
+      fillColor: [33, 150, 243], // Color de fondo (RGB)
+      textColor: 255,            // Color del texto
+      fontSize: 11
+    },
+
+
+    // Estilos globales de las celdas
+    styles: {
+      fontSize: 10
+    },
+
+
+    // Márgenes del documento
+    margin: {
+      left: 14,
+      right: 14
+    }
+  });
+
+
+  // Genera y descarga el archivo PDF
+  doc.save(fileName);
+}
+
+
+
+
+
+
+6. Servicio orquestador generateUserReport.js
+
+
+// Fuente de datos de usuarios (mock o fuente centralizada)
+import { users } from "@/data/user/users";
+
+
+// Utilidad para transformar datos en dataset de reporte
+import { buildReportDataset } from "../utils/buildReportDataset";
+
+
+// Servicios de exportación
+import { generateExcelReport } from "./generateExcelReport";
+import { generatePdfReport } from "./generatePdfReport";
+
+
+// Caso de uso: orquestador de generación de reportes de usuarios
+// Patrón: Application Service (coordina utilidades y servicios)
+export function generateUserReport({
+  format,          // "excel" | "pdf"
+  selectedFields,  // Campos seleccionados por el usuario
+  scope,           // Alcance del reporte
+  documentNumber   // Filtro opcional
+}) {
+
+
+  // Construcción del dataset (desacoplado de la UI)
+  const { headers, rows } = buildReportDataset({
+    users,
+    selectedFields,
+    scope,
+    documentNumber
+  });
+
+
+  // Validación: evita generar archivos vacíos
+  if (!rows.length) {
+    alert("No hay datos para generar el reporte.");
+    return; // Corte de ejecución
+  }
+
+
+  // Generación de timestamp para nombres únicos de archivo (YYYY-MM-DD)
+  const timestamp = new Date().toISOString().slice(0, 10);
+
+
+  // Selección de estrategia de exportación según formato
+  if (format === "excel") {
+    generateExcelReport({
+      headers,
+      rows,
+      fileName: `users-report-${timestamp}.xlsx`
+    });
+  }
+
+
+  if (format === "pdf") {
+    generatePdfReport({
+      headers,
+      rows,
+      fileName: `users-report-${timestamp}.pdf`
+    });
+  }
+}
+
+
+7. Implementar ReportConfigModal.jsx
+// Hook para manejo de estado local en componentes funcionales
+import { useState } from "react";
+
+
+// Configuración de campos disponibles para el reporte
+import { userReportFields } from "../config/userReportFields";
+
+
+// Caso de uso que orquesta la generación del reporte
+import { generateUserReport } from "../services/generateUserReport";
+
+
+// Componentes UI reutilizables (design system)
+import { Button, Input, Select } from "@/shared/components";
+import Checkbox from "@/shared/components/Checkbox";
+
+
+// Componente modal para configuración de reportes
+export default function ReportConfigModal({ isOpen, onClose }) {
+
+
+  // Estado del formato de salida
+  const [format, setFormat] = useState("pdf");
+
+
+  // Estado del alcance del reporte
+  const [scope, setScope] = useState("all");
+
+
+  // Estado para filtro por documento
+  const [documentNumber, setDocumentNumber] = useState("");
+
+
+  // Estado de campos seleccionados (inicialización lazy)
+  const [selectedFields, setSelectedFields] = useState(() =>
+    userReportFields.filter((f) => f.default) // Solo campos marcados por defecto
+  );
+
+
+  // Control de render: si el modal no está abierto, no se monta en el DOM
+  if (!isOpen) return null;
+
+
+  // Handler para activar/desactivar campos del reporte
+  const handleFieldToggle = (field) => {
+
+
+    // Verifica si el campo ya está seleccionado
+    const exists = selectedFields.find((f) => f.key === field.key);
+
+
+    if (exists) {
+      // Elimina el campo si ya existe
+      setSelectedFields(
+        selectedFields.filter((f) => f.key !== field.key)
+      );
+    } else {
+      // Agrega el campo si no existe
+      setSelectedFields([
+        ...selectedFields,
+        field
+      ]);
+    }
+  };
+
+
+  // Handler principal para generar el reporte
+  const handleGenerateReport = () => {
+
+
+    // Invoca el caso de uso con la configuración actual
+    generateUserReport({
+      format,
+      selectedFields,
+      scope,
+      documentNumber,
+    });
+
+
+    // Cierra el modal después de generar el reporte
+    onClose();
+  };
+
+
+  return (
+    // Overlay del modal
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+
+
+      {/* Contenedor del modal */}
+      <div className="w-full max-w-lg rounded-xl bg-white p-6 shadow-lg">
+
+
+        {/* Título */}
+        <h2 className="mb-6 text-xl font-semibold">
+          Generar reporte de usuarios
+        </h2>
+
+
+        {/* Selección de formato */}
+        <div className="mb-4">
+          <Select
+            label="Formato del reporte"
+            value={format}
+            onChange={(e) => setFormat(e.target.value)}
+            options={[
+              { label: "PDF", value: "pdf" },
+              { label: "Excel", value: "excel" },
+            ]}
+          />
+        </div>
+
+
+        {/* Selección de campos */}
+        <div className="mb-4">
+          <p className="mb-2 font-medium">Campos del reporte</p>
+
+
+          {/* Grid de checkboxes */}
+          <div className="grid grid-cols-2 gap-2">
+            {userReportFields.map((field) => {
+
+
+              // Determina si el campo está seleccionado
+              const checked = selectedFields.some(
+                (f) => f.key === field.key
+              );
+
+
+              return (
+                <Checkbox
+                  key={field.key}         // Key única para renderizado
+                  id={field.key}          // Id accesible
+                  name={field.key}        // Nombre del campo
+                  label={field.label}     // Texto visible
+                  checked={checked}       // Estado controlado
+                  onChange={() => handleFieldToggle(field)} // Toggle
+                />
+              );
+            })}
+          </div>
+        </div>
+
+
+        {/* Selección de alcance */}
+        <div className="mb-4">
+          <Select
+            label="Alcance del reporte"
+            value={scope}
+            onChange={(e) => setScope(e.target.value)}
+            options={[
+              { label: "Todos los usuarios", value: "all" },
+              { label: "Filtrar por documento", value: "document" },
+            ]}
+          />
+        </div>
+
+
+        {/* Campo condicional para filtro por documento */}
+        {scope === "document" && (
+          <div className="mb-4">
+            <Input
+              label="Número de documento"
+              value={documentNumber}
+              onChange={(e) => setDocumentNumber(e.target.value)}
+              placeholder="Ingrese número de documento"
+            />
+          </div>
+        )}
+
+
+        {/* Acciones del modal */}
+        <div className="flex justify-end gap-2 mt-6">
+
+
+          {/* Botón cancelar */}
+          <Button variant="secondary" onClick={onClose}>
+            Cancelar
+          </Button>
+
+
+          {/* Botón generar reporte */}
+          <Button variant="primary" onClick={handleGenerateReport}>
+            Generar reporte
+          </Button>
+
+
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+
+
+Dropdown
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  cloneElement
+} from "react"
+
+
+export const DropdownContext = createContext(null)
+
+
+export function Dropdown({
+  children,
+  open: controlledOpen,
+  onOpenChange,
+  className = ""
+}) {
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(false)
+
+
+  const isControlled = controlledOpen !== undefined
+  const open = isControlled ? controlledOpen : uncontrolledOpen
+
+
+  const setOpen = (value) => {
+    if (isControlled) {
+      onOpenChange?.(value)
+    } else {
+      setUncontrolledOpen(value)
+    }
+  }
+
+
+  const containerRef = useRef(null)
+
+
+  // Click outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (containerRef.current && !containerRef.current.contains(e.target)) {
+        setOpen(false)
+      }
+    }
+
+
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [])
+
+
+  // Escape key
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === "Escape") setOpen(false)
+    }
+
+
+    document.addEventListener("keydown", handleEscape)
+    return () => document.removeEventListener("keydown", handleEscape)
+  }, [])
+
+
+  return (
+    <DropdownContext.Provider value={{ open, setOpen }}>
+      <div ref={containerRef} className={`relative inline-block ${className}`}>
+        {children}
+      </div>
+    </DropdownContext.Provider>
+  )
+}
+
+
+// Trigger (asChild pattern)
+export function DropdownTrigger({ children }) {
+  const { open, setOpen } = useContext(DropdownContext)
+
+
+  if (!children) return null
+
+
+  return cloneElement(children, {
+    onClick: (e) => {
+      children.props.onClick?.(e)
+      setOpen(!open)
+    },
+    "aria-expanded": open,
+    "aria-haspopup": "menu"
+  })
+}
+
+
+// Content
+export function DropdownContent({ children, className = "" }) {
+  const { open } = useContext(DropdownContext)
+
+
+  if (!open) return null
+
+
+  return (
+    <div
+      role="menu"
+      className={`
+        absolute 
+        mt-1
+        min-w-48
+        rounded-xl
+        border
+        text-text-inverse
+        shadow-lg
+        p-1
+        dark:bg-neutral-950/70 
+        backdrop-blur-[2px] 
+        shadow-lg rounded-2xl 
+        overflow-hidden
+        hover:shadow-black 
+        transition-shadow duration-700
+        ${className}
+      `}
+    >
+      {children}
+    </div>
+  )
+}
+
+
+// Item
+export function DropdownItem({
+  children,
+  onClick,
+  className = ""
+}) {
+  const { setOpen } = useContext(DropdownContext)
+
+
+  const handleClick = (e) => {
+    onClick?.(e)
+    setOpen(false)
+  }
+
+
+  return (
+    <button
+      role="menuitem"
+      onClick={handleClick}
+      className={`
+        w-full text-left px-3 py-2 rounded-lg
+        hover:bg-gray-500 focus:bg-gray-100
+        transition-colors
+        ${className}
+      `}
+    >
+      {children}
+    </button>
+  )
+}
+Componente IconButton
+
+
+// src/shared/components/IconButton.jsx
+import React from "react";
+import clsx from "clsx";
+
+
+/**
+ * IconButton
+ * - Área táctil (hit area): tamaño del botón
+ * - Área visible: tamaño del ícono (controlado por wrapper interno)
+ */
+export const IconButton = React.forwardRef(function IconButton(
+  {
+    children,
+    onClick,
+    disabled = false,
+    className = "",
+    variant = "default",
+
+
+    // Tamaños
+    hitSize = 48,   // px (área táctil)
+    iconSize = 24,  // px (ícono visible)
+
+
+    // Accesibilidad
+    ariaLabel,
+
+
+    // Estados
+    isActive = false,
+
+
+    ...props
+  },
+  ref
+) {
+  const baseStyles = `
+    inline-flex items-center justify-center
+    rounded-full
+    transition-colors duration-200
+    focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2
+    disabled:opacity-50 disabled:pointer-events-none
+  `;
+
+
+  const variants = {
+    default: `
+      text-neutral-700
+      hover:bg-neutral-200
+      focus-visible:ring-neutral-400
+    `,
+    ghost: `
+      text-neutral-600
+      hover:bg-neutral-100
+      focus-visible:ring-neutral-300
+    `,
+    primary: `
+      text-white bg-blue-600
+      hover:bg-blue-700
+      focus-visible:ring-blue-500
+    `,
+  };
+
+
+  return (
+    <button
+      ref={ref}
+      type="button"
+      aria-label={ariaLabel}
+      disabled={disabled}
+      onClick={onClick}
+      className={clsx(baseStyles, variants[variant], className, {
+        "bg-neutral-300": isActive,
+      })}
+      style={{
+        width: `${hitSize}px`,
+        height: `${hitSize}px`,
+      }}
+      {...props}
+    >
+      <span
+        style={{
+          width: `${iconSize}px`,
+          height: `${iconSize}px`,
+        }}
+        className="flex items-center justify-center"
+      >
+        {children}
+      </span>
+    </button>
+  );
+});
+
+
+Licencia Creative Commons Attribution 4.0   CC BY 4.0 https://creativecommons.org/licenses/by/4.0/

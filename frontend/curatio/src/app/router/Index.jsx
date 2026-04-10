@@ -1,133 +1,387 @@
-import {createBrowserRouter, Navigate, Outlet} from "react-router-dom";
-import { MainLayout } from "@/features/layouts";
-import { AuthLayout } from "@/features/layouts";
-import { HomePage } from "@/features/home";
-import { ProfilePage, BasicInformationPage, ContactInformationPage, RolPage } from "@/features/users";
-import { LoginPage, ForgotPasswordPage, TokenPasswordPage, ResetPasswordPage } from "@/features/auth";
-import { CreateFormSuppliers, ContactInformationSuppliers, SupplierDetailPage } from "@/features/suppliers";
-import { ElectronicInvoiceSalesPage } from "@/features/sales";
-import { ProductPage } from "@/features/products";
+import { createBrowserRouter, Navigate, Outlet } from "react-router-dom";
+import { MainLayout, AuthLayout } from "@/features/layouts";
+import ViewCartShopPage from "@/features/cartshop/page/ViewCartShopPage";
+import { PermissionsManagementPage } from "@/features/permissions";
+import {
+  ProfilePage,
+  BasicInformationPage,
+  ContactInformationPage,
+  RolPage,
+  UpdateBasicInformationPage,
+  UpdateContactInformationPage,
+  UpdateRolPage,
+  UpdateUserInfo,
+  ListUserPage,
+} from "@/features/users";
 
+import {
+  LoginPage,
+  ForgotPasswordPage,
+  TokenPasswordPage,
+  ResetPasswordPage,
+  SessionChangePasswordPage,
+} from "@/features/auth";
+
+import {
+  CreateFormSuppliers,
+  ContactInformationSuppliers,
+  SupplierDetailPage,
+} from "@/features/suppliers";
+
+import {
+  ElectronicInvoiceSalesPage,
+  ListSales,
+  WebCheckoutPage,
+  SaleDetailPage,
+  EditSalePage,
+  CancelSalePage,
+} from "@/features/sales";
+import {
+  ProductsPage,
+  ProductDetailPage,
+  ListProductsPage,
+  EditProductPage,
+  ProductShowPage,
+  MedicationSearchResultsPage,
+} from "@/features/products/";
+
+import DashboardPage from "@/features/dashboard/pages/DashboardPage";
+import ListSupplierPage from "@/features/suppliers/pages/ListSupplierPage";
+import { HomePage, NewHomePage } from "@/features/home";
+import CartShopLayout from "@/features/layouts/CartShopLayout";
+import ListCartShopPage from "@/features/cartshop/page/ListCartShopPage";
+import ProtectedRoute from "@/app/router/ProtectedRoute";
+import EditFormSuppliers from "@/features/suppliers/pages/EditSuppliersBasicInformation";
+import EditContactInformationSuppliers from "@/features/suppliers/pages/EditSuppliersContactInformation";
+
+
+
+/**
+ * Router principal
+ * ----------------
+ * Separación clara:
+ * - rutas públicas
+ * - rutas de autenticación
+ * - rutas protegidas
+ */
 const router = createBrowserRouter([
-
+  /**
+   * =========================
+   * RUTAS PÚBLICAS CON MAINLAYOUT
+   * =========================
+   * Estas rutas NO requieren sesión.
+   */
+ {
+  element: <MainLayout />,
+  children: [
     {
-        
-        element:<MainLayout/>,
-        children: [
-
-            {
-
-                // index: true,
-                path:"/",
-                element: <HomePage></HomePage>
-
-            },
-
-            {
-                path: "accounts",
-                element: <Outlet />,
-                children: [
-                    {
-                        index: true,
-                        element: <Navigate to="/accounts/datos-basicos" replace />
-                    },
-                    {
-                        path: "datos-basicos",
-                        element: <BasicInformationPage />
-                    },
-                    {
-                        path: "contacto",
-                        element: <ContactInformationPage />
-                    },
-                    {
-                        path: "rol",
-                        element: <RolPage />
-                    },
-                    {
-                        path: "perfil",
-                        element: <ProfilePage />
-                    }
-                    
-                ]
-            },
-
-            {
-                path:"suppliers",
-                element: <Outlet />,
-                children: [
-                    {
-                        index: true,
-                        element: <Navigate to="datos-basicos" replace />
-                    },
-                    {
-                        path: "datos-basicos",
-                        element: <CreateFormSuppliers />
-                    },
-                    {
-                        path: "datos-contacto",
-                        element: <ContactInformationSuppliers />
-                    },
-                    {
-                        //Quite el /nit: para acceder solo con suppliers/detalle
-                        path: "detalle",
-                        element: <SupplierDetailPage />
-                    }
-                ]
-            },
-            {
-                path: "products",
-                element: <ProductPage />
-            },
-
-            {
-                path: "sales/factura-electronica",
-                element: <ElectronicInvoiceSalesPage />
-            },
-
-            {
-                path: "perfil",
-                element: <ProfilePage/>
-            },
-            
-        ]
+      path: "/",
+      element: <NewHomePage />,
     },
-
     {
-        element:<AuthLayout/>,
+      path: "/home",
+      element: <HomePage />,
+    },
+    {
+      path: "/products/detalle/:id",
+      element: <ProductShowPage />,
+    },
+    {
+      path: "/cartshop/ver-carrito",
+      element: <ViewCartShopPage />,
+    },
+    {
+      path: "/products/busqueda",
+      element: <MedicationSearchResultsPage />,
+    },
+  ],
+},
+
+  /**
+   * =========================
+   * RUTAS DE AUTENTICACIÓN
+   * =========================
+   * Layout visual de auth, sin sesión requerida.
+   */
+  {
+    element: <AuthLayout />,
+    children: [
+      {
+        path: "/login",
+        element: <LoginPage />,
+      },
+      {
+        path: "/forgot-password",
+        element: <ForgotPasswordPage />,
+      },
+      {
+        path: "/reset-password",
+        element: <ResetPasswordPage />,
+      },
+      {
+        path: "/send-token",
+        element: <TokenPasswordPage />,
+      },
+    ],
+  },
+
+  /**
+   * =========================
+   * RUTAS PROTEGIDAS
+   * =========================
+   * Todo lo que esté aquí requiere sesión activa.
+   */
+  {
+    element: <ProtectedRoute />,
+    children: [
+      {
+        element: <MainLayout />,
         children: [
-
+          {
+            path: "/dashboard",
+            element: <DashboardPage />,
+          },
+           {
+                path: "permissions",
+                element: <PermissionsManagementPage/>
+            },
             {
-
-                // index: true,
-                path:"login",
-                element: <LoginPage/>
-
+              path: "/checkout",
+              element: <WebCheckoutPage />,
             },
 
-            {
-                path: "forgot-password",
-                element: <ForgotPasswordPage/>
-            },
-
-            {
-                path: "reset-password",
-                element: <ResetPasswordPage></ResetPasswordPage>
-            },
-
-            {
-                path: "send-token",
-                element: <TokenPasswordPage></TokenPasswordPage>
-            },
-
-            {
+          /**
+           * =========================
+           * USERS
+           * =========================
+           */
+          {
+            path: "/accounts",
+            element: <Outlet />,
+            children: [
+              {
+                index: true,
+                element: <Navigate to="/accounts/datos-basicos" replace />,
+              },
+              {
+                path: "datos-basicos",
+                element: <BasicInformationPage />,
+              },
+              {
+                path: "contacto",
+                element: <ContactInformationPage />,
+              },
+              {
+                path: "rol",
+                element: <RolPage />,
+              },
+              {
                 path: "perfil",
-                element: <ProfilePage/>
-            },
-            
-        ]
-    }
-])
+                element: <ProfilePage />,
+              },
+              {
+                path: "perfil/:id",
+                element: <ProfilePage />,
+              },
+              {
+                path: "list",
+                element: <ListUserPage />,
+              },
+              {
+                path: "editar-datos-basicos/:id",
+                element: <UpdateBasicInformationPage />,
+              },
+              {
+                path: "editar-datos-contacto",
+                element: <UpdateContactInformationPage />,
+              },
+              {
+                path: "editar-rol",
+                element: <UpdateRolPage />,
+              },
+              {
+                path: "actualizar-mi-perfil",
+                element: <UpdateUserInfo />,
+              },
+              {
+                path: "cambiar-contrasena",
+                element: <SessionChangePasswordPage />,
+              },
+            ],
+          },
 
+          /**
+           * =========================
+           * SUPPLIERS
+           * =========================
+           */
+          {
+            path: "/suppliers",
+            element: <Outlet />,
+            children: [
+              {
+                index: true,
+                element: <Navigate to="/suppliers/datos-basicos" replace />,
+              },
+              {
+                path: "datos-basicos",
+                element: <CreateFormSuppliers />,
+              },
+              {
+                path: "listar-proveedores",
+                element: <ListSupplierPage />,
+              },
+              {
+                path: "datos-contacto",
+                element: <ContactInformationSuppliers />,
+              },
+              {
+                path: "detalle",
+                element: <SupplierDetailPage />,
+              },             
 
+              /**
+               * Ruta para editar los datos básicos del proveedor.
+               *
+               * Se usa el NIT como identificador del recurso porque en backend
+               * el proveedor se consulta y actualiza por NIT.
+               */
+              {
+                path: "editar/:nit",
+                element: <EditFormSuppliers />,
+              },
+
+              /**
+               * Segundo paso del flujo de edición del proveedor:
+               * datos de contacto.
+               *
+               * También usa el NIT como parámetro de ruta para mantener
+               * consistencia con el backend y con la navegación desde la tabla.
+               */
+              {
+                path: "editar-contacto/:nit",
+                element: <EditContactInformationSuppliers />,
+              },
+            ],
+          },
+
+          /**
+           * =========================
+           * PRODUCTS
+           * =========================
+           *  - /products               -> formulario creación medicamento
+            * - /products/listar        -> listado administrativo
+            * - /products/detalle/:id   -> detalle visual/comercial (dashboard)
+            * - /products/admin/detalle/:id -> detalle administrativo
+            */
+          
+          
+          {
+            path: "/products",
+            element: <ProductsPage />,
+          },
+          {
+            path: "/products/listar",
+            element: <ListProductsPage />,
+          },
+          {
+            /**
+             * Detalle visual usado desde dashboard / catálogo
+             */
+            path: "/products/detalle/:id",
+            element: <ProductShowPage />,
+          },
+          {
+            /**
+             * Detalle administrativo interno
+             */
+            path: "/products/admin/detalle/:id",
+            element: <ProductDetailPage />,
+          },
+          {
+            path: "/products/editar/:id",
+            element: <EditProductPage />
+          },
+          
+
+          /**
+           * =========================
+           * PROFILE
+           * =========================
+           */
+          {
+            path: "/perfil",
+            element: <ProfilePage />,
+          },
+
+          /**
+           * =========================
+           * SALES
+           * =========================
+           */
+          {
+            path: "/sales/list",
+            element: <ListSales />,
+          },
+          {
+            path: "/sales/factura-electronica",
+            element: <ElectronicInvoiceSalesPage />,
+          },
+          {
+            path: "/checkout",
+            element: <WebCheckoutPage />,
+          },
+          {
+            path: "/sales/detalle/:id",
+            element: <SaleDetailPage />,
+          },
+          {
+            path: "/sales/editar/:saleId",
+            element: <EditSalePage />,
+          },
+          {
+            path: "/sales/anular/:saleId",
+            element: <CancelSalePage />,
+          },
+
+          /**
+           * =========================
+           * CARTSHOP
+           * =========================
+           */
+          {
+            path: "/cartshop",
+            element: <CartShopLayout />,
+            children: [
+              {
+                path: "list-cartshop",
+                element: <ListCartShopPage />,
+              },
+              {
+                path: "perfil",
+                element: <ProfilePage />,
+              },
+              // {
+              //   path: "ver-carrito",
+              //   element: <ViewCartShopPage />,
+              // },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+
+  /**
+   * =========================
+   * FALLBACK
+   * =========================
+   * Si la ruta no existe, redirige al inicio público.
+   */
+  {
+    path: "*",
+    element: <Navigate to="/" replace />,
+  },
+]);
 
 export default router;

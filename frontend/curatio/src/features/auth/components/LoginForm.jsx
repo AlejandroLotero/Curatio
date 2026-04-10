@@ -1,5 +1,7 @@
 import { useMemo, useState } from "react";
 import {Input,Button} from "@/shared/components"
+import {useNavigate } from "react-router-dom";
+import logo from "@/assets/images/Curatio.png";
 
 export default function LoginForm({
   onSubmit,
@@ -7,6 +9,9 @@ export default function LoginForm({
   error = "",
   onForgotPassword,
 }) {
+
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -20,7 +25,7 @@ export default function LoginForm({
     password: false,
   });
 
-  const errors = useMemo(() => {
+    const errors = useMemo(() => {
     const next = {};
     const email = form.email.trim();
     const password = form.password;
@@ -29,7 +34,8 @@ export default function LoginForm({
     else if (!/^\S+@\S+\.\S+$/.test(email)) next.email = "Ingresa un correo válido.";
 
     if (!password) next.password = "La contraseña es obligatoria.";
-    else if (password.length < 6) next.password = "Mínimo 6 caracteres.";
+    else if (password.length < 8) next.password = "Mínimo 8 caracteres.";
+    else if (password.length > 10) next.password = "Máximo 10 caracteres.";
 
     return next;
   }, [form.email, form.password]);
@@ -67,13 +73,20 @@ export default function LoginForm({
     "focus:outline-none focus:!border-black transition-colors duration-200 !ring-0 ";
 
   return (
-    <div className="flex flex-col items-center ">
+    <div className="flex flex-col items-center">
       {/* Encabezado */}
-      <header className="mb-6 text-center">
-        <h1 className="font-body font-heading text-tittles text-label">
+      <header className="mb-2 text-center">
+        {/* <h1 className="font-body font-heading text-tittles text-label">
           CURATIO
-        </h1>
-        <p className="mt-1 font-body text-small text-label">
+        </h1> */}
+        <div className="flex items-center ">
+          <img
+            src={logo}
+            alt="Curatio Logo"
+            className="h-18 drop-shadow-[0_6px_18px_rgba(0,0,0,0.18)]  "
+          />
+        </div>
+        <p className="mt-1 font-body text-small text-label font-black">
           Iniciar sesión
         </p>
       </header>
@@ -85,7 +98,10 @@ export default function LoginForm({
         </div>
       ) : null}
 
-      <form onSubmit={handleSubmit} className="flex w-full max-w-[320px] flex-col gap-4">
+      <form
+        onSubmit={handleSubmit}
+        className="flex w-full max-w-[320px] flex-col gap-4"
+      >
         <div>
           <Input
             label="Correo electrónico"
@@ -95,9 +111,8 @@ export default function LoginForm({
             value={form.email}
             onChange={handleChange}
             onBlur={handleBlur}
-            error={touched.email ? errors.email : ""}
-            className={`${inputClass}` }
-          
+            // error={touched.email ? errors.email : ""}
+            className={`${inputClass}`}
           />
           {touched.email && errors.email && (
             <p className="mt-1 font-body text-red-600 text-mostsmall text-error">
@@ -115,10 +130,10 @@ export default function LoginForm({
             value={form.password}
             onChange={handleChange}
             onBlur={handleBlur}
-            error={touched.password ? errors.password : ""}
+            // error={touched.password ? errors.password : ""}
             showPassword={showPassword}
             onTogglePassword={() => setShowPassword((s) => !s)}
-            className={`${inputClass}` }
+            className={`${inputClass}`}
           />
 
           {touched.password && errors.password && (
@@ -128,9 +143,7 @@ export default function LoginForm({
           )}
         </div>
 
-        <div>
-          {/* <Card></Card> */}
-        </div>
+        <div>{/* <Card></Card> */}</div>
 
         <div className="flex items-center justify-between">
           <label className="flex cursor-pointer items-center gap-2 font-body text-small text-label select-none">
@@ -147,7 +160,7 @@ export default function LoginForm({
           <button
             type="button"
             onClick={onForgotPassword}
-            className="font-body text-small text-label underline underline-offset-4 transition hover:text-label"
+            className="font-body text-[14px] text-label underline underline-offset-4 transition hover:text-label"
           >
             ¿Olvidaste tu contraseña?
           </button>
@@ -158,21 +171,23 @@ export default function LoginForm({
             variant="secondary"
             size="sm"
             type="button"
-            onClick={() => {
-              setForm({ email: "", password: "", remember: true });
-              setTouched({ email: false, password: false });
-            }}
+            onClick={() => navigate("/", { replace: true })}
           >
             Cancelar
           </Button>
 
-          <Button variant="primary" size="md" type="submit" disabled={!canSubmit}>
+          <Button
+            variant="primary"
+            size="md"
+            type="submit"
+            disabled={!canSubmit}
+          >
             {loading ? "Ingresando..." : "Ingresar"}
           </Button>
         </div>
 
-        <div className="pt-4">
-          <div className="flex items-center gap-3">
+        <div className="pt-2">
+          <div className="flex items-center gap-2">
             <div className="h-px flex-1 bg-border" />
             <span className="font-body text-mostsmall text-label">o</span>
             <div className="h-px flex-1 bg-border" />
@@ -189,7 +204,7 @@ export default function LoginForm({
         </div>
       </form>
 
-      <p className="mt-6 text-center font-body text-mostsmall text-text-muted">
+      <p className="mt-4 text-center font-body text-[14px] text-text-muted">
         Al continuar aceptas nuestros Términos y Política de Privacidad.
       </p>
     </div>

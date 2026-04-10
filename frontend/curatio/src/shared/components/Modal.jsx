@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { createPortal } from "react-dom";
 
 export default function Modal({
   isOpen,
@@ -7,6 +6,8 @@ export default function Modal({
   title,
   message,
   children,
+  /** Clases del panel (ancho, alineación). Por defecto 400px centrado. */
+  contentClassName,
 }) {
   // Evita scroll del fondo cuando el modal está abierto
   useEffect(() => {
@@ -15,7 +16,7 @@ export default function Modal({
 
   if (!isOpen) return null;
 
-  return createPortal(
+  return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       
       {/* Overlay oscuro */}
@@ -25,10 +26,14 @@ export default function Modal({
       />
 
       {/* Contenido del modal */}
-      <div className="relative bg-white rounded-2xl shadow-xl w-[400px] p-8 text-center z-10 animate-fadeIn">
+      <div
+        className={`relative z-10 animate-fadeIn rounded-2xl bg-white/70 p-8 text-center shadow-xl ${
+          contentClassName ?? "w-[400px]"
+        }`}
+      >
         
         {title && (
-          <h2 className="text-xl font-semibold mb-4">{title}</h2>
+          <h2 className="text-xl text-label  font-semibold mb-4">{title}</h2>
         )}
 
         {message && (
@@ -38,7 +43,6 @@ export default function Modal({
         {children}
 
       </div>
-    </div>,
-    document.body
+    </div>
   );
 }

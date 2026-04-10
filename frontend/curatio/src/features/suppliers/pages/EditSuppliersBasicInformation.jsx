@@ -1,0 +1,344 @@
+// //Edición de Formulario de Proveedores - Datos básicos
+// import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
+// import Input from "../../../shared/components/Input";
+// import Button from "../../../shared/components/Button";
+// import { CircleArrowLeft } from "lucide-react";
+// import { useState } from "react";
+// import { SupplierSchema } from "../schemas/SupplierSchemas";
+// import { suppliers } from "../../../data/supplier/suppliers";
+
+// export default function EditFormSuppliers() {
+//   const navigate = useNavigate();
+
+//   const { id } = useParams();
+//   const location = useLocation();
+
+//   const supplierToEdit = id ? suppliers.find((supplier) => supplier.id === Number(id)) : null;
+
+//   const [formData, setFormData] = useState(() => {
+//     if (location.state) {
+//       return {
+//         ...location.state,
+//       };
+//     }
+
+//     if (supplierToEdit) {
+//       return {
+//         nit: supplierToEdit.nit || "",
+//         fullnames: supplierToEdit.nombreProveedor || "",
+//         supplierSocialReason: supplierToEdit.razonSocial || supplierToEdit.nombreProveedor || "",
+//       };
+//     }
+
+//     return {
+//       nit: "",
+//       fullnames: "",
+//       supplierSocialReason: "",
+//     };
+//   });
+
+//   const [errors, setErrors] = useState({});
+
+//   const handleChange = (e) => {
+//     const { name, value } = e.target;
+//     setFormData((prev) => ({
+//       ...prev,
+//       [name]: value,
+//     }));
+//   };
+
+//   const handleSubmit = (e) => {
+//     e.preventDefault();
+
+//     const basicSchema = SupplierSchema.pick({
+//       nit: true,
+//       fullnames: true,
+//       supplierSocialReason: true,
+//     });
+
+//     const result = basicSchema.safeParse(formData);
+//     if (!result.success) {
+//       const fieldErrors = {};
+//       result.error.issues.forEach((issue) => {
+//         const field = issue.path[0];
+//         fieldErrors[field] = issue.message;
+//       });
+//       setErrors(fieldErrors);
+//       return;
+//     }
+
+//     setErrors({});
+//     navigate(`../editar-contacto/${id}`, { state: result.data });
+//   };
+
+//   return (
+//     <div className="flex items-center justify-center min-h-screen text-label px-3 sm:px-4 py-4 sm:py-8">
+//       <form
+//         onSubmit={handleSubmit}
+//         className="
+//       w-full max-w-md
+//       px-4 sm:px-6 py-8 sm:py-12 
+//       grid grid-cols-1 gap-4 
+//       bg-white/70 dark:bg-neutral-900/20 
+//       backdrop-blur-md 
+//       shadow-xl 
+//       ring-1 
+//       rounded-2xl sm:rounded-3xl"
+//       >
+
+//         <Link
+//         to="/suppliers/listar-proveedores"
+//         className="absolute left-3 flex items-center justify-center w-12 h-12 rounded-full hover:bg-white/20 transition-colors group"
+//       >
+//         <CircleArrowLeft className="size-8 text-label group-hover:text-white transition-colors" />
+//       </Link>
+
+//         {/* DATOS BÁSICOS */}
+//         <section className="flex flex-col items-center gap-4 p-4 border rounded-xl">
+//           <h2
+//             className="
+//           text-center 
+//           text-lg sm:text-xl md:text-2xl font-bold 
+//           text-label"
+//           >
+//             Actualizar datos básicos
+//           </h2>
+//           <div className="space-y-6 grid grid-cols-1 w-full max-w-[320px]">
+//             <Input
+//               label="NIT: Ejemplo: 80000000-0"
+//               placeholder="80000000-0"
+//               name="nit"
+//               value={formData.nit}
+//               onChange={handleChange}
+//               error={errors.nit}
+//               disabled={true}
+//             />
+//             <Input
+//               label="Nombre del proveedor"
+//               placeholder="Juan Rivera"
+//               name="fullnames"
+//               value={formData.fullnames}
+//               onChange={handleChange}
+//               error={errors.fullnames}
+//             />
+//             <Input
+//               label="Razón social"
+//               placeholder="Mi Empresa S.A.S."
+//               name="supplierSocialReason"
+//               value={formData.supplierSocialReason}
+//               onChange={handleChange}
+//               error={errors.supplierSocialReason}
+//               disabled={true}
+//             />
+//             {/* <Select label="Tipos de documento" name="documentType" options={documentTypes}></Select> */}
+//           </div>
+
+//           {/* Botones de acción */}
+//           <div className="flex justify-between w-full max-w-[320px] mt-6">
+//             <Link to= "/suppliers/listar-proveedores">
+//                 <Button
+//               variant="secondary"
+//               size="sm"
+//               onClick={() => console.log("Oprimió cancelar")}
+//             >
+//               Cancelar
+//             </Button>
+//             </Link>
+
+            
+            
+
+//             <Button variant="primary" size="sm" type="submit">
+//               Siguiente
+//             </Button>
+//           </div>
+//         </section>
+//       </form>
+//     </div>
+//   );
+// }
+
+// Edición de Formulario de Proveedores - Datos básicos
+
+import { Link, useNavigate, useParams } from "react-router-dom";
+import Input from "../../../shared/components/Input";
+import Button from "../../../shared/components/Button";
+import { CircleArrowLeft } from "lucide-react";
+import { useState, useEffect } from "react";
+import { SupplierSchema } from "../schemas/SupplierSchemas";
+
+// Cliente HTTP
+import {
+  fetchSupplierDetail,
+  mapSupplierDetailResponse,
+} from "../../../lib/http/suppliers";
+
+export default function EditFormSuppliers() {
+  const navigate = useNavigate();
+
+  // IMPORTANTE: ahora usamos nit (no id)
+  const { nit } = useParams();
+
+  /**
+   * Estado del formulario
+   */
+  const [formData, setFormData] = useState({
+    nit: "",
+    fullnames: "",
+    supplierSocialReason: "",
+  });
+
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(true);
+
+  /**
+   * Carga inicial del proveedor desde backend
+   */
+  useEffect(() => {
+    const loadSupplier = async () => {
+      try {
+        if (!nit) return;
+
+        const response = await fetchSupplierDetail(nit);
+        const supplier = mapSupplierDetailResponse(response);
+
+        setFormData({
+          nit: supplier?.nit || "",
+          fullnames: supplier?.nombreProveedor || "",
+          supplierSocialReason:
+            supplier?.razonSocial || supplier?.nombreProveedor || "",
+        });
+      } catch (error) {
+        console.error("Error cargando proveedor:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadSupplier();
+  }, [nit]);
+
+  /**
+   * Manejo de cambios en inputs
+   */
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  /**
+   * Validación y navegación al paso 2
+   */
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // En edición el NIT ya existe en BD y puede venir con formato distinto al regex
+    // del esquema (p. ej. puntos); no re-validamos el NIT aquí para poder avanzar de paso.
+    const basicSchema = SupplierSchema.pick({
+      fullnames: true,
+      supplierSocialReason: true,
+    });
+
+    const result = basicSchema.safeParse(formData);
+
+    if (!result.success) {
+      const fieldErrors = {};
+      result.error.issues.forEach((issue) => {
+        fieldErrors[issue.path[0]] = issue.message;
+      });
+
+      setErrors(fieldErrors);
+      return;
+    }
+
+    const nitValue = String(formData.nit || nit || "").trim();
+    if (!nitValue) {
+      setErrors({ nit: "No se pudo determinar el NIT del proveedor." });
+      return;
+    }
+
+    setErrors({});
+
+    navigate(`/suppliers/editar-contacto/${encodeURIComponent(nitValue)}`, {
+      state: { nit: nitValue, ...result.data },
+    });
+  };
+
+  if (loading) {
+    return <div className="text-center">Cargando proveedor...</div>;
+  }
+
+  return (
+    <div className="flex items-center justify-center min-h-screen text-label px-3 sm:px-4 py-4 sm:py-8">
+      <form
+        onSubmit={handleSubmit}
+        className="
+          w-full max-w-md
+          px-4 sm:px-6 py-8 sm:py-12 
+          grid grid-cols-1 gap-4 
+          bg-white/70 dark:bg-neutral-900/20 
+          backdrop-blur-md 
+          shadow-xl 
+          ring-1 
+          rounded-2xl sm:rounded-3xl"
+      >
+        <Link
+          to="/suppliers/listar-proveedores"
+          className="absolute left-3 flex items-center justify-center w-12 h-12 rounded-full hover:bg-white/20 transition-colors group"
+        >
+          <CircleArrowLeft className="size-8 text-label group-hover:text-white transition-colors" />
+        </Link>
+
+        {/* DATOS BÁSICOS */}
+        <section className="flex flex-col items-center gap-4 p-4 border rounded-xl">
+          <h2 className="text-center text-lg sm:text-xl md:text-2xl font-bold text-label">
+            Actualizar datos básicos
+          </h2>
+
+          <div className="space-y-6 grid grid-cols-1 w-full max-w-[320px]">
+            <Input
+              label="NIT"
+              name="nit"
+              value={formData.nit}
+              disabled={true}
+              error={errors.nit}
+            />
+
+            <Input
+              label="Nombre del proveedor"
+              name="fullnames"
+              value={formData.fullnames}
+              onChange={handleChange}
+              error={errors.fullnames}
+            />
+
+            <Input
+              label="Razón social"
+              name="supplierSocialReason"
+              value={formData.supplierSocialReason}
+              onChange={handleChange}
+              error={errors.supplierSocialReason}
+            />
+          </div>
+
+          {/* Botones */}
+          <div className="flex justify-between w-full max-w-[320px] mt-6">
+            <Link to="/suppliers/listar-proveedores">
+              <Button variant="secondary" size="sm">
+                Cancelar
+              </Button>
+            </Link>
+
+            <Button variant="primary" size="sm" type="submit">
+              Siguiente
+            </Button>
+          </div>
+        </section>
+      </form>
+    </div>
+  );
+}
