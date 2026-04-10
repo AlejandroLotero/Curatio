@@ -176,3 +176,54 @@ export function buildUpdateUserRequestBody(merged, { isActive }, photoFile) {
     estado: payload.estado,
   };
 }
+
+/**
+ * Cuerpo para PATCH /v1/people/users/me/ (autoedición Cliente/Farmaceuta).
+ * Sin rol ni estado; con foto usa multipart como en el PATCH admin.
+ */
+export function buildSelfProfilePatchBody(merged, photoFile) {
+  const docNum = merged.documentNumber;
+  const payload = {
+    fullNames: merged.fullNames ?? "",
+    documentTypes: merged.documentTypes ?? "",
+    documentNumber: docNum === null || docNum === undefined ? "" : String(docNum),
+    email: merged.email ?? "",
+    phoneNumber: merged.phoneNumber ?? "",
+    secondaryPhone: merged.secondaryPhone ?? "",
+    address: merged.address ?? "",
+    startDate: merged.startDate ?? "",
+    endDate: merged.endDate ?? "",
+  };
+
+  if (photoFile instanceof File) {
+    const fd = new FormData();
+    const append = (key, value) => {
+      if (value === null || value === undefined) return;
+      fd.append(key, value);
+    };
+
+    append("fullNames", payload.fullNames);
+    append("documentTypes", payload.documentTypes);
+    append("documentNumber", payload.documentNumber);
+    append("email", payload.email);
+    append("phoneNumber", payload.phoneNumber);
+    append("secondaryPhone", payload.secondaryPhone);
+    append("address", payload.address);
+    append("startDate", payload.startDate);
+    append("endDate", payload.endDate);
+    fd.append("foto", photoFile);
+    return fd;
+  }
+
+  return {
+    fullNames: payload.fullNames,
+    documentTypes: payload.documentTypes,
+    documentNumber: payload.documentNumber,
+    email: payload.email,
+    phoneNumber: payload.phoneNumber,
+    secondaryPhone: payload.secondaryPhone ? payload.secondaryPhone : null,
+    address: payload.address,
+    startDate: payload.startDate ? payload.startDate : null,
+    endDate: payload.endDate ? payload.endDate : null,
+  };
+}

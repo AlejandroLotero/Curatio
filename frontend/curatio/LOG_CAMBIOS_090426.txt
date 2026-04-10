@@ -1,0 +1,50 @@
+Perfil (ProfilePage.jsx)
+Se calcula si es perfil propio, si el rol es Cliente o Farmaceuta y si no aplica el flujo admin (can_edit_account).
+En ese caso se muestra el botón «Editar perfil» enlazado a /accounts/actualizar-mi-perfil.
+
+Nueva página UpdateUserInfo.jsx
+Ruta: /accounts/actualizar-mi-perfil (protegida).
+Formulario único con datos básicos (foto, nombre, tipo y número de documento) y de contacto (dirección, teléfonos, correo + confirmación).
+Farmaceuta: también fechas inicio/fin (obligatorias al guardar).
+Guardado con patchMyProfile → PATCH /v1/people/users/me/.
+Enlace «Actualizar contraseña» → /accounts/cambiar-contrasena.
+Si el rol no es Cliente/Farmaceuta o falla la carga, redirige al perfil.
+
+Nueva página SessionChangePasswordPage.jsx en /accounts/cambiar-contrasena que reutiliza ResetPasswordForm y llama a changePasswordWithSession → POST /v1/identity/session/password/.
+
+Frontend (HTTP / adapter)
+buildSelfProfilePatchBody en userAdapter.js.
+patchMyProfile en users.js.
+changePasswordWithSession en identity.js.
+
+Backend (necesario porque solo el admin podía hacer PATCH a usuarios)
+GET y PATCH en user_me_profile_resource: autoedición para Cliente y Farmaceuta (mismos alias de campos que el admin + foto).
+Formulario EditarUsuarioSelfServiceForm en forms.py.
+Helper _merge_self_service_payload en api_user_views.py.
+password_change_session_view: cambio de contraseña autenticado.
+config/urls.py: ruta explícita v1/people/users/me/ (antes no estaba registrada; el front ya llamaba a ese path), más v1/identity/session/password/.
+
+
+TENIA ERROR 404
+el merge en el backend: no sobrescribir campos obligatorios con cadenas vacías (p. ej. tipo_documento o documentNumber si el Select/envío falla) y evitar borrar fechas de farmaceuta con null. Añadiendo coerción de documentNumber a string.
+
+Se ajustó_merge_self_service_payload para no sobrescribir campos con valores vacíos (causa típica: tipo_documento inválido) y llamando a full_clean() siempre antes de guardar para alinear validaciones del modelo.
+
+El 400 venía del EditarUsuarioSelfServiceForm: el body JSON siempre manda todas las claves y algunas llegaban vacías o null. El merge pisaba datos buenos del usuario con "", por ejemplo:
+documentTypes vacío → tipo_documento inválido → error de formulario.
+startDate / endDate en null (cliente) → en farmaceuta podían borrarse las fechas.
+Además faltaba la función _strip_nonempty_str en el backend (el archivo quedó a medias), lo que en servidor actualizado habría dado 500, no 400.
+
+Cambios hechos
+api_user_views.py
+
+Añadí _strip_nonempty_str.
+En _merge_self_service_payload: solo se actualiza nombre, tipo doc, número, email, teléfono y dirección si el valor nuevo no está vacío (no se sobrescribe con "").
+Farmaceuta: solo se actualizan fechas si el valor enviado tiene texto (no se pisan con null/vacío).
+telefono_secundario: lectura corregida entre secondaryPhone / secondary_phone / telefono_secundario.
+Tras el formulario se llama siempre a user.full_clean() antes de save() (mismas reglas del modelo: dirección 10–150 caracteres, nombre solo letras, etc.).
+userAdapter.js: documentNumber se envía siempre como string en el JSON/FormData.
+
+UpdateUserInfo.jsx: validación de dirección ≥ 10 caracteres si no está vacía, y en error del API se muestran también error.fields para ver el detalle (p. ej. direccion, nombre, __all__).
+
+
