@@ -34,28 +34,17 @@
 // import {
 //   createSale,
 //   confirmSalePayment,
-//   downloadSaleInvoice,  
-// } from "@/lib/http/sales";
-// import {
-//   buildCreateSaleBody,  
-//   mapSaleDetailResponse,
-// } from "@/lib/adapters/salesAdapter";
-
-// // Subcomponente visual separado para la simulación de tarjeta
-// import SaleCardPreview from "@/features/sales/components/SaleCardPreview";
-
-// import {
-//   createSale,
-//   confirmSalePayment,
 //   downloadSaleInvoice,
 //   fetchSalesCustomerByDocument,
 // } from "@/lib/http/sales";
-
 // import {
 //   buildCreateSaleBody,
 //   mapSaleDetailResponse,
 //   mapSalesCustomerLookupResponse,
 // } from "@/lib/adapters/salesAdapter";
+
+// // Subcomponente visual separado para la simulación de tarjeta
+// import SaleCardPreview from "@/features/sales/components/SaleCardPreview";
 
 // /**
 //  * =========================
@@ -63,7 +52,6 @@
 //  * =========================
 //  */
 
-// // Métodos de entrega
 // const DELIVERY_METHODS = [
 //   {
 //     id: "delivery",
@@ -81,7 +69,6 @@
 //   },
 // ];
 
-// // Métodos de pago alineados con backend
 // const PAYMENT_METHODS = [
 //   {
 //     id: "cash",
@@ -106,7 +93,6 @@
 //   },
 // ];
 
-// // Bancos para transferencia / PSE
 // const TRANSFER_BANK_OPTIONS = [
 //   { id: "bancolombia", value: "bancolombia", label: "Bancolombia" },
 //   { id: "bbva", value: "bbva", label: "BBVA" },
@@ -118,7 +104,6 @@
 //   { id: "nequi", value: "nequi", label: "Nequi" },
 // ];
 
-// // Tipos de documento
 // const DOCUMENT_TYPE_OPTIONS = [
 //   { id: "CC", value: "CC", label: "CC" },
 //   { id: "CE", value: "CE", label: "CE" },
@@ -128,7 +113,6 @@
 //   { id: "PPT", value: "PPT", label: "PPT" },
 // ];
 
-// // Cuotas
 // const INSTALLMENT_OPTIONS = [
 //   { id: "1", value: "1", label: "1 cuota" },
 //   { id: "2", value: "2", label: "2 cuotas" },
@@ -137,11 +121,139 @@
 //   { id: "12", value: "12", label: "12 cuotas" },
 // ];
 
-// /**
-//  * =========================
-//  * UTILIDADES LOCALES
-//  * =========================
-//  */
+// const CARD_BANK_VISUALS = {
+//   bancolombia: {
+//     code: "bancolombia",
+//     bankName: "Bancolombia",
+//     displayName: "Bancolombia",
+//     issuerLabel: "Visa / Mastercard",
+//     gradientClasses: "from-[#F9C606] via-[#0F5DAA] to-[#003B7A]",
+//     chipToneClasses: "from-yellow-100 to-yellow-300",
+//     textToneClasses: "text-white",
+//     accentText: "Tu mano amiga",
+//   },
+//   bbva: {
+//     code: "bbva",
+//     bankName: "BBVA",
+//     displayName: "BBVA",
+//     issuerLabel: "Visa / Mastercard",
+//     gradientClasses: "from-[#072146] via-[#004481] to-[#2DCCCD]",
+//     chipToneClasses: "from-slate-100 to-slate-300",
+//     textToneClasses: "text-white",
+//     accentText: "Creando oportunidades",
+//   },
+//   davivienda: {
+//     code: "davivienda",
+//     bankName: "Davivienda",
+//     displayName: "Davivienda",
+//     issuerLabel: "Visa / Mastercard",
+//     gradientClasses: "from-[#8B0000] via-[#C62828] to-[#E57373]",
+//     chipToneClasses: "from-red-100 to-red-300",
+//     textToneClasses: "text-white",
+//     accentText: "Lugar de su dinero",
+//   },
+//   bogota: {
+//     code: "bogota",
+//     bankName: "Banco de Bogotá",
+//     displayName: "Banco de Bogotá",
+//     issuerLabel: "Visa / Mastercard",
+//     gradientClasses: "from-[#9E0B0F] via-[#C62828] to-[#F28B82]",
+//     chipToneClasses: "from-rose-100 to-rose-300",
+//     textToneClasses: "text-white",
+//     accentText: "Grupo Aval",
+//   },
+//   occidente: {
+//     code: "occidente",
+//     bankName: "Banco de Occidente",
+//     displayName: "Banco de Occidente",
+//     issuerLabel: "Visa / Mastercard",
+//     gradientClasses: "from-[#7B1FA2] via-[#8E24AA] to-[#CE93D8]",
+//     chipToneClasses: "from-fuchsia-100 to-fuchsia-300",
+//     textToneClasses: "text-white",
+//     accentText: "Grupo Aval",
+//   },
+//   avvillas: {
+//     code: "avvillas",
+//     bankName: "AV Villas",
+//     displayName: "AV Villas",
+//     issuerLabel: "Visa / Mastercard",
+//     gradientClasses: "from-[#1E3A8A] via-[#2563EB] to-[#93C5FD]",
+//     chipToneClasses: "from-blue-100 to-blue-300",
+//     textToneClasses: "text-white",
+//     accentText: "Grupo Aval",
+//   },
+//   itau: {
+//     code: "itau",
+//     bankName: "Itaú",
+//     displayName: "Itaú",
+//     issuerLabel: "Visa / Mastercard",
+//     gradientClasses: "from-[#FF6F00] via-[#EF6C00] to-[#6D4C41]",
+//     chipToneClasses: "from-orange-100 to-orange-300",
+//     textToneClasses: "text-white",
+//     accentText: "Hecho para ti",
+//   },
+//   nequi: {
+//     code: "nequi",
+//     bankName: "Nequi",
+//     displayName: "Nequi",
+//     issuerLabel: "Mastercard",
+//     gradientClasses: "from-[#1F102E] via-[#7B1FA2] to-[#E91E63]",
+//     chipToneClasses: "from-purple-100 to-pink-300",
+//     textToneClasses: "text-white",
+//     accentText: "Saca tu plata",
+//   },
+//   amex: {
+//     code: "amex",
+//     bankName: "American Express",
+//     displayName: "American Express",
+//     issuerLabel: "American Express",
+//     gradientClasses: "from-[#0A3D62] via-[#1E88E5] to-[#7FDBFF]",
+//     chipToneClasses: "from-cyan-100 to-cyan-300",
+//     textToneClasses: "text-white",
+//     accentText: "Membership Rewards",
+//   },
+//   visa_generic: {
+//     code: "visa_generic",
+//     bankName: "Visa",
+//     displayName: "Visa",
+//     issuerLabel: "Visa",
+//     gradientClasses: "from-[#1A1F71] via-[#1434CB] to-[#5C6BC0]",
+//     chipToneClasses: "from-indigo-100 to-indigo-300",
+//     textToneClasses: "text-white",
+//     accentText: "Secure card",
+//   },
+//   mastercard_generic: {
+//     code: "mastercard_generic",
+//     bankName: "Mastercard",
+//     displayName: "Mastercard",
+//     issuerLabel: "Mastercard",
+//     gradientClasses: "from-[#111827] via-[#EA580C] to-[#F59E0B]",
+//     chipToneClasses: "from-orange-100 to-orange-300",
+//     textToneClasses: "text-white",
+//     accentText: "Priceless",
+//   },
+//   generic: {
+//     code: "generic",
+//     bankName: "Entidad financiera",
+//     displayName: "Tarjeta bancaria",
+//     issuerLabel: "Red bancaria",
+//     gradientClasses: "from-slate-800 via-slate-700 to-slate-500",
+//     chipToneClasses: "from-slate-200 to-slate-400",
+//     textToneClasses: "text-white",
+//     accentText: "Pago seguro",
+//   },
+// };
+
+// const CARD_BIN_RULES = [
+//   { bank: "bbva", pattern: /^(457562|4558|4110|450995)/ },
+//   { bank: "bancolombia", pattern: /^(528209|530373|552244|451714|438935)/ },
+//   { bank: "davivienda", pattern: /^(402360|451760|457659|409171)/ },
+//   { bank: "bogota", pattern: /^(457676|457677|427099|450851)/ },
+//   { bank: "occidente", pattern: /^(450942|529612)/ },
+//   { bank: "avvillas", pattern: /^(454812|491602|498765)/ },
+//   { bank: "itau", pattern: /^(451357|406984|637095)/ },
+//   { bank: "nequi", pattern: /^(529899|524347|636143)/ },
+// ];
 
 // function formatCurrency(value) {
 //   return Number(value || 0).toLocaleString("es-CO");
@@ -176,38 +288,60 @@
 //   return "Tarjeta";
 // }
 
-// function detectCardBank(cardNumber = "") {
+// function detectCardBankCode(cardNumber = "") {
 //   const digits = onlyDigits(cardNumber);
 
-//   if (/^(457562|4558|4110)/.test(digits)) return "BBVA";
-//   if (/^(528209|530373|552244)/.test(digits)) return "Bancolombia";
-//   if (/^(402360|450995|451760)/.test(digits)) return "Davivienda";
-//   if (/^(451714|438935)/.test(digits)) return "Banco de Bogotá";
+//   for (const rule of CARD_BIN_RULES) {
+//     if (rule.pattern.test(digits)) {
+//       return rule.bank;
+//     }
+//   }
 
-//   return "Entidad financiera";
+//   const brand = detectCardBrand(digits);
+
+//   if (brand === "American Express") return "amex";
+//   if (brand === "Visa") return "visa_generic";
+//   if (brand === "Mastercard") return "mastercard_generic";
+
+//   return "generic";
 // }
 
-// function getCardPreviewClasses(cardNumber = "") {
-//   const bank = detectCardBank(cardNumber);
+// function getCardVisualConfig(cardNumber = "") {
+//   const bankCode = detectCardBankCode(cardNumber);
+//   return CARD_BANK_VISUALS[bankCode] || CARD_BANK_VISUALS.generic;
+// }
+
+// function getCardProductLabel({ cardType = "debit", cardNumber = "" }) {
 //   const brand = detectCardBrand(cardNumber);
+//   const bankCode = detectCardBankCode(cardNumber);
 
-//   if (bank === "BBVA") return "from-blue-900 to-sky-500";
-//   if (bank === "Bancolombia") return "from-yellow-500 to-blue-700";
-//   if (bank === "Davivienda") return "from-red-700 to-red-400";
-//   if (bank === "Banco de Bogotá") return "from-red-900 to-rose-500";
-//   if (brand === "American Express") return "from-slate-800 to-cyan-600";
-//   if (brand === "Visa") return "from-indigo-900 to-blue-500";
-//   if (brand === "Mastercard") return "from-zinc-900 to-orange-500";
+//   if (cardType === "debit") {
+//     if (bankCode === "nequi") return "Débito digital";
+//     return "Débito";
+//   }
 
-//   return "from-slate-800 to-slate-500";
+//   if (brand === "American Express") return "Gold";
+//   if (bankCode === "bancolombia") return "Clásica";
+//   if (bankCode === "bbva") return "Gold";
+//   if (bankCode === "davivienda") return "Platinum";
+//   if (brand === "Visa") return "Classic";
+//   if (brand === "Mastercard") return "Gold";
+
+//   return "Crédito";
 // }
 
 // function simulateGatewayDecision({ paymentMethod, cardNumber, documentNumber }) {
 //   const safeCardNumber = onlyDigits(cardNumber);
 //   const safeDocumentNumber = onlyDigits(documentNumber);
 
-//   if (paymentMethod === "card" && safeCardNumber.endsWith("0")) {
-//     return "rejected";
+//   if (paymentMethod === "card") {
+//     if (safeCardNumber.endsWith("00")) {
+//       return "rejected";
+//     }
+
+//     if (safeCardNumber.endsWith("13")) {
+//       return "manual_review";
+//     }
 //   }
 
 //   if (paymentMethod === "transfer" && safeDocumentNumber.endsWith("0")) {
@@ -237,14 +371,6 @@
 //   return user?.nombre || user?.name || "";
 // }
 
-// function getUserPhone(user) {
-//   return user?.telefono || user?.phone || "";
-// }
-
-// function getUserAddress(user) {
-//   return user?.direccion || user?.address || "";
-// }
-
 // function mapCheckoutPaymentToBackend({ paymentMethod, cardType }) {
 //   if (paymentMethod === "cash") {
 //     return "Efectivo";
@@ -261,63 +387,34 @@
 //   return "Tarjeta crédito";
 // }
 
-// /**
-//  * Intenta extraer un Blob independientemente del tipo de cliente HTTP.
-//  * Funciona bien con wrappers basados en fetch y también con estructuras
-//  * que devuelven data / blob / body.
-//  */
 // async function extractBlobPayload(response) {
-//   if (!response) {
-//     return null;
-//   }
-
-//   if (response instanceof Blob) {
-//     return response;
-//   }
-
-//   if (response.data instanceof Blob) {
-//     return response.data;
-//   }
-
-//   if (typeof response.blob === "function") {
-//     return await response.blob();
-//   }
-
-//   if (response.body instanceof Blob) {
-//     return response.body;
-//   }
-
+//   if (!response) return null;
+//   if (response instanceof Blob) return response;
+//   if (response.data instanceof Blob) return response.data;
+//   if (typeof response.blob === "function") return await response.blob();
+//   if (response.body instanceof Blob) return response.body;
 //   return null;
 // }
 
 // function triggerBlobDownload(blob, filename) {
-//   if (!blob) return;
+//   if (!(blob instanceof Blob)) {
+//     console.error("La respuesta no es un Blob válido:", blob);
+//     return;
+//   }
 
 //   const url = window.URL.createObjectURL(blob);
 //   const anchor = document.createElement("a");
-
 //   anchor.href = url;
-//   anchor.download = filename;
+//   anchor.download = filename || "archivo.pdf";
 //   document.body.appendChild(anchor);
 //   anchor.click();
 //   anchor.remove();
-
 //   window.URL.revokeObjectURL(url);
 // }
 
-// /**
-//  * =========================
-//  * COMPONENTE PRINCIPAL
-//  * =========================
-//  */
 // export default function ElectronicInvoiceSalesPage() {
 //   const navigate = useNavigate();
 
-//   /**
-//    * =========================
-//    * CONTEXTOS REALES
-//    * =========================
-//    */
 //   const {
 //     cartItems,
 //     cartCount,
@@ -327,45 +424,30 @@
 
 //   const { user, isAuthenticated } = useAuth();
 
-//   /**
-//    * =========================
-//    * ESTADOS DE CHECKOUT
-//    * =========================
-//    */
 //   const [currentStep, setCurrentStep] = useState(1);
 
-//  // Búsqueda manual de cliente por documento
-// const [customerLookupForm, setCustomerLookupForm] = useState({
-//   documentType: "CC",
-//   documentNumber: "",
-// });
+//   const [customerLookupForm, setCustomerLookupForm] = useState({
+//     documentType: "CC",
+//     documentNumber: "",
+//   });
 
-
-// const [customerLookupLoading, setCustomerLookupLoading] = useState(false);
-// const [customerLookupError, setCustomerLookupError] = useState("");
-
-//   // Cliente destinatario de la venta
-//   const [selectedCustomerId, setSelectedCustomerId] = useState("");
 //   const [selectedCustomerMeta, setSelectedCustomerMeta] = useState(null);
+//   const [customerLookupLoading, setCustomerLookupLoading] = useState(false);
+//   const [customerLookupError, setCustomerLookupError] = useState("");
 
-//   // Método de entrega
 //   const [deliveryMethod, setDeliveryMethod] = useState("");
 
-//   // Datos de entrega
 //   const [deliveryForm, setDeliveryForm] = useState({
 //     deliveryAddress: "",
 //     deliveryCity: "Bogotá",
 //     deliveryPhone: "",
-
 //     pickupPoint: "",
 //     pickupContactName: "",
 //     pickupContactPhone: "",
 //   });
 
-//   // Método de pago
 //   const [paymentMethod, setPaymentMethod] = useState("");
 
-//   // Datos de pago
 //   const [paymentForm, setPaymentForm] = useState({
 //     cardType: "debit",
 //     cardNumber: "",
@@ -384,28 +466,15 @@
 //     cashReceived: "",
 //   });
 
-//   // Errores
 //   const [errors, setErrors] = useState({});
-
-//   // Estado general de procesamiento
 //   const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
 //   const [paymentStatus, setPaymentStatus] = useState("idle");
 //   const [statusMessage, setStatusMessage] = useState("");
 //   const [saving, setSaving] = useState(false);
-
-//   // Venta / comprobante persistidos
 //   const [saleRecord, setSaleRecord] = useState(null);
 //   const [receiptData, setReceiptData] = useState(null);
-
-//   // Mensajes auxiliares
 //   const [apiError, setApiError] = useState("");
 //   const [emailSentMessage, setEmailSentMessage] = useState("");
-
-//   /**
-//    * =========================
-//    * EFFECTS DE SEGURIDAD / UX
-//    * =========================
-//    */
 
 //   useEffect(() => {
 //     if (cartItems.length === 0) {
@@ -426,95 +495,24 @@
 //   }, [isAuthenticated, navigate]);
 
 //   const role = getUserRole(user);
-// const isSalesOperator = ["Administrador", "Farmaceuta"].includes(role);
-
-// useEffect(() => {
-//   if (role === "Cliente") {
-//     navigate("/checkout", { replace: true });
-//   }
-// }, [role, navigate]);
-
-// if (!isSalesOperator && role !== "Cliente") {
-//   return (
-//     <div className="min-h-screen px-4 py-8 text-label">
-//       <div className="max-w-3xl mx-auto bg-white/70 backdrop-blur-md rounded-3xl shadow-xl p-8">
-//         <div className="flex items-center gap-3 mb-4">
-//           <CircleAlert className="size-6" />
-//           <h1 className="text-2xl font-bold">
-//             Módulo de ventas restringido
-//           </h1>
-//         </div>
-
-//         <p className="mb-6">
-//           Esta vista está habilitada para los roles Administrador y Farmaceuta.
-//         </p>
-
-//         <div className="flex gap-3">
-//           <Button
-//             variant="secondary"
-//             size="sm"
-//             type="button"
-//             onClick={() => navigate("/cartshop/ver-carrito")}
-//           >
-//             Volver al carrito
-//           </Button>
-
-//           <Button
-//             variant="primary"
-//             size="sm"
-//             type="button"
-//             onClick={() => navigate("/")}
-//           >
-//             Ir al inicio
-//           </Button>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
+//   const isSalesOperator = ["Administrador", "Farmaceuta"].includes(role);
 
 //   useEffect(() => {
-//     if (!selectedCustomerId) {
-//       setSelectedCustomerMeta(null);
-//       return;
+//     if (role === "Cliente") {
+//       navigate("/checkout", { replace: true });
 //     }
+//   }, [role, navigate]);
 
-//     const currentCustomer = customerOptions.find(
-//       (item) => String(item.value) === String(selectedCustomerId)
-//     );
-
-//     setSelectedCustomerMeta(currentCustomer || null);
-
-//     if (deliveryMethod === "delivery" && currentCustomer) {
-//       setDeliveryForm((prev) => ({
-//         ...prev,
-//         deliveryPhone: prev.deliveryPhone || "",
-//       }));
-//     }
-//   }, [selectedCustomerId, customerOptions, deliveryMethod]);
-
-//   /**
-//    * =========================
-//    * CÁLCULOS DE RESUMEN
-//    * =========================
-//    */
 //   const discountValue = useMemo(() => {
 //     if (cartSubtotal >= 100000) {
 //       return 5000;
 //     }
-
 //     return 0;
 //   }, [cartSubtotal]);
 
 //   const deliveryFee = useMemo(() => {
-//     if (deliveryMethod === "delivery") {
-//       return 8000;
-//     }
-
-//     if (deliveryMethod === "pickup") {
-//       return 0;
-//     }
-
+//     if (deliveryMethod === "delivery") return 8000;
+//     if (deliveryMethod === "pickup") return 0;
 //     return 0;
 //   }, [deliveryMethod]);
 
@@ -527,11 +525,21 @@
 //     return Math.max(cartSubtotal - discountValue, 0) + ivaValue + deliveryFee;
 //   }, [cartSubtotal, discountValue, ivaValue, deliveryFee]);
 
-//   /**
-//    * =========================
-//    * CAMBIOS DE FORMULARIO
-//    * =========================
-//    */
+//   const cardVisualConfig = useMemo(() => {
+//     return getCardVisualConfig(paymentForm.cardNumber);
+//   }, [paymentForm.cardNumber]);
+
+//   const cardBrandName = useMemo(() => {
+//     return detectCardBrand(paymentForm.cardNumber);
+//   }, [paymentForm.cardNumber]);
+
+//   const cardProductLabel = useMemo(() => {
+//     return getCardProductLabel({
+//       cardType: paymentForm.cardType,
+//       cardNumber: paymentForm.cardNumber,
+//     });
+//   }, [paymentForm.cardType, paymentForm.cardNumber]);
+
 //   const handleDeliveryInputChange = (event) => {
 //     const { name, value } = event.target;
 
@@ -547,72 +555,74 @@
 //   };
 
 //   const handleCustomerLookupInputChange = (event) => {
-//   const { name, value } = event.target;
+//     const { name, value } = event.target;
 
-//   setCustomerLookupForm((prev) => ({
-//     ...prev,
-//     [name]: value,
-//   }));
+//     setCustomerLookupForm((prev) => ({
+//       ...prev,
+//       [name]: value,
+//     }));
 
-//   setCustomerLookupError("");
-//   setErrors((prev) => ({
-//     ...prev,
-//     customerId: "",
-//   }));
-// };
+//     setCustomerLookupError("");
+//     setErrors((prev) => ({
+//       ...prev,
+//       customerId: "",
+//     }));
+//   };
 
-// const handleSearchCustomer = async () => {
-//   if (!customerLookupForm.documentNumber.trim()) {
-//     setCustomerLookupError("Debes ingresar el número de documento.");
-//     return;
-//   }
+//   const handleSearchCustomer = async () => {
+//     if (!customerLookupForm.documentNumber.trim()) {
+//       setCustomerLookupError("Debes ingresar el número de documento.");
+//       return;
+//     }
 
-//   setCustomerLookupLoading(true);
-//   setCustomerLookupError("");
-
-//   try {
-//     const response = await fetchSalesCustomerByDocument({
-//       documentType: customerLookupForm.documentType,
-//       documentNumber: customerLookupForm.documentNumber,
-//     });
-
-//     const customer = mapSalesCustomerLookupResponse(response);
-
-//     setSelectedCustomerMeta(customer);
-//   } catch (error) {
+//     setCustomerLookupLoading(true);
+//     setCustomerLookupError("");
 //     setSelectedCustomerMeta(null);
-//     setCustomerLookupError(
-//       error?.error?.message || "No se encontró un cliente con ese documento."
-//     );
-//   } finally {
-//     setCustomerLookupLoading(false);
-//   }
-// };
+
+//     try {
+//       const response = await fetchSalesCustomerByDocument({
+//         documentType: customerLookupForm.documentType,
+//         documentNumber: customerLookupForm.documentNumber,
+//       });
+
+//       const customer = mapSalesCustomerLookupResponse(response);
+//       setSelectedCustomerMeta(customer);
+
+//       if (deliveryMethod === "delivery" && customer?.phone) {
+//         setDeliveryForm((prev) => ({
+//           ...prev,
+//           deliveryPhone: prev.deliveryPhone || customer.phone,
+//           deliveryAddress: prev.deliveryAddress || customer.address || "",
+//         }));
+//       }
+
+//       if (deliveryMethod === "pickup" && customer?.name) {
+//         setDeliveryForm((prev) => ({
+//           ...prev,
+//           pickupContactName: prev.pickupContactName || customer.name,
+//           pickupContactPhone: prev.pickupContactPhone || customer.phone || "",
+//         }));
+//       }
+//     } catch (error) {
+//       setSelectedCustomerMeta(null);
+//       setCustomerLookupError(
+//         error?.error?.message || "No se encontró un cliente con ese documento."
+//       );
+//     } finally {
+//       setCustomerLookupLoading(false);
+//     }
+//   };
 
 //   const handlePaymentInputChange = (event) => {
 //     const { name, value } = event.target;
-
 //     let nextValue = value;
 
-//     if (name === "cardNumber") {
-//       nextValue = formatCardNumber(value);
-//     }
-
-//     if (name === "cardExpiry") {
-//       nextValue = formatExpiry(value);
-//     }
-
-//     if (name === "cardCvv") {
-//       nextValue = onlyDigits(value).slice(0, 4);
-//     }
+//     if (name === "cardNumber") nextValue = formatCardNumber(value);
+//     if (name === "cardExpiry") nextValue = formatExpiry(value);
+//     if (name === "cardCvv") nextValue = onlyDigits(value).slice(0, 4);
 
 //     if (
-//       [
-//         "cardDocumentNumber",
-//         "transferDocumentNumber",
-//         "transferPhone",
-//         "cashReceived",
-//       ].includes(name)
+//       ["cardDocumentNumber", "transferDocumentNumber", "transferPhone", "cashReceived"].includes(name)
 //     ) {
 //       nextValue = onlyDigits(value);
 //     }
@@ -628,17 +638,12 @@
 //     }));
 //   };
 
-//   /**
-//    * =========================
-//    * VALIDACIONES
-//    * =========================
-//    */
 //   const validateDeliveryStep = () => {
 //     const nextErrors = {};
 
 //     if (!selectedCustomerMeta?.id) {
-//   nextErrors.customerId = "Debes consultar y seleccionar un cliente válido.";
-// }
+//       nextErrors.customerId = "Debes consultar y seleccionar un cliente válido.";
+//     }
 
 //     if (!deliveryMethod) {
 //       nextErrors.deliveryMethod = "Debes seleccionar una forma de entrega.";
@@ -648,11 +653,9 @@
 //       if (!deliveryForm.deliveryAddress.trim()) {
 //         nextErrors.deliveryAddress = "La dirección de entrega es obligatoria.";
 //       }
-
 //       if (!deliveryForm.deliveryCity.trim()) {
 //         nextErrors.deliveryCity = "La ciudad es obligatoria.";
 //       }
-
 //       if (!deliveryForm.deliveryPhone.trim()) {
 //         nextErrors.deliveryPhone = "El teléfono de contacto es obligatorio.";
 //       }
@@ -662,11 +665,9 @@
 //       if (!deliveryForm.pickupPoint.trim()) {
 //         nextErrors.pickupPoint = "Debes seleccionar un punto de entrega.";
 //       }
-
 //       if (!deliveryForm.pickupContactName.trim()) {
 //         nextErrors.pickupContactName = "El nombre de contacto es obligatorio.";
 //       }
-
 //       if (!deliveryForm.pickupContactPhone.trim()) {
 //         nextErrors.pickupContactPhone = "El teléfono de contacto es obligatorio.";
 //       }
@@ -688,7 +689,14 @@
 //         nextErrors.cardNumber = "El número de tarjeta es obligatorio.";
 //       }
 
-//       if (onlyDigits(paymentForm.cardNumber).length < 16) {
+//       const digitsLength = onlyDigits(paymentForm.cardNumber).length;
+//       const brand = detectCardBrand(paymentForm.cardNumber);
+
+//       if (brand === "American Express") {
+//         if (digitsLength < 15) {
+//           nextErrors.cardNumber = "La tarjeta American Express debe tener 15 dígitos.";
+//         }
+//       } else if (digitsLength < 16) {
 //         nextErrors.cardNumber = "La tarjeta debe tener 16 dígitos.";
 //       }
 
@@ -704,8 +712,9 @@
 //         nextErrors.cardCvv = "El CVV es obligatorio.";
 //       }
 
-//       if (paymentForm.cardCvv.length < 3) {
-//         nextErrors.cardCvv = "El CVV debe tener al menos 3 dígitos.";
+//       const minCvvLength = brand === "American Express" ? 4 : 3;
+//       if (paymentForm.cardCvv.length < minCvvLength) {
+//         nextErrors.cardCvv = `El CVV debe tener al menos ${minCvvLength} dígitos.`;
 //       }
 
 //       if (!paymentForm.cardDocumentType) {
@@ -725,15 +734,12 @@
 //       if (!paymentForm.transferBank) {
 //         nextErrors.transferBank = "Debes seleccionar un banco.";
 //       }
-
 //       if (!paymentForm.transferDocumentType) {
 //         nextErrors.transferDocumentType = "El tipo de documento es obligatorio.";
 //       }
-
 //       if (!paymentForm.transferDocumentNumber.trim()) {
 //         nextErrors.transferDocumentNumber = "El número de documento es obligatorio.";
 //       }
-
 //       if (!paymentForm.transferPhone.trim()) {
 //         nextErrors.transferPhone = "El teléfono es obligatorio.";
 //       }
@@ -743,7 +749,6 @@
 //       if (!paymentForm.cashReceived.trim()) {
 //         nextErrors.cashReceived = "Debes indicar el valor recibido.";
 //       }
-
 //       if (Number(paymentForm.cashReceived || 0) < grandTotal) {
 //         nextErrors.cashReceived = "El valor recibido no puede ser menor al total.";
 //       }
@@ -753,18 +758,8 @@
 //     return Object.keys(nextErrors).length === 0;
 //   };
 
-//   /**
-//    * =========================
-//    * NAVEGACIÓN DE PASOS
-//    * =========================
-//    */
 //   const handleContinueToPayment = () => {
-//     const isValid = validateDeliveryStep();
-
-//     if (!isValid) {
-//       return;
-//     }
-
+//     if (!validateDeliveryStep()) return;
 //     setCurrentStep(2);
 //   };
 
@@ -773,17 +768,8 @@
 //     setErrors({});
 //   };
 
-//   /**
-//    * =========================
-//    * PROCESAR PAGO REAL
-//    * =========================
-//    */
 //   const handleProcessPayment = async () => {
-//     const isValid = validatePaymentStep();
-
-//     if (!isValid) {
-//       return;
-//     }
+//     if (!validatePaymentStep()) return;
 
 //     setApiError("");
 //     setEmailSentMessage("");
@@ -810,23 +796,53 @@
 //         return;
 //       }
 
+//       if (gatewayDecision === "manual_review") {
+//         setPaymentStatus("pending_validation");
+//         setStatusMessage(
+//           "La transacción quedó en validación manual por la simulación de la pasarela. Revisa la tarjeta ingresada o aprueba el pago desde el flujo administrativo."
+//         );
+//         return;
+//       }
+
 //       const invoiceNumber = buildInvoiceNumber();
+//       const saleSubtotal = Number(cartSubtotal || 0);
+//       const saleDiscount = 0;
+//       const saleTotal = saleSubtotal + Number(ivaValue || 0) - saleDiscount;
+
+//       const normalizedLines = cartItems.map((item) => ({
+//         medicationId: Number(
+//           item.medicationId ??
+//           item.productId ??
+//           item.product?.id ??
+//           item.medication?.id
+//         ),
+//         quantity: Number(item.quantity),
+//       }));
+
+//       const hasInvalidMedicationId = normalizedLines.some(
+//         (line) => !Number.isInteger(line.medicationId) || line.medicationId <= 0
+//       );
+
+//       if (hasInvalidMedicationId) {
+//         setApiError("No se pudo identificar correctamente uno o más medicamentos del carrito.");
+//         setPaymentStatus("rejected");
+//         setStatusMessage("No se pudo identificar correctamente uno o más medicamentos del carrito.");
+//         setSaving(false);
+//         return;
+//       }
 
 //       const createBody = buildCreateSaleBody({
 //         invoiceNumber,
 //         customerId: Number(selectedCustomerMeta.id),
-//         subtotal: Math.max(cartSubtotal - discountValue, 0),
+//         subtotal: saleSubtotal,
 //         iva: ivaValue,
-//         discount: 0,
-//         total: grandTotal,
+//         discount: saleDiscount,
+//         total: saleTotal,
 //         paymentType: mapCheckoutPaymentToBackend({
 //           paymentMethod,
 //           cardType: paymentForm.cardType,
 //         }),
-//         lines: cartItems.map((item) => ({
-//           medicationId: item.id,
-//           quantity: item.quantity,
-//         })),
+//         lines: normalizedLines,
 //       });
 
 //       const createdResponse = await createSale(createBody);
@@ -854,15 +870,12 @@
 
 //       setSaleRecord(confirmedSale);
 //       setReceiptData(nextReceipt);
-
 //       setPaymentStatus("approved");
-//       setStatusMessage(
-//         "La venta fue creada y el pago quedó confirmado correctamente."
-//       );
-
+//       setStatusMessage("La venta fue creada y el pago quedó confirmado correctamente.");
 //       setCurrentStep(3);
 //       await clearActiveCart();
 //     } catch (error) {
+//       console.error("Error completo procesando venta:", error);
 //       const fields = error?.error?.fields;
 //       let message =
 //         error?.error?.message || "No se pudo procesar el pago de la venta.";
@@ -882,20 +895,12 @@
 //     }
 //   };
 
-//   /**
-//    * =========================
-//    * DESCARGA DE FACTURA REAL
-//    * =========================
-//    */
 //   const handleDownloadPdf = async () => {
-//     if (!saleRecord?.id) {
-//       return;
-//     }
+//     if (!saleRecord?.id) return;
 
 //     try {
 //       const response = await downloadSaleInvoice(saleRecord.id);
 //       const blob = await extractBlobPayload(response);
-
 //       triggerBlobDownload(
 //         blob,
 //         `factura_${saleRecord.invoiceNumber || saleRecord.id}.pdf`
@@ -907,29 +912,16 @@
 //     }
 //   };
 
-//   /**
-//    * =========================
-//    * ENVÍO DE CORREO
-//    * =========================
-//    *
-//    * En esta fase el correo real ya sale desde backend al crear la venta.
-//    * Aquí solo informamos al usuario de ello.
-//    */
 //   const handleSendReceiptByEmail = async () => {
 //     setEmailSentMessage(
 //       "La notificación al cliente se gestiona desde el backend al registrar la venta."
 //     );
 //   };
 
-//   /**
-//    * =========================
-//    * CERRAR MODAL DE ESTADO
-//    * =========================
-//    */
 //   const handleCloseStatusModal = () => {
 //     setIsStatusModalOpen(false);
 
-//     if (paymentStatus === "rejected") {
+//     if (paymentStatus === "rejected" || paymentStatus === "pending_validation") {
 //       setPaymentStatus("idle");
 //       setStatusMessage("");
 //       return;
@@ -940,17 +932,7 @@
 //     }
 //   };
 
-//   /**
-//    * =========================
-//    * VALIDACIÓN DE ROL
-//    * =========================
-//    *
-//    * Esta vista queda orientada al flujo de venta del personal autorizado,
-//    * en coherencia con el modelo y con los requerimientos de ventas.
-//    */
-//   const isSalesOperator = ["Administrador", "Farmaceuta"].includes(getUserRole(user));
-
-//   if (!isSalesOperator) {
+//   if (!isSalesOperator && role !== "Cliente") {
 //     return (
 //       <div className="min-h-screen px-4 py-8 text-label">
 //         <div className="max-w-3xl mx-auto bg-white/70 backdrop-blur-md rounded-3xl shadow-xl p-8">
@@ -962,8 +944,7 @@
 //           </div>
 
 //           <p className="mb-6">
-//             Esta vista de checkout y confirmación de pago está habilitada para los
-//             roles Administrador y Farmaceuta.
+//             Esta vista está habilitada para los roles Administrador y Farmaceuta.
 //           </p>
 
 //           <div className="flex gap-3">
@@ -990,15 +971,9 @@
 //     );
 //   }
 
-//   /**
-//    * =========================
-//    * RENDER PRINCIPAL
-//    * =========================
-//    */
 //   return (
 //     <div className="min-h-screen px-4 py-8 text-label">
 //       <div className="max-w-7xl mx-auto">
-//         {/* ENCABEZADO */}
 //         <div className="mb-6 rounded-3xl bg-white/70 backdrop-blur-md shadow-xl p-6">
 //           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
 //             <div>
@@ -1011,16 +986,8 @@
 //             </div>
 
 //             <div className="flex gap-2 flex-wrap">
-//               <StepBadge
-//                 active={currentStep === 1}
-//                 completed={currentStep > 1}
-//                 label="Entrega"
-//               />
-//               <StepBadge
-//                 active={currentStep === 2}
-//                 completed={currentStep > 2}
-//                 label="Pago"
-//               />
+//               <StepBadge active={currentStep === 1} completed={currentStep > 1} label="Entrega" />
+//               <StepBadge active={currentStep === 2} completed={currentStep > 2} label="Pago" />
 //               <StepBadge
 //                 active={currentStep === 3}
 //                 completed={currentStep >= 3 && paymentStatus === "approved"}
@@ -1030,10 +997,8 @@
 //           </div>
 //         </div>
 
-//         <div className="grid grid-cols-1 xl:grid-cols-[1.35fr_0.95fr] gap-6">
-//           {/* COLUMNA IZQUIERDA */}
+//         <div className="grid grid-cols-1 xl:grid-cols-[1.35fr_0.95fr] gap-6 items-start">
 //           <div className="space-y-6">
-//             {/* PASO 1 */}
 //             <section className="bg-white/70 backdrop-blur-md shadow-xl rounded-3xl p-6">
 //               <div className="flex items-center gap-3 mb-4">
 //                 <PackageSectionIcon currentStep={currentStep} />
@@ -1042,16 +1007,10 @@
 //                     1. Cliente y método de entrega
 //                   </h2>
 //                   <p className="text-sm">
-//                     Selecciona el cliente y define cómo se entregará el pedido.
+//                     Consulta el cliente por documento y define cómo se entregará el pedido.
 //                   </p>
 //                 </div>
 //               </div>
-
-//               {customersError ? (
-//                 <p className="mb-4 text-sm text-red-600" role="alert">
-//                   {customersError}
-//                 </p>
-//               ) : null}
 
 //               <div className="grid grid-cols-1 md:grid-cols-[180px_1fr_auto] gap-4 mb-2">
 //                 <Select
@@ -1090,22 +1049,14 @@
 //                 <div className="rounded-2xl border border-border-strong bg-white/60 p-4 mb-4">
 //                   <h3 className="font-semibold mb-2">Cliente encontrado</h3>
 //                   <div className="space-y-1 text-sm">
-//                     <p>
-//                       <span className="font-medium">Nombre:</span> {selectedCustomerMeta.name}
-//                     </p>
-//                     <p>
-//                       <span className="font-medium">Correo:</span> {selectedCustomerMeta.email}
-//                     </p>
+//                     <p><span className="font-medium">Nombre:</span> {selectedCustomerMeta.name}</p>
+//                     <p><span className="font-medium">Correo:</span> {selectedCustomerMeta.email}</p>
 //                     <p>
 //                       <span className="font-medium">Documento:</span>{" "}
 //                       {selectedCustomerMeta.documentType} {selectedCustomerMeta.documentNumber}
 //                     </p>
-//                     <p>
-//                       <span className="font-medium">Teléfono:</span> {selectedCustomerMeta.phone}
-//                     </p>
-//                     <p>
-//                       <span className="font-medium">Dirección:</span> {selectedCustomerMeta.address}
-//                     </p>
+//                     <p><span className="font-medium">Teléfono:</span> {selectedCustomerMeta.phone}</p>
+//                     <p><span className="font-medium">Dirección:</span> {selectedCustomerMeta.address}</p>
 //                   </div>
 //                 </div>
 //               ) : null}
@@ -1121,10 +1072,7 @@
 //                       type="button"
 //                       onClick={() => {
 //                         setDeliveryMethod(option.value);
-//                         setErrors((prev) => ({
-//                           ...prev,
-//                           deliveryMethod: "",
-//                         }));
+//                         setErrors((prev) => ({ ...prev, deliveryMethod: "" }));
 //                       }}
 //                       className={`
 //                         rounded-2xl border p-4 text-left transition
@@ -1137,7 +1085,6 @@
 //                         <Icon className="size-5" />
 //                         <span className="font-semibold">{option.label}</span>
 //                       </div>
-
 //                       <p className="text-sm">{option.description}</p>
 //                     </button>
 //                   );
@@ -1231,7 +1178,6 @@
 //               </div>
 //             </section>
 
-//             {/* PASO 2 */}
 //             {currentStep >= 2 && (
 //               <section className="bg-white/70 backdrop-blur-md shadow-xl rounded-3xl p-6">
 //                 <div className="flex items-center gap-3 mb-4">
@@ -1257,10 +1203,7 @@
 //                         type="button"
 //                         onClick={() => {
 //                           setPaymentMethod(option.value);
-//                           setErrors((prev) => ({
-//                             ...prev,
-//                             paymentMethod: "",
-//                           }));
+//                           setErrors((prev) => ({ ...prev, paymentMethod: "" }));
 //                         }}
 //                         className={`
 //                           rounded-2xl border p-4 text-left transition
@@ -1273,7 +1216,6 @@
 //                           <Icon className="size-5" />
 //                           <span className="font-semibold">{option.label}</span>
 //                         </div>
-
 //                         <p className="text-sm">{option.description}</p>
 //                       </button>
 //                     );
@@ -1459,70 +1401,128 @@
 //             )}
 //           </div>
 
-//           {/* COLUMNA DERECHA */}
-//           <div className="space-y-6">
-//             {paymentMethod === "card" && (
-//               <SaleCardPreview
-//                 cardNumber={paymentForm.cardNumber}
-//                 cardHolder={paymentForm.cardHolder}
-//                 cardExpiry={paymentForm.cardExpiry}
-//                 bankName={detectCardBank(paymentForm.cardNumber)}
-//                 brandName={detectCardBrand(paymentForm.cardNumber)}
-//                 gradientClasses={getCardPreviewClasses(paymentForm.cardNumber)}
-//               />
-//             )}
+         
+//           {/* COLUMNA DERECHA FIJA COMPLETA */}
+//           <div className="self-start">
+//             <aside className="xl:sticky xl:top-[120px]">
+//               <section
+//                   className="
+//                     rounded-3xl
+//                     border border-white/40
+//                     bg-white/75
+//                     backdrop-blur-md
+//                     shadow-xl
+//                     p-6
+//                     transition-all duration-300
+//                     mb-10
+//                   "
+//                 >
+//                   <div className="flex items-center gap-3 mb-5">
+//                     <div className="flex size-10 items-center justify-center rounded-2xl bg-white/80 shadow-sm">
+//                       <Wallet className="size-5" />
+//                     </div>
 
-//             <section className="rounded-3xl bg-white/70 backdrop-blur-md shadow-xl p-6">
-//               <div className="flex items-center gap-3 mb-4">
-//                 <Wallet className="size-5" />
-//                 <div>
-//                   <h3 className="text-lg font-bold">Resumen de la venta</h3>
-//                   <p className="text-sm text-label/80">
-//                     Información consolidada del checkout.
-//                   </p>
-//                 </div>
-//               </div>
+//                     <div>
+//                       <h3 className="text-lg font-bold tracking-tight">
+//                         Resumen de la venta
+//                       </h3>
+//                       <p className="text-sm text-label/70">
+//                         Información consolidada del checkout.
+//                       </p>
+//                     </div>
+//                   </div>
 
-//               <div className="space-y-3">
-//                 <SummaryRow
-//                   label="Cliente"
-//                   value={selectedCustomerMeta?.name || "—"}
-//                 />
-//                 <SummaryRow
-//                   label="Vendedor"
-//                   value={getUserName(user) || "—"}
-//                 />
-//                 <SummaryRow label="Ítems" value={String(cartCount)} />
-//                 <SummaryRow
-//                   label="Subtotal"
-//                   value={`$${formatCurrency(cartSubtotal)}`}
-//                 />
-//                 <SummaryRow
-//                   label="Descuento"
-//                   value={`$${formatCurrency(discountValue)}`}
-//                 />
-//                 <SummaryRow
-//                   label="IVA"
-//                   value={`$${formatCurrency(ivaValue)}`}
-//                 />
-//                 <SummaryRow
-//                   label="Envío"
-//                   value={`$${formatCurrency(deliveryFee)}`}
-//                 />
-//                 <div className="pt-3 border-t border-border-strong">
-//                   <SummaryRow
-//                     label="Total"
-//                     value={`$${formatCurrency(grandTotal)}`}
-//                     strong={true}
-//                   />
-//                 </div>
+//                   <div className="space-y-3">
+//                     <SummaryRow
+//                       label="Cliente"
+//                       value={selectedCustomerMeta?.name || "—"}
+//                     />
+//                     <SummaryRow
+//                       label="Vendedor"
+//                       value={getUserName(user) || "—"}
+//                     />
+//                     <SummaryRow
+//                       label="Ítems"
+//                       value={String(cartCount)}
+//                     />
+//                     <SummaryRow
+//                       label="Subtotal"
+//                       value={`$${formatCurrency(cartSubtotal)}`}
+//                     />
+//                     <SummaryRow
+//                       label="Descuento"
+//                       value={`$${formatCurrency(discountValue)}`}
+//                     />
+//                     <SummaryRow
+//                       label="IVA"
+//                       value={`$${formatCurrency(ivaValue)}`}
+//                     />
+//                     <SummaryRow
+//                       label="Envío"
+//                       value={`$${formatCurrency(deliveryFee)}`}
+//                     />
+
+//                     <div className="pt-4 mt-4 border-t border-border-strong">
+//                       <SummaryRow
+//                         label="Total"
+//                         value={`$${formatCurrency(grandTotal)}`}
+//                         strong={true}
+//                       />
+//                     </div>
+//                   </div>
+
+//                   {paymentMethod && (
+//                     <div className="mt-5 rounded-2xl bg-white/70 border border-white/40 p-4">
+//                       <p className="text-xs uppercase tracking-wide text-label/60 mb-2">
+//                         Método seleccionado
+//                       </p>
+//                       <p className="text-sm font-medium text-label">
+//                         {paymentMethod === "card"
+//                           ? `Tarjeta ${paymentForm.cardType === "debit" ? "débito" : "crédito"}`
+//                           : paymentMethod === "transfer"
+//                           ? "Transferencia / PSE"
+//                           : paymentMethod === "cash"
+//                           ? "Efectivo"
+//                           : "Sin definir"}
+//                       </p>
+//                     </div>
+//                   )}
+//                 </section>
+//               <div
+//                 className="
+//                   checkout-side-scroll
+//                   space-y-5
+//                   xl:max-h-[calc(200vh-140px)]
+//                   xl:overflow-y-auto
+//                   xl:pr-2
+//                 "
+//               >
+//                 {currentStep >= 2 && paymentMethod === "card" && (
+//                   <div className="transition-all duration-300">
+//                     <SaleCardPreview
+//                       cardNumber={paymentForm.cardNumber}
+//                       cardHolder={paymentForm.cardHolder}
+//                       cardExpiry={paymentForm.cardExpiry}
+//                       bankName={cardVisualConfig.displayName}
+//                       brandName={cardBrandName}
+//                       gradientClasses={cardVisualConfig.gradientClasses}
+//                       issuerLabel={cardVisualConfig.issuerLabel}
+//                       accentText={cardVisualConfig.accentText}
+//                       chipToneClasses={cardVisualConfig.chipToneClasses}
+//                       textToneClasses={cardVisualConfig.textToneClasses}
+//                       productLabel={cardProductLabel}
+//                       cardType={paymentForm.cardType}
+//                     />
+//                   </div>
+//                 )}
+
+                
 //               </div>
-//             </section>
+//             </aside>
 //           </div>
 //         </div>
 //       </div>
 
-//       {/* MODAL DE ESTADO / RESULTADO */}
 //       <Modal
 //         isOpen={isStatusModalOpen}
 //         onClose={handleCloseStatusModal}
@@ -1544,26 +1544,11 @@
 //               </h4>
 
 //               <div className="space-y-2 text-sm">
-//                 <SummaryRow
-//                   label="Factura"
-//                   value={receiptData.invoiceNumber}
-//                 />
-//                 <SummaryRow
-//                   label="Fecha"
-//                   value={receiptData.createdAt}
-//                 />
-//                 <SummaryRow
-//                   label="Cliente"
-//                   value={receiptData.customerName}
-//                 />
-//                 <SummaryRow
-//                   label="Método de pago"
-//                   value={receiptData.paymentMethod}
-//                 />
-//                 <SummaryRow
-//                   label="Estado"
-//                   value={receiptData.paymentStatus}
-//                 />
+//                 <SummaryRow label="Factura" value={receiptData.invoiceNumber} />
+//                 <SummaryRow label="Fecha" value={receiptData.createdAt} />
+//                 <SummaryRow label="Cliente" value={receiptData.customerName} />
+//                 <SummaryRow label="Método de pago" value={receiptData.paymentMethod} />
+//                 <SummaryRow label="Estado" value={receiptData.paymentStatus} />
 //                 <SummaryRow
 //                   label="Total"
 //                   value={`$${formatCurrency(receiptData.total)}`}
@@ -1617,13 +1602,6 @@
 //   );
 // }
 
-// /**
-//  * =========================
-//  * SUBCOMPONENTES LOCALES
-//  * =========================
-//  */
-
-// // Badge visual del paso
 // function StepBadge({ label, active, completed }) {
 //   return (
 //     <div
@@ -1641,21 +1619,32 @@
 //   );
 // }
 
-// // Fila del resumen
 // function SummaryRow({ label, value, strong = false }) {
 //   return (
 //     <div className="flex items-center justify-between gap-4">
-//       <span className={strong ? "font-bold text-label" : "text-gray-700"}>
+//       <span
+//         className={
+//           strong
+//             ? "font-bold text-label"
+//             : "text-gray-700 text-[15px]"
+//         }
+//       >
 //         {label}
 //       </span>
-//       <span className={strong ? "font-bold text-label" : "text-gray-700"}>
+
+//       <span
+//         className={
+//           strong
+//             ? "font-bold text-label text-right text-[15px]"
+//             : "text-gray-700 text-right text-[15px]"
+//         }
+//       >
 //         {value}
 //       </span>
 //     </div>
 //   );
 // }
 
-// // Icono visual de la sección entrega
 // function PackageSectionIcon({ currentStep }) {
 //   if (currentStep > 1) {
 //     return <BadgeCheck className="size-5" />;
@@ -1718,7 +1707,6 @@ import SaleCardPreview from "@/features/sales/components/SaleCardPreview";
  * =========================
  */
 
-// Métodos de entrega
 const DELIVERY_METHODS = [
   {
     id: "delivery",
@@ -1736,7 +1724,6 @@ const DELIVERY_METHODS = [
   },
 ];
 
-// Métodos de pago alineados con backend
 const PAYMENT_METHODS = [
   {
     id: "cash",
@@ -1761,7 +1748,6 @@ const PAYMENT_METHODS = [
   },
 ];
 
-// Bancos para transferencia / PSE
 const TRANSFER_BANK_OPTIONS = [
   { id: "bancolombia", value: "bancolombia", label: "Bancolombia" },
   { id: "bbva", value: "bbva", label: "BBVA" },
@@ -1773,7 +1759,6 @@ const TRANSFER_BANK_OPTIONS = [
   { id: "nequi", value: "nequi", label: "Nequi" },
 ];
 
-// Tipos de documento
 const DOCUMENT_TYPE_OPTIONS = [
   { id: "CC", value: "CC", label: "CC" },
   { id: "CE", value: "CE", label: "CE" },
@@ -1783,7 +1768,6 @@ const DOCUMENT_TYPE_OPTIONS = [
   { id: "PPT", value: "PPT", label: "PPT" },
 ];
 
-// Cuotas
 const INSTALLMENT_OPTIONS = [
   { id: "1", value: "1", label: "1 cuota" },
   { id: "2", value: "2", label: "2 cuotas" },
@@ -1792,11 +1776,141 @@ const INSTALLMENT_OPTIONS = [
   { id: "12", value: "12", label: "12 cuotas" },
 ];
 
-/**
- * =========================
- * UTILIDADES LOCALES
- * =========================
- */
+const CARD_BANK_VISUALS = {
+  bancolombia: {
+    code: "bancolombia",
+    bankName: "Bancolombia",
+    displayName: "Bancolombia",
+    issuerLabel: "Visa / Mastercard",
+    gradientClasses: "from-[#F9C606] via-[#0F5DAA] to-[#003B7A]",
+    chipToneClasses: "from-yellow-100 to-yellow-300",
+    textToneClasses: "text-white",
+    accentText: "Tu mano amiga",
+  },
+  bbva: {
+    code: "bbva",
+    bankName: "BBVA",
+    displayName: "BBVA",
+    issuerLabel: "Visa / Mastercard",
+    gradientClasses: "from-[#072146] via-[#004481] to-[#2DCCCD]",
+    chipToneClasses: "from-slate-100 to-slate-300",
+    textToneClasses: "text-white",
+    accentText: "Creando oportunidades",
+  },
+  davivienda: {
+    code: "davivienda",
+    bankName: "Davivienda",
+    displayName: "Davivienda",
+    issuerLabel: "Visa / Mastercard",
+    gradientClasses: "from-[#8B0000] via-[#C62828] to-[#E57373]",
+    chipToneClasses: "from-red-100 to-red-300",
+    textToneClasses: "text-white",
+    accentText: "Lugar de su dinero",
+  },
+  bogota: {
+    code: "bogota",
+    bankName: "Banco de Bogotá",
+    displayName: "Banco de Bogotá",
+    issuerLabel: "Visa / Mastercard",
+    gradientClasses: "from-[#9E0B0F] via-[#C62828] to-[#F28B82]",
+    chipToneClasses: "from-rose-100 to-rose-300",
+    textToneClasses: "text-white",
+    accentText: "Grupo Aval",
+  },
+  occidente: {
+    code: "occidente",
+    bankName: "Banco de Occidente",
+    displayName: "Banco de Occidente",
+    issuerLabel: "Visa / Mastercard",
+    gradientClasses: "from-[#7B1FA2] via-[#8E24AA] to-[#CE93D8]",
+    chipToneClasses: "from-fuchsia-100 to-fuchsia-300",
+    textToneClasses: "text-white",
+    accentText: "Grupo Aval",
+  },
+  avvillas: {
+    code: "avvillas",
+    bankName: "AV Villas",
+    displayName: "AV Villas",
+    issuerLabel: "Visa / Mastercard",
+    gradientClasses: "from-[#1E3A8A] via-[#2563EB] to-[#93C5FD]",
+    chipToneClasses: "from-blue-100 to-blue-300",
+    textToneClasses: "text-white",
+    accentText: "Grupo Aval",
+  },
+  itau: {
+    code: "itau",
+    bankName: "Itaú",
+    displayName: "Itaú",
+    issuerLabel: "Visa / Mastercard",
+    gradientClasses: "from-[#FF6F00] via-[#EF6C00] to-[#6D4C41]",
+    chipToneClasses: "from-orange-100 to-orange-300",
+    textToneClasses: "text-white",
+    accentText: "Hecho para ti",
+  },
+  nequi: {
+    code: "nequi",
+    bankName: "Nequi",
+    displayName: "Nequi",
+    issuerLabel: "Mastercard",
+    gradientClasses: "from-[#1F102E] via-[#7B1FA2] to-[#E91E63]",
+    chipToneClasses: "from-purple-100 to-pink-300",
+    textToneClasses: "text-white",
+    accentText: "Saca tu plata",
+  },
+  amex: {
+    code: "amex",
+    bankName: "American Express",
+    displayName: "American Express",
+    issuerLabel: "American Express",
+    gradientClasses: "from-[#0A3D62] via-[#1E88E5] to-[#7FDBFF]",
+    chipToneClasses: "from-cyan-100 to-cyan-300",
+    textToneClasses: "text-white",
+    accentText: "Membership Rewards",
+  },
+  visa_generic: {
+    code: "visa_generic",
+    bankName: "Visa",
+    displayName: "Visa",
+    issuerLabel: "Visa",
+    gradientClasses: "from-[#1A1F71] via-[#1434CB] to-[#5C6BC0]",
+    chipToneClasses: "from-indigo-100 to-indigo-300",
+    textToneClasses: "text-white",
+    accentText: "Secure card",
+  },
+  mastercard_generic: {
+    code: "mastercard_generic",
+    bankName: "Mastercard",
+    displayName: "Mastercard",
+    issuerLabel: "Mastercard",
+    gradientClasses: "from-[#111827] via-[#EA580C] to-[#F59E0B]",
+    chipToneClasses: "from-orange-100 to-orange-300",
+    textToneClasses: "text-white",
+    accentText: "Priceless",
+  },
+  generic: {
+    code: "generic",
+    bankName: "Entidad financiera",
+    displayName: "Tarjeta bancaria",
+    issuerLabel: "Red bancaria",
+    gradientClasses: "from-slate-800 via-slate-700 to-slate-500",
+    chipToneClasses: "from-slate-200 to-slate-400",
+    textToneClasses: "text-white",
+    accentText: "Pago seguro",
+  },
+};
+
+const CARD_BIN_RULES = [
+  { bank: "bbva", pattern: /^(457562|4558|4110|450995)/ },
+  { bank: "bancolombia", pattern: /^(528209|530373|552244|451714|438935)/ },
+  { bank: "davivienda", pattern: /^(402360|451760|457659|409171)/ },
+  { bank: "bogota", pattern: /^(457676|457677|427099|450851)/ },
+  { bank: "occidente", pattern: /^(450942|529612)/ },
+  { bank: "avvillas", pattern: /^(454812|491602|498765)/ },
+  { bank: "itau", pattern: /^(451357|406984|637095)/ },
+  { bank: "nequi", pattern: /^(529899|524347|636143)/ },
+];
+
+
 
 function formatCurrency(value) {
   return Number(value || 0).toLocaleString("es-CO");
@@ -1831,38 +1945,60 @@ function detectCardBrand(cardNumber = "") {
   return "Tarjeta";
 }
 
-function detectCardBank(cardNumber = "") {
+function detectCardBankCode(cardNumber = "") {
   const digits = onlyDigits(cardNumber);
 
-  if (/^(457562|4558|4110)/.test(digits)) return "BBVA";
-  if (/^(528209|530373|552244)/.test(digits)) return "Bancolombia";
-  if (/^(402360|450995|451760)/.test(digits)) return "Davivienda";
-  if (/^(451714|438935)/.test(digits)) return "Banco de Bogotá";
+  for (const rule of CARD_BIN_RULES) {
+    if (rule.pattern.test(digits)) {
+      return rule.bank;
+    }
+  }
 
-  return "Entidad financiera";
+  const brand = detectCardBrand(digits);
+
+  if (brand === "American Express") return "amex";
+  if (brand === "Visa") return "visa_generic";
+  if (brand === "Mastercard") return "mastercard_generic";
+
+  return "generic";
 }
 
-function getCardPreviewClasses(cardNumber = "") {
-  const bank = detectCardBank(cardNumber);
+function getCardVisualConfig(cardNumber = "") {
+  const bankCode = detectCardBankCode(cardNumber);
+  return CARD_BANK_VISUALS[bankCode] || CARD_BANK_VISUALS.generic;
+}
+
+function getCardProductLabel({ cardType = "debit", cardNumber = "" }) {
   const brand = detectCardBrand(cardNumber);
+  const bankCode = detectCardBankCode(cardNumber);
 
-  if (bank === "BBVA") return "from-blue-900 to-sky-500";
-  if (bank === "Bancolombia") return "from-yellow-500 to-blue-700";
-  if (bank === "Davivienda") return "from-red-700 to-red-400";
-  if (bank === "Banco de Bogotá") return "from-red-900 to-rose-500";
-  if (brand === "American Express") return "from-slate-800 to-cyan-600";
-  if (brand === "Visa") return "from-indigo-900 to-blue-500";
-  if (brand === "Mastercard") return "from-zinc-900 to-orange-500";
+  if (cardType === "debit") {
+    if (bankCode === "nequi") return "Débito digital";
+    return "Débito";
+  }
 
-  return "from-slate-800 to-slate-500";
+  if (brand === "American Express") return "Gold";
+  if (bankCode === "bancolombia") return "Clásica";
+  if (bankCode === "bbva") return "Gold";
+  if (bankCode === "davivienda") return "Platinum";
+  if (brand === "Visa") return "Classic";
+  if (brand === "Mastercard") return "Gold";
+
+  return "Crédito";
 }
 
 function simulateGatewayDecision({ paymentMethod, cardNumber, documentNumber }) {
   const safeCardNumber = onlyDigits(cardNumber);
   const safeDocumentNumber = onlyDigits(documentNumber);
 
-  if (paymentMethod === "card" && safeCardNumber.endsWith("0")) {
-    return "rejected";
+  if (paymentMethod === "card") {
+    if (safeCardNumber.endsWith("00")) {
+      return "rejected";
+    }
+
+    if (safeCardNumber.endsWith("13")) {
+      return "manual_review";
+    }
   }
 
   if (paymentMethod === "transfer" && safeDocumentNumber.endsWith("0")) {
@@ -1908,36 +2044,15 @@ function mapCheckoutPaymentToBackend({ paymentMethod, cardType }) {
   return "Tarjeta crédito";
 }
 
-/**
- * Intenta extraer un Blob independientemente del tipo de cliente HTTP.
- */
 async function extractBlobPayload(response) {
-  if (!response) {
-    return null;
-  }
-
-  if (response instanceof Blob) {
-    return response;
-  }
-
-  if (response.data instanceof Blob) {
-    return response.data;
-  }
-
-  if (typeof response.blob === "function") {
-    return await response.blob();
-  }
-
-  if (response.body instanceof Blob) {
-    return response.body;
-  }
-
+  if (!response) return null;
+  if (response instanceof Blob) return response;
+  if (response.data instanceof Blob) return response.data;
+  if (typeof response.blob === "function") return await response.blob();
+  if (response.body instanceof Blob) return response.body;
   return null;
 }
 
-/**
- * Fuerza la descarga del archivo en navegador.
- */
 function triggerBlobDownload(blob, filename) {
   if (!(blob instanceof Blob)) {
     console.error("La respuesta no es un Blob válido:", blob);
@@ -1946,29 +2061,17 @@ function triggerBlobDownload(blob, filename) {
 
   const url = window.URL.createObjectURL(blob);
   const anchor = document.createElement("a");
-
   anchor.href = url;
   anchor.download = filename || "archivo.pdf";
   document.body.appendChild(anchor);
   anchor.click();
   anchor.remove();
-
   window.URL.revokeObjectURL(url);
 }
 
-/**
- * =========================
- * COMPONENTE PRINCIPAL
- * =========================
- */
 export default function ElectronicInvoiceSalesPage() {
   const navigate = useNavigate();
 
-  /**
-   * =========================
-   * CONTEXTOS REALES
-   * =========================
-   */
   const {
     cartItems,
     cartCount,
@@ -1978,14 +2081,9 @@ export default function ElectronicInvoiceSalesPage() {
 
   const { user, isAuthenticated } = useAuth();
 
-  /**
-   * =========================
-   * ESTADOS DEL CHECKOUT
-   * =========================
-   */
   const [currentStep, setCurrentStep] = useState(1);
+  const [isCardBackVisible, setIsCardBackVisible] = useState(false);
 
-  // Búsqueda manual de cliente por documento
   const [customerLookupForm, setCustomerLookupForm] = useState({
     documentType: "CC",
     documentNumber: "",
@@ -1995,10 +2093,8 @@ export default function ElectronicInvoiceSalesPage() {
   const [customerLookupLoading, setCustomerLookupLoading] = useState(false);
   const [customerLookupError, setCustomerLookupError] = useState("");
 
-  // Método de entrega
   const [deliveryMethod, setDeliveryMethod] = useState("");
 
-  // Datos de entrega
   const [deliveryForm, setDeliveryForm] = useState({
     deliveryAddress: "",
     deliveryCity: "Bogotá",
@@ -2008,10 +2104,8 @@ export default function ElectronicInvoiceSalesPage() {
     pickupContactPhone: "",
   });
 
-  // Método de pago
   const [paymentMethod, setPaymentMethod] = useState("");
 
-  // Datos de pago
   const [paymentForm, setPaymentForm] = useState({
     cardType: "debit",
     cardNumber: "",
@@ -2030,28 +2124,15 @@ export default function ElectronicInvoiceSalesPage() {
     cashReceived: "",
   });
 
-  // Errores
   const [errors, setErrors] = useState({});
-
-  // Estado general de procesamiento
   const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState("idle");
   const [statusMessage, setStatusMessage] = useState("");
   const [saving, setSaving] = useState(false);
-
-  // Venta / comprobante persistidos
   const [saleRecord, setSaleRecord] = useState(null);
   const [receiptData, setReceiptData] = useState(null);
-
-  // Mensajes auxiliares
   const [apiError, setApiError] = useState("");
   const [emailSentMessage, setEmailSentMessage] = useState("");
-
-  /**
-   * =========================
-   * EFFECTS DE SEGURIDAD / UX
-   * =========================
-   */
 
   useEffect(() => {
     if (cartItems.length === 0) {
@@ -2071,10 +2152,6 @@ export default function ElectronicInvoiceSalesPage() {
     }
   }, [isAuthenticated, navigate]);
 
-  /**
-   * Si un cliente llega por error a esta ruta administrativa,
-   * se redirige al flujo web de checkout.
-   */
   const role = getUserRole(user);
   const isSalesOperator = ["Administrador", "Farmaceuta"].includes(role);
 
@@ -2084,28 +2161,16 @@ export default function ElectronicInvoiceSalesPage() {
     }
   }, [role, navigate]);
 
-  /**
-   * =========================
-   * CÁLCULOS DE RESUMEN
-   * =========================
-   */
   const discountValue = useMemo(() => {
     if (cartSubtotal >= 100000) {
       return 5000;
     }
-
     return 0;
   }, [cartSubtotal]);
 
   const deliveryFee = useMemo(() => {
-    if (deliveryMethod === "delivery") {
-      return 8000;
-    }
-
-    if (deliveryMethod === "pickup") {
-      return 0;
-    }
-
+    if (deliveryMethod === "delivery") return 8000;
+    if (deliveryMethod === "pickup") return 0;
     return 0;
   }, [deliveryMethod]);
 
@@ -2118,11 +2183,21 @@ export default function ElectronicInvoiceSalesPage() {
     return Math.max(cartSubtotal - discountValue, 0) + ivaValue + deliveryFee;
   }, [cartSubtotal, discountValue, ivaValue, deliveryFee]);
 
-  /**
-   * =========================
-   * CAMBIOS DE FORMULARIO
-   * =========================
-   */
+  const cardVisualConfig = useMemo(() => {
+    return getCardVisualConfig(paymentForm.cardNumber);
+  }, [paymentForm.cardNumber]);
+
+  const cardBrandName = useMemo(() => {
+    return detectCardBrand(paymentForm.cardNumber);
+  }, [paymentForm.cardNumber]);
+
+  const cardProductLabel = useMemo(() => {
+    return getCardProductLabel({
+      cardType: paymentForm.cardType,
+      cardNumber: paymentForm.cardNumber,
+    });
+  }, [paymentForm.cardType, paymentForm.cardNumber]);
+
   const handleDeliveryInputChange = (event) => {
     const { name, value } = event.target;
 
@@ -2152,9 +2227,6 @@ export default function ElectronicInvoiceSalesPage() {
     }));
   };
 
-  /**
-   * Busca cliente por tipo y número de documento.
-   */
   const handleSearchCustomer = async () => {
     if (!customerLookupForm.documentNumber.trim()) {
       setCustomerLookupError("Debes ingresar el número de documento.");
@@ -2172,7 +2244,6 @@ export default function ElectronicInvoiceSalesPage() {
       });
 
       const customer = mapSalesCustomerLookupResponse(response);
-
       setSelectedCustomerMeta(customer);
 
       if (deliveryMethod === "delivery" && customer?.phone) {
@@ -2202,28 +2273,14 @@ export default function ElectronicInvoiceSalesPage() {
 
   const handlePaymentInputChange = (event) => {
     const { name, value } = event.target;
-
     let nextValue = value;
 
-    if (name === "cardNumber") {
-      nextValue = formatCardNumber(value);
-    }
-
-    if (name === "cardExpiry") {
-      nextValue = formatExpiry(value);
-    }
-
-    if (name === "cardCvv") {
-      nextValue = onlyDigits(value).slice(0, 4);
-    }
+    if (name === "cardNumber") nextValue = formatCardNumber(value);
+    if (name === "cardExpiry") nextValue = formatExpiry(value);
+    if (name === "cardCvv") nextValue = onlyDigits(value).slice(0, 4);
 
     if (
-      [
-        "cardDocumentNumber",
-        "transferDocumentNumber",
-        "transferPhone",
-        "cashReceived",
-      ].includes(name)
+      ["cardDocumentNumber", "transferDocumentNumber", "transferPhone", "cashReceived"].includes(name)
     ) {
       nextValue = onlyDigits(value);
     }
@@ -2239,11 +2296,6 @@ export default function ElectronicInvoiceSalesPage() {
     }));
   };
 
-  /**
-   * =========================
-   * VALIDACIONES
-   * =========================
-   */
   const validateDeliveryStep = () => {
     const nextErrors = {};
 
@@ -2259,11 +2311,9 @@ export default function ElectronicInvoiceSalesPage() {
       if (!deliveryForm.deliveryAddress.trim()) {
         nextErrors.deliveryAddress = "La dirección de entrega es obligatoria.";
       }
-
       if (!deliveryForm.deliveryCity.trim()) {
         nextErrors.deliveryCity = "La ciudad es obligatoria.";
       }
-
       if (!deliveryForm.deliveryPhone.trim()) {
         nextErrors.deliveryPhone = "El teléfono de contacto es obligatorio.";
       }
@@ -2273,11 +2323,9 @@ export default function ElectronicInvoiceSalesPage() {
       if (!deliveryForm.pickupPoint.trim()) {
         nextErrors.pickupPoint = "Debes seleccionar un punto de entrega.";
       }
-
       if (!deliveryForm.pickupContactName.trim()) {
         nextErrors.pickupContactName = "El nombre de contacto es obligatorio.";
       }
-
       if (!deliveryForm.pickupContactPhone.trim()) {
         nextErrors.pickupContactPhone = "El teléfono de contacto es obligatorio.";
       }
@@ -2299,7 +2347,14 @@ export default function ElectronicInvoiceSalesPage() {
         nextErrors.cardNumber = "El número de tarjeta es obligatorio.";
       }
 
-      if (onlyDigits(paymentForm.cardNumber).length < 16) {
+      const digitsLength = onlyDigits(paymentForm.cardNumber).length;
+      const brand = detectCardBrand(paymentForm.cardNumber);
+
+      if (brand === "American Express") {
+        if (digitsLength < 15) {
+          nextErrors.cardNumber = "La tarjeta American Express debe tener 15 dígitos.";
+        }
+      } else if (digitsLength < 16) {
         nextErrors.cardNumber = "La tarjeta debe tener 16 dígitos.";
       }
 
@@ -2315,8 +2370,9 @@ export default function ElectronicInvoiceSalesPage() {
         nextErrors.cardCvv = "El CVV es obligatorio.";
       }
 
-      if (paymentForm.cardCvv.length < 3) {
-        nextErrors.cardCvv = "El CVV debe tener al menos 3 dígitos.";
+      const minCvvLength = brand === "American Express" ? 4 : 3;
+      if (paymentForm.cardCvv.length < minCvvLength) {
+        nextErrors.cardCvv = `El CVV debe tener al menos ${minCvvLength} dígitos.`;
       }
 
       if (!paymentForm.cardDocumentType) {
@@ -2336,15 +2392,12 @@ export default function ElectronicInvoiceSalesPage() {
       if (!paymentForm.transferBank) {
         nextErrors.transferBank = "Debes seleccionar un banco.";
       }
-
       if (!paymentForm.transferDocumentType) {
         nextErrors.transferDocumentType = "El tipo de documento es obligatorio.";
       }
-
       if (!paymentForm.transferDocumentNumber.trim()) {
         nextErrors.transferDocumentNumber = "El número de documento es obligatorio.";
       }
-
       if (!paymentForm.transferPhone.trim()) {
         nextErrors.transferPhone = "El teléfono es obligatorio.";
       }
@@ -2354,7 +2407,6 @@ export default function ElectronicInvoiceSalesPage() {
       if (!paymentForm.cashReceived.trim()) {
         nextErrors.cashReceived = "Debes indicar el valor recibido.";
       }
-
       if (Number(paymentForm.cashReceived || 0) < grandTotal) {
         nextErrors.cashReceived = "El valor recibido no puede ser menor al total.";
       }
@@ -2364,18 +2416,8 @@ export default function ElectronicInvoiceSalesPage() {
     return Object.keys(nextErrors).length === 0;
   };
 
-  /**
-   * =========================
-   * NAVEGACIÓN DE PASOS
-   * =========================
-   */
   const handleContinueToPayment = () => {
-    const isValid = validateDeliveryStep();
-
-    if (!isValid) {
-      return;
-    }
-
+    if (!validateDeliveryStep()) return;
     setCurrentStep(2);
   };
 
@@ -2384,17 +2426,8 @@ export default function ElectronicInvoiceSalesPage() {
     setErrors({});
   };
 
-  /**
-   * =========================
-   * PROCESAR PAGO REAL
-   * =========================
-   */
   const handleProcessPayment = async () => {
-    const isValid = validatePaymentStep();
-
-    if (!isValid) {
-      return;
-    }
+    if (!validatePaymentStep()) return;
 
     setApiError("");
     setEmailSentMessage("");
@@ -2421,18 +2454,15 @@ export default function ElectronicInvoiceSalesPage() {
         return;
       }
 
+      if (gatewayDecision === "manual_review") {
+        setPaymentStatus("pending_validation");
+        setStatusMessage(
+          "La transacción quedó en validación manual por la simulación de la pasarela. Revisa la tarjeta ingresada o aprueba el pago desde el flujo administrativo."
+        );
+        return;
+      }
+
       const invoiceNumber = buildInvoiceNumber();
-
-            
-
-            /**
-       * IMPORTANTE:
-       * El backend de ventas valida:
-       * total = subtotal + iva - discount
-       *
-       * Por ahora el envío es solo informativo en UI y no forma parte
-       * del modelo Venta, por eso NO debe enviarse dentro del total persistido.
-       */
       const saleSubtotal = Number(cartSubtotal || 0);
       const saleDiscount = 0;
       const saleTotal = saleSubtotal + Number(ivaValue || 0) - saleDiscount;
@@ -2446,9 +2476,6 @@ export default function ElectronicInvoiceSalesPage() {
         ),
         quantity: Number(item.quantity),
       }));
-
-      console.log("cartItems checkout admin:", cartItems);
-      console.log("normalizedLines admin:", normalizedLines);
 
       const hasInvalidMedicationId = normalizedLines.some(
         (line) => !Number.isInteger(line.medicationId) || line.medicationId <= 0
@@ -2501,53 +2528,37 @@ export default function ElectronicInvoiceSalesPage() {
 
       setSaleRecord(confirmedSale);
       setReceiptData(nextReceipt);
-
       setPaymentStatus("approved");
-      setStatusMessage(
-        "La venta fue creada y el pago quedó confirmado correctamente."
-      );
-
+      setStatusMessage("La venta fue creada y el pago quedó confirmado correctamente.");
       setCurrentStep(3);
       await clearActiveCart();
     } catch (error) {
-  console.error("Error completo procesando venta:", error);
-  console.error("error.error:", error?.error);
-  console.error("error.error.fields:", error?.error?.fields);
-  console.error("error raw string:", JSON.stringify(error, null, 2));
+      console.error("Error completo procesando venta:", error);
+      const fields = error?.error?.fields;
+      let message =
+        error?.error?.message || "No se pudo procesar el pago de la venta.";
 
-  const fields = error?.error?.fields;
-  let message =
-    error?.error?.message || "No se pudo procesar el pago de la venta.";
+      if (fields && typeof fields === "object") {
+        const first = Object.values(fields).flat()[0];
+        if (first) {
+          message = `${message} (${first})`;
+        }
+      }
 
-  if (fields && typeof fields === "object") {
-    const first = Object.values(fields).flat()[0];
-    if (first) {
-      message = `${message} (${first})`;
+      setApiError(message);
+      setPaymentStatus("rejected");
+      setStatusMessage(message);
+    } finally {
+      setSaving(false);
     }
-  }
-
-  setApiError(message);
-  setPaymentStatus("rejected");
-  setStatusMessage(message);
-} finally {
-  setSaving(false);
-}
   };
 
-  /**
-   * =========================
-   * DESCARGA DE FACTURA REAL
-   * =========================
-   */
   const handleDownloadPdf = async () => {
-    if (!saleRecord?.id) {
-      return;
-    }
+    if (!saleRecord?.id) return;
 
     try {
       const response = await downloadSaleInvoice(saleRecord.id);
       const blob = await extractBlobPayload(response);
-
       triggerBlobDownload(
         blob,
         `factura_${saleRecord.invoiceNumber || saleRecord.id}.pdf`
@@ -2559,26 +2570,16 @@ export default function ElectronicInvoiceSalesPage() {
     }
   };
 
-  /**
-   * =========================
-   * ESTADO DEL CORREO
-   * =========================
-   */
   const handleSendReceiptByEmail = async () => {
     setEmailSentMessage(
       "La notificación al cliente se gestiona desde el backend al registrar la venta."
     );
   };
 
-  /**
-   * =========================
-   * CERRAR MODAL DE ESTADO
-   * =========================
-   */
   const handleCloseStatusModal = () => {
     setIsStatusModalOpen(false);
 
-    if (paymentStatus === "rejected") {
+    if (paymentStatus === "rejected" || paymentStatus === "pending_validation") {
       setPaymentStatus("idle");
       setStatusMessage("");
       return;
@@ -2589,27 +2590,22 @@ export default function ElectronicInvoiceSalesPage() {
     }
   };
 
-  /**
-   * =========================
-   * GUARDAS DE RENDER
-   * =========================
-   */
   if (!isSalesOperator && role !== "Cliente") {
     return (
-      <div className="min-h-screen px-4 py-8 text-label">
-        <div className="max-w-3xl mx-auto bg-white/70 backdrop-blur-md rounded-3xl shadow-xl p-8">
+      <div className="min-h-screen px-4 py-6 sm:py-8 text-label">
+        <div className="max-w-3xl mx-auto bg-white/70 backdrop-blur-md rounded-3xl shadow-xl p-6 sm:p-8">
           <div className="flex items-center gap-3 mb-4">
-            <CircleAlert className="size-6" />
-            <h1 className="text-2xl font-bold">
+            <CircleAlert className="size-5 sm:size-6" />
+            <h1 className="text-xl sm:text-2xl font-bold">
               Módulo de ventas restringido
             </h1>
           </div>
 
-          <p className="mb-6">
+          <p className="mb-6 text-sm sm:text-base">
             Esta vista está habilitada para los roles Administrador y Farmaceuta.
           </p>
 
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <Button
               variant="secondary"
               size="sm"
@@ -2633,37 +2629,23 @@ export default function ElectronicInvoiceSalesPage() {
     );
   }
 
-  /**
-   * =========================
-   * RENDER PRINCIPAL
-   * =========================
-   */
   return (
-    <div className="min-h-screen px-4 py-8 text-label">
+    <div className="min-h-screen px-4 py-6 sm:py-8 text-label">
       <div className="max-w-7xl mx-auto">
-        {/* ENCABEZADO */}
-        <div className="mb-6 rounded-3xl bg-white/70 backdrop-blur-md shadow-xl p-6">
+        <div className="mb-5 sm:mb-6 rounded-3xl bg-white/70 backdrop-blur-md shadow-xl p-5 sm:p-6">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
             <div>
-              <h1 className="text-2xl font-bold">
+              <h1 className="text-xl sm:text-2xl font-bold">
                 Checkout y confirmación de pago
               </h1>
-              <p className="text-sm mt-1">
+              <p className="text-xs sm:text-sm mt-1">
                 Registra la venta, valida el pago y genera la factura.
               </p>
             </div>
 
             <div className="flex gap-2 flex-wrap">
-              <StepBadge
-                active={currentStep === 1}
-                completed={currentStep > 1}
-                label="Entrega"
-              />
-              <StepBadge
-                active={currentStep === 2}
-                completed={currentStep > 2}
-                label="Pago"
-              />
+              <StepBadge active={currentStep === 1} completed={currentStep > 1} label="Entrega" />
+              <StepBadge active={currentStep === 2} completed={currentStep > 2} label="Pago" />
               <StepBadge
                 active={currentStep === 3}
                 completed={currentStep >= 3 && paymentStatus === "approved"}
@@ -2673,24 +2655,22 @@ export default function ElectronicInvoiceSalesPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 xl:grid-cols-[1.35fr_0.95fr] gap-6">
-          {/* COLUMNA IZQUIERDA */}
-          <div className="space-y-6">
-            {/* PASO 1 */}
-            <section className="bg-white/70 backdrop-blur-md shadow-xl rounded-3xl p-6">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] xl:grid-cols-[1.3fr_0.9fr] gap-4 md:gap-6 items-start">
+          <div className="space-y-5 sm:space-y-6">
+            <section className="bg-white/70 backdrop-blur-md shadow-xl rounded-3xl p-5 sm:p-6">
               <div className="flex items-center gap-3 mb-4">
                 <PackageSectionIcon currentStep={currentStep} />
                 <div>
-                  <h2 className="text-xl font-bold">
+                  <h2 className="text-lg sm:text-xl font-bold">
                     1. Cliente y método de entrega
                   </h2>
-                  <p className="text-sm">
+                  <p className="text-xs sm:text-sm">
                     Consulta el cliente por documento y define cómo se entregará el pedido.
                   </p>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-[180px_1fr_auto] gap-4 mb-2">
+              <div className="grid grid-cols-1 md:grid-cols-[160px_1fr] xl:grid-cols-[180px_1fr_auto] gap-4 mb-2">
                 <Select
                   label="Tipo de documento"
                   name="documentType"
@@ -2710,13 +2690,14 @@ export default function ElectronicInvoiceSalesPage() {
                   wrapperClassName="w-full"
                 />
 
-                <div className="flex items-end">
+                <div className="flex items-end md:col-span-2 xl:col-span-1">
                   <Button
                     variant="secondary"
                     size="sm"
                     type="button"
                     onClick={handleSearchCustomer}
                     disabled={customerLookupLoading}
+                    className="w-full xl:w-auto"
                   >
                     Buscar cliente
                   </Button>
@@ -2725,24 +2706,16 @@ export default function ElectronicInvoiceSalesPage() {
 
               {selectedCustomerMeta ? (
                 <div className="rounded-2xl border border-border-strong bg-white/60 p-4 mb-4">
-                  <h3 className="font-semibold mb-2">Cliente encontrado</h3>
-                  <div className="space-y-1 text-sm">
-                    <p>
-                      <span className="font-medium">Nombre:</span> {selectedCustomerMeta.name}
-                    </p>
-                    <p>
-                      <span className="font-medium">Correo:</span> {selectedCustomerMeta.email}
-                    </p>
+                  <h3 className="font-semibold mb-2 text-sm sm:text-base">Cliente encontrado</h3>
+                  <div className="space-y-1 text-xs sm:text-sm">
+                    <p><span className="font-medium">Nombre:</span> {selectedCustomerMeta.name}</p>
+                    <p><span className="font-medium">Correo:</span> {selectedCustomerMeta.email}</p>
                     <p>
                       <span className="font-medium">Documento:</span>{" "}
                       {selectedCustomerMeta.documentType} {selectedCustomerMeta.documentNumber}
                     </p>
-                    <p>
-                      <span className="font-medium">Teléfono:</span> {selectedCustomerMeta.phone}
-                    </p>
-                    <p>
-                      <span className="font-medium">Dirección:</span> {selectedCustomerMeta.address}
-                    </p>
+                    <p><span className="font-medium">Teléfono:</span> {selectedCustomerMeta.phone}</p>
+                    <p><span className="font-medium">Dirección:</span> {selectedCustomerMeta.address}</p>
                   </div>
                 </div>
               ) : null}
@@ -2758,24 +2731,20 @@ export default function ElectronicInvoiceSalesPage() {
                       type="button"
                       onClick={() => {
                         setDeliveryMethod(option.value);
-                        setErrors((prev) => ({
-                          ...prev,
-                          deliveryMethod: "",
-                        }));
+                        setErrors((prev) => ({ ...prev, deliveryMethod: "" }));
                       }}
                       className={`
-                        rounded-2xl border p-4 text-left transition
+                        rounded-2xl border p-4 sm:p-5 text-left transition
                         ${isSelected
                           ? "border-border-strong bg-white/80 shadow-md"
                           : "border-border hover:bg-white/60"}
                       `}
                     >
                       <div className="flex items-center gap-3 mb-2">
-                        <Icon className="size-5" />
-                        <span className="font-semibold">{option.label}</span>
+                        <Icon className="size-4 sm:size-5" />
+                        <span className="font-semibold text-sm sm:text-base">{option.label}</span>
                       </div>
-
-                      <p className="text-sm">{option.description}</p>
+                      <p className="text-xs sm:text-sm">{option.description}</p>
                     </button>
                   );
                 })}
@@ -2862,22 +2831,22 @@ export default function ElectronicInvoiceSalesPage() {
                   type="button"
                   onClick={handleContinueToPayment}
                   disabled={!deliveryMethod || !selectedCustomerMeta?.id}
+                  className="w-full sm:w-auto"
                 >
                   Continuar al pago
                 </Button>
               </div>
             </section>
 
-            {/* PASO 2 */}
             {currentStep >= 2 && (
-              <section className="bg-white/70 backdrop-blur-md shadow-xl rounded-3xl p-6">
+              <section className="bg-white/70 backdrop-blur-md shadow-xl rounded-3xl p-5 sm:p-6">
                 <div className="flex items-center gap-3 mb-4">
-                  <ReceiptText className="size-5" />
+                  <ReceiptText className="size-4 sm:size-5" />
                   <div>
-                    <h2 className="text-xl font-bold">
+                    <h2 className="text-lg sm:text-xl font-bold">
                       2. Método de pago
                     </h2>
-                    <p className="text-sm">
+                    <p className="text-xs sm:text-sm">
                       Selecciona el método y completa la información requerida.
                     </p>
                   </div>
@@ -2894,24 +2863,20 @@ export default function ElectronicInvoiceSalesPage() {
                         type="button"
                         onClick={() => {
                           setPaymentMethod(option.value);
-                          setErrors((prev) => ({
-                            ...prev,
-                            paymentMethod: "",
-                          }));
+                          setErrors((prev) => ({ ...prev, paymentMethod: "" }));
                         }}
                         className={`
-                          rounded-2xl border p-4 text-left transition
+                          rounded-2xl border p-4 sm:p-5 text-left transition
                           ${isSelected
                             ? "border-border-strong bg-white/80 shadow-md"
                             : "border-border hover:bg-white/60"}
                         `}
                       >
                         <div className="flex items-center gap-3 mb-2">
-                          <Icon className="size-5" />
-                          <span className="font-semibold">{option.label}</span>
+                          <Icon className="size-4 sm:size-5" />
+                          <span className="font-semibold text-sm sm:text-base">{option.label}</span>
                         </div>
-
-                        <p className="text-sm">{option.description}</p>
+                        <p className="text-xs sm:text-sm">{option.description}</p>
                       </button>
                     );
                   })}
@@ -2970,6 +2935,8 @@ export default function ElectronicInvoiceSalesPage() {
                       name="cardCvv"
                       value={paymentForm.cardCvv}
                       onChange={handlePaymentInputChange}
+                      onFocus={() => setIsCardBackVisible(true)}
+                      onBlur={() => setIsCardBackVisible(false)}
                       error={errors.cardCvv}
                       wrapperClassName="w-full"
                     />
@@ -3078,6 +3045,7 @@ export default function ElectronicInvoiceSalesPage() {
                     size="sm"
                     type="button"
                     onClick={handleBackToDelivery}
+                    className="w-full sm:w-auto"
                   >
                     Volver
                   </Button>
@@ -3088,6 +3056,7 @@ export default function ElectronicInvoiceSalesPage() {
                     type="button"
                     onClick={handleProcessPayment}
                     disabled={saving}
+                    className="w-full sm:w-auto"
                   >
                     Confirmar pago
                   </Button>
@@ -3096,70 +3065,121 @@ export default function ElectronicInvoiceSalesPage() {
             )}
           </div>
 
-          {/* COLUMNA DERECHA */}
-          <div className="space-y-6">
-            {paymentMethod === "card" && (
-              <SaleCardPreview
-                cardNumber={paymentForm.cardNumber}
-                cardHolder={paymentForm.cardHolder}
-                cardExpiry={paymentForm.cardExpiry}
-                bankName={detectCardBank(paymentForm.cardNumber)}
-                brandName={detectCardBrand(paymentForm.cardNumber)}
-                gradientClasses={getCardPreviewClasses(paymentForm.cardNumber)}
-              />
-            )}
+          <div className="self-start order-first lg:order-last">
+            <aside className="lg:sticky lg:top-24 xl:top-[120px] ">
 
-            <section className="rounded-3xl bg-white/70 backdrop-blur-md shadow-xl p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <Wallet className="size-5" />
-                <div>
-                  <h3 className="text-lg font-bold">Resumen de la venta</h3>
-                  <p className="text-sm text-label/80">
-                    Información consolidada del checkout.
-                  </p>
-                </div>
-              </div>
+              <section
+                  className="
+                    rounded-3xl
+                    border border-white/40
+                    bg-white/75
+                    backdrop-blur-md
+                    shadow-xl
+                    p-4 sm:p-5 lg:p-6
+                    transition-all duration-300 mb-14
+                  "
+                >
+                  <div className="flex items-center gap-3 mb-4 sm:mb-5">
+                    <div className="flex size-9 sm:size-10 items-center justify-center rounded-2xl bg-white/80 shadow-sm">
+                      <Wallet className="size-4 sm:size-5" />
+                    </div>
 
-              <div className="space-y-3">
-                <SummaryRow
-                  label="Cliente"
-                  value={selectedCustomerMeta?.name || "—"}
-                />
-                <SummaryRow
-                  label="Vendedor"
-                  value={getUserName(user) || "—"}
-                />
-                <SummaryRow label="Ítems" value={String(cartCount)} />
-                <SummaryRow
-                  label="Subtotal"
-                  value={`$${formatCurrency(cartSubtotal)}`}
-                />
-                <SummaryRow
-                  label="Descuento"
-                  value={`$${formatCurrency(discountValue)}`}
-                />
-                <SummaryRow
-                  label="IVA"
-                  value={`$${formatCurrency(ivaValue)}`}
-                />
-                <SummaryRow
-                  label="Envío"
-                  value={`$${formatCurrency(deliveryFee)}`}
-                />
-                <div className="pt-3 border-t border-border-strong">
-                  <SummaryRow
-                    label="Total"
-                    value={`$${formatCurrency(grandTotal)}`}
-                    strong={true}
-                  />
-                </div>
+                    <div>
+                      <h3 className="text-base sm:text-lg font-bold tracking-tight">
+                        Resumen de la venta
+                      </h3>
+                      <p className="text-xs sm:text-sm text-label/70">
+                        Información consolidada del checkout.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2.5 sm:space-y-3">
+                    <SummaryRow
+                      label="Cliente"
+                      value={selectedCustomerMeta?.name || "—"}
+                    />
+                    <SummaryRow
+                      label="Vendedor"
+                      value={getUserName(user) || "—"}
+                    />
+                    <SummaryRow
+                      label="Ítems"
+                      value={String(cartCount)}
+                    />
+                    <SummaryRow
+                      label="Subtotal"
+                      value={`$${formatCurrency(cartSubtotal)}`}
+                    />
+                    <SummaryRow
+                      label="Descuento"
+                      value={`$${formatCurrency(discountValue)}`}
+                    />
+                    <SummaryRow
+                      label="IVA"
+                      value={`$${formatCurrency(ivaValue)}`}
+                    />
+                    <SummaryRow
+                      label="Envío"
+                      value={`$${formatCurrency(deliveryFee)}`}
+                    />
+
+                    <div className="pt-3 mt-3 sm:pt-4 sm:mt-4 border-t border-border-strong">
+                      <SummaryRow
+                        label="Total"
+                        value={`$${formatCurrency(grandTotal)}`}
+                        strong={true}
+                      />
+                    </div>
+                  </div>
+
+                  {paymentMethod && (
+                    <div className="mt-4 sm:mt-5 rounded-2xl bg-white/70 border border-white/40 p-3 sm:p-4">
+                      <p className="text-[11px] sm:text-xs uppercase tracking-wide text-label/60 mb-2">
+                        Método seleccionado
+                      </p>
+                      <p className="text-sm font-medium text-label">
+                        {paymentMethod === "card"
+                          ? `Tarjeta ${paymentForm.cardType === "debit" ? "débito" : "crédito"}`
+                          : paymentMethod === "transfer"
+                          ? "Transferencia / PSE"
+                          : paymentMethod === "cash"
+                          ? "Efectivo"
+                          : "Sin definir"}
+                      </p>
+                    </div>
+                  )}
+                </section>
+
+              <div className="space-y-4 md:space-y-5 lg:pr-2">
+                {currentStep >= 2 && paymentMethod === "card" && (
+                  <div className="transition-all duration-300">
+                    <div className="w-full mx-auto">
+                      <SaleCardPreview
+                        cardNumber={paymentForm.cardNumber}
+                        cardHolder={paymentForm.cardHolder}
+                        cardExpiry={paymentForm.cardExpiry}
+                        cardCvv={paymentForm.cardCvv}
+                        bankName={cardVisualConfig.displayName}
+                        brandName={cardBrandName}
+                        gradientClasses={cardVisualConfig.gradientClasses}
+                        issuerLabel={cardVisualConfig.issuerLabel}
+                        accentText={cardVisualConfig.accentText}
+                        chipToneClasses={cardVisualConfig.chipToneClasses}
+                        textToneClasses={cardVisualConfig.textToneClasses}
+                        productLabel={cardProductLabel}
+                        cardType={paymentForm.cardType}
+                        showBack={isCardBackVisible}
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
-            </section>
+            </aside>
           </div>
         </div>
       </div>
 
-      {/* MODAL DE ESTADO / RESULTADO */}
       <Modal
         isOpen={isStatusModalOpen}
         onClose={handleCloseStatusModal}
@@ -3201,7 +3221,7 @@ export default function ElectronicInvoiceSalesPage() {
             </div>
           ) : null}
 
-          <div className="flex flex-wrap justify-end gap-3">
+          <div className="flex flex-col sm:flex-row flex-wrap justify-end gap-3">
             {paymentStatus === "approved" && (
               <>
                 <Button
@@ -3209,6 +3229,7 @@ export default function ElectronicInvoiceSalesPage() {
                   size="sm"
                   type="button"
                   onClick={handleDownloadPdf}
+                  className="w-full sm:w-auto"
                 >
                   Descargar factura
                 </Button>
@@ -3218,6 +3239,7 @@ export default function ElectronicInvoiceSalesPage() {
                   size="sm"
                   type="button"
                   onClick={handleSendReceiptByEmail}
+                  className="w-full sm:w-auto"
                 >
                   Ver estado del correo
                 </Button>
@@ -3229,6 +3251,7 @@ export default function ElectronicInvoiceSalesPage() {
               size="sm"
               type="button"
               onClick={handleCloseStatusModal}
+              className="w-full sm:w-auto"
             >
               Finalizar
             </Button>
@@ -3239,18 +3262,11 @@ export default function ElectronicInvoiceSalesPage() {
   );
 }
 
-/**
- * =========================
- * SUBCOMPONENTES LOCALES
- * =========================
- */
-
-// Badge visual del paso
 function StepBadge({ label, active, completed }) {
   return (
     <div
       className={`
-        px-4 py-2 rounded-full text-sm font-semibold border
+        px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold border
         ${completed
           ? "bg-white border-border-strong"
           : active
@@ -3263,25 +3279,36 @@ function StepBadge({ label, active, completed }) {
   );
 }
 
-// Fila del resumen
 function SummaryRow({ label, value, strong = false }) {
   return (
-    <div className="flex items-center justify-between gap-4">
-      <span className={strong ? "font-bold text-label" : "text-gray-700"}>
+    <div className="flex items-start justify-between gap-4">
+      <span
+        className={
+          strong
+            ? "font-bold text-label text-sm sm:text-[15px]"
+            : "text-gray-700 text-sm sm:text-[15px]"
+        }
+      >
         {label}
       </span>
-      <span className={strong ? "font-bold text-label text-right" : "text-gray-700 text-right"}>
+
+      <span
+        className={
+          strong
+            ? "font-bold text-label text-right text-sm sm:text-[15px]"
+            : "text-gray-700 text-right text-sm sm:text-[15px]"
+        }
+      >
         {value}
       </span>
     </div>
   );
 }
 
-// Icono visual de la sección entrega
 function PackageSectionIcon({ currentStep }) {
   if (currentStep > 1) {
-    return <BadgeCheck className="size-5" />;
+    return <BadgeCheck className="size-4 sm:size-5" />;
   }
 
-  return <ReceiptText className="size-5" />;
+  return <ReceiptText className="size-4 sm:size-5" />;
 }
