@@ -1,67 +1,3 @@
-// // Hooks y utilidades principales de TanStack Table
-// import {
-//   useReactTable,          // Hook que crea la instancia de la tabla
-//   getCoreRowModel,        // Modelo base de filas (sin filtros ni paginación)
-//   flexRender,             // Permite renderizar contenido dinámico de columnas
-//   getPaginationRowModel,  // Modelo de filas con paginación
-//   getFilteredRowModel     // Modelo de filas filtradas
-// } from "@tanstack/react-table"
-
-// // Hook de React para manejar estado
-// import { useState } from "react"
-
-// // Botón reutilizable del sistema de componentes
-// import { Button } from "@/shared/components"
-
-// // Componente reutilizable de tabla
-// // Recibe:
-// // - data: datos que se mostrarán
-// // - columns: configuración de columnas
-// export default function DataTable({ data, columns }) {
-
-//   // ================== ESTADO DE PAGINACIÓN ==================
-//   // pageIndex → página actual
-//   // pageSize → cantidad de filas por página
-//   const [pagination, setPagination] = useState({
-//     pageIndex: 0,
-//     pageSize: 5
-//   })
-
-//   // ================== ESTADO DEL FILTRO GLOBAL ==================
-//   // Se usa para el buscador de la tabla
-//   const [globalFilter, setGlobalFilter] = useState("")
-
-//   // ================== CONFIGURACIÓN DE LA TABLA ==================
-//   const table = useReactTable({
-
-//     // Datos que se mostrarán
-//     data,
-
-//     // Definición de columnas
-//     columns,
-
-//     // Estado controlado de la tabla
-//     state: {
-//       globalFilter,
-//       pagination
-//     },
-
-//     // Función que se ejecuta cuando cambia la paginación
-//     onPaginationChange: setPagination,
-
-//     // Función que se ejecuta cuando cambia el filtro global
-//     onGlobalFilterChange: setGlobalFilter,
-
-//     // Modelo base de filas
-//     getCoreRowModel: getCoreRowModel(),
-
-//     // Modelo con filtrado aplicado
-//     getFilteredRowModel: getFilteredRowModel(),
-
-//     // Modelo con paginación aplicada
-//     getPaginationRowModel: getPaginationRowModel(),
-//   })
-
 import {
   useReactTable,
   getCoreRowModel,
@@ -130,9 +66,9 @@ export default function DataTable({ data, columns }) {
 
               // Mapeamos el ID del JSON al texto que tienes en cartshops
               const filterMap = {
-                ACTIVE: "ACTIVO",
-                CONFIRMED: "COMPLETADO", // o "CONFIRMADO" según tus datos
-                CANCELLED: "CANCELADO",
+                ACTIVE: "Activo",
+                CONFIRMED: "Completado",
+                CANCELLED: "Cancelado",
               };
 
               const filterValue = filterMap[selectedId] || "";

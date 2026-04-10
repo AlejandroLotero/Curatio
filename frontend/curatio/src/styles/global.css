@@ -54,23 +54,6 @@
     --color-secondarybtnhoverbg: var(--semantic-action-secondary-hover-bg);
 
 
-    /* Scroll sutil para paneles flotantes */
-        .checkout-side-scroll::-webkit-scrollbar {
-        width: 8px;
-        }
-
-        .checkout-side-scroll::-webkit-scrollbar-track {
-        background: transparent;
-        }
-
-        .checkout-side-scroll::-webkit-scrollbar-thumb {
-        background: rgba(100, 116, 139, 0.28);
-        border-radius: 999px;
-        }
-
-        .checkout-side-scroll::-webkit-scrollbar-thumb:hover {
-        background: rgba(100, 116, 139, 0.45);
-        }
 
 
 
