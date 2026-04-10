@@ -10,7 +10,7 @@ import {
 } from "@tanstack/react-table"
 
 // Hook de React para manejar estado
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 // Botón reutilizable del sistema de componentes
 import { Button } from "@/shared/components"
@@ -31,6 +31,17 @@ export default function DataTable({ data, columns, globalFilter: externalGlobalF
     pageIndex: 0,
     pageSize: externalPageSize || 5
   })
+
+  // Sincroniza cambios del pageSize desde el componente padre
+  useEffect(() => {
+    if (externalPageSize && externalPageSize !== pagination.pageSize) {
+      setPagination(prev => ({
+        ...prev,
+        pageSize: externalPageSize,
+        pageIndex: 0 // Reset a la primera página
+      }));
+    }
+  }, [externalPageSize]);
 
   // ================== ESTADO DEL FILTRO GLOBAL ==================
   // Se usa para el buscador de la tabla

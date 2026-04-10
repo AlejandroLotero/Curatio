@@ -115,9 +115,9 @@ export default function LoginPage() {
         <div
           className="
             rounded-3xl
-            border border-white
+            border border-white/10
             text-label
-            bg-white/70 dark:bg-neutral-900/20
+            bg-white/10 dark:bg-neutral-900/20
             backdrop-blur-md
             shadow-xl
             ring-1 ring-white

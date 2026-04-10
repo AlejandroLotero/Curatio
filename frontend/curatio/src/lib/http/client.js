@@ -1,4 +1,6 @@
-// const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+// const BASE_URL =
+//   import.meta.env.VITE_BACKEND_URL ??
+//   `${window.location.protocol}//${window.location.hostname}:8000`;
 
 // if (!BASE_URL) {
 //   throw new Error("VITE_BACKEND_URL no está definida");
@@ -30,9 +32,10 @@
 //   const responseType = options.responseType || "json";
 
 //   const bodyIsFormData = isFormDataBody(options.body);
+//   const hasBody = options.body !== undefined && options.body !== null;
 
 //   const headers = {
-//     ...(bodyIsFormData ? {} : { "Content-Type": "application/json" }),
+//     ...(hasBody && !bodyIsFormData ? { "Content-Type": "application/json" } : {}),
 //     ...(options.headers || {}),
 //   };
 
@@ -139,6 +142,8 @@
 
 // export { BASE_URL };
 
+import { getClientInstanceId } from "@/lib/auth/clientInstance";
+
 const BASE_URL =
   import.meta.env.VITE_BACKEND_URL ??
   `${window.location.protocol}//${window.location.hostname}:8000`;
@@ -176,9 +181,10 @@ async function request(path, options = {}) {
   const hasBody = options.body !== undefined && options.body !== null;
 
   const headers = {
-    ...(hasBody && !bodyIsFormData ? { "Content-Type": "application/json" } : {}),
-    ...(options.headers || {}),
-  };
+  ...(hasBody && !bodyIsFormData ? { "Content-Type": "application/json" } : {}),
+  ...(options.headers || {}),
+  
+};
 
   if (csrfToken && !["GET", "HEAD", "OPTIONS"].includes(method)) {
     headers["X-CSRFToken"] = csrfToken;
@@ -223,6 +229,16 @@ async function request(path, options = {}) {
         new CustomEvent("session-expired", {
           detail: {
             message: "Sesión cerrada por inactividad, vuelva a iniciar sesión.",
+          },
+        })
+      );
+    }
+
+    if (response.status === 409 && body?.error?.code === "SESSION_REPLACED") {
+      window.dispatchEvent(
+        new CustomEvent("session-replaced", {
+          detail: {
+            message: "Tu sesión fue reemplazada por otra pestaña o dispositivo.",
           },
         })
       );
