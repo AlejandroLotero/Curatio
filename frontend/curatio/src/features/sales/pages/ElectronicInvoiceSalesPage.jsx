@@ -1430,19 +1430,20 @@ export default function ElectronicInvoiceSalesPage() {
                     </div>
 
                     <div>
-                      <h3 className="text-base sm:text-lg font-bold tracking-tight">
+                      <h3 className="text-label sm:text-lg font-bold tracking-tight">
                         Resumen de la venta
                       </h3>
-                      <p className="text-xs sm:text-sm text-label/70">
+                      <p className="text-xs sm:text-sm text-label/80">
                         Información consolidada del checkout.
                       </p>
                     </div>
                   </div>
 
-                  <div className="space-y-2.5 sm:space-y-3">
+                  <div className="text-label space-y-2.5 sm:space-y-3">
                     <SummaryRow
                       label="Cliente"
                       value={selectedCustomerMeta?.name || "—"}
+                      
                     />
                     <SummaryRow
                       label="Vendedor"
@@ -1631,7 +1632,7 @@ function SummaryRow({ label, value, strong = false }) {
         className={
           strong
             ? "font-bold text-label text-sm sm:text-[15px]"
-            : "text-gray-700 text-sm sm:text-[15px]"
+            : "text-label text-sm sm:text-[15px]"
         }
       >
         {label}
@@ -1641,7 +1642,7 @@ function SummaryRow({ label, value, strong = false }) {
         className={
           strong
             ? "font-bold text-label text-right text-sm sm:text-[15px]"
-            : "text-gray-700 text-right text-sm sm:text-[15px]"
+            : "text-label text-right text-sm sm:text-[15px]"
         }
       >
         {value}

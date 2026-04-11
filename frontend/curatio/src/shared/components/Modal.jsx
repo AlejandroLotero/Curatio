@@ -21,7 +21,7 @@ export default function Modal({
       
       {/* Overlay oscuro */}
       <div
-        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm rounded-2xl"
         onClick={onClose}
       />
 

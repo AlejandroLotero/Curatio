@@ -406,10 +406,10 @@ export default function SaleDetailPage() {
 function SummaryRow({ label, value, strong = false }) {
   return (
     <div className="flex items-start justify-between gap-4">
-      <span className={strong ? "font-bold text-label" : "text-gray-700"}>
+      <span className={strong ? "font-bold text-label" : "text-label"}>
         {label}
       </span>
-      <span className={strong ? "font-bold text-label text-right" : "text-gray-700 text-right"}>
+      <span className={strong ? "font-bold text-label text-right" : "text-label text-right"}>
         {value}
       </span>
     </div>
