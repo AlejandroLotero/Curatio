@@ -158,6 +158,52 @@ export function adaptPublicMedicationDetail(item) {
 }
 
 /**
+ * Normaliza el nombre de estado del catálogo para comparaciones.
+ */
+function normalizeCatalogStatus(value) {
+  return String(value ?? "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
+/**
+ * Indica si un ítem del catálogo público debe mostrarse en NewHomePage.
+ * - Sin stock: no se muestra.
+ * - Estados suspendido, vencido o agotado (y variantes): no se muestran.
+ * - Solo visible con estado activo (o equivalente en inglés).
+ * - Si el backend no envía `status` pero sí canBeSold y stock, se mantiene compatibilidad.
+ */
+export function isMedicationVisibleOnNewHomePage(item) {
+  if (!item || Number(item.stock) <= 0) return false;
+  if (item.canBeSold === false) return false;
+
+  const raw = String(item.status ?? "").trim();
+  if (!raw) return true;
+
+  const s = normalizeCatalogStatus(raw);
+
+  if (s === "activo" || s === "active") return true;
+
+  const blocked = new Set([
+    "suspendido",
+    "suspended",
+    "vencido",
+    "expired",
+    "caducado",
+    "agotado",
+    "agotada",
+    "sold out",
+    "sold_out",
+  ]);
+
+  if (blocked.has(s)) return false;
+
+  return false;
+}
+
+/**
  * Adapta un item del catálogo público para cards del home.
  */
 export function adaptPublicMedicationCatalogItem(item) {
@@ -177,6 +223,7 @@ export function adaptPublicMedicationCatalogItem(item) {
     stock: adapted.stock,
     laboratory: adapted.laboratory,
     canBeSold: adapted.canBeSold,
+    status: adapted.status,
   };
 }
 
