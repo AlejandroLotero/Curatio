@@ -35,6 +35,8 @@ import {
   SaleDetailPage,
   EditSalePage,
   CancelSalePage,
+  MyOrdersPage,
+  MyOrderDetailPage,
 } from "@/features/sales";
 import {
   ProductsPage,
@@ -342,6 +344,14 @@ const router = createBrowserRouter([
           {
             path: "/sales/anular/:saleId",
             element: <CancelSalePage />,
+          },
+          {
+            path: "/my-orders",
+            element: <MyOrdersPage />,
+          },
+          {
+            path: "/my-orders/:id",
+            element: <MyOrderDetailPage />,
           },
 
           /**
