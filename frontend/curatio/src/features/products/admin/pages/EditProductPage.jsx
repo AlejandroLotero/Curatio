@@ -292,7 +292,7 @@ function mapBackendErrorsToUiFields(backendFields = {}) {
  * Componente EditField extraído fuera.
  * Evita que se redefinida en cada render del padre (problema de React).
  */
-function EditField({ label, value, name, type = "text", error, onChange }) {
+function EditField({ label, value, name, type = "text", error, onChange, disabled = false }) {
   return (
     <div className="flex flex-col gap-2">
       <label
@@ -307,9 +307,9 @@ function EditField({ label, value, name, type = "text", error, onChange }) {
         name={name}
         value={value || ""}
         onChange={onChange}
-        disabled={false}
+        disabled={disabled}
         autoComplete="off"
-        className="p-3 rounded-lg bg-white/80 text-label border border-gray-300 enabled:cursor-text enabled:hover:border-gray-400"
+        className="p-3 rounded-lg bg-white/80 text-label border border-gray-900 enabled:cursor-text enabled:hover:border-gray-400 disabled:bg-gray-600 disabled:cursor-not-allowed"
         style={{ color: "var(--color-black)", fontFamily: "var(--font-body)" }}
       />
 
@@ -707,7 +707,7 @@ export default function EditProductPage() {
         ) : null}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <EditField label="ID" name="id" value={formData.id} onChange={handleInputChange} />
+          <EditField label="ID" name="id" value={formData.id} onChange={handleInputChange} disabled={true} />
 
           <EditField
             label="Medicamento"
