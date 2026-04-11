@@ -5,7 +5,10 @@ import { ChevronLeft, ChevronRight, ShoppingCart } from "lucide-react";
 import { useCart } from "@/features/cartshop/context/CartContext";
 import Footer from "@/features/layouts/footer";
 import { getPublicCatalogMedications } from "@/lib/http/publicMedications";
-import { adaptPublicMedicationCatalogResponse } from "@/lib/adapters/publicMedicationAdapter";
+import {
+  adaptPublicMedicationCatalogResponse,
+  isMedicationVisibleOnNewHomePage,
+} from "@/lib/adapters/publicMedicationAdapter";
 
 const NewHomePage = () => {
   const navigate = useNavigate();
@@ -57,7 +60,7 @@ const NewHomePage = () => {
 
         const adapted = adaptPublicMedicationCatalogResponse(response?.data);
         const sellableProducts = (adapted.results ?? []).filter(
-          (item) => item.canBeSold && Number(item.stock) > 0
+          isMedicationVisibleOnNewHomePage
         );
 
         setProducts(sellableProducts);
