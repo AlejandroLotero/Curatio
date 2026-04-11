@@ -69,13 +69,13 @@ export default function MyOrdersPage() {
                     <p className="font-semibold">
                       Factura: {order.invoiceNumber || `#${order.id}`}
                     </p>
-                    <p className="text-sm text-label/80">
+                    <p className="text-sm text-label">
                       Fecha: {order.saleDateTime || "—"}
                     </p>
-                    <p className="text-sm text-label/80">
+                    <p className="text-sm text-label">
                       Estado: {order.status || "—"}
                     </p>
-                    <p className="text-sm text-label/80">
+                    <p className="text-sm text-label">
                       Total: ${Number(order.total || 0).toLocaleString("es-CO")}
                     </p>
                   </div>

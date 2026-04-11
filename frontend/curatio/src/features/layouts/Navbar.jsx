@@ -44,11 +44,28 @@ const Navbar = ({ variant = "solid" }) => {
 
   return (
     <nav
-      className={`relative z-50 w-full border-b transition-colors duration-300 py-2 ${
+      className={`relative z-50 w-full border-b transition-all duration-300 py-2 ${
         variant === "transparent"
           ? "bg-transparent border-transparent absolute top-0 left-0 z-[100]"
-          : "bg-[#98e3f4] border-border"
+          : "border-border"
       }`}
+      style={
+        variant !== "transparent"
+          ? {
+              background: `
+            radial-gradient(circle at 20% 30%, rgba(65, 144, 190, 0.15), transparent 90%),
+            radial-gradient(circle at 70% 70%, rgba(70, 185, 175, 0.15), transparent 40%),
+            linear-gradient(
+              135deg,
+              var(--color-primary-100),
+              var(--color-primary-300),
+              var(--color-secondary-200),
+              var(--color-secondary-100)
+            )
+          `,
+            }
+          : {}
+      }
     >
       <div className="mx-auto max-w-7xl px-3 sm:px-4">
         <div className="relative flex flex-wrap items-center gap-y-2 gap-x-2 py-2 md:h-16 md:flex-nowrap md:gap-4 md:py-0">
@@ -56,10 +73,7 @@ const Navbar = ({ variant = "solid" }) => {
               MARCA
              ========================= */}
           <div className="order-1 flex shrink-0 items-center">
-            <Link
-              to="/"
-              className="flex items-center"
-            >
+            <Link to="/" className="flex items-center">
               <img
                 src={logoCuratio}
                 alt="Curatio Logo"
@@ -105,10 +119,7 @@ const Navbar = ({ variant = "solid" }) => {
               </Link>
             </li>
             <li>
-              <Link
-                to="/sales/list"
-                className="hover:text-primary transition"
-              >
+              <Link to="/sales/list" className="hover:text-primary transition">
                 Ventas
               </Link>
             </li>
@@ -247,7 +258,9 @@ const Navbar = ({ variant = "solid" }) => {
 
                 {isAuthenticated && (
                   <>
-                    <DropdownItem> {/* Perfil propio o el de la URL */}
+                    <DropdownItem>
+                      {" "}
+                      {/* Perfil propio o el de la URL */}
                       <Link
                         to={
                           user?.id != null

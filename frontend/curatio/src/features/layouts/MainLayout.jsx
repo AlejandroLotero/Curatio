@@ -2,8 +2,8 @@ import { Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "@/features/auth/context/AuthContext";
 import Navbar from "./Navbar";
 import NavBarClient from "./NavBarClient";
-import logo from  "@/assets/images/Curatio.png";//se debe de subir 
-import SessionConflictGlobalModal from  "@/features/auth/components/SessionConflictGlobalModal";//sube
+import logo from "@/assets/images/Curatio.png"; //se debe de subir
+import SessionConflictGlobalModal from "@/features/auth/components/SessionConflictGlobalModal"; //sube
 import bgAll from "@/assets/images/nuevo.jpg";
 
 //función para verificar si el usuario es cliente y mostrar el navbar adecuado
@@ -12,7 +12,6 @@ function isClienteRole(role) {
   const n = role.trim().toLowerCase();
   return n === "cliente";
 }
-
 
 export default function MainLayout() {
   const location = useLocation();
@@ -24,7 +23,6 @@ export default function MainLayout() {
   const isProductDetail = location.pathname.startsWith("/products/detalle/");
   const isCartFlow = location.pathname.startsWith("/cartshop/ver-carrito");
 
-
   const isClienteSession = isClienteRole(user?.role);
   const useClientNavbar =
     isClienteSession ||
@@ -34,8 +32,7 @@ export default function MainLayout() {
 
   return (
     <div className="relative min-h-screen text-text-primary overflow-hidden">
-      
-       {/* <div
+      {/* <div
          className="pointer-events-none absolute inset-0 -z-10 bg-cover bg-center bg-no-repeat"
          style={{ backgroundImage: `url(${bgAll})` }}
        /> */}
@@ -57,31 +54,9 @@ export default function MainLayout() {
         }}
       />
 
-      {/* <div
-        className="pointer-events-none absolute inset-0 -z-10"
-        style={{
-          background: `
-            radial-gradient(circle at 10% 20%, var(--color-secondary-400), transparent 20%),
-            radial-gradient(circle at 70% 80%, var(--color-primary-400), transparent 40%),
-            linear-gradient(
-              140deg,
-              var(--color-secondary-100),
-              var(--color-primary-200),
-              var(--color-white)
-            )
-          `,
-        }}
-      /> */}
+     
 
-
-
-
-
-
-      
-      <div
-        className="pointer-events-none absolute inset-0 -z-10"
-      >
+      <div className="pointer-events-none absolute inset-0 -z-10">
         <img
           src={logo}
           alt="watermark"

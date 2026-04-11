@@ -42,11 +42,28 @@ const NavBarClient = ({ variant = "solid" }) => {
 
   return (
     <nav
-      className={`relative z-50 w-full border-b transition-colors duration-300 py-2 ${
+      className={`relative z-50 w-full border-b transition-all duration-300 py-2 ${
         variant === "transparent"
-          ? "absolute top-0 left-0 z-[100] bg-transparent border-transparent"
-          : "bg-[#98e3f4] border-border"
+          ? "bg-transparent border-transparent absolute top-0 left-0 z-[100]"
+          : "border-border"
       }`}
+      style={
+        variant !== "transparent"
+          ? {
+              background: `
+            radial-gradient(circle at 20% 30%, rgba(65, 144, 190, 0.15), transparent 90%),
+            radial-gradient(circle at 70% 70%, rgba(70, 185, 175, 0.15), transparent 40%),
+            linear-gradient(
+              135deg,
+              var(--color-primary-100),
+              var(--color-primary-300),
+              var(--color-secondary-200),
+              var(--color-secondary-100)
+            )
+          `,
+            }
+          : {}
+      }
     >
       <div className="mx-auto max-w-7xl px-3 sm:px-4">
         <div className="flex min-w-0 items-center gap-2 py-2 sm:gap-4 md:h-16 md:py-0">
@@ -54,10 +71,7 @@ const NavBarClient = ({ variant = "solid" }) => {
               MARCA
              ========================= */}
           <div className="flex shrink-0 items-center">
-            <Link
-              to="/"
-              className="flex items-center"
-            >
+            <Link to="/" className="flex items-center">
               <img
                 src={logoCuratio}
                 alt="Curatio Logo"

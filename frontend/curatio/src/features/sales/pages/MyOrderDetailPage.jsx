@@ -149,7 +149,7 @@ export default function MyOrderDetailPage() {
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <h1 className="text-2xl font-bold">Detalle de mi pedido</h1>
-              <p className="text-sm text-label/80 mt-1">
+              <p className="text-sm text-label mt-1">
                  Revisa el estado de tu compra, la factura y el avance de aprobación.
               </p>
             </div>
@@ -162,7 +162,7 @@ export default function MyOrderDetailPage() {
               </Link>
 
               <Button
-                variant="secondary"
+                variant="primary"
                 size="sm"
                 type="button"
                 onClick={handleDownloadInvoice}
@@ -276,8 +276,8 @@ export default function MyOrderDetailPage() {
 function SummaryRow({ label, value }) {
   return (
     <div className="flex items-start justify-between gap-4">
-      <span className="text-gray-700">{label}</span>
-      <span className="text-gray-700 text-right">{value}</span>
+      <span className="text-label">{label}</span>
+      <span className="text-label text-right">{value}</span>
     </div>
   );
 }
