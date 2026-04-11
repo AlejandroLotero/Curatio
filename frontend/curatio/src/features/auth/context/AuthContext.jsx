@@ -1,228 +1,3 @@
-// import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
-// import {
-//   createSession as createSessionRequest,
-//   deleteSession as deleteSessionRequest,
-//   getCurrentSession,
-// } from "@/lib/http/identity";
-// import { adaptBackendUserToUi } from "@/lib/adapters/userAdapter";
-// //funcion para limpiar el estado de la UI cuando la sesion termina 
-// import { dispatchClearUiStateOnAuthEnd } from "@/lib/auth/sessionEvents"; 
-
-
-// const AuthContext = createContext(null);
-
-// // Timeout configurable desde Vite o fallback a 60s
-// const INACTIVITY_TIMEOUT_MS = Number(
-//   import.meta.env.VITE_SESSION_INACTIVITY_TIMEOUT_MS ?? 6000000
-// );
-
-// export function AuthProvider({ children }) {
-//   const [user, setUser] = useState(null);
-//   const [isBootstrapping, setIsBootstrapping] = useState(true);
-//   const [authNotice, setAuthNotice] = useState("");
-
-//   const inactivityTimerRef = useRef(null);
-
-//   /**
-//    * Limpia timer actual.
-//    */
-//   const clearInactivityTimer = () => {
-//     if (inactivityTimerRef.current) {
-//       clearTimeout(inactivityTimerRef.current);
-//       inactivityTimerRef.current = null;
-//     }
-//   };
-
-//   /**
-//    * Cierra sesión localmente por inactividad.
-//    * También intenta cerrar sesión backend si aún existe.
-//    */
-//   const handleLocalInactivityLogout = async () => {
-//     try {
-//       await deleteSessionRequest();
-//     } catch (error) {
-//       // Si backend ya expiró la sesión, no pasa nada
-//       console.warn("Session already expired in backend or logout failed silently.");
-//     } finally {
-//       dispatchClearUiStateOnAuthEnd();
-//       setUser(null);
-//       setAuthNotice("Sesión cerrada por inactividad, vuelva a iniciar sesión.");
-//     }
-//   };
-
-//   /**
-//    * Reinicia contador de inactividad en frontend.
-//    */
-//   const resetInactivityTimer = () => {
-//     clearInactivityTimer();
-
-//     if (!user) return;
-
-//     inactivityTimerRef.current = setTimeout(() => {
-//       handleLocalInactivityLogout();
-//     }, INACTIVITY_TIMEOUT_MS);
-//   };
-
-//   /**
-//    * Bootstrap inicial de sesión.
-//    */
-//   useEffect(() => {
-//     let isMounted = true;
-
-//     const bootstrap = async () => {
-//       // try {
-//       //   const response = await getCurrentSession();
-//       //   if (!isMounted) return;
-
-//       //   setUser(adaptBackendUserToUi(response?.data?.user));
-//       // } catch (error) {
-//       //   if (!isMounted) return;
-//       //   setUser(null);
-//       // } finally {
-//       try {
-//         const response = await getCurrentSession();
-//         if (!isMounted) return;
-
-//         setUser(adaptBackendUserToUi(response?.data?.user));
-//       } catch (error) {
-//         if (!isMounted) return;
-
-    
-//         setUser(null);
-//       } finally {
-//         if (isMounted) {
-//           setIsBootstrapping(false);
-//         }
-//       }
-//     };
-
-//     const handleSessionExpired = (event) => {
-//       if (!isMounted) return;
-//       dispatchClearUiStateOnAuthEnd();
-//       setUser(null);
-//       setAuthNotice(
-//         event?.detail?.message ||
-//           "Sesión cerrada por inactividad, vuelva a iniciar sesión."
-//       );
-//     };
-
-//     window.addEventListener("session-expired", handleSessionExpired);
-//     bootstrap();
-
-//     return () => {
-//       isMounted = false;
-//       window.removeEventListener("session-expired", handleSessionExpired);
-//     };
-//   }, []);
-
-//   /**
-//    * Cuando hay usuario autenticado, escuchar actividad y reiniciar timer.
-//    */
-//   useEffect(() => {
-//     if (!user) {
-//       clearInactivityTimer();
-//       return;
-//     }
-
-//     const activityEvents = [
-//       "mousemove",
-//       "keydown",
-//       "click",
-//       "scroll",
-//       "touchstart",
-//     ];
-
-//     const handleActivity = () => {
-//       resetInactivityTimer();
-//     };
-
-//     activityEvents.forEach((eventName) => {
-//       window.addEventListener(eventName, handleActivity);
-//     });
-
-//     // Inicializa timer al autenticarse
-//     resetInactivityTimer();
-
-//     return () => {
-//       activityEvents.forEach((eventName) => {
-//         window.removeEventListener(eventName, handleActivity);
-//       });
-
-//       clearInactivityTimer();
-//     };
-//   }, [user]);
-
-//   /**
-//    * Login real.
-//    */
-//   // const signIn = async (payload) => {
-//   //   const response = await createSessionRequest(payload);
-//   //   const adaptedUser = adaptBackendUserToUi(response?.data?.user);
-
-//   //   setUser(adaptedUser);
-//   //   setAuthNotice("");
-
-//   //   return adaptedUser;
-//   // };
-
-//   const signIn = async (payload) => {
-//   await createSessionRequest(payload);
-
-//   const sessionResponse = await getCurrentSession();
-//   const adaptedUser = adaptBackendUserToUi(sessionResponse?.data?.user);
-
-//   setUser(adaptedUser);
-//   setAuthNotice("");
-
-//   return adaptedUser;
-// };
-
-//   /**
-//    * Logout manual real.
-//    */
-//   const signOut = async () => {
-//     try {
-//       await deleteSessionRequest();
-//     } finally {
-//       clearInactivityTimer();
-//       dispatchClearUiStateOnAuthEnd();
-//       setUser(null);
-//       setAuthNotice("");
-//     }
-//   };
-
-//   /**
-//    * Permite cerrar el toast/notificación.
-//    */
-//   const clearAuthNotice = () => {
-//     setAuthNotice("");
-//   };
-
-//   const value = useMemo(
-//     () => ({
-//       user,
-//       isAuthenticated: Boolean(user),
-//       isBootstrapping,
-//       authNotice,
-//       signIn,
-//       signOut,
-//       clearAuthNotice,
-//     }),
-//     [user, isBootstrapping, authNotice]
-//   );
-
-//   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-// }
-
-// export function useAuth() {
-//   const context = useContext(AuthContext);
-
-//   if (!context) {
-//     throw new Error("useAuth must be used inside AuthProvider");
-//   }
-
-//   return context;
-// }
 import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
 import {
   createSession as createSessionRequest,
@@ -311,26 +86,77 @@ export function AuthProvider({ children }) {
    * Este polling no resuelve el caso de pestañas del mismo navegador;
    * ese caso se maneja con storage events en frontend.
    */
-  const startSessionHealthcheck = () => {
-    stopSessionHealthcheck();
+  // const startSessionHealthcheck = () => {
+  //   stopSessionHealthcheck();
 
-    sessionPollingRef.current = setInterval(async () => {
-      try {
-        await getCurrentSession();
-      } catch (error) {
-        if (error?.error?.code === "SESSION_REPLACED") {
-          releaseTabOwnership();
-          dispatchClearUiStateOnAuthEnd();
-          setUser(null);
-          setAuthNotice(
-            "Tu sesión fue cerrada porque se inició en otro navegador o dispositivo."
-          );
-          stopSessionHealthcheck();
-          clearInactivityTimer();
+  //   sessionPollingRef.current = setInterval(async () => {
+  //     try {
+  //       await getCurrentSession();
+  //     } catch (error) {
+  //       if (
+  //         error?.error?.code === "SESSION_REPLACED" ||
+  //         error?.error?.code === "SESSION_EXPIRED" ||
+  //         error?.error?.code === "UNAUTHENTICATED"
+  //       ) {
+  //         releaseTabOwnership();
+  //         dispatchClearUiStateOnAuthEnd();
+  //         setUser(null);
+  //         setAuthNotice(
+  //           error?.error?.code === "SESSION_REPLACED"
+  //             ? "Tu sesión fue cerrada porque se inició en otro navegador o dispositivo."
+  //             : "Tu sesión ya no está activa. Vuelve a iniciar sesión."
+  //         );
+  //         stopSessionHealthcheck();
+  //         clearInactivityTimer();
+  //       }
+  //     }
+  //   }, SESSION_HEALTHCHECK_MS);
+  // };
+
+    const startSessionHealthcheck = () => {
+      stopSessionHealthcheck();
+
+      sessionPollingRef.current = setInterval(async () => {
+        try {
+          await getCurrentSession();
+        } catch (error) {
+          const code = error?.error?.code;
+
+          if (code === "SESSION_REPLACED" || code === "SESSION_EXPIRED") {
+            releaseTabOwnership();
+            dispatchClearUiStateOnAuthEnd();
+            setUser(null);
+            setAuthNotice(
+              code === "SESSION_REPLACED"
+                ? "Tu sesión fue cerrada porque se inició en otro navegador o dispositivo."
+                : "Sesión cerrada por inactividad, vuelva a iniciar sesión."
+            );
+            stopSessionHealthcheck();
+            clearInactivityTimer();
+            setSessionConflict(null);
+            setTabConflict(null);
+            pendingCredentialsRef.current = null;
+            pendingAuthenticatedUserRef.current = null;
+            return;
+          }
+
+          if (code === "UNAUTHENTICATED") {
+            releaseTabOwnership();
+            dispatchClearUiStateOnAuthEnd();
+            setUser(null);
+            setAuthNotice(
+              "Se perdió la sesión del navegador. Vuelve a iniciar sesión."
+            );
+            stopSessionHealthcheck();
+            clearInactivityTimer();
+            setSessionConflict(null);
+            setTabConflict(null);
+            pendingCredentialsRef.current = null;
+            pendingAuthenticatedUserRef.current = null;
+          }
         }
-      }
-    }, SESSION_HEALTHCHECK_MS);
-  };
+      }, SESSION_HEALTHCHECK_MS);
+    };
 
   /**
    * Cierra sesión local por inactividad.
@@ -548,58 +374,74 @@ export function AuthProvider({ children }) {
    *    - Si sí existe, no entramos visualmente todavía: abrimos modal.
    *    - Si no existe, esta pestaña reclama propiedad y entra normal.
    */
-  const signIn = async (payload) => {
+   const signIn = async (payload) => {
+  try {
+    await createSessionRequest(payload);
+
+    let sessionResponse;
     try {
-      await createSessionRequest(payload);
-
-      const sessionResponse = await getCurrentSession();
-      const adaptedUser = adaptBackendUserToUi(sessionResponse?.data?.user);
-
-      /**
-       * Caso: misma sesión backend, pero otra pestaña del mismo navegador
-       * ya se considera dueña visual.
-       */
-      if (hasAnotherActiveTabOwner()) {
-        pendingAuthenticatedUserRef.current = adaptedUser;
-        setTabConflict({
-          title: "La cuenta ya está abierta en otra pestaña",
-          message:
-            "Solo puedes usar una pestaña activa al mismo tiempo en este navegador. Decide si quieres continuar aquí o conservar la pestaña anterior.",
-        });
-
-        return null;
-      }
-
-      /**
-       * No hay otra pestaña dueña, esta pestaña toma control.
-       */
-      claimTabOwnership();
-
-      pendingCredentialsRef.current = null;
-      pendingAuthenticatedUserRef.current = null;
-      setSessionConflict(null);
-      setTabConflict(null);
-      setUser(adaptedUser);
-      setAuthNotice("");
-
-      return adaptedUser;
+      sessionResponse = await getCurrentSession();
     } catch (error) {
-      /**
-       * Conflicto real detectado por backend:
-       * otra sesión activa en otro navegador/dispositivo.
-       */
-      if (error?.error?.code === "SESSION_CONFLICT") {
-        pendingCredentialsRef.current = payload;
-        setSessionConflict({
-          title: "La cuenta ya está abierta en otro navegador o dispositivo",
-          message:
-            "Solo puedes tener una sesión activa al mismo tiempo. Decide si quieres continuar aquí o conservar la sesión anterior.",
-        });
-      }
+      releaseTabOwnership();
+      dispatchClearUiStateOnAuthEnd();
+      setUser(null);
 
-      throw error;
+      throw {
+        error: {
+          code: "SESSION_NOT_PERSISTED",
+          message:
+            "El backend autenticó al usuario, pero la sesión no quedó activa en el navegador.",
+          fields: {},
+        },
+      };
     }
-  };
+
+    const adaptedUser = adaptBackendUserToUi(sessionResponse?.data?.user);
+
+    if (!adaptedUser) {
+      throw {
+        error: {
+          code: "INVALID_LOGIN_RESPONSE",
+          message: "No se pudo recuperar el usuario autenticado.",
+          fields: {},
+        },
+      };
+    }
+
+    if (hasAnotherActiveTabOwner()) {
+      pendingAuthenticatedUserRef.current = adaptedUser;
+      setTabConflict({
+        title: "La cuenta ya está abierta en otra pestaña",
+        message:
+          "Solo puedes usar una pestaña activa al mismo tiempo en este navegador. Decide si quieres continuar aquí o conservar la pestaña anterior.",
+      });
+
+      return null;
+    }
+
+    claimTabOwnership();
+
+    pendingCredentialsRef.current = null;
+    pendingAuthenticatedUserRef.current = null;
+    setSessionConflict(null);
+    setTabConflict(null);
+    setUser(adaptedUser);
+    setAuthNotice("");
+
+    return adaptedUser;
+  } catch (error) {
+    if (error?.error?.code === "SESSION_CONFLICT") {
+      pendingCredentialsRef.current = payload;
+      setSessionConflict({
+        title: "La cuenta ya está abierta en otro navegador o dispositivo",
+        message:
+          "Solo puedes tener una sesión activa al mismo tiempo. Decide si quieres continuar aquí o conservar la sesión anterior.",
+      });
+    }
+
+    throw error;
+  }
+};
 
   /**
    * El usuario decide quedarse en esta pestaña/dispositivo
