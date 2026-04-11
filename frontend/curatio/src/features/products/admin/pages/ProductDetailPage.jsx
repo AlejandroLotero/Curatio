@@ -3,7 +3,8 @@ import { useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import Button from "@/shared/components/Button";
-import { listProducts } from "@/data/product/listProducts";
+import { getMedicationById } from "@/lib/http/medications";
+import { adaptMedicationDetail } from "@/lib/adapters/medicationAdapter";
 import "../../../../styles/tokens.css";
 import "../../../../styles/semantic.css";
 
@@ -15,26 +16,44 @@ export default function ProductDetailPage() {
   const [medicamento, setMedicamento] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Carga el medicamento cuando cambia el ID
   useEffect(() => {
-    cargarMedicamento();
-  }, [id]);
+    let isMounted = true;
 
-  // Busca el medicamento en la lista por ID y lo guarda en el estado
-  const cargarMedicamento = () => {
-    try {
-      const med = listProducts.find((m) => m.id == id);
-      if (med) {
-        setMedicamento(med);
-      } else {
-        setMedicamento(null);
+    const cargarMedicamento = async () => {
+      if (!id) {
+        if (isMounted) {
+          setMedicamento(null);
+          setLoading(false);
+        }
+        return;
       }
-    } catch (error) {
-      console.error("Error cargando medicamento:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+
+      try {
+        setLoading(true);
+        const response = await getMedicationById(id);
+        const adapted = adaptMedicationDetail(response?.data?.medication);
+
+        if (isMounted) {
+          setMedicamento(adapted ?? null);
+        }
+      } catch (error) {
+        console.error("Error cargando medicamento:", error);
+        if (isMounted) {
+          setMedicamento(null);
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    cargarMedicamento();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [id]);
 
   // Componente reutilizable para mostrar campos de detalles en modo lectura
   const DetailField = ({ label, value }) => (
@@ -48,7 +67,6 @@ export default function ProductDetailPage() {
     </div>
   );
 
-  // Muestra pantalla de carga mientras se obtienen los datos
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -57,7 +75,6 @@ export default function ProductDetailPage() {
     );
   }
 
-  // Muestra mensaje si el producto no existe
   if (!medicamento) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -125,7 +142,6 @@ export default function ProductDetailPage() {
           <DetailField label="Estado" value={medicamento.state} />
         </div>
 
-        {/* Botón Volver */}
         <div className="flex w-full pt-4">
           <Link to="/products/listar">
             <Button variant="secondary" size="sm">
