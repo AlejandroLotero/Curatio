@@ -1,41 +1,25 @@
-// Función utilitaria para construir el dataset de un reporte (tabla)
-// Patrón: transformación de datos (input → output listo para exportar)
-export function buildReportDataset({
-  users,           // Array de usuarios origen
-  selectedFields,  // Campos seleccionados para el reporte [{ key, label }]
-  scope,           // Alcance del reporte: "all" | "document"
-  documentNumber   // Número de documento para filtrar (si aplica)
-}) {
-
-  // Copia inmutable del array original (evita mutaciones)
-  let filteredUsers = [...users];
-
-  // Filtro por alcance: si es por documento, se aplica filtro específico
-  if (scope === "document" && documentNumber) {
-    filteredUsers = filteredUsers.filter(
-      (user) => user.document_number === documentNumber
-    );
-  }
-
-  // Construcción de encabezados del reporte
-  // Se toma el label de cada campo seleccionado
+/**
+ * Construye el dataset del reporte a partir de los datos visibles
+ * y los campos seleccionados.
+ */
+export function buildReportDataset({ data = [], selectedFields = [] }) {
   const headers = selectedFields.map((field) => field.label);
 
-  // Construcción de filas del reporte
-  // Cada usuario se transforma en un array de valores según los campos seleccionados
-  const rows = filteredUsers.map((user) =>
+  const rows = data.map((item) =>
     selectedFields.map((field) => {
-      const value = user[field.key]; // Acceso dinámico a la propiedad
+      const value = item[field.key];
 
-      // Normalización: evita undefined o null en el reporte
-      return value ?? "";
+      if (value === null || value === undefined) return "";
+
+      if (typeof value === "number") return value;
+
+      if (typeof value === "object") {
+        return JSON.stringify(value);
+      }
+
+      return String(value);
     })
   );
 
-  // Estructura final desacoplada de la UI
-  // Lista para exportar a Excel, PDF o renderizar en tabla
-  return {
-    headers, // Array de strings (columnas)
-    rows     // Array de arrays (filas)
-  };
+  return { headers, rows };
 }

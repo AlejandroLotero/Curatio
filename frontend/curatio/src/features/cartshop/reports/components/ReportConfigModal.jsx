@@ -1,190 +1,185 @@
-// Hook para manejo de estado local en componentes funcionales
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
-
-// Configuración de campos disponibles para el reporte
-import { userReportFields } from "../config/userReportFields";
-
-
-// Caso de uso que orquesta la generación del reporte
+import { cartShopReportFields } from "../config/userReportFields";
 import { generateUserReport } from "../services/generateUserReport";
 
-
-// Componentes UI reutilizables (design system)
 import { Button, Input, Select } from "@/shared/components";
 import Checkbox from "@/shared/components/Checkbox";
 
-
-// Componente modal para configuración de reportes
-export default function ReportConfigModal({ isOpen, onClose }) {
-
-
-  // Estado del formato de salida
+export default function ReportConfigModal({
+  isOpen,
+  onClose,
+  cartshops = [],
+  filters = {},
+}) {
   const [format, setFormat] = useState("pdf");
+  const [scope, setScope] = useState("filtered");
+  const [invoiceNumber, setInvoiceNumber] = useState(filters.invoice_number || "");
+  const [date, setDate] = useState(filters.date || "");
+  const [status, setStatus] = useState(filters.status || "");
 
-
-  // Estado del alcance del reporte
-  const [scope, setScope] = useState("all");
-
-
-  // Estado para filtro por documento
-  const [documentNumber, setDocumentNumber] = useState("");
-
-
-  // Estado de campos seleccionados (inicialización lazy)
   const [selectedFields, setSelectedFields] = useState(() =>
-    userReportFields.filter((f) => f.default) // Solo campos marcados por defecto
+    cartShopReportFields.filter((f) => f.default)
   );
 
-
-  // Control de render: si el modal no está abierto, no se monta en el DOM
   if (!isOpen) return null;
 
-
-  // Handler para activar/desactivar campos del reporte
   const handleFieldToggle = (field) => {
-
-
-    // Verifica si el campo ya está seleccionado
     const exists = selectedFields.find((f) => f.key === field.key);
 
-
     if (exists) {
-      // Elimina el campo si ya existe
-      setSelectedFields(
-        selectedFields.filter((f) => f.key !== field.key)
-      );
+      setSelectedFields(selectedFields.filter((f) => f.key !== field.key));
     } else {
-      // Agrega el campo si no existe
-      setSelectedFields([
-        ...selectedFields,
-        field
-      ]);
+      setSelectedFields([...selectedFields, field]);
     }
   };
 
+  const filteredData = useMemo(() => {
+    let rows = Array.isArray(cartshops) ? [...cartshops] : [];
 
-  // Handler principal para generar el reporte
+    if (scope === "invoice" && invoiceNumber.trim()) {
+      const q = invoiceNumber.trim().toLowerCase();
+      rows = rows.filter((item) =>
+        String(item.invoice_number || "").toLowerCase().includes(q)
+      );
+    }
+
+    if (scope === "filtered") {
+      if (invoiceNumber.trim()) {
+        const q = invoiceNumber.trim().toLowerCase();
+        rows = rows.filter((item) =>
+          String(item.invoice_number || "").toLowerCase().includes(q)
+        );
+      }
+
+      if (date.trim()) {
+        rows = rows.filter((item) => String(item.date || "") === date.trim());
+      }
+
+      if (status.trim()) {
+        rows = rows.filter((item) => String(item.state || "") === status.trim());
+      }
+    }
+
+    return rows;
+  }, [cartshops, scope, invoiceNumber, date, status]);
+
   const handleGenerateReport = () => {
-
-
-    // Invoca el caso de uso con la configuración actual
     generateUserReport({
       format,
       selectedFields,
-      scope,
-      documentNumber,
+      data: filteredData,
+      fileName: "reporte-carritos",
+      reportTitle: "Reporte de Carritos",
     });
 
-
-    // Cierra el modal después de generar el reporte
     onClose();
   };
 
-
   return (
-    // Overlay del modal
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-
-
-      {/* Contenedor del modal */}
       <div className="w-full max-w-lg rounded-xl bg-white p-6 shadow-lg">
-
-
-        {/* Título */}
         <h2 className="mb-6 text-xl font-semibold">
           Generar reporte de Carritos
         </h2>
 
-
-        {/* Selección de formato */}
         <div className="mb-4">
           <Select
             label="Formato del reporte"
             value={format}
             onChange={(e) => setFormat(e.target.value)}
             options={[
-              { label: "PDF", id: "pdf" },
-              { label: "Excel", id: "excel" },
+              { label: "PDF", value: "pdf" },
+              { label: "Excel", value: "excel" },
             ]}
           />
         </div>
 
-
-        {/* Selección de campos */}
         <div className="mb-4">
           <p className="mb-2 font-medium">Campos del reporte</p>
 
-
-          {/* Grid de checkboxes */}
           <div className="grid grid-cols-2 gap-2">
-            {userReportFields.map((field) => {
-
-
-              // Determina si el campo está seleccionado
-              const checked = selectedFields.some(
-                (f) => f.key === field.key
-              );
-
+            {cartShopReportFields.map((field) => {
+              const checked = selectedFields.some((f) => f.key === field.key);
 
               return (
                 <Checkbox
-                  key={field.key}         // Key única para renderizado
-                  id={field.key}          // Id accesible
-                  name={field.key}        // Nombre del campo
-                  label={field.label}     // Texto visible
-                  checked={checked}       // Estado controlado
-                  onChange={() => handleFieldToggle(field)} // Toggle
+                  key={field.key}
+                  id={field.key}
+                  name={field.key}
+                  label={field.label}
+                  checked={checked}
+                  onChange={() => handleFieldToggle(field)}
                 />
               );
             })}
           </div>
         </div>
 
-
-        {/* Selección de alcance */}
         <div className="mb-4">
           <Select
             label="Alcance del reporte"
             value={scope}
             onChange={(e) => setScope(e.target.value)}
             options={[
-              { label: "Todos los usuarios", value: "all" },
-              { label: "Filtrar por documento", value: "document" },
+              { label: "Todos los carritos cargados", value: "all" },
+              { label: "Filtros actuales", value: "filtered" },
+              { label: "Filtrar por factura", value: "invoice" },
             ]}
           />
         </div>
 
-
-        {/* Campo condicional para filtro por documento */}
-        {scope === "document" && (
-          <div className="mb-4">
+        {(scope === "filtered" || scope === "invoice") && (
+          <div className="space-y-4">
             <Input
-              label="Número de documento"
-              value={documentNumber}
-              onChange={(e) => setDocumentNumber(e.target.value)}
-              placeholder="Ingrese número de documento"
+              label="Número de factura"
+              value={invoiceNumber}
+              onChange={(e) => setInvoiceNumber(e.target.value)}
+              placeholder="Ingrese número de factura"
             />
+
+            {scope === "filtered" ? (
+              <>
+                <div>
+                  <label className="mb-1 block text-sm font-medium">
+                    Fecha
+                  </label>
+                  <input
+                    type="date"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                    className="w-full rounded-md border px-3 py-2"
+                  />
+                </div>
+
+                <Select
+                  label="Estado"
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                  options={[
+                    { label: "Activo", value: "Activo" },
+                    { label: "Completado", value: "Completado" },
+                    { label: "Cancelado", value: "Cancelado" },
+                  ]}
+                  placeholder="Todos"
+                />
+              </>
+            ) : null}
           </div>
         )}
 
-
-        {/* Acciones del modal */}
-        <div className="flex justify-end gap-2 mt-6">
-
-
-          {/* Botón cancelar */}
+        <div className="mt-6 flex justify-end gap-2">
           <Button variant="secondary" onClick={onClose}>
             Cancelar
           </Button>
 
-
-          {/* Botón generar reporte */}
-          <Button variant="primary" onClick={handleGenerateReport}>
+          <Button
+            variant="primary"
+            onClick={handleGenerateReport}
+            disabled={!selectedFields.length || !filteredData.length}
+          >
             Generar reporte
           </Button>
-
-
         </div>
       </div>
     </div>

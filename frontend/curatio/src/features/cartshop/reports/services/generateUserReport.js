@@ -1,45 +1,38 @@
-// Fuente de datos de usuarios (mock o fuente centralizada)
-import { users } from "@/data/user/users";
-
-// Utilidad para transformar datos en dataset de reporte
 import { buildReportDataset } from "../utils/buildReportDataset";
-
-// Servicios de exportación
 import { generateExcelReport } from "./generateExcelReport";
 import { generatePdfReport } from "./generatePdfReport";
 
-// Caso de uso: orquestador de generación de reportes de usuarios
-// Patrón: Application Service (coordina utilidades y servicios)
+/**
+ * Orquestador de generación de reportes para carritos.
+ *
+ * Mantiene la misma estructura del servicio anterior,
+ * pero ahora recibe los datos reales desde la página.
+ */
 export function generateUserReport({
-  format,          // "excel" | "pdf"
-  selectedFields,  // Campos seleccionados por el usuario
-  scope,           // Alcance del reporte
-  documentNumber   // Filtro opcional
+  format,
+  selectedFields,
+  data = [],
+  fileName = "reporte-carritos",
+  reportTitle = "Reporte de Carritos",
 }) {
-
-  // Construcción del dataset (desacoplado de la UI)
   const { headers, rows } = buildReportDataset({
-    users,
+    data,
     selectedFields,
-    scope,
-    documentNumber
   });
 
-  // Validación: evita generar archivos vacíos
   if (!rows.length) {
     alert("No hay datos para generar el reporte.");
-    return; // Corte de ejecución
+    return;
   }
 
-  // Generación de timestamp para nombres únicos de archivo (YYYY-MM-DD)
   const timestamp = new Date().toISOString().slice(0, 10);
 
-  // Selección de estrategia de exportación según formato
   if (format === "excel") {
     generateExcelReport({
       headers,
       rows,
-      fileName: `users-report-${timestamp}.xlsx`
+      fileName: `${fileName}-${timestamp}.xlsx`,
+      sheetName: "Carritos",
     });
   }
 
@@ -47,7 +40,8 @@ export function generateUserReport({
     generatePdfReport({
       headers,
       rows,
-      fileName: `users-report-${timestamp}.pdf`
+      fileName: `${fileName}-${timestamp}.pdf`,
+      title: reportTitle,
     });
   }
 }
