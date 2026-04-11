@@ -6,6 +6,14 @@ import logo from  "@/assets/images/Curatio.png";//se debe de subir
 import SessionConflictGlobalModal from  "@/features/auth/components/SessionConflictGlobalModal";//sube
 import bgAll from "@/assets/images/nuevo.jpg";
 
+//función para verificar si el usuario es cliente y mostrar el navbar adecuado
+function isClienteRole(role) {
+  if (role == null || typeof role !== "string") return false;
+  const n = role.trim().toLowerCase();
+  return n === "cliente";
+}
+
+
 export default function MainLayout() {
   const location = useLocation();
   const { user } = useAuth();
@@ -15,6 +23,7 @@ export default function MainLayout() {
   const isClientSource = searchParams.get("source") === "dashboard";
   const isProductDetail = location.pathname.startsWith("/products/detalle/");
   const isCartFlow = location.pathname.startsWith("/cartshop/ver-carrito");
+
 
   const isClienteSession = isClienteRole(user?.role);
   const useClientNavbar =
