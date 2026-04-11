@@ -168,6 +168,7 @@ import Select from "@/shared/components/Select";
 
 import DataTableSales from "./DataTableSales";
 import { SalesColumns } from "../table/SalesColumns";
+import SalesReportConfigModal from "../reports/components/SalesReportConfigModal";
 
 import {
   fetchSalesList,
@@ -266,6 +267,7 @@ export default function ListSales() {
   const [loadError, setLoadError] = useState("");
   const [reportError, setReportError] = useState("");
   const [downloadingReport, setDownloadingReport] = useState(false);
+  const [isClientReportOpen, setIsClientReportOpen] = useState(false);
 
   /**
    * Query consolidada para consumir el backend.
@@ -391,7 +393,7 @@ export default function ListSales() {
           </div>
 
           <div className="flex flex-wrap items-center justify-end gap-2">
-            <Button
+            {/* <Button
               variant="secondary"
               size="sm"
               type="button"
@@ -409,6 +411,16 @@ export default function ListSales() {
               disabled={downloadingReport}
             >
               Exportar PDF
+            </Button> */}
+
+            <Button
+              variant="secondary"
+              size="sm"
+              type="button"
+              onClick={() => setIsClientReportOpen(true)}
+              disabled={loading || !sales.length}
+            >
+              Generar reporte
             </Button>
 
             <Link to="/sales/factura-electronica">
@@ -552,6 +564,14 @@ export default function ListSales() {
             </p>
           </div>
         ) : null}
+
+        <SalesReportConfigModal
+          isOpen={isClientReportOpen}
+          onClose={() => setIsClientReportOpen(false)}
+          salesAll={sales}
+          salesFiltered={sales}
+          enableFullDatasetScope={false}
+        />
       </div>
     </div>
   );
