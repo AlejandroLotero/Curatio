@@ -17,13 +17,15 @@ export function generateProductReport({
   format,          // "excel" | "pdf"
   selectedFields,  // Campos seleccionados por el usuario
   scope,           // Alcance del reporte
-  laboratoryFilter   // Filtro opcional
+  laboratoryFilter, // Filtro opcional
+  products: productsFromApi, // Listado desde backend (ListProductsPage); si no hay, mock
 }) {
 
+  const products = productsFromApi ?? listProducts;
 
   // Construcción del dataset (desacoplado de la UI)
   const { headers, rows } = buildProductReportDataset({
-    products: listProducts,
+    products,
     selectedFields,
     scope,
     laboratoryFilter

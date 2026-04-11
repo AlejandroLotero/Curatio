@@ -173,6 +173,8 @@ export default function ListProductsPage() {
           <ProductReportConfigModal
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
+            productsSource={products}
+            laboratoryOptions={laboratorios}
           />
         </div>
       </div>

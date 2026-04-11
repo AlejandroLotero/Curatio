@@ -12,11 +12,14 @@ export function buildProductReportDataset({
   let filteredProducts = [...products];
 
 
-  // Filtro por alcance: si es por laboratorio, se aplica filtro específico
+  // Filtro por alcance: valor puede ser id de catálogo o nombre (mock / derivado)
   if (scope === "laboratory" && laboratoryFilter) {
-    filteredProducts = filteredProducts.filter(
-      (product) => product.laboratory === laboratoryFilter
-    );
+    const want = String(laboratoryFilter);
+    filteredProducts = filteredProducts.filter((product) => {
+      const byId = String(product.laboratoryId ?? product.laboratorioId ?? "") === want;
+      const byName = String(product.laboratory ?? product.laboratorio ?? "") === want;
+      return byId || byName;
+    });
   }
 
 
