@@ -14,12 +14,14 @@ import { generateProductReport } from "../services/generateProductReport";
 import { Button, Input, Select } from "@/shared/components";
 import Checkbox from "@/shared/components/Checkbox";
 
-// Fuente de datos
-import { products } from "@/data/product/products";
-
 
 // Componente modal para configuración de reportes de productos
-export default function ProductReportConfigModal({ isOpen, onClose }) {
+export default function ProductReportConfigModal({
+  isOpen,
+  onClose,
+  productsSource = [],
+  laboratoryOptions = [],
+}) {
 
 
   // Estado del formato de salida
@@ -40,11 +42,15 @@ export default function ProductReportConfigModal({ isOpen, onClose }) {
   );
 
 
-  // Obtener laboratorios únicos
   const laboratories = useMemo(() => {
-    const labs = [...new Set(products.map(p => p.laboratory))];
+    if (laboratoryOptions.length) {
+      return laboratoryOptions;
+    }
+    const labs = [
+      ...new Set((productsSource || []).map((p) => p.laboratory).filter(Boolean)),
+    ];
     return labs.map((lab) => ({ label: lab, value: lab }));
-  }, []);
+  }, [laboratoryOptions, productsSource]);
 
 
   // Control de render: si el modal no está abierto, no se monta en el DOM
@@ -84,6 +90,7 @@ export default function ProductReportConfigModal({ isOpen, onClose }) {
       selectedFields,
       scope,
       laboratoryFilter,
+      products: productsSource,
     });
 
 

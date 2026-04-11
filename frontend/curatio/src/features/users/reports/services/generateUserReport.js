@@ -17,13 +17,14 @@ export function generateUserReport({
   format,          // "excel" | "pdf"
   selectedFields,  // Campos seleccionados por el usuario
   scope,           // Alcance del reporte
-  documentNumber   // Filtro opcional
+  documentNumber,  // Filtro opcional
+  usersSource,     // Listado desde API (p. ej. ListUserPage); si no hay, se usa mock
 }) {
 
 
   // Construcción del dataset (desacoplado de la UI)
   const { headers, rows } = buildReportDataset({
-    users,
+    users: usersSource ?? users,
     selectedFields,
     scope,
     documentNumber
