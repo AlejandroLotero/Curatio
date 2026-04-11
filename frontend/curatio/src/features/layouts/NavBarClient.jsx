@@ -180,14 +180,14 @@ const NavBarClient = ({ variant = "solid" }) => {
 
   return (
     <nav
-      className={`relative z-50 w-full border-b transition-colors duration-300 mt-4 ${
+      className={`relative z-50 w-full border-b transition-colors duration-300 py-2 ${
         variant === "transparent"
-          ? "bg-transparent border-transparent absolute top-0 left-0 z-[100]"
+          ? "absolute top-0 left-0 z-[100] bg-transparent border-transparent"
           : "bg-[#98e3f4] border-border"
       }`}
     >
       <div className="mx-auto max-w-7xl px-3 sm:px-4">
-        <div className="flex min-h-16 items-center gap-2 py-2 sm:gap-4 sm:py-0">
+        <div className="flex min-w-0 items-center gap-2 py-2 sm:gap-4 md:h-16 md:py-0">
           {/* =========================
               MARCA
              ========================= */}
@@ -199,7 +199,7 @@ const NavBarClient = ({ variant = "solid" }) => {
               <img
                 src={logoCuratio}
                 alt="Curatio Logo"
-                className="h-16 w-auto drop-shadow-[0_6px_18px_rgba(0,0,0,0.18)] "
+                className="h-14 w-auto md:h-16"
               />
             </Link>
           </div>
@@ -216,6 +216,7 @@ const NavBarClient = ({ variant = "solid" }) => {
               source="dashboard"
               placeholder="Buscar medicamentos..."
               className="w-full min-w-0 text-label"
+              inputClassName="!py-2 md:!py-1.5 md:!leading-snug"
             />
           </div>
 

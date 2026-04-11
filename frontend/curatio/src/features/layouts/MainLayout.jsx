@@ -1,4 +1,5 @@
 import { Outlet, useLocation } from "react-router-dom";
+import { useAuth } from "@/features/auth/context/AuthContext";
 import Navbar from "./Navbar";
 import NavBarClient from "./NavBarClient";
 import logo from  "@/assets/images/Curatio.png";//se debe de subir 
@@ -7,6 +8,7 @@ import bgAll from "@/assets/images/nuevo.jpg";
 
 export default function MainLayout() {
   const location = useLocation();
+  const { user } = useAuth();
 
   const isHome = location.pathname === "/";
   const searchParams = new URLSearchParams(location.search);
@@ -14,8 +16,12 @@ export default function MainLayout() {
   const isProductDetail = location.pathname.startsWith("/products/detalle/");
   const isCartFlow = location.pathname.startsWith("/cartshop/ver-carrito");
 
+  const isClienteSession = isClienteRole(user?.role);
   const useClientNavbar =
-    isHome || isCartFlow || (isProductDetail && isClientSource);
+    isClienteSession ||
+    isHome ||
+    isCartFlow ||
+    (isProductDetail && isClientSource);
 
   return (
     <div className="relative min-h-screen text-text-primary overflow-hidden">

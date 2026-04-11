@@ -8,3 +8,4 @@ export { default as DataTableUser } from "./components/DataTableUser";
 export { default as UpdateBasicInformationPage } from "./pages/UpdateBasicInformationPage";
 export { default as UpdateContactInformationPage } from "./pages/UpdateContactInformationPage";
 export { default as UpdateRolPage } from "./pages/UpdateRolPage";
+export { default as UpdateUserInfo } from "./pages/UpdateUserInfo";

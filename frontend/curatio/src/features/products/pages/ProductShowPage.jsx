@@ -226,12 +226,12 @@ export default function ProductShowPage() {
           {/* =========================
               IMAGEN
              ========================= */}
-          <div className="flex w-full items-start justify-center md:justify-center">
+          <div className="flex w-full items-center justify-center md:justify-center"> 
             <div
               className="
                 mt-2 flex aspect-square w-full max-w-sm shrink-0
                 items-center justify-center overflow-hidden rounded-lg
-                bg-gradient-to-br from-cyan-100 to-blue-100
+                bg-gradient-to-br from-cyan-100/70 to-blue-100/70
               "
             >
               {product.image ? (

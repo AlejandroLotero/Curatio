@@ -205,6 +205,16 @@ export default function ProfilePage() {
     );
   }
 
+  // Perfil propio: ruta /accounts/perfil o /accounts/perfil/:id con el mismo id que la sesión.
+  const isOwnProfile =
+    !id || String(profileId ?? "") === String(authenticatedUser?.id ?? "");
+  // Cliente y Farmaceuta actualizan datos vía UpdateUserInfo (PATCH /v1/people/users/me/).
+  const isClienteOrFarmaceuta =
+    profile.role === "Cliente" || profile.role === "Farmaceuta";
+  // Evita duplicar con "Editar cuenta" del administrador (meta.can_edit_account).
+  const showEditarPerfilButton =
+    isOwnProfile && isClienteOrFarmaceuta && !profileMeta?.can_edit_account;
+
   return (
 
     <div
@@ -311,21 +321,31 @@ export default function ProfilePage() {
               />
             </div>
 
-            {/* 7) Acciones: Volver (y Editar si meta.can_edit_account); apilados en móvil, fila desde sm. */}
-            <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 w-full max-w-md mx-auto sm:max-w-none lg:mx-0 sm:justify-between sm:items-center">
-              <Link to={cancelPath} className="w-full sm:w-auto sm:inline-flex">
+            {/* 7) Acciones en una sola fila (responsive): Volver a la izquierda; Editar cuenta / Editar perfil al mismo nivel a la derecha. */}
+            <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3 w-full min-w-0 sm:justify-between">
+              <Link to={cancelPath} className="w-full sm:w-auto sm:shrink-0">
                 <Buttom variant="secondary" size="sm" type="button" className="w-full sm:w-auto min-w-0">
                   {profileMeta?.can_edit_account ? "Volver al listado" : "Volver"}
                 </Buttom>
               </Link>
 
-              {profileMeta?.can_edit_account && (
-                <Link to={editUserPath} className="w-full sm:w-auto sm:inline-flex">
-                  <Buttom variant="primary" size="sm" type="button" className="w-full sm:w-auto min-w-0">
-                    Editar cuenta
-                  </Buttom>
-                </Link>
-              )}
+              <div className="flex w-full flex-col flex-wrap gap-3 sm:w-auto sm:flex-row sm:justify-end sm:min-w-0">
+                {profileMeta?.can_edit_account ? (
+                  <Link to={editUserPath} className="w-full sm:w-auto sm:shrink-0">
+                    <Buttom variant="primary" size="sm" type="button" className="w-full min-w-0 sm:w-auto">
+                      Editar cuenta
+                    </Buttom>
+                  </Link>
+                ) : null}
+
+                {showEditarPerfilButton ? (
+                  <Link to="/accounts/actualizar-mi-perfil" className="w-full sm:w-auto sm:shrink-0">
+                    <Buttom variant="primary" size="sm" type="button" className="w-full min-w-0 sm:w-auto">
+                      Editar perfil
+                    </Buttom>
+                  </Link>
+                ) : null}
+              </div>
             </div>
           </div>
         </div>
