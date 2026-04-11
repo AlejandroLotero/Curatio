@@ -89,7 +89,7 @@
 
 import { bootstrapCsrf, httpClient } from "./client";
 // Importaciones para actualizar usuario 
-import { buildUpdateUserRequestBody } from "@/lib/adapters/userAdapter";
+import { buildUpdateUserRequestBody, buildSelfProfilePatchBody, } from "@/lib/adapters/userAdapter";
 
 /**
  * =========================
@@ -119,6 +119,26 @@ export async function getUsers(params = {}) {
  */
 export async function getMyProfile() {
   return httpClient.get("/v1/people/users/me/");
+}
+
+/**
+ * Actualiza el perfil del usuario en sesión (Cliente / Farmaceuta).
+ */
+export async function patchMyProfile(merged, photoFile) {
+  try {
+    await bootstrapCsrf();
+    const body = buildSelfProfilePatchBody(merged, photoFile);
+    return await httpClient.patch("/v1/people/users/me/", body);
+  } catch (backendError) {
+    throw {
+      error: {
+        code: backendError?.error?.code || "UPDATE_PROFILE_FAILED",
+        message:
+          backendError?.error?.message || "No se pudo actualizar el perfil.",
+        fields: backendError?.error?.fields || {},
+      },
+    };
+  }
 }
 
 /**

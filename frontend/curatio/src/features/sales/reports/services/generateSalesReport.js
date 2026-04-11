@@ -3,9 +3,9 @@ import { generateExcelReport } from "./generateExcelReport";
 import { generatePdfReport } from "./generatePdfReport";
 
 /**
- * Genera PDF o Excel con las ventas y campos indicados.
+ * Genera PDF o Excel en el navegador con las filas ya cargadas en memoria.
  *
- * @param {"all"|"filtered"} scope - Todo el listado mock o solo lo filtrado en pantalla.
+ * @param {"all"|"filtered"} scope - `all`: `salesAll`; `filtered`: `salesFiltered`.
  */
 export function generateSalesReport({
   format,
@@ -19,7 +19,10 @@ export function generateSalesReport({
     return;
   }
 
-  const source = scope === "all" ? salesAll : salesFiltered;
+  const all = Array.isArray(salesAll) ? salesAll : [];
+  const filtered = Array.isArray(salesFiltered) ? salesFiltered : [];
+
+  const source = scope === "all" ? all : filtered.length ? filtered : all;
 
   const { headers, rows } = buildSalesReportDataset({
     sales: source,
@@ -44,6 +47,7 @@ export function generateSalesReport({
       headers,
       rows,
       fileName: `ventas-report-${timestamp}.pdf`,
+      title: "Reporte de ventas",
     });
   }
 }

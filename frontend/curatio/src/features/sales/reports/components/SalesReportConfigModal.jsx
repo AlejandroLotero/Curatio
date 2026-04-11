@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Select } from "@/shared/components";
 import Checkbox from "@/shared/components/Checkbox";
 import { salesReportFields } from "../config/salesReportFields";
@@ -9,12 +9,24 @@ export default function SalesReportConfigModal({
   onClose,
   salesAll,
   salesFiltered,
+  /**
+   * Si es false, solo se exportan las filas filtradas (`salesFiltered`) y se oculta
+   * la opción “todas las ventas” (típico cuando solo existe el lote devuelto por el API).
+   */
+  enableFullDatasetScope = true,
 }) {
   const [format, setFormat] = useState("pdf");
   const [scope, setScope] = useState("filtered");
   const [selectedFields, setSelectedFields] = useState(() =>
     salesReportFields.filter((f) => f.default)
   );
+
+  useEffect(() => {
+    if (!isOpen) return;
+    if (!enableFullDatasetScope) {
+      setScope("filtered");
+    }
+  }, [isOpen, enableFullDatasetScope]);
 
   if (!isOpen) return null;
 
@@ -38,10 +50,14 @@ export default function SalesReportConfigModal({
     onClose();
   };
 
-  const scopeLabel =
-    scope === "all"
-      ? `Todos los registros (${salesAll?.length ?? 0})`
-      : `Resultado de filtros actuales (${salesFiltered?.length ?? 0})`;
+  const allCount = Array.isArray(salesAll) ? salesAll.length : 0;
+  const filteredCount = Array.isArray(salesFiltered) ? salesFiltered.length : 0;
+
+  const scopeLabel = enableFullDatasetScope
+    ? scope === "all"
+      ? `Todos los registros cargados (${allCount})`
+      : `Ventas según filtros actuales (${filteredCount})`
+    : `Ventas mostradas (${filteredCount})`;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
@@ -64,17 +80,19 @@ export default function SalesReportConfigModal({
           />
         </div>
 
-        <div className="mb-4">
-          <Select
-            label="Alcance del reporte"
-            value={scope}
-            onChange={(e) => setScope(e.target.value)}
-            options={[
-              { label: "Ventas según filtros actuales", value: "filtered" },
-              { label: "Todas las ventas (listado completo)", value: "all" },
-            ]}
-          />
-        </div>
+        {enableFullDatasetScope ? (
+          <div className="mb-4">
+            <Select
+              label="Alcance del reporte"
+              value={scope}
+              onChange={(e) => setScope(e.target.value)}
+              options={[
+                { label: "Ventas según filtros actuales", value: "filtered" },
+                { label: "Todos los registros cargados (sin filtro de pantalla)", value: "all" },
+              ]}
+            />
+          </div>
+        ) : null}
 
         <div className="mb-4">
           <p className="mb-2 font-medium">Campos del reporte</p>

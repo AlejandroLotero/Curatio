@@ -74,6 +74,7 @@ export default function ProductFileInput({
   return (
     <div className="space-y-3">
       <style>{`
+        /* Estilos del botón file input: navegadores webkit */
         .product-file::-webkit-file-upload-button {
           background-color: var(--color-primarybtnbg);
           color: var(--color-primarybtntext);
@@ -93,6 +94,7 @@ export default function ProductFileInput({
           background-color: var(--color-primarybtnhoverbg);
         }
 
+        /* Estilos del botón file input: navegadores Firefox */
         .product-file::file-selector-button {
           background-color: var(--color-primarybtnbg);
           color: var(--color-primarybtntext);
@@ -112,7 +114,7 @@ export default function ProductFileInput({
           background-color: var(--color-secondarybtnhoverbg);
         }
 
-        /* En celulares, reducir más el padding */
+        /* En celulares (< 640px), ajustar tamaño del botón */
         @media (max-width: 640px) {
           .product-file::-webkit-file-upload-button {
             padding: 5px 10px;
@@ -135,7 +137,9 @@ export default function ProductFileInput({
         {label}
       </label>
 
+      {/* Contenedor responsive: columna en móvil, fila en tablets+ */}
       <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start sm:items-start">
+        {/* Imagen preview: 96x96 móvil, 128x128 en tablets+ */}
         {preview ? (
           <img
             src={preview}
@@ -159,6 +163,7 @@ export default function ProductFileInput({
             />
           </div>
 
+          {/* Texto adaptable: xs en móvil, sm en tablets+ */}
           <p className="text-xs sm:text-sm text-gray-600 break-words">
             {file
               ? `Archivo: ${file.name}`

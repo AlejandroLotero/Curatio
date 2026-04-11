@@ -10,6 +10,7 @@ import {
   UpdateBasicInformationPage,
   UpdateContactInformationPage,
   UpdateRolPage,
+  UpdateUserInfo,
   ListUserPage,
 } from "@/features/users";
 
@@ -18,6 +19,7 @@ import {
   ForgotPasswordPage,
   TokenPasswordPage,
   ResetPasswordPage,
+  SessionChangePasswordPage,
 } from "@/features/auth";
 
 import {
@@ -198,6 +200,14 @@ const router = createBrowserRouter([
               {
                 path: "editar-rol",
                 element: <UpdateRolPage />,
+              },
+              {
+                path: "actualizar-mi-perfil",
+                element: <UpdateUserInfo />,
+              },
+              {
+                path: "cambiar-contrasena",
+                element: <SessionChangePasswordPage />,
               },
             ],
           },

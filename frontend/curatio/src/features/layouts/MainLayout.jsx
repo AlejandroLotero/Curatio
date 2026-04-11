@@ -1,12 +1,22 @@
 import { Outlet, useLocation } from "react-router-dom";
+import { useAuth } from "@/features/auth/context/AuthContext";
 import Navbar from "./Navbar";
 import NavBarClient from "./NavBarClient";
 import logo from  "@/assets/images/Curatio.png";//se debe de subir 
 import SessionConflictGlobalModal from  "@/features/auth/components/SessionConflictGlobalModal";//sube
 import bgAll from "@/assets/images/nuevo.jpg";
 
+//función para verificar si el usuario es cliente y mostrar el navbar adecuado
+function isClienteRole(role) {
+  if (role == null || typeof role !== "string") return false;
+  const n = role.trim().toLowerCase();
+  return n === "cliente";
+}
+
+
 export default function MainLayout() {
   const location = useLocation();
+  const { user } = useAuth();
 
   const isHome = location.pathname === "/";
   const searchParams = new URLSearchParams(location.search);
@@ -14,8 +24,13 @@ export default function MainLayout() {
   const isProductDetail = location.pathname.startsWith("/products/detalle/");
   const isCartFlow = location.pathname.startsWith("/cartshop/ver-carrito");
 
+
+  const isClienteSession = isClienteRole(user?.role);
   const useClientNavbar =
-    isHome || isCartFlow || (isProductDetail && isClientSource);
+    isClienteSession ||
+    isHome ||
+    isCartFlow ||
+    (isProductDetail && isClientSource);
 
   return (
     <div className="relative min-h-screen text-text-primary overflow-hidden">
